@@ -51,7 +51,7 @@ create table PERSONA (
      Descrizione varchar(100),
      Immagine varchar(200) not null,
      Email varchar(30) not null,
-     Password varchar(30) not null,
+     Password char(128) not null,
      Impiego varchar(20),
      constraint IDPERSONA_ID primary key (Username));
 
