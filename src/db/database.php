@@ -11,7 +11,6 @@ class DatabaseHelper
         }
     }
 
-    
     public function getUser($email)
     {
         // Usando statement sql 'prepared' non sarà possibile attuare un attacco di tipo SQL injection.

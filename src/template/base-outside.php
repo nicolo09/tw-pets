@@ -20,8 +20,8 @@
         <h1 class="text-center">🐶PETS🐱</h1>
     </header>
     <?php
-    if (isset($nome)) {
-        require_once($nome);
+    if (isset($templateParams["page"])) {
+        require_once($templateParams["page"]);
     }
     ?>
 </body>

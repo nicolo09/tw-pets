@@ -62,14 +62,14 @@ function loginUser($email, $input_password, $dbh)
 }
 
 // Check if the user is logged in
-function login_check($mysqli)
+function login_check($dbh)
 {
     // Verifica che tutte le variabili di sessione siano impostate correttamente
     if (isset($_SESSION['username'], $_SESSION['login_string'])) {
         $login_string = $_SESSION['login_string'];
         $username = $_SESSION['username'];
         $user_browser = $_SERVER['HTTP_USER_AGENT']; // reperisce la stringa 'user-agent' dell'utente.
-        $password = $mysqli->getPassword($username);
+        $password = $dbh->getPassword($username);
 
         if (count($password) == 1) { // se l'utente esiste
             $password = $password[0]["password"]; // recupero la password
@@ -91,12 +91,12 @@ function login_check($mysqli)
     }
 }
 
-function checkBrute($username, $mysqli)
+function checkBrute($username, $dbh)
 {
     $now = time();
     $valid_attempts = $now - (2 * 60 * 60); // Intervallo di tempo equivalente a 2 ore da adesso
-    $num_attempts = $mysqli->getLoginAttempts($username, $valid_attempts);
-    if(count($num_attempts) > 5){ //TODO definire un valore massimo di tentativi
+    $num_attempts = $dbh->getLoginAttempts($username, $valid_attempts);
+    if (count($num_attempts) > 5) { //TODO definire un valore massimo di tentativi
         return true;
     } else {
         return false;
@@ -149,4 +149,3 @@ function uploadImage($path, $image)
     }
     return array($result, $msg);
 }
-
