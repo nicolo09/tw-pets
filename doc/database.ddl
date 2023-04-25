@@ -1,5 +1,3 @@
-
-
 -- Database Section
 -- ________________ 
 
@@ -26,6 +24,11 @@ create table COMMENTO (
      Username varchar(25) not null,
      constraint IDCOMMENTO primary key (ID_commento));
 
+create table TENTATIVO_LOGIN (
+     Timestamp timestamp not null,
+     Username varchar(25) not null,
+     constraint IDTENTATIVO_LOGIN primary key (Timestamp, Username));
+
 create table IMPOSTAZIONE (
      Username varchar(25) not null,
      Notifica_like boolean not null,
@@ -51,7 +54,7 @@ create table PERSONA (
      Descrizione varchar(100),
      Immagine varchar(200) not null,
      Email varchar(30) not null,
-     Password char(128) not null,
+     Password varchar(30) not null,
      Impiego varchar(20),
      constraint IDPERSONA_ID primary key (Username));
 
@@ -106,6 +109,10 @@ alter table COMMENTO add constraint FKRISPONDE
      references COMMENTO (ID_commento);
 
 alter table COMMENTO add constraint FKPOSTA
+     foreign key (Username)
+     references PERSONA (Username);
+
+alter table TENTATIVO_LOGIN add constraint FKEFFETTUA
      foreign key (Username)
      references PERSONA (Username);
 
