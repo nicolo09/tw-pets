@@ -11,11 +11,7 @@ class DatabaseHelper
         }
     }
 
-    public function addLoginAttempt($username, $time)
-    {
-        //TODO: implementare
-    }
-
+    
     public function getUser($email)
     {
         // Usando statement sql 'prepared' non sarà possibile attuare un attacco di tipo SQL injection.
@@ -26,7 +22,7 @@ class DatabaseHelper
             return $result->fetch_all(MYSQLI_ASSOC);
         }
     }
-
+    
     public function getPassword($username)
     {
         // Usando statement sql 'prepared' non sarà possibile attuare un attacco di tipo SQL injection.
@@ -35,6 +31,26 @@ class DatabaseHelper
             $stmt->execute();
             $result = $stmt->get_result();
             return $result->fetch_all(MYSQLI_ASSOC);
+        }
+    }
+
+    public function addLoginAttempt($username, $time)
+    {
+        if($stmt = $this->db->prepare("INSERT INTO tentativo_login (timestamp, username) VALUES (?, ?)"))
+        {
+            $stmt->bind_param('is', $time, $username);
+            $stmt->execute();
+        }
+    }
+    
+    public function getLoginAttempts($username, $attempts)
+    {
+        if($stmt = $this->db->prepare("SELECT timestamp FROM tentativo_login WHERE username = ? AND timestamp > '$attempts'"))
+        {
+            $stmt->bind_param('s', $username);
+            $stmt->execute();
+            $result = $stmt->get_result();
+            return $result->fetch_all(MYSQLI_ASSOC); 
         }
     }
 }

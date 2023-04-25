@@ -33,9 +33,10 @@ function loginUser($email, $input_password, $dbh)
     $input_password = password_hash($input_password, PASSWORD_DEFAULT);
     if (count($user) == 1) { // se l'utente esiste
         // Verifichiamo che non sia disabilitato in seguito all'esecuzione di troppi tentativi di accesso errati.
-        if (checkBrute($user[0]["username"]) == true) {
+        if (checkBrute($user[0]["username"], $dbh) == true) {
             // Account disabilitato
             // TODO: Invia un e-mail all'utente avvisandolo che il suo account è stato disabilitato.
+            // TODO: come gestire la disabilitazione? attributo in persona? 
             return false;
         } else {
             if ($user[0]["password"] == $input_password) { // Verifica che la password memorizzata nel database corrisponda alla password fornita dall'utente.
@@ -90,6 +91,18 @@ function login_check($mysqli)
     }
 }
 
+function checkBrute($username, $mysqli)
+{
+    $now = time();
+    $valid_attempts = $now - (2 * 60 * 60); // Intervallo di tempo equivalente a 2 ore da adesso
+    $num_attempts = $mysqli->getLoginAttempts($username, $valid_attempts);
+    if(count($num_attempts) > 5){ //TODO definire un valore massimo di tentativi
+        return true;
+    } else {
+        return false;
+    }
+}
+
 function uploadImage($path, $image)
 {
     $imageName = basename($image["name"]);
@@ -137,6 +150,3 @@ function uploadImage($path, $image)
     return array($result, $msg);
 }
 
-function checkBrute($username)
-{
-}
