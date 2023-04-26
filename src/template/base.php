@@ -11,7 +11,7 @@
 
     <title><?php
     if (isset($templateParams["title"])) {
-        require_once($templateParams["title"]);
+        echo($templateParams["title"]);
     }
     ?></title>
 
