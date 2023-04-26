@@ -4,17 +4,17 @@
             <div class="col-lg-6">
                 <div class="card-body text-center">
                     <h2 class="fw-bold">Esegui l'accesso</h2>
-                    <form>
+                    <form action="login.php" method="post">
                         <!-- Username input -->
                         <div class="form-outline">
                             <label class="form-label" for="usernameTextBox">Nome Utente o Email</label>
-                            <input type="text" placeholder="Username / Email" class="form-control" id="usernameTextBox" />
+                            <input type="text" placeholder="Username / Email" class="form-control" id="usernameTextBox" name="username"/>
                         </div>
 
                         <!-- Password input -->
                         <div class="form-outline">
                             <label class="form-label" for="passwordTextBox">Password</label>
-                            <input type="password" placeholder="Password" class="form-control" id="passwordTextBox" />
+                            <input type="password" placeholder="Password" class="form-control" id="passwordTextBox" name="password"/>
                             <a href="reset-password.php">Password dimenticata?</a>
                         </div>
 
