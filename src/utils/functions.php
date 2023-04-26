@@ -30,35 +30,34 @@ function isUserLoggedIn()
 function loginUser($email, $input_password, DatabaseHelper $dbh)
 {
     //Se l'email è un email
-    if (!filter_var($email, FILTER_VALIDATE_EMAIL)) {
+    if (filter_var($email, FILTER_VALIDATE_EMAIL)) {
         $user = $dbh->getUser($email);
     }
     //Se l'email è un username
     else {
         $user = $dbh->getUserFromName($email);
     }
-    $input_password = password_hash($input_password, PASSWORD_DEFAULT);
     if (count($user) == 1) { // se l'utente esiste
         // Verifichiamo che non sia disabilitato in seguito all'esecuzione di troppi tentativi di accesso errati.
-        if (checkBrute($user[0]["username"], $dbh) == true) {
+        if (checkBrute($user[0]["Username"], $dbh) == true) {
             // Account disabilitato
             // TODO: Invia un e-mail all'utente avvisandolo che il suo account è stato disabilitato.
             // TODO: come gestire la disabilitazione? attributo in persona? 
             return false;
         } else {
-            if ($user[0]["password"] == $input_password) { // Verifica che la password memorizzata nel database corrisponda alla password fornita dall'utente.
+            if (password_verify($input_password, $user[0]["Password"])) { // Verifica che la password memorizzata nel database corrisponda alla password fornita dall'utente.
                 // Password corretta!
                 $user_browser = $_SERVER['HTTP_USER_AGENT']; // Recupero il parametro 'user-agent' relativo all'utente corrente.
-                $username = preg_replace("/[^a-zA-Z0-9_\-]+/", "", $user[0]["username"]); // ci proteggiamo da un attacco XSS
+                $username = preg_replace("/[^a-zA-Z0-9_\-]+/", "", $user[0]["Username"]); // ci proteggiamo da un attacco XSS
                 $_SESSION['username'] = $username;
-                $_SESSION['login_string'] = hash('sha512', $input_password . $user_browser);
+                $_SESSION['login_string'] = hash('sha512', $user[0]["Password"] . $user_browser);
                 // Login eseguito con successo.
                 return true;
             } else {
                 // Password incorretta.
                 // Registriamo il tentativo fallito nel database.
                 $now = time();
-                $dbh->addLoginAttempt($user[0]["username"], $now);
+                $dbh->addLoginAttempt($user[0]["Username"], $now);
                 return false;
             }
         }
