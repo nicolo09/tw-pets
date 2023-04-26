@@ -26,6 +26,12 @@
 
                         <!-- Submit button -->
                         <button type="submit" class="btn btn-primary btn-block mb-4">Login</button>
+
+                        <!-- Go to register form -->
+                        <div>
+                            <label>Non hai ancora un account? - </label>
+                            <a href="register.php"> Registrati ora! </a>
+                        </div>
                     </form>
                 </div>
             </div>
