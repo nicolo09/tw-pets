@@ -21,6 +21,15 @@ class DatabaseHelper
             return $result->fetch_all(MYSQLI_ASSOC);
         }
     }
+
+    public function getAnimalsFromUser($username){
+        if($stmt = $this->db->prepare("SELECT username, immagine FROM animale INNER JOIN possiede ON animale.username = possiede.animale WHERE possiede.persona = ?")){
+            $stmt->bind_param('s', $username);
+            $stmt->execute();
+            $result = $stmt->get_result();
+            return $result->fetch_all(MYSQLI_ASSOC);
+        }
+    }
     
     public function getPassword($username)
     {
