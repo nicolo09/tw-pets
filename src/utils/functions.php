@@ -150,17 +150,15 @@ function uploadImage($path, $image)
     return array($result, $msg);
 }
 
-function register(string $user, string $password, string $email, string $confirmemail, DatabaseHelper $dbh)
+function register(string $user, string $email, string $password, string $confirm_password, DatabaseHelper $dbh)
 {
     $errors = array();
+    $result = 0;
     if (strlen($user) < 3) {
         $errors[] = "Lo username deve essere lungo almeno 3 caratteri.";
     }
     if (count($dbh->getUser($user)) > 0) {
         $errors[] = "Lo username è già in uso.";
-    }
-    if ($email != $confirmemail) {
-        $errors[] = "Le email non corrispondono.";
     }
     if (count($dbh->getUser($email)) > 0) {
         $errors[] = "L'email è già in uso.";
@@ -168,20 +166,25 @@ function register(string $user, string $password, string $email, string $confirm
     if (!filter_var($email, FILTER_VALIDATE_EMAIL)) {
         $errors[] = "Email non valida.";
     }
-    if (strlen($password) < 6) {
-        $errors[] = "La password deve essere lunga almeno 6 caratteri.";
-    }
-    if (!preg_match('@[0-9]@', $password)) {
-        $errors[] = "La password deve contenere almeno un numero.";
-    }
-    if (!preg_match('@[A-Z]@', $password)) {
-        $errors[] = "La password deve contenere almeno una lettera maiuscola.";
-    }
-    if (!preg_match('@[a-z]@', $password)) {
-        $errors[] = "La password deve contenere almeno una lettera minuscola.";
-    }
-    if (!preg_match('@[^\w]@', $password)) {
-        $errors[] = "La password deve contenere almeno un carattere speciale.";
+    if ($password != $confirm_password) {
+        $errors[] = "Le password non coincidono.";
+    } else {
+        # Check sulla password solo se uguale a conferma password
+        if (strlen($password) < 6) {
+            $errors[] = "La password deve essere lunga almeno 6 caratteri.";
+        }
+        if (!preg_match('@[0-9]@', $password)) {
+            $errors[] = "La password deve contenere almeno un numero.";
+        }
+        if (!preg_match('@[A-Z]@', $password)) {
+            $errors[] = "La password deve contenere almeno una lettera maiuscola.";
+        }
+        if (!preg_match('@[a-z]@', $password)) {
+            $errors[] = "La password deve contenere almeno una lettera minuscola.";
+        }
+        if (!preg_match('@[^\w]@', $password)) {
+            $errors[] = "La password deve contenere almeno un carattere speciale.";
+        }
     }
     if (count($errors) == 0) {
         if ($dbh->addUser($user, $password, $email)) {
