@@ -41,9 +41,12 @@ class DatabaseHelper
         }
     }
 
-    public function getLoginAttempts($username, $attempts)
+    public function getLoginAttempts($username, $from)
     {
-        if ($stmt = $this->db->prepare("SELECT timestamp FROM tentativo_login WHERE username = ? AND timestamp > FROM_UNIXTIME($attempts)")) {
+        $stmt = $this->db->prepare("DELETE FROM tentativo_login WHERE username = ? AND timestamp < FROM_UNIXTIME($from)");
+        $stmt->bind_param('s', $username);
+        $stmt->execute();
+        if ($stmt = $this->db->prepare("SELECT timestamp FROM tentativo_login WHERE username = ? AND timestamp > FROM_UNIXTIME($from)")) {
             $stmt->bind_param('s', $username);
             $stmt->execute();
             $result = $stmt->get_result();
