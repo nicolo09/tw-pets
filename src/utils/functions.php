@@ -163,7 +163,7 @@ function register(string $user, string $email, string $password, string $confirm
     if (strlen($user) < 3) {
         $errors[] = "Lo username deve essere lungo almeno 3 caratteri.";
     }
-    if (count($dbh->getUser($user)) > 0) {
+    if (count($dbh->getUserFromName($user)) > 0) {
         $errors[] = "Lo username è già in uso.";
     }
     if (count($dbh->getUser($email)) > 0) {
