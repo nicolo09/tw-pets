@@ -27,9 +27,16 @@ function isUserLoggedIn()
 }
 
 // Login a user by email and password saving the session's cookie
-function loginUser($email, $input_password, $dbh)
+function loginUser($email, $input_password, DatabaseHelper $dbh)
 {
-    $user = $dbh->getUser($email);
+    //Se l'email è un email
+    if (!filter_var($email, FILTER_VALIDATE_EMAIL)) {
+        $user = $dbh->getUser($email);
+    }
+    //Se l'email è un username
+    else {
+        $user = $dbh->getUserFromName($email);
+    }
     $input_password = password_hash($input_password, PASSWORD_DEFAULT);
     if (count($user) == 1) { // se l'utente esiste
         // Verifichiamo che non sia disabilitato in seguito all'esecuzione di troppi tentativi di accesso errati.
