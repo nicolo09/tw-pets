@@ -52,4 +52,15 @@ class DatabaseHelper
             return $result->fetch_all(MYSQLI_ASSOC); 
         }
     }
+
+    public function getUserFromName($username){
+        if($stmt = $this->db->prepare("SELECT * FROM persona WHERE username = ? LIMIT 1"))
+        {
+            $stmt->bind_param('s', $username);
+            $stmt->execute();
+            $result = $stmt->get_result();
+            return $result->fetch_all(MYSQLI_ASSOC);
+        }
+    }
+
 }
