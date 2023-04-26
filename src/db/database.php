@@ -67,7 +67,10 @@ class DatabaseHelper
         if($stmt = $this->db->prepare("INSERT INTO persona (username, password, email) VALUES (?, ?, ?)"))
         {
             $stmt->bind_param('sss', $user, $password, $email);
-            $stmt->execute();
+            return $stmt->execute();
+        }
+        else {
+            return false;
         }
     }
 }
