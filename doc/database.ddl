@@ -9,88 +9,88 @@ use TWPETS;
 -- _____________ 
 
 create table ANIMALE (
-     Username varchar(25) not null,
-     Descrizione varchar(100),
-     Immagine varchar(200) not null,
-     Tipo varchar(30) not null,
-     constraint IDANIMALE_ID primary key (Username));
+     username varchar(25) not null,
+     descrizione varchar(100),
+     immagine varchar(200) not null,
+     tipo varchar(30) not null,
+     constraint IDANIMALE_ID primary key (username));
 
 create table COMMENTO (
-     ID_commento int not null auto_increment,
-     Testo varchar(100) not null,
-     Timestamp timestamp not null,
-     ID_post int not null,
-     ID_padre int,
-     Username varchar(25) not null,
-     constraint IDCOMMENTO primary key (ID_commento));
+     id_commento int not null auto_increment,
+     testo varchar(100) not null,
+     timestamp timestamp not null,
+     id_post int not null,
+     id_padre int,
+     username varchar(25) not null,
+     constraint IDCOMMENTO primary key (id_commento));
 
 create table TENTATIVO_LOGIN (
-     Timestamp timestamp not null,
-     Username varchar(25) not null,
-     constraint IDTENTATIVO_LOGIN primary key (Timestamp, Username));
+     timestamp timestamp not null,
+     username varchar(25) not null,
+     constraint IDTENTATIVO_LOGIN primary key (timestamp, username));
 
 create table IMPOSTAZIONE (
-     Username varchar(25) not null,
-     Notifica_like boolean not null,
-     Notifica_commento boolean not null,
-     Notifica_follow boolean not null,
-     Notifica_follow_animale boolean not null,
-     constraint FKIMPOSTA_ID primary key (Username));
+     username varchar(25) not null,
+     notifica_like boolean not null,
+     notifica_commento boolean not null,
+     notifica_follow boolean not null,
+     notifica_follow_animale boolean not null,
+     constraint FKIMPOSTA_ID primary key (username));
 
 create table LIKES (
-     ID_post int not null,
-     Username varchar(25) not null,
-     constraint IDLIKES primary key (Username, ID_post));
+     id_post int not null,
+     username varchar(25) not null,
+     constraint IDLIKES primary key (username, id_post));
 
 create table NOTIFICA (
-     Letta boolean not null,
-     Timestamp timestamp not null,
-     ID int not null,
-     Destinatario varchar(25) not null,
-     constraint IDNOTIFICA primary key (ID));
+     letta boolean not null,
+     timestamp timestamp not null,
+     id int not null,
+     destinatario varchar(25) not null,
+     constraint IDNOTIFICA primary key (id));
 
 create table PERSONA (
-     Username varchar(25) not null,
-     Descrizione varchar(100),
-     Immagine varchar(200) not null,
-     Email varchar(30) not null,
-     Password char(255) not null,
-     Impiego varchar(20),
-     constraint IDPERSONA_ID primary key (Username));
+     username varchar(25) not null,
+     descrizione varchar(100),
+     immagine varchar(200) not null,
+     email varchar(30) not null,
+     password char(255) not null,
+     impiego varchar(20),
+     constraint IDPERSONA_ID primary key (username));
 
 create table POSSIEDE (
-     Persona varchar(25) not null,
-     Animale varchar(25) not null,
-     constraint IDPOSSIEDE primary key (Persona, Animale));
+     persona varchar(25) not null,
+     animale varchar(25) not null,
+     constraint IDPOSSIEDE primary key (persona, animale));
 
 create table POST (
-     ID_post int not null auto_increment,
-     Immagine varchar(200) not null,
-	 Alt varchar(50) not null,
-     Testo varchar(100) not null,
-     Timestamp timestamp not null,
-     Username varchar(25) not null,
-     constraint IDPOST primary key (ID_post));
+     id_post int not null auto_increment,
+     immagine varchar(200) not null,
+	 alt varchar(50) not null,
+     testo varchar(100) not null,
+     timestamp timestamp not null,
+     username varchar(25) not null,
+     constraint IDPOST primary key (id_post));
 
 create table RIGUARDA (
-     Animale varchar(25) not null,
-     ID_post int not null,
-     constraint IDRIGUARDA primary key (ID_post, Animale));
+     animale varchar(25) not null,
+     id_post int not null,
+     constraint IDRIGUARDA primary key (id_post, animale));
 
 create table SALVATI (
-     ID_post int not null,
-     Username varchar(25) not null,
-     constraint IDSALVATI primary key (Username, ID_post));
+     id_post int not null,
+     username varchar(25) not null,
+     constraint IDSALVATI primary key (username, id_post));
 
 create table SEGUE_ANIMALE (
-     Follower varchar(25) not null,
-     Followed varchar(25) not null,
-     constraint IDSEGUE_ANIMALE primary key (Followed, Follower));
+     follower varchar(25) not null,
+     followed varchar(25) not null,
+     constraint IDSEGUE_ANIMALE primary key (followed, follower));
 
 create table SEGUE_PERSONA (
-     Followed varchar(25) not null,
-     Follower varchar(25) not null,
-     constraint IDSEGUE_PER primary key (Followed, Follower));
+     followed varchar(25) not null,
+     follower varchar(25) not null,
+     constraint IDSEGUE_PER primary key (followed, follower));
 
 
 -- Constraints Section
@@ -99,88 +99,88 @@ create table SEGUE_PERSONA (
 -- Not implemented
 -- alter table ANIMALE add constraint IDANIMALE_CHK
 --     check(exists(select * from POSSIEDE
---                  where POSSIEDE.Animale = Username)); 
+--                  where POSSIEDE.animale = username)); 
 
 alter table COMMENTO add constraint FKSOTTO
-     foreign key (ID_post)
-     references POST (ID_post);
+     foreign key (id_post)
+     references POST (id_post);
 
 alter table COMMENTO add constraint FKRISPONDE
-     foreign key (ID_padre)
-     references COMMENTO (ID_commento);
+     foreign key (id_padre)
+     references COMMENTO (id_commento);
 
 alter table COMMENTO add constraint FKPOSTA
-     foreign key (Username)
-     references PERSONA (Username);
+     foreign key (username)
+     references PERSONA (username);
 
 alter table TENTATIVO_LOGIN add constraint FKEFFETTUA
-     foreign key (Username)
-     references PERSONA (Username);
+     foreign key (username)
+     references PERSONA (username);
 
 alter table IMPOSTAZIONE add constraint FKIMPOSTA_FK
-     foreign key (Username)
-     references PERSONA (Username);
+     foreign key (username)
+     references PERSONA (username);
 
 alter table LIKES add constraint FKPERSONALIKES
-     foreign key (Username)
-     references PERSONA (Username);
+     foreign key (username)
+     references PERSONA (username);
 
 alter table LIKES add constraint FKPOSTLIKES
-     foreign key (ID_post)
-     references POST (ID_post);
+     foreign key (id_post)
+     references POST (id_post);
 
 alter table NOTIFICA add constraint FKPER
-     foreign key (Destinatario)
-     references PERSONA (Username);
+     foreign key (destinatario)
+     references PERSONA (username);
 
 -- Not implemented
 -- alter table PERSONA add constraint IDPERSONA_CHK
 --     check(exists(select * from IMPOSTAZIONE
---                  where IMPOSTAZIONE.Username = Username)); 
+--                  where IMPOSTAZIONE.username = username)); 
 
 alter table POSSIEDE add constraint FKANIMALEPOSSIEDE
-     foreign key (Animale)
-     references ANIMALE (Username);
+     foreign key (animale)
+     references ANIMALE (username);
 
 alter table POSSIEDE add constraint FKPERSONAPOSSIEDE
-     foreign key (Persona)
-     references PERSONA (Username);
+     foreign key (persona)
+     references PERSONA (username);
 
 alter table POST add constraint FKPUBBLICA
-     foreign key (Username)
-     references PERSONA (Username);
+     foreign key (username)
+     references PERSONA (username);
 
 alter table RIGUARDA add constraint FKPOST
-     foreign key (ID_post)
-     references POST (ID_post);
+     foreign key (id_post)
+     references POST (id_post);
 
 alter table RIGUARDA add constraint FKANIMALERIGUARDA
-     foreign key (Animale)
-     references ANIMALE (Username);
+     foreign key (animale)
+     references ANIMALE (username);
 
 alter table SALVATI add constraint FKPERSONASALVATI
-     foreign key (Username)
-     references PERSONA (Username);
+     foreign key (username)
+     references PERSONA (username);
 
 alter table SALVATI add constraint FKPOSTSALVATI
-     foreign key (ID_post)
-     references POST (ID_post);
+     foreign key (id_post)
+     references POST (id_post);
 
 alter table SEGUE_ANIMALE add constraint FKFOLLOWEDANIMALE
-     foreign key (Followed)
-     references ANIMALE (Username);
+     foreign key (followed)
+     references ANIMALE (username);
 
 alter table SEGUE_ANIMALE add constraint FKFOLLOWERANIMALE
-     foreign key (Follower)
-     references PERSONA (Username);
+     foreign key (follower)
+     references PERSONA (username);
 
 alter table SEGUE_PERSONA add constraint FKFOLLOWERPERSONA
-     foreign key (Follower)
-     references PERSONA (Username);
+     foreign key (follower)
+     references PERSONA (username);
 
 alter table SEGUE_PERSONA add constraint FKFOLLOWEDPERSONA
-     foreign key (Followed)
-     references PERSONA (Username);
+     foreign key (followed)
+     references PERSONA (username);
 
 
 -- Index Section
