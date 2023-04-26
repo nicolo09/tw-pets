@@ -33,17 +33,17 @@ class DatabaseHelper
         }
     }
 
-    public function addLoginAttempt($username, $time)
+    public function addLoginAttempt($username)
     {
-        if ($stmt = $this->db->prepare("INSERT INTO tentativo_login (timestamp, username) VALUES (?, ?)")) {
-            $stmt->bind_param('is', $time, $username);
+        if ($stmt = $this->db->prepare("INSERT INTO tentativo_login (timestamp, username) VALUES (NOW(), ?)")) {
+            $stmt->bind_param('s', $username);
             $stmt->execute();
         }
     }
 
     public function getLoginAttempts($username, $attempts)
     {
-        if ($stmt = $this->db->prepare("SELECT timestamp FROM tentativo_login WHERE username = ? AND timestamp > '$attempts'")) {
+        if ($stmt = $this->db->prepare("SELECT timestamp FROM tentativo_login WHERE username = ? AND timestamp > FROM_UNIXTIME($attempts)")) {
             $stmt->bind_param('s', $username);
             $stmt->execute();
             $result = $stmt->get_result();

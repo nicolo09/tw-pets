@@ -60,7 +60,7 @@ function loginUser($email, $input_password, DatabaseHelper $dbh)
                 // Password incorretta.
                 // Registriamo il tentativo fallito nel database.
                 $now = time();
-                $dbh->addLoginAttempt($user[0]["username"], $now);
+                $dbh->addLoginAttempt($user[0]["username"]);
                 $result[1][] = "Password errata, se effettui troppi tentativi di accesso il tuo account potrebbe essere bloccato.";
                 return $result;
             }
