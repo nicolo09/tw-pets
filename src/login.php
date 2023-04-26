@@ -11,14 +11,14 @@ if (login_check($dbh)) {
 if (isset($_POST['username'], $_POST['password'])) {
     $username = $_POST['username'];
     $password = $_POST['password'];
-    if (loginUser($username, $password, $dbh) == true) {
+    $result = loginUser($username, $password, $dbh);
+    if ($result[0] == true) {
         // Login eseguito con successo
         header("Location: home.php");
         exit;
     } else {
         // Login fallito
-        header("Location: login.php?error=1");
-        exit;
+        $templateParams["errors"] = $result[1];
     }
 }
 

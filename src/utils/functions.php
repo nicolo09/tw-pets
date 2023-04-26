@@ -27,37 +27,48 @@ function isUserLoggedIn()
 }
 
 // Login a user by email and password saving the session's cookie
-function loginUser($email, $input_password, $dbh)
+function loginUser($email, $input_password, DatabaseHelper $dbh)
 {
-    $user = $dbh->getUser($email);
-    $input_password = password_hash($input_password, PASSWORD_DEFAULT);
+    $result = array(false, array());
+    //Se l'email è un email
+    if (filter_var($email, FILTER_VALIDATE_EMAIL)) {
+        $user = $dbh->getUser($email);
+    }
+    //Se l'email è un username
+    else {
+        $user = $dbh->getUserFromName($email);
+    }
     if (count($user) == 1) { // se l'utente esiste
         // Verifichiamo che non sia disabilitato in seguito all'esecuzione di troppi tentativi di accesso errati.
         if (checkBrute($user[0]["username"], $dbh) == true) {
             // Account disabilitato
             // TODO: Invia un e-mail all'utente avvisandolo che il suo account è stato disabilitato.
             // TODO: come gestire la disabilitazione? attributo in persona? 
-            return false;
+            $result[1][] = "Il tuo account è stato momentaneamente disabilitato per troppi tentativi di accesso errati. Riprova più tardi.";
+            return $result;
         } else {
-            if ($user[0]["password"] == $input_password) { // Verifica che la password memorizzata nel database corrisponda alla password fornita dall'utente.
+            if (password_verify($input_password, $user[0]["password"])) { // Verifica che la password memorizzata nel database corrisponda alla password fornita dall'utente.
                 // Password corretta!
                 $user_browser = $_SERVER['HTTP_USER_AGENT']; // Recupero il parametro 'user-agent' relativo all'utente corrente.
                 $username = preg_replace("/[^a-zA-Z0-9_\-]+/", "", $user[0]["username"]); // ci proteggiamo da un attacco XSS
                 $_SESSION['username'] = $username;
-                $_SESSION['login_string'] = hash('sha512', $input_password . $user_browser);
+                $_SESSION['login_string'] = hash('sha512', $user[0]["password"] . $user_browser);
                 // Login eseguito con successo.
-                return true;
+                $result[0] = true;
+                return $result;
             } else {
                 // Password incorretta.
                 // Registriamo il tentativo fallito nel database.
                 $now = time();
-                $dbh->addLoginAttempt($user[0]["username"], $now);
-                return false;
+                $dbh->addLoginAttempt($user[0]["username"]);
+                $result[1][] = "Password errata, se effettui troppi tentativi di accesso il tuo account potrebbe essere bloccato.";
+                return $result;
             }
         }
     } else {
-        // TODO: L'utente inserito non esiste.
-        return false;
+        // L'utente inserito non esiste.
+        $result[1][] = "Utente o email errati.";
+        return $result;
     }
 }
 
@@ -148,4 +159,48 @@ function uploadImage($path, $image)
         }
     }
     return array($result, $msg);
+}
+
+function register(string $user, string $email, string $password, string $confirm_password, DatabaseHelper $dbh)
+{
+    $errors = array();
+    $result = 0;
+    if (strlen($user) < 3) {
+        $errors[] = "Lo username deve essere lungo almeno 3 caratteri.";
+    }
+    if (count($dbh->getUserFromName($user)) > 0) {
+        $errors[] = "Lo username è già in uso.";
+    }
+    if (count($dbh->getUser($email)) > 0) {
+        $errors[] = "L'email è già in uso.";
+    }
+    if (!filter_var($email, FILTER_VALIDATE_EMAIL)) {
+        $errors[] = "Email non valida.";
+    }
+    if ($password != $confirm_password) {
+        $errors[] = "Le password non coincidono.";
+    } else {
+        # Check sulla password solo se uguale a conferma password
+        if (strlen($password) < 6) {
+            $errors[] = "La password deve essere lunga almeno 6 caratteri.";
+        }
+        if (!preg_match('@[0-9]@', $password)) {
+            $errors[] = "La password deve contenere almeno un numero.";
+        }
+        if (!preg_match('@[A-Z]@', $password)) {
+            $errors[] = "La password deve contenere almeno una lettera maiuscola.";
+        }
+        if (!preg_match('@[a-z]@', $password)) {
+            $errors[] = "La password deve contenere almeno una lettera minuscola.";
+        }
+        if (!preg_match('@[^\w]@', $password)) {
+            $errors[] = "La password deve contenere almeno un carattere speciale.";
+        }
+    }
+    if (count($errors) == 0) {
+        if ($dbh->addUser($user, $password, $email)) {
+            $result = 1;
+        }
+    }
+    return array($result, $errors);
 }
