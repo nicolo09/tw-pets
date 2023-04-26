@@ -66,6 +66,7 @@ create table POSSIEDE (
 create table POST (
      ID_post int not null auto_increment,
      Immagine varchar(200) not null,
+	 Alt varchar(50) not null,
      Testo varchar(100) not null,
      Timestamp timestamp not null,
      Username varchar(25) not null,
