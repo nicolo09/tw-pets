@@ -63,13 +63,13 @@ class DatabaseHelper
         }
     }
 
-    public function addUser($user, $password, $email){
-        if($stmt = $this->db->prepare("INSERT INTO persona (username, password, email) VALUES (?, ?, ?)"))
-        {
+    public function addUser($user, $password, $email)
+    {
+        if ($stmt = $this->db->prepare("INSERT INTO persona (username, password, email) VALUES (?, ?, ?)")) {
+            $password = password_hash($password, PASSWORD_DEFAULT);
             $stmt->bind_param('sss', $user, $password, $email);
             return $stmt->execute();
-        }
-        else {
+        } else {
             return false;
         }
     }
