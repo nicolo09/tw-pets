@@ -96,3 +96,8 @@ button > img{
 .d-grid > button{
     margin: 0 6.2%;
 }
+
+div.my-son-textarea{
+    margin-left: 0;
+    margin-right: 0;
+}
