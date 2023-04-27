@@ -129,20 +129,29 @@ function checkBrute($username, $dbh)
 
 function registerAnimal($animal, $type, $img, $description, $owners, $dbh){
 
-    // TODO change return false with error message 
-    if(!count($dbh->getAnimals($animal)) > 0){ 
-        if($dbh->addAnimal($animal, $type, $img, $description)){
-            foreach ($owners as $owner) {
-                if(!$dbh->registerOwnership($owner, $animal)){
-                    return false;
+    $result = 0;
+    $errors = array();
+
+    if (strlen($animal) >= 3) {
+        if(!count($dbh->getAnimals($animal)) > 0){ 
+            if($dbh->addAnimal($animal, $type, $img, $description)){
+                foreach ($owners as $owner) {
+                    if(!$dbh->registerOwnership($owner, $animal)){
+                        $errors[] = "Impossibile assegnare l'animale a " . $owner . ".";
+                    }
                 }
+                $result = 1;
+            } else {
+                $errors[] = "Si è verificato un errore nell'aggiunta dell'animale.";
             }
-            return true;
+        } else {
+            $errors[] = "Lo username " . $animal . " è già in uso.";
         }
     } else {
-        return false;
+        $errors[] = "Lo username deve essere lungo almeno 3 caratteri.";
     }
-
+        
+    return array($result, $errors);
     
 }
 
