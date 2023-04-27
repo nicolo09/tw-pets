@@ -34,15 +34,43 @@ body {
     width: 100%;
 }
 
-/* img visualitation*/
+/* Profile Picture style settings */
 
-.proPic {
+.proPic, .proPicBtn {
     object-fit: cover;
     max-height: 180px !important;
     max-width: 180px !important;
     min-height: 180px !important;
     min-width: 180px !important;
     border-radius: 50%;
+    
+    background: linear-gradient(white, white) padding-box,
+              linear-gradient(to right, darkblue, darkorchid) border-box;
+    border: 4px solid transparent;
+    
+}
+
+.proPicContainer {
+    min-height: 180px !important;
+}
+
+.proPicBtn {
+    cursor: pointer;
+}
+
+@media (max-width: 1000px) {
+    .proPic, .proPicBtn {
+        object-fit: cover;
+        max-height: 120px !important;
+        max-width: 120px !important;
+        min-height: 120px !important;
+        min-width: 120px !important;
+        border-radius: 50%;
+    }
+
+    .proPicContainer {
+        min-height: 120px !important;
+    }
 }
 
 /* button style */

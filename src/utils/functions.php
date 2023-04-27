@@ -15,15 +15,14 @@ function sec_session_start()
 
 function isActive($pagename)
 {
-    if (basename($_SERVER['PHP_SELF']) == $pagename) {
-        echo " class='active' ";
+    if (strpos($_SERVER['REQUEST_URI'], $pagename) !== false) {
+        echo ("active");
     }
 }
 
-function isUserLoggedIn()
+function isUserLoggedIn($dbh)
 {
-    //TODO: implementare
-    return !empty($changethis);
+    return login_check($dbh);
 }
 
 // Login a user by email and password saving the session's cookie
@@ -70,6 +69,20 @@ function loginUser($email, $input_password, DatabaseHelper $dbh)
         $result[1][] = "Utente o email errati.";
         return $result;
     }
+}
+
+function logoutUser($dbh)
+{
+    // Unset all session values 
+    $_SESSION = array();
+    // get session parameters 
+    $params = session_get_cookie_params();
+    // Delete the actual cookie. 
+    setcookie(session_name(), '', time() - 42000, $params["path"], $params["domain"], $params["secure"], $params["httponly"]);
+    // Destroy session 
+    session_destroy();
+    // Redirect to login page 
+    header('Location: login.php');
 }
 
 // Check if the user is logged in

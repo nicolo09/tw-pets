@@ -18,11 +18,11 @@
                             <a href="reset-password.php">Password dimenticata?</a>
                         </div>
 
-                        <!-- Remember me checkbox -->
+                        <!-- Remember me checkbox
                         <div class="form-outline">
-                            <input type="checkbox" class="form-check-input" id="rememberCheckBox">
+                            <input type="checkbox" class="form-check-input" id="rememberCheckBox" name="rememberMe">
                             <label class="form-check-label" for="rememberCheckBox">Ricordami</label>
-                        </div>
+                        </div>  -->
 
                         <!-- Submit button -->
                         <button type="submit" class="btn btn-primary btn-block mb-4">Login</button>
