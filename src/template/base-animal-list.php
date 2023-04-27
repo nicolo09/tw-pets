@@ -14,9 +14,7 @@
         </div>        
     <?php endfor; ?>
     <?php if($_SESSION["username"] == $templateParams["user"]):?>
-    <a href="profile-add-animal.php"> <!-- TODO move to script -->
-        <button class="btn btn-outline-primary w-100"><img src="/img/profile-add-animal.svg">Aggiungi animale</button>
-    </a>
+    <button class="btn btn-primary" id="add-animal-button"><img src="/img/add_animal.svg">Aggiungi animale</button>
     <?php endif ?>
 </div>
 <script src="/js/animal-explorer-utils.js" type="text/javascript"></script>
