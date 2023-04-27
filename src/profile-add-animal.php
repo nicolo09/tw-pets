@@ -14,7 +14,7 @@ if(isset($_POST["username"], $_POST["type"]) && !empty($_POST["username"]) && !e
         if($result != 0){
             $img = $msg;
         } else {
-            header("Location: add_animal.php?msg=".$msg);
+            header("Location: profile-add-animal.php?msg=".$msg);
             exit;
         }
     } else {
@@ -28,16 +28,19 @@ if(isset($_POST["username"], $_POST["type"]) && !empty($_POST["username"]) && !e
     $owners = array();
     $owners[] = $_SESSION["username"];
 
-    if(registerAnimal($animal, $type, $img, $description, $owners, $dbh)){
+    list($result, $msg) = registerAnimal($animal, $type, $img, $description, $owners, $dbh);
+
+    if($result == 1){
         // New animal added
-        header("Location: my_animals.php");
+        header("Location: profile-animals.php");
         exit;
     } else {
         // Unable to add the animal
-        header("Location: add_animal.php?error=1");
-        exit;
+        $templateParams["errors"] = $msg;
     }
 }
+
+
 
 $templateParams["page"] = "add-animal-form.php";
 $templateParams["img"] = "img/default_pet_image.png";
