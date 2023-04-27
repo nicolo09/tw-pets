@@ -103,6 +103,25 @@ function checkBrute($username, $dbh)
     }
 }
 
+function registerAnimal($animal, $type, $img, $description, $owners, $dbh){
+
+    // TODO change return false with error message 
+    if(!count($dbh->getAnimals($animal)) > 0){ 
+        if($dbh->addAnimal($animal, $type, $img, $description)){
+            foreach ($owners as $owner) {
+                if(!$dbh->registerOwnership($owner, $animal)){
+                    return false;
+                }
+            }
+            return true;
+        }
+    } else {
+        return false;
+    }
+
+    
+}
+
 function uploadImage($path, $image)
 {
     $imageName = basename($image["name"]);
