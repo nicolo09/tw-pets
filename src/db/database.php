@@ -52,7 +52,7 @@ class DatabaseHelper
     public function registerOwnership($owner, $animal){
         if($stmt = $this->db->prepare("INSERT INTO possiede (persona, animale) VALUES (?, ?)")){
             $stmt->bind_param('ss', $owner, $animal);
-            $stmt->execute();
+            return $stmt->execute();
         } else {
             return false;
         }
