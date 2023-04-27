@@ -22,12 +22,39 @@ class DatabaseHelper
         }
     }
 
+    public function addAnimal($username, $type, $img, $description) {
+        if ($stmt = $this->db->prepare("INSERT INTO animale (username, tipo, immagine, descrizione) VALUES (?, ?, ?, ?)")) {
+            $stmt->bind_param('ssss', $username, $type, $img, $description);
+            return $stmt->execute();
+        } else {
+            return false;
+        }
+    }
+
+    public function getAnimals($animal){
+        if($stmt = $this->db->prepare("SELECT * FROM animale WHERE username = ?")){
+            $stmt->bind_param('s', $animal);
+            $stmt->execute();
+            $result = $stmt->get_result();
+            return $result->fetch_all(MYSQLI_ASSOC);
+        }
+    }
+
     public function getAnimalsFromUser($username){
         if($stmt = $this->db->prepare("SELECT username, immagine FROM animale INNER JOIN possiede ON animale.username = possiede.animale WHERE possiede.persona = ?")){
             $stmt->bind_param('s', $username);
             $stmt->execute();
             $result = $stmt->get_result();
             return $result->fetch_all(MYSQLI_ASSOC);
+        }
+    }
+
+    public function registerOwnership($owner, $animal){
+        if($stmt = $this->db->prepare("INSERT INTO possiede (persona, animale) VALUES (?, ?)")){
+            $stmt->bind_param('ss', $owner, $animal);
+            $stmt->execute();
+        } else {
+            return false;
         }
     }
     
