@@ -20,10 +20,9 @@ function isActive($pagename)
     }
 }
 
-function isUserLoggedIn()
+function isUserLoggedIn($dbh)
 {
-    //TODO: implementare
-    return !empty($changethis);
+    return login_check($dbh);
 }
 
 // Login a user by email and password saving the session's cookie
