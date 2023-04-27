@@ -4,18 +4,18 @@
         <div class="row proPicContainer">
             <?php for($y = 0; $y < 2 && ($x + $y) < count($templateParams["animals"]) ; $y++):?>
                 <div class="col text-center">
-                    <img class="proPic" 
+                    <img class="proPicBtn" 
                         src="<?php echo IMG_DIR.$templateParams["animals"][$x + $y]["immagine"]?>" 
                         alt="Profilo di <?php echo $templateParams["animals"][$x + $y]["username"]?>"
                         onclick='goToAnimal("<?php echo $templateParams["animals"][$x + $y]["username"]?>")'>
-                    <label class="w-100"><?php echo $templateParams["animals"][$x + $y]["username"]?></label>
+                    <label class="w-100 fs-4 fw-bolder"><?php echo $templateParams["animals"][$x + $y]["username"]?></label>
                 </div>
             <?php endfor;?>
         </div>        
     <?php endfor; ?>
     <?php if($_SESSION["username"] == $templateParams["user"]):?>
-    <a href="add_animal.php">
-        <button class="btn btn-outline-primary w-100"><img src="/img/add_animal.svg">Aggiungi animale</button>
+    <a href="profile-add-animal.php"> <!-- TODO move to script -->
+        <button class="btn btn-outline-primary w-100"><img src="/img/profile-add-animal.svg">Aggiungi animale</button>
     </a>
     <?php endif ?>
 </div>
