@@ -4,33 +4,41 @@
             <div class="col-lg-6">
                 <div class="card-body text-center">
                     <h2 class="fw-bold">Iscriviti adesso</h2>
-                    <form>
+                    <form action="register.php" method="post">
                         <!-- Username input -->
                         <div class="form-outline">
                             <label class="form-label">Nome Utente</label>
-                            <input type="text" placeholder="username" class="form-control" />
+                            <input type="text" placeholder="username" class="form-control" name="username"/>
                         </div>
 
                         <!-- Email input -->
                         <div class="form-outline">
                             <label class="form-label">Indirizzo Email</label>
-                            <input type="email" placeholder="esempio@dominio.com" class="form-control" />
+                            <input type="email" placeholder="esempio@dominio.com" class="form-control" name="email"/>
                         </div>
 
                         <!-- Password input -->
                         <div class="form-outline">
                             <label class="form-label">Password</label>
-                            <input type="password" placeholder="Inserire la password" class="form-control" />
+                            <input type="password" placeholder="Inserire la password" class="form-control" name="password"/>
                         </div>
 
                         <!-- Password confirm -->
                         <div class="form-outline">
                             <label class="form-label">Conferma Password</label>
-                            <input type="password" placeholder="Ripetere la password" class="form-control" />
+                            <input type="password" placeholder="Ripetere la password" class="form-control" name="confirm_password"/>
                         </div>
 
                         <!-- Submit button -->
                         <button type="submit" class="btn btn-primary btn-block mb-4">Registrati</button>
+
+                        <?php
+                        if (isset($templateParams["errors"])) {
+                            foreach ($templateParams["errors"] as $error) {
+                                echo "<p class='text-danger'>" . $error . "</p>";
+                            }
+                        }
+                        ?>
 
                         <!-- Go to login form -->
                         <div>

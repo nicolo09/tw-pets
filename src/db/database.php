@@ -69,23 +69,45 @@ class DatabaseHelper
         }
     }
 
-    public function addLoginAttempt($username, $time)
+    public function addLoginAttempt($username)
     {
-        if($stmt = $this->db->prepare("INSERT INTO tentativo_login (timestamp, username) VALUES (?, ?)"))
-        {
-            $stmt->bind_param('is', $time, $username);
+        if ($stmt = $this->db->prepare("INSERT INTO tentativo_login (timestamp, username) VALUES (NOW(), ?)")) {
+            $stmt->bind_param('s', $username);
             $stmt->execute();
         }
     }
-    
-    public function getLoginAttempts($username, $attempts)
+
+    public function getLoginAttempts($username, $from)
     {
-        if($stmt = $this->db->prepare("SELECT timestamp FROM tentativo_login WHERE username = ? AND timestamp > '$attempts'"))
-        {
+        $stmt = $this->db->prepare("DELETE FROM tentativo_login WHERE username = ? AND timestamp < FROM_UNIXTIME($from)");
+        $stmt->bind_param('s', $username);
+        $stmt->execute();
+        if ($stmt = $this->db->prepare("SELECT timestamp FROM tentativo_login WHERE username = ? AND timestamp > FROM_UNIXTIME($from)")) {
             $stmt->bind_param('s', $username);
             $stmt->execute();
             $result = $stmt->get_result();
-            return $result->fetch_all(MYSQLI_ASSOC); 
+            return $result->fetch_all(MYSQLI_ASSOC);
+        }
+    }
+
+    public function getUserFromName($username)
+    {
+        if ($stmt = $this->db->prepare("SELECT * FROM persona WHERE username = ? LIMIT 1")) {
+            $stmt->bind_param('s', $username);
+            $stmt->execute();
+            $result = $stmt->get_result();
+            return $result->fetch_all(MYSQLI_ASSOC);
+        }
+    }
+
+    public function addUser($user, $password, $email)
+    {
+        if ($stmt = $this->db->prepare("INSERT INTO persona (username, password, email) VALUES (?, ?, ?)")) {
+            $password = password_hash($password, PASSWORD_DEFAULT);
+            $stmt->bind_param('sss', $user, $password, $email);
+            return $stmt->execute();
+        } else {
+            return false;
         }
     }
 }
