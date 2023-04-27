@@ -22,7 +22,7 @@
         <div class="container-fluid">
             <div class="collapse navbar-collapse">
                 <div class="navbar-nav nav-fill">
-                    <a class="nav-link <?php isActive("home.php")?>" href="home/home.php">Home</a>
+                    <a class="nav-link <?php isActive("home")?>" href="home/home.php">Home</a>
                     <a class="nav-link <?php isActive("profile")?>" href="profile.php">Profilo</a>
                     <a class="nav-link <?php isActive("search")?>" href="search.php">Search</a>
                 </div>

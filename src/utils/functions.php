@@ -15,8 +15,8 @@ function sec_session_start()
 
 function isActive($pagename)
 {
-    if (basename($_SERVER['PHP_SELF']) == $pagename) {
-        echo " class='active' ";
+    if (strpos($_SERVER['REQUEST_URI'], $pagename) !== false) {
+        echo ("active");
     }
 }
 
@@ -71,7 +71,8 @@ function loginUser($email, $input_password, DatabaseHelper $dbh)
     }
 }
 
-function logoutUser($dbh){
+function logoutUser($dbh)
+{
     // Unset all session values 
     $_SESSION = array();
     // get session parameters 
