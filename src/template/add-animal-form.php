@@ -1,8 +1,16 @@
+<?php 
+if(isset($templateParams["errors"])) {
+    foreach ($templateParams["errors"] as $error) {
+        echo "<p class='text-danger'>" . $error . "</p>";
+    }
+}
+?>
+
 <section class="text-center text-lg-start">
     <div class="container">
         <div class="card-body text-center">
             <h2 class="fw-bold">Aggiungi un nuovo animale</h2>
-            <form action="add_animal.php" method="post" enctype="multipart/form-data">
+            <form action="profile-add-animal.php" method="post" enctype="multipart/form-data">
 
                 <!-- Image input (optional) -->
                 <div class="form-outline">
