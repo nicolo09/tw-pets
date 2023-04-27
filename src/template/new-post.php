@@ -6,7 +6,7 @@
     </div>
     <!--Immagine da inserire-->
     <div class="row mt-2">
-        <label for="imgpost">Scegli l'immagine del post</label>
+        <label for="imgpostinput">Scegli l'immagine del post</label>
         <input required type="file" name="imgpost" id="imgpostinput" accept="jpg, jpeg, png, gif">
     </div>
     <!--Alt immagine-->
@@ -30,6 +30,13 @@
             <button class="btn btn-outline-primary col w-40"><img src="img/preview.svg" alt=""><a href="preview-post.php">Guarda post in anteprima</a></button>
         </div>
     </div>
+    <!--Gli errori, se presenti-->
+    <?php
+        if (isset($templateParams["error"])) {
+            echo "<p class='text-danger'>" . $templateParams["error"] . "</p>";
+        }
+        ?>
+
     <!--Invia-->
     <div class="col text-center w-80 mt-5 p-10">
         <button type="submit" formmethod="POST" class="btn btn-outline-primary">
