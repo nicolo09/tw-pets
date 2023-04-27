@@ -1,7 +1,7 @@
 <?php
 require_once("bootstrap.php");
 
-if (isUserLoggedIn()) {
+if (isUserLoggedIn($dbh)) {
     header("Location: index.php");
     exit;
 }
