@@ -1,6 +1,8 @@
-const logoutButton = document.querySelector('#logout-button');
+document.querySelector('#settings-button').addEventListener('click', () => {
+    window.location.href = 'profile-settings.php';
+});
 
-logoutButton.addEventListener('click', () => {
+document.querySelector('#logout-button').addEventListener('click', () => {
     // Ask for confirmation
     $('#buttons-div').empty();
     $('#buttons-div').append(`
