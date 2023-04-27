@@ -2,6 +2,10 @@ document.querySelector('#settings-button').addEventListener('click', () => {
     window.location.href = 'profile-settings.php';
 });
 
+document.querySelector('#animals-button').addEventListener('click', () =>{
+    window.location.href = 'profile-animals.php';
+});
+
 document.querySelector('#logout-button').addEventListener('click', () => {
     // Ask for confirmation
     $('#buttons-div').empty();
