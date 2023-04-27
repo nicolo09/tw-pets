@@ -15,3 +15,4 @@ logoutButton.addEventListener('click', () => {
         window.location.href = 'tab-profile.php';
     });
 });
+
