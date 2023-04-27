@@ -1,0 +1,28 @@
+{
+    // See https://go.microsoft.com/fwlink/?LinkId=733558
+    // for the documentation about the tasks.json format
+    "version": "2.0.0",
+    "tasks": [
+        {
+            "label": "Start mysqld",
+            "type": "shell",
+            "command": "start /B mysqld",
+            "options": {
+                "cwd": "C:\\xampp\\mysql\\bin"
+            }
+        },
+        {
+            "label": "Stops mysqld",
+            "type": "shell",
+            "command": "mysqladmin",
+            "args": [
+                "-u",
+                "root",
+                "shutdown"
+            ],
+            "options": {
+                "cwd": "C:\\xampp\\mysql\\bin"
+            }
+        }
+    ]
+}

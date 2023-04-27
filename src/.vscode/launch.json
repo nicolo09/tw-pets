@@ -14,7 +14,9 @@
                 "-t",
                 "${workspaceFolder}",
             ],
-            "port": 9000
+            "port": 9000,
+            "preLaunchTask": "Start mysqld",
+            "postDebugTask": "Stops mysqld"
         },
         {
             "name": "Launch Chrome in debug mode",
