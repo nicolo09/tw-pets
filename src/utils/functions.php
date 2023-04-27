@@ -71,6 +71,19 @@ function loginUser($email, $input_password, DatabaseHelper $dbh)
     }
 }
 
+function logoutUser($dbh){
+    // Unset all session values 
+    $_SESSION = array();
+    // get session parameters 
+    $params = session_get_cookie_params();
+    // Delete the actual cookie. 
+    setcookie(session_name(), '', time() - 42000, $params["path"], $params["domain"], $params["secure"], $params["httponly"]);
+    // Destroy session 
+    session_destroy();
+    // Redirect to login page 
+    header('Location: login.php');
+}
+
 // Check if the user is logged in
 function login_check($dbh)
 {
