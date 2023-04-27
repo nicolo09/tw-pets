@@ -7,18 +7,18 @@
     <!--Immagine da inserire-->
     <div class="row mt-2">
         <label for="imgpost">Scegli l'immagine del post</label>
-        <input type="file" name="imgpost" id="imgpostinput" accept="jpg, jpeg, png, gif">
+        <input required type="file" name="imgpost" id="imgpostinput" accept="jpg, jpeg, png, gif">
     </div>
     <!--Alt immagine-->
     <div class="row mt-2 my-son-textarea">
         <label for="imgalt" class="p-0">Scrivi una breve descrizione dell'immagine scelta:</label>
-        <textarea id="imgalt" name="imgalt" maxlenght=50 
+        <textarea required id="imgalt" name="imgalt" maxlenght=50 
         placeholder="Descrizione immagine in meno di 50 caratteri" class="p-0 m-0"></textarea>
     </div>
     <!--Testo da inserire-->
     <div class="row mt-2 my-son-textarea">
         <label for="txtpost" class="p-0">Testo Post:</label>
-        <textarea id="txtpost" name="txtpost" maxlenght=100 
+        <textarea required id="txtpost" name="txtpost" maxlenght=100 
         placeholder="Scrivi una descrizione per il tuo post di meno di 100 caratteri" class="p-0 m-0"></textarea>
     </div>
     <!--Per stilizzare i bottoni-->
