@@ -5,7 +5,7 @@
     "version": "0.2.0",
     "configurations": [
         {
-            "name": "Launch built-in server and debug",
+            "name": "Launch built-in PHP server",
             "type": "php",
             "request": "launch",
             "runtimeArgs": [
@@ -15,9 +15,24 @@
                 "${workspaceFolder}",
             ],
             "port": 9000,
-            "serverReadyAction": {
-                "action": "openExternally"
-            }
+            "preLaunchTask": "Start mysqld",
+            "postDebugTask": "Stops mysqld"
+        },
+        {
+            "name": "Launch Chrome in debug mode",
+            "type": "chrome",
+            "request": "launch",
+            "port": 9222,
+            "url": "http://localhost:8000"
+        }
+    ],
+    "compounds": [
+        {
+            "name": "Launch built-in PHP server and attach Chrome",
+            "configurations": [
+                "Launch Chrome in debug mode",
+                "Launch built-in PHP server"
+            ]
         }
     ]
 }
