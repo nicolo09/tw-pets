@@ -74,4 +74,16 @@ class DatabaseHelper
             return false;
         }
     }
+
+    /*This function returns the id of the created post or -1 if something went wrong*/
+    public function addPost($img, $alt, $txt, $user)
+    {
+        if ($stmt = $this->db->prepare("INSERT INTO post (immagine, alt, username, testo) VALUES (?, ?, ?, ?)")) {
+            $stmt->bind_param('ssss',$img, $alt, $user, $txt);
+            if($stmt->execute()==true){
+                return $this->db->insert_id;
+            }
+        }
+        return -1;
+    }
 }
