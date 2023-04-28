@@ -217,3 +217,36 @@ function register(string $user, string $email, string $password, string $confirm
     }
     return array($result, $errors);
 }
+
+//TODO: implement, returns the username of the user logged
+function getUser(){
+    return "Pappero";
+}
+
+function newPost(string $user, string $img, string $alt, string $txt, array $pets, DatabaseHelper $dbh)
+{
+    $PATH="PAPPERO";
+    $uploadErrors=uploadImage($PATH, $img);
+    var_dump($uploadErrors);
+    //TODO:Decidi che fare quando se mette errori
+    if (strlen($alt) <= 50 && strlen($txt) <= 100) {
+        $index=$dbh->addPost($img, $alt, $alt, $user);
+        if($index!=-1){
+            //Aggiunta andata a buon fine
+            if(!empty($pets)){
+                //TODO: query per aggiungere animali al post
+                //Se va tutto bene, result=1 altrimenti 0
+            }else{
+                //Non ci sono animali
+                $result = 1;
+            }
+            
+        }else{
+
+        }
+    } else {
+        $errors[] = "La descrizione dell'immagine deve essere di meno di 50 caratteri e il testo meno di 100 caratteri";
+    }
+
+    return array($result, $errors);
+}
