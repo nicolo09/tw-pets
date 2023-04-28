@@ -32,15 +32,36 @@
     </div>
     <!--Gli errori, se presenti-->
     <?php
-        if (isset($templateParams["error"])) {
-            echo "<p class='text-danger'>" . $templateParams["error"] . "</p>";
-        }
-        ?>
+    if (isset($templateParams["error"])) {
+        echo "<p class='text-danger'>" . $templateParams["error"] . "</p>";
+    }
+    ?>
+    <!--Mostro gli animali, se presenti-->
+    <div class="row mt-5">
+        <div class="text-center col">
+            <img id="animalPreview" src="img/facebook-default-profile-pic.jpg" alt="Immagine profilo di ppepe" class="rounded-circle w-25">
+            <p>ppepe</p>
+        </div>
+        <div class="text-center col">
+            <img id="animalPreview" src="img/facebook-default-profile-pic.jpg" alt="Immagine profilo di ppepe" class="rounded-circle w-25">
+            <p>ppepe2</p>
+        </div>
+    </div>
+    <div class="row mt-5">
+        <div class="text-center col">
+            <img id="animalPreview" src="img/facebook-default-profile-pic.jpg" alt="Immagine profilo di ppepe" class="rounded-circle w-25">
+            <p>ppepe</p>
+        </div>
+        <div class="text-center col">
+            <img id="animalPreview" src="img/facebook-default-profile-pic.jpg" alt="Immagine profilo di ppepe" class="rounded-circle w-25">
+            <p>ppepe2</p>
+        </div>
+    </div>
 
     <!--Invia-->
     <div class="col text-center w-80 mt-5 p-10">
         <button type="submit" formmethod="POST" class="btn btn-outline-primary">
-        <img src="img/publish.svg" alt=""> Pubblica il nuovo post</button>
+            <img src="img/publish.svg" alt=""> Pubblica il nuovo post</button>
     </div>
 </form>
 <script src="js/new-post.js" type="text/javascript"></script>
