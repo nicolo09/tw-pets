@@ -39,21 +39,21 @@
     <!--Mostro gli animali, se presenti-->
     <div class="row mt-5">
         <div class="text-center col">
-            <img id="animalPreview" src="img/facebook-default-profile-pic.jpg" alt="Immagine profilo di ppepe" class="rounded-circle w-25">
+            <img id="animalPreview" src="img/facebook-default-profile-pic.jpg" alt="Immagine profilo di ppepe" class="rounded-circle proPic">
             <p>ppepe</p>
         </div>
         <div class="text-center col">
-            <img id="animalPreview" src="img/facebook-default-profile-pic.jpg" alt="Immagine profilo di ppepe" class="rounded-circle w-25">
+            <img id="animalPreview" src="img/facebook-default-profile-pic.jpg" alt="Immagine profilo di ppepe" class="rounded-circle proPic">
             <p>ppepe2</p>
         </div>
     </div>
     <div class="row mt-5">
         <div class="text-center col">
-            <img id="animalPreview" src="img/facebook-default-profile-pic.jpg" alt="Immagine profilo di ppepe" class="rounded-circle w-25">
+            <img id="animalPreview" src="img/facebook-default-profile-pic.jpg" alt="Immagine profilo di ppepe" class="rounded-circle proPic">
             <p>ppepe</p>
         </div>
         <div class="text-center col">
-            <img id="animalPreview" src="img/facebook-default-profile-pic.jpg" alt="Immagine profilo di ppepe" class="rounded-circle w-25">
+            <img id="animalPreview" src="img/facebook-default-profile-pic.jpg" alt="Immagine profilo di ppepe" class="rounded-circle proPic">
             <p>ppepe2</p>
         </div>
     </div>
