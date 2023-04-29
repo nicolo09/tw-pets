@@ -23,13 +23,13 @@ if(isset($templateParams["errors"])) {
                 <!-- Username input -->
                 <div class="form-outline">
                     <label class="form-label" for="usernameTextBox">Nome utente del tuo animale</label>
-                    <input type="text" placeholder="Username" class="form-control" id="usernameTextBox" name="username"/>
+                    <input type="text" placeholder="Username" class="form-control" maxlength="25" id="usernameTextBox" name="username"/>
                 </div>
 
                 <!-- Animal type input -->
                 <div class="form-outline">
                     <label class="form-label" for="typeTextBox">Tipo di animale</label>
-                    <input type="text" placeholder="Esempio: Labrador, Gatto persiano..." class="form-control" id="typeTextBox" name="type"/>
+                    <input type="text" placeholder="Esempio: Labrador, Gatto persiano..." class="form-control" maxlength="30" id="typeTextBox" name="type"/>
                 </div>
 
                 <!-- Description (optional) -->
