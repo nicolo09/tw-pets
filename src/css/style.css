@@ -21,6 +21,7 @@ body {
     }
 }
 
+
 /* otherwise sometimes chrome doesn't center elements*/
 .center-align{
     text-align:center !important;
@@ -71,6 +72,13 @@ body {
 
 .proPicContainer {
     min-height: 180px !important;
+    padding-bottom: 1%;
+}
+
+.proPicLabel {
+    width: 50%;
+    overflow: hidden;
+    text-overflow: ellipsis;
 }
 
 .proPicBtn {
@@ -89,6 +97,7 @@ body {
 
     .proPicContainer {
         min-height: 120px !important;
+        padding-bottom: 5%;
     }
 }
 

@@ -4,13 +4,13 @@
     <?php for($x = 0; $x < count($templateParams["animals"]); $x+=2): ?>
         <div class="row proPicContainer">
             <?php for($y = 0; $y < 2; $y++):?>
-                <div class="col text-center">
+                <div class="col w-50 text-center">
                     <?php if(isset($templateParams["animals"][$x + $y])): ?>
-                    <img class="proPicBtn" 
+                    <div class="w-100"><img class="proPicBtn" 
                         src="<?php echo IMG_DIR.$templateParams["animals"][$x + $y]["immagine"]?>" 
                         alt="Profilo di <?php echo $templateParams["animals"][$x + $y]["username"]?>"
-                        onclick='goToAnimal("<?php echo $templateParams["animals"][$x + $y]["username"]?>")'>
-                    <label class="w-100 fs-4 fw-bolder"><?php echo $templateParams["animals"][$x + $y]["username"]?></label>
+                        onclick='goToAnimal("<?php echo $templateParams["animals"][$x + $y]["username"]?>")'></div>
+                    <label class="fs-4 fw-bolder proPicLabel"><?php echo $templateParams["animals"][$x + $y]["username"]?></label>
                     <?php endif ?>
                 </div>
             <?php endfor;?>
@@ -21,13 +21,13 @@
     <?php for($x = 0; $x < count($templateParams["animals"]); $x+=4): ?>
         <div class="row proPicContainer">
             <?php for($y = 0; $y < 4; $y++):?>
-                <div class="col text-center">
+                <div class="col w-25 text-center">
                     <?php if(isset($templateParams["animals"][$x + $y])): ?>
-                    <img class="proPicBtn" 
+                        <div class="w-100"><img class="proPicBtn" 
                         src="<?php echo IMG_DIR.$templateParams["animals"][$x + $y]["immagine"]?>" 
                         alt="Profilo di <?php echo $templateParams["animals"][$x + $y]["username"]?>"
-                        onclick='goToAnimal("<?php echo $templateParams["animals"][$x + $y]["username"]?>")'>
-                    <label class="w-100 fs-4 fw-bolder"><?php echo $templateParams["animals"][$x + $y]["username"]?></label>
+                        onclick='goToAnimal("<?php echo $templateParams["animals"][$x + $y]["username"]?>")'></div>
+                    <label class=" fs-4 fw-bolder proPicLabel"><?php echo $templateParams["animals"][$x + $y]["username"]?></label>
                     <?php endif ?>
                 </div>
             <?php endfor;?>
