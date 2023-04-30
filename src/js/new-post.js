@@ -1,6 +1,7 @@
 const img = document.getElementById("imgPreview");
 const file = document.getElementById("imgpostinput");
-img.style.display="none";
+const animals = document.getElementById("selectAnimals");
+img.style.display = "none";
 
 //First call to hide the image element
 file.addEventListener('change', () => {
@@ -18,7 +19,45 @@ function imagePreviewShow(input) {
         };
         img.style.display = "";
         reader.readAsDataURL(input.files[0]);
-    }else{
+    } else {
         img.style.display = "none";
     }
 }
+
+function createAnimalDisplay(selectedAnimals) {
+    const container = document.querySelector(".animal-display");
+    let html = "";
+    if (selectedAnimals.length != 0) {
+        const numRows = Math.ceil(selectedAnimals.length / 2);
+        let counter = 0;
+        for (let i = 0; i < numRows; i++) {
+            html += `
+        <div class="row mt-5">`;
+            html += `<div class="text-center col">
+                <img id="animalPreview" src="img/facebook-default-profile-pic.jpg" alt="Immagine profilo di ppepe" class="rounded-circle proPic">
+                <p>ppepe${counter}</p>
+                </div>`;
+            counter++;
+            if (counter + 1 <= selectedAnimals.length) {
+                //Ci stanno almeno due elementi
+                html += `<div class="text-center col">
+                <img id="animalPreview" src="img/facebook-default-profile-pic.jpg" alt="Immagine profilo di ppepe" class="rounded-circle proPic">
+                <p>ppepe${counter}</p>
+                </div>`;
+                counter++;
+            }
+            html += `
+    </div>`;
+
+        }
+    }
+    container.innerHTML = html;
+}
+
+animals.addEventListener('change', () => {
+    var selected = [...animals.options]
+        .filter(option => option.selected)
+        .map(option => option.value);
+    console.log(selected);
+    createAnimalDisplay(selected);
+});

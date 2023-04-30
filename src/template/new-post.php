@@ -25,7 +25,13 @@
     <div class="container">
         <div class="row w-100">
             <!--Animali presenti-->
-            <button class="btn btn-outline-animals col w-40"><img src="img/pets.svg" alt=""><a href="add-animal.php">Aggiungi animali</a></button>
+            <label for="selectAnimals">Seleziona gli animali presenti in questo post</label>
+            <select name="selectAnimals" id="selectAnimals" multiple="multiple">
+            <option value="1">A1</option>
+            <option value="2">A2</option>
+            <option value="3">A3</option>
+            <option value="4">A4</option>
+            </select>
             <!--Guarda post in anteprima-->
             <button class="btn btn-outline-primary col w-40"><img src="img/preview.svg" alt=""><a href="preview-post.php">Guarda post in anteprima</a></button>
         </div>
@@ -36,26 +42,8 @@
         echo "<p class='text-danger'>" . $templateParams["error"] . "</p>";
     }
     ?>
-    <!--Mostro gli animali, se presenti-->
-    <div class="row mt-5">
-        <div class="text-center col">
-            <img id="animalPreview" src="img/facebook-default-profile-pic.jpg" alt="Immagine profilo di ppepe" class="rounded-circle proPic">
-            <p>ppepe</p>
-        </div>
-        <div class="text-center col">
-            <img id="animalPreview" src="img/facebook-default-profile-pic.jpg" alt="Immagine profilo di ppepe" class="rounded-circle proPic">
-            <p>ppepe2</p>
-        </div>
-    </div>
-    <div class="row mt-5">
-        <div class="text-center col">
-            <img id="animalPreview" src="img/facebook-default-profile-pic.jpg" alt="Immagine profilo di ppepe" class="rounded-circle proPic">
-            <p>ppepe</p>
-        </div>
-        <div class="text-center col">
-            <img id="animalPreview" src="img/facebook-default-profile-pic.jpg" alt="Immagine profilo di ppepe" class="rounded-circle proPic">
-            <p>ppepe2</p>
-        </div>
+    <!--Mostro gli animali, dinamicamente con js-->
+    <div class="animal-display">
     </div>
 
     <!--Invia-->
