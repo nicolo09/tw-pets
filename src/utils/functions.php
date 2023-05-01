@@ -128,31 +128,94 @@ function checkBrute($username, $dbh)
 }
 
 function registerAnimal($animal, $type, $img, $description, $owners, $dbh){
-
+    /* TODO make it better and add type length checking */
     $result = 0;
     $errors = array();
+    
+    if(strlen($animal) < 3) {
+        $errors[] = "Lo username deve essere lungo almeno 3 caratteri.";
+    }
 
-    if (strlen($animal) >= 3) {
-        if(!count($dbh->getAnimals($animal)) > 0){ 
-            if($dbh->addAnimal($animal, $type, $img, $description)){
+    if (strlen($type) < 3) {
+        $errors[] = "Il tipo deve essere lungo almeno 3 caratteri.";
+    }
+
+    if(count($dbh->getAnimals($animal)) > 0) {
+        $errors[] = "Lo username " . $animal . " è già in uso.";
+    }
+
+    /* If there are already errors it's useless to upload the image */
+    if(count($errors) == 0){
+        if(!empty($file["imgprofile"]["name"])) {
+            list($imgresult, $msg) = uploadImage(IMG_DIR, $_FILES["imgprofile"]);
+            if($imgresult != 0) {
+                $img = $msg;
+            } else {
+                $errors[] = $msg;
+            }
+        } else {
+            $img = DEFAULT_IMG;
+        }
+
+        if(count($errors) == 0) {
+            if($dbh->addAnimal($animal, $type, $img, $description)) {
                 foreach ($owners as $owner) {
                     if(!$dbh->registerOwnership($owner, $animal)){
                         $errors[] = "Impossibile assegnare l'animale a " . $owner . ".";
                     }
                 }
-                $result = 1;
+                if(count($errors) == 0){
+                    $result = 1;
+                } 
             } else {
-                $errors[] = "Si è verificato un errore nell'aggiunta dell'animale.";
+                $errors[] = "Si è verificato un problema nell'aggiunta dell'account, riprovare più tardi";
             }
-        } else {
-            $errors[] = "Lo username " . $animal . " è già in uso.";
         }
-    } else {
-        $errors[] = "Lo username deve essere lungo almeno 3 caratteri.";
     }
         
     return array($result, $errors);
     
+}
+
+function editAnimal($animal, $type, $file, $description, $owners, $dbh, $currentUser){
+
+    $result = 0;
+    $errors = array();
+       
+    if(strlen($type) < 3){
+        $errors[] = "Il tipo deve contenere almeno 3 caratteri";
+    }
+
+    /* TODO decide if user can remove himself from owners */
+
+    /* If there are already errors it's useless to upload the image */
+    if(count($errors) == 0) {
+
+        if(!empty($file["imgprofile"]["name"])) {
+            list($imgresult, $msg) = uploadImage(IMG_DIR, $_FILES["imgprofile"]);
+            if($imgresult != 0) {
+                $img = $msg;
+            } else {
+                $errors[] = $msg;
+            }
+        } else {
+            $img = $animal["immagine"];
+        }
+
+        if(count($errors) == 0){
+            if($dbh->updateAnimal($animal["username"], $type, $img, $description)){ /* TODO Must update ownerships */
+                $result = 1;
+                if($img != $animal["immagine"] && $animal["immagine"] != DEFAULT_IMG){
+                    unlink(IMG_DIR . $animal["immagine"]);
+                }
+            } else {
+                $errors[] = "Si è verificato un errore, riprovare più tardi";
+            }
+        }
+    }
+        
+    
+    return array($result, $errors);
 }
 
 function uploadImage($path, $image)
