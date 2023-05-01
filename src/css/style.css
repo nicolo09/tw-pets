@@ -2,6 +2,25 @@ body {
     padding-top: 70px;
 }
 
+/* Simple way to display differently on desktop and mobile */
+.mobile-view {
+    display: none;
+}
+
+.desktop-view{
+    display: block;
+}
+
+@media (max-width: 1000px) {
+    .mobile-view {
+        display: block;
+    }
+    
+    .desktop-view{
+        display: none;
+    }
+}
+
 /* otherwise sometimes chrome doesn't center elements*/
 .center-align{
     text-align:center !important;
