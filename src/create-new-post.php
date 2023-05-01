@@ -38,3 +38,4 @@ foreach($animalList as $singleAnimal){
 $templateParams["page"] = "new-post.php";
 $templateParams["title"] = "Crea nuovo post";
 require_once("template/base.php");
+?>
