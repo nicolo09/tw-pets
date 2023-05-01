@@ -58,6 +58,5 @@ animals.addEventListener('change', () => {
     var selected = [...animals.options]
         .filter(option => option.selected)
         .map(option => option.value);
-    console.log(selected);
     createAnimalDisplay(selected);
 });
