@@ -69,9 +69,37 @@ class DatabaseHelper
         if ($stmt = $this->db->prepare("INSERT INTO persona (username, password, email) VALUES (?, ?, ?)")) {
             $password = password_hash($password, PASSWORD_DEFAULT);
             $stmt->bind_param('sss', $user, $password, $email);
+            if ($stmt->execute()) {
+                $stmt = $this->db->prepare("INSERT INTO impostazione(username) VALUES (?)");
+                $stmt->bind_param('s', $user);
+                return $stmt->execute();
+            } else {
+                return false;
+            }
+        } else {
+            return false;
+        }
+    }
+
+    public function updateSetting($username, $setting, $value)
+    {
+        if ($stmt = $this->db->prepare("UPDATE impostazione SET `$setting` = ? WHERE username = ?")) {
+            $value = $value == "true" ? 1 : 0;
+            $stmt->bind_param('is', $value, $username);
+
             return $stmt->execute();
         } else {
             return false;
+        }
+    }
+
+    public function getSettings($username)
+    {
+        if ($stmt = $this->db->prepare("SELECT * FROM impostazione WHERE username = ? LIMIT 1")) {
+            $stmt->bind_param('s', $username);
+            $stmt->execute();
+            $result = $stmt->get_result();
+            return $result->fetch_all(MYSQLI_ASSOC);
         }
     }
 }
