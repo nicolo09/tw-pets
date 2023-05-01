@@ -68,10 +68,13 @@ if(isset($_GET["animal"])){
     $templateParams["type"] = $animal[0]["tipo"];
     $templateParams["img"] = IMG_DIR . $animal[0]["immagine"];
     $templateParams["description"] = $animal[0]["descrizione"];
+    $templateParams["title"] = "Modifica - " . $animal[0]["username"];
 
 } else {
     $templateParams["img"] = "img/default_pet_image.png";
+    $templateParams["title"] = "Nuovo animale";
 }
+
 //$templateParams["user"] = $_SESSION['username']; TODO use it on manage-animal-form.php
 
 require_once("template/base.php");

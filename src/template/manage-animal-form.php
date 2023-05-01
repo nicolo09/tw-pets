@@ -35,7 +35,7 @@ if(isset($templateParams["errors"])) {
                 <!-- Description (optional) -->
                 <div class="form-outline">
                     <label class="form-label" for="descriptionTextArea">Descrizione (opzionale)</label>
-                    <textarea placeholder="Max 100 caratteri" <?php if(isset($templateParams["description"])) { echo "value=\"" . $templateParams["description"] . "\"";}?> class="form-control" maxlength="100" id="descriptionTextArea" name="description"></textarea>
+                    <textarea placeholder="Max 100 caratteri" <?php if(isset($templateParams["description"]) && !empty($templateParams["description"])) { echo "value=\"" . $templateParams["description"] . "\"";}?> class="form-control" maxlength="100" id="descriptionTextArea" name="description"></textarea>
                 </div>
 
                 <!-- TODO others owner input -->
