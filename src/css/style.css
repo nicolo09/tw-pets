@@ -165,3 +165,8 @@ button > img{
     --bs-btn-disabled-border-color:#ed2939;
     --bs-gradient:none
 }
+
+.setting-section{
+    border-top: solid 1px lightgrey;
+    padding: 4% 0 0 0;
+}
