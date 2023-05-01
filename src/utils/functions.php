@@ -219,16 +219,22 @@ function register(string $user, string $email, string $password, string $confirm
 }
 
 //Returns the username of the user logged in
-function getUser(){
-    return $_SESSION['username'];
+function getUser($dbh){
+    if(isUserLoggedIn($dbh)){
+        return $_SESSION['username'];
+    }
+    else{
+        return "";
+    }
 }
 
 function newPost($user, $img, $alt, $txt, $pets, DatabaseHelper $dbh)
 {
     $PATH="C:\Users\eleon\OneDrive\Universita\Terzo anno\TecnologieWeb\Progetto\tw-pets\src\uploads";
+    $errors=[];
     $uploadErrors=uploadImage($PATH, $img);
     var_dump($uploadErrors);
-    //TODO:Decidi che fare quando se mette errori
+    //Se mette errori stampa, non continuare con query
     $result=-1;//Not yet set
     if (strlen($alt) <= 50 && strlen($txt) <= 100) {
         $index=$dbh->addPost(basename($img["name"]), $alt, $alt, $user);
