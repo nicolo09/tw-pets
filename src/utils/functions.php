@@ -223,15 +223,15 @@ function getUser(){
     return $_SESSION['username'];
 }
 
-function newPost(string $user, string $img, string $alt, string $txt, array $pets, DatabaseHelper $dbh)
+function newPost($user, $img, $alt, $txt, $pets, DatabaseHelper $dbh)
 {
     $PATH="C:\Users\eleon\OneDrive\Universita\Terzo anno\TecnologieWeb\Progetto\tw-pets\src\uploads";
-    //$uploadErrors=uploadImage($PATH, $img);
-    //var_dump($uploadErrors);
+    $uploadErrors=uploadImage($PATH, $img);
+    var_dump($uploadErrors);
     //TODO:Decidi che fare quando se mette errori
     $result=-1;//Not yet set
     if (strlen($alt) <= 50 && strlen($txt) <= 100) {
-        $index=$dbh->addPost($img, $alt, $alt, $user);
+        $index=$dbh->addPost(basename($img["name"]), $alt, $alt, $user);
         if($index!=-1){
             //Aggiunta andata a buon fine
             if(!empty($pets)){

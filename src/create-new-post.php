@@ -9,7 +9,6 @@ if (isUserLoggedIn($dbh)==false) {
 }
 #Altrimenti può creare un nuovo post
 
-var_dump($_POST);
 if (empty($_POST)) {
     //Non è stato inviato nulla per post, probabilmente viene fatto accesso alla pagina direttamente
 } else {
@@ -17,9 +16,10 @@ if (empty($_POST)) {
     if(isset($_POST["selectAnimals"])){
         $animals=$_POST["selectAnimals"];
     }
-
-    if (isset($_POST["imgpost"]) && isset($_POST["imgalt"]) && isset($_POST["txtpost"])) {
-        $img = $_POST["imgpost"];
+    
+    if (isset($_POST["imgalt"]) && isset($_FILES) && isset($_POST["txtpost"])) {
+        $img = $_FILES["imgpost"];
+        var_dump($img);
         $alt = $_POST["imgalt"];
         $text = $_POST["txtpost"];
         newPost(getUser(), $img, $alt, $text, $animals, $dbh);
