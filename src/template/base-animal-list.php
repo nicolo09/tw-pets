@@ -10,7 +10,10 @@
                         src="<?php echo IMG_DIR.$templateParams["animals"][$x + $y]["immagine"]?>" 
                         alt="Profilo di <?php echo $templateParams["animals"][$x + $y]["username"]?>"
                         onclick='goToAnimal("<?php echo $templateParams["animals"][$x + $y]["username"]?>")'></div>
-                    <label class="fs-4 fw-bolder proPicLabel"><?php echo $templateParams["animals"][$x + $y]["username"]?></label>
+                        <label class="fs-4 fw-bolder proPicLabel"><?php echo $templateParams["animals"][$x + $y]["username"]?></label>
+                        <?php if($_SESSION["username"] == $templateParams["user"]):?> <!-- TODO check if right way to do this -->
+                            <div class="w-100"><button class="btn manage-button" id="modify_<?php echo $templateParams["animals"][$x + $y]["username"]?>">Modifica</button></div>
+                        <?php endif ?>
                     <?php endif ?>
                 </div>
             <?php endfor;?>
@@ -27,7 +30,10 @@
                         src="<?php echo IMG_DIR.$templateParams["animals"][$x + $y]["immagine"]?>" 
                         alt="Profilo di <?php echo $templateParams["animals"][$x + $y]["username"]?>"
                         onclick='goToAnimal("<?php echo $templateParams["animals"][$x + $y]["username"]?>")'></div>
-                    <label class=" fs-4 fw-bolder proPicLabel"><?php echo $templateParams["animals"][$x + $y]["username"]?></label>
+                        <label class=" fs-4 fw-bolder proPicLabel"><?php echo $templateParams["animals"][$x + $y]["username"]?></label>
+                        <?php if($_SESSION["username"] == $templateParams["user"]):?>
+                            <div class="w-100"><button class="btn manage-button" id="modify_<?php echo $templateParams["animals"][$x + $y]["username"]?>">Modifica</button></div>
+                        <?php endif ?>
                     <?php endif ?>
                 </div>
             <?php endfor;?>
