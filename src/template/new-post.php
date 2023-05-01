@@ -1,5 +1,5 @@
 <h1>Crea nuovo post</h1>
-<form action="#" method="POST" class="w-100">
+<form action="#" method="POST" class="w-100" enctype="multipart/form-data">
     <!--Immagine mostrata qui-->
     <div>
         <img id="imgPreview" src="" alt="Immagine inserita da utente" class="w-100">
@@ -26,7 +26,7 @@
         <div class="row w-100">
             <!--Animali presenti-->
             <label for="selectAnimals">Seleziona gli animali presenti in questo post</label>
-            <select name="selectAnimals" id="selectAnimals" multiple="multiple">
+            <select name="selectAnimals[]" id="selectAnimals" multiple="multiple">
             <?php
             if (isset($templateParams["animals"])) {
                 foreach ($templateParams["animals"] as $animal) {
