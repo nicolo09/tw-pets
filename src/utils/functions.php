@@ -225,7 +225,7 @@ function getUser(){
 
 function newPost(string $user, string $img, string $alt, string $txt, array $pets, DatabaseHelper $dbh)
 {
-    $PATH="PAPPERO";
+    $PATH="C:\Users\eleon\OneDrive\Universita\Terzo anno\TecnologieWeb\Progetto\tw-pets\src\uploads";
     $uploadErrors=uploadImage($PATH, $img);
     var_dump($uploadErrors);
     //TODO:Decidi che fare quando se mette errori
@@ -249,4 +249,9 @@ function newPost(string $user, string $img, string $alt, string $txt, array $pet
     }
 
     return array($result, $errors);
+}
+
+function getManagedAnimals(string $user, DatabaseHelper $dbh){
+    //Ritorna array di array, rimuovo il nesting
+    return $dbh->getOwnedAnimals($user);
 }

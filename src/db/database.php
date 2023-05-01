@@ -86,4 +86,15 @@ class DatabaseHelper
         }
         return -1;
     }
+
+    public function getOwnedAnimals($user){
+        if ($stmt = $this->db->prepare("SELECT * FROM possiede JOIN animale ON animale.username=possiede.animale WHERE persona = ?")) {
+            $stmt->bind_param('s',$user);
+            $stmt->execute();
+            $result = $stmt->get_result();
+            return $result->fetch_all(MYSQLI_ASSOC);
+        } else {
+        return array();
+    }
+    }
 }
