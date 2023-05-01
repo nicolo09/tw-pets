@@ -219,7 +219,7 @@ function register(string $user, string $email, string $password, string $confirm
 }
 
 //Returns the username of the user logged in
-function getUser($dbh){
+function getUserName($dbh){
     if(isUserLoggedIn($dbh)){
         return $_SESSION['username'];
     }

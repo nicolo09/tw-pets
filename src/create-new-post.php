@@ -16,20 +16,20 @@ if (empty($_POST)) {
     if(isset($_POST["selectAnimals"])){
         $animals=$_POST["selectAnimals"];
     }
-    
+
     if (isset($_POST["imgalt"]) && isset($_FILES) && isset($_POST["txtpost"])) {
         $img = $_FILES["imgpost"];
         var_dump($img);
         $alt = $_POST["imgalt"];
         $text = $_POST["txtpost"];
-        newPost(getUser(), $img, $alt, $text, $animals, $dbh);
+        newPost(getUserName($dbh), $img, $alt, $text, $animals, $dbh);
 
     } else {
         $templateParams["error"] = "Compila tutti i campi e metti un'immagine con estensione jpg, jpeg, png o gif";
     }
 }
 
-$animalList=getManagedAnimals(getUser(),$dbh);
+$animalList=getManagedAnimals(getUserName($dbh),$dbh);
 $templateParams["animals"]=array();
 foreach($animalList as $singleAnimal){
     $templateParams["animals"][]=$singleAnimal["username"];
