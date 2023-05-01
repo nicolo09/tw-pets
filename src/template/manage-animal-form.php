@@ -14,9 +14,9 @@ if(isset($templateParams["errors"])) {
 
                 <!-- Image input (optional) -->
                 <div class="form-outline">
-                    <h4 class="form-label w-100" for="imgprofile">Immagine di profilo</h4>
-                    <img class="proPic" id="imgPreview" src="<?php echo $templateParams["img"]?>" alt="Current profile picture" />
-                    <input class="center-align" type="file" accept=".png,.jpg,.jpeg" onchange="imagePreview(this)" id="imgprofile" name="imgprofile"/>
+                    <label class="form-label fs-3 w-100" for="imgprofile">Immagine di profilo</label>
+                    <div class="w-100"><img class="proPic" id="imgPreview" src="<?php echo $templateParams["img"]?>" alt="Current profile picture" /></div>
+                    <input class="center-align pt-2" type="file" accept=".png,.jpg,.jpeg" onchange="imagePreview(this)" id="imgprofile" name="imgprofile"/>
                 </div>
 
 
