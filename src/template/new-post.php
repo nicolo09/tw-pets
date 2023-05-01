@@ -27,10 +27,13 @@
             <!--Animali presenti-->
             <label for="selectAnimals">Seleziona gli animali presenti in questo post</label>
             <select name="selectAnimals" id="selectAnimals" multiple="multiple">
-            <option value="1">A1</option>
-            <option value="2">A2</option>
-            <option value="3">A3</option>
-            <option value="4">A4</option>
+            <?php
+            if (isset($templateParams["animals"])) {
+                foreach ($templateParams["animals"] as $animal) {
+                    echo "<option value=". $animal .">" . $animal . "</option>";
+                }
+            }
+            ?> 
             </select>
             <!--Guarda post in anteprima-->
             <button class="btn btn-outline-primary col w-40"><img src="img/preview.svg" alt=""><a href="preview-post.php">Guarda post in anteprima</a></button>

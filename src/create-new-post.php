@@ -2,13 +2,11 @@
 require_once("bootstrap.php");
 
 # Se l'utente è già loggato, viene reindirizzato alla home
-/*
-if (login_check($dbh)==false) {
+
+if (isUserLoggedIn($dbh)==false) {
     header("Location: login.php");
     exit;
 }
- */
-//TODO: Dopo che il login è a posto, decommenta
 #Altrimenti può creare un nuovo post
 
 if (empty($_POST)) {
@@ -25,6 +23,11 @@ if (empty($_POST)) {
     }
 }
 
+$animalList=getManagedAnimals(getUser(),$dbh);
+$templateParams["animals"]=array();
+foreach($animalList as $singleAnimal){
+    $templateParams["animals"][]=$singleAnimal["username"];
+}
 
 $templateParams["page"] = "new-post.php";
 $templateParams["title"] = "Crea nuovo post";

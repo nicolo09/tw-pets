@@ -220,7 +220,7 @@ function register(string $user, string $email, string $password, string $confirm
 
 //TODO: implement, returns the username of the user logged
 function getUser(){
-    return "Pappero";
+    return $_SESSION['username'];
 }
 
 function newPost(string $user, string $img, string $alt, string $txt, array $pets, DatabaseHelper $dbh)
