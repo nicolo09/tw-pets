@@ -31,6 +31,15 @@ class DatabaseHelper
         }
     }
 
+    public function updateAnimal($username, $type, $img, $description){
+        if($stmt = $this->db->prepare("UPDATE animale SET tipo = ?, immagine = ?, descrizione = ? WHERE username = ?")){
+            $stmt->bind_param("ssss", $type, $img, $description, $username);
+            return $stmt->execute();
+        } else {
+            return false;
+        }
+    }
+
     public function getAnimals($animal){
         if($stmt = $this->db->prepare("SELECT * FROM animale WHERE username = ?")){
             $stmt->bind_param('s', $animal);
@@ -50,9 +59,21 @@ class DatabaseHelper
     }
 
     public function registerOwnership($owner, $animal){
-        if($stmt = $this->db->prepare("INSERT INTO possiede (persona, animale) VALUES (?, ?)")){
+        if($stmt = $this->db->prepare("INSERT INTO possiede (persona, animale) VALUES (?, ?)")) {
             $stmt->bind_param('ss', $owner, $animal);
             return $stmt->execute();
+        } else {
+            return false;
+        }
+    }
+
+    /* Returns true if the user owns the given animal */
+    public function checkOwnership($owner, $animal) {
+        if($stmt = $this->db->prepare("SELECT * FROM possiede WHERE persona = ? AND animale = ?")) {
+            $stmt->bind_param('ss', $owner, $animal);
+            $stmt->execute();
+            $result = $stmt->get_result();
+            return count($result->fetch_all(MYSQLI_ASSOC)) == 1;
         } else {
             return false;
         }
