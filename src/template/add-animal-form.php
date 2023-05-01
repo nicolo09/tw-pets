@@ -10,7 +10,7 @@ if(isset($templateParams["errors"])) {
     <div class="container">
         <div class="card-body text-center">
             <h2 class="fw-bold">Aggiungi un nuovo animale</h2>
-            <form action="profile-add-animal.php" method="post" enctype="multipart/form-data">
+            <form action="profile-add-animal.php<?php if(isset($templateParams["animal"])) {echo "?animal=" . $templateParams["animal"];}?>" method="post" enctype="multipart/form-data">
 
                 <!-- Image input (optional) -->
                 <div class="form-outline">
@@ -23,19 +23,19 @@ if(isset($templateParams["errors"])) {
                 <!-- Username input -->
                 <div class="form-outline">
                     <label class="form-label" for="usernameTextBox">Nome utente del tuo animale</label>
-                    <input type="text" placeholder="Username" class="form-control" maxlength="25" id="usernameTextBox" name="username"/>
+                    <input type="text" placeholder="Username" <?php if(isset($templateParams["animal"])) { echo "value=\"" . $templateParams["animal"] . "\" disabled"; }?> class="form-control" maxlength="25" id="usernameTextBox" name="username"/>
                 </div>
 
                 <!-- Animal type input -->
                 <div class="form-outline">
                     <label class="form-label" for="typeTextBox">Tipo di animale</label>
-                    <input type="text" placeholder="Esempio: Labrador, Gatto persiano..." class="form-control" maxlength="30" id="typeTextBox" name="type"/>
+                    <input type="text" placeholder="Esempio: Labrador, Gatto persiano..." <?php if(isset($templateParams["type"])) { echo "value=\"" . $templateParams["type"] . "\""; } ?> class="form-control" maxlength="30" id="typeTextBox" name="type"/>
                 </div>
 
                 <!-- Description (optional) -->
                 <div class="form-outline">
                     <label class="form-label" for="descriptionTextArea">Descrizione (opzionale)</label>
-                    <textarea placeholder="Max 100 caratteri" class="form-control" maxlength="100" id="descriptionTextArea" name="description"></textarea>
+                    <textarea placeholder="Max 100 caratteri" <?php if(isset($templateParams["description"])) { echo "value=\"" . $templateParams["description"] . "\"";}?> class="form-control" maxlength="100" id="descriptionTextArea" name="description"></textarea>
                 </div>
 
                 <!-- TODO others owner input -->
