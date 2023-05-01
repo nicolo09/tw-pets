@@ -15,7 +15,7 @@
                                 <p class="text-muted mb-0">Notifiche su nuovi accessi effettuati al tuo account.</p>
                             </div>
                             <div class="col-auto">
-                                <input type="checkbox" class="custom-control-input" id="alert-new-access" checked="" />
+                                <input type="checkbox" class="custom-control-input settings-item" id="alert-new-access" checked="false" disabled/>
                             </div>
                         </div>
                     </div>
@@ -26,7 +26,7 @@
                                 <p class="text-muted mb-0">Notifiche quando viene cambiata la password o l'email associate all'account.</p>
                             </div>
                             <div class="col-auto">
-                                <input type="checkbox" class="custom-control-input" id="alert-change-password" />
+                                <input type="checkbox" class="custom-control-input settings-item" id="alert-change-password" checked="false" disabled/>
                             </div>
                         </div>
                     </div>
@@ -43,7 +43,7 @@
                                 <p class="text-muted mb-0">Notificami quando qualcuno mette mi piace a un mio post.</p>
                             </div>
                             <div class="col-auto">
-                                <input type="checkbox" class="custom-control-input" id="alert-likes" checked="" />
+                                <input type="checkbox" class="custom-control-input settings-item" id="alert-likes" checked="false" disabled/>
                             </div>
                         </div>
                     </div>
@@ -54,7 +54,7 @@
                                 <p class="text-muted mb-0">Notificami quando qualcuno commenta un mio post.</p>
                             </div>
                             <div class="col-auto">
-                                <input type="checkbox" class="custom-control-input" id="alert-comments" checked="" />
+                                <input type="checkbox" class="custom-control-input settings-item" id="alert-comments" checked="false" disabled/>
                             </div>
                         </div>
                     </div>
@@ -71,7 +71,7 @@
                                 <p class="text-muted mb-0">Notificami quando una persona che seguo pubblica un nuovo post.</p>
                             </div>
                             <div class="col-auto">
-                                <input type="checkbox" class="custom-control-input" id="alert-new-post-person" checked="" />
+                                <input type="checkbox" class="custom-control-input settings-item" id="alert-new-post-person" checked="false" disabled/>
                             </div>
                         </div>
                     </div>
@@ -82,7 +82,7 @@
                                 <p class="text-muted mb-0">Notificami quando un animale che seguo pubblica un nuovo post.</p>
                             </div>
                             <div class="col-auto">
-                                <input type="checkbox" class="custom-control-input" id="alert-new-post-animal" checked="" />
+                                <input type="checkbox" class="custom-control-input settings-item" id="alert-new-post-animal" checked="false" disabled/>
                             </div>
                         </div>
                     </div>
@@ -91,3 +91,4 @@
         </div>
     </div>
 </div>
+<script src=/js/settings.js ></script>
