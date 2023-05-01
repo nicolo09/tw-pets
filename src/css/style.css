@@ -112,6 +112,16 @@ div.row button{
     max-height: 150px;
 }
 
+.manage-button {
+    color: white !important;
+    background-size: 200% auto;
+    background-image: linear-gradient(to right, darkblue 0%, darkorchid 51%, darkblue 100%);
+}
+
+.manage-button:hover {
+    background-position: right center;
+}
+
 button > img{
     height: 70%;
 }
