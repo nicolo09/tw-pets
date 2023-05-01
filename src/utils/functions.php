@@ -218,7 +218,7 @@ function register(string $user, string $email, string $password, string $confirm
     return array($result, $errors);
 }
 
-//TODO: implement, returns the username of the user logged
+//Returns the username of the user logged in
 function getUser(){
     return $_SESSION['username'];
 }
@@ -226,25 +226,36 @@ function getUser(){
 function newPost(string $user, string $img, string $alt, string $txt, array $pets, DatabaseHelper $dbh)
 {
     $PATH="C:\Users\eleon\OneDrive\Universita\Terzo anno\TecnologieWeb\Progetto\tw-pets\src\uploads";
-    $uploadErrors=uploadImage($PATH, $img);
-    var_dump($uploadErrors);
+    //$uploadErrors=uploadImage($PATH, $img);
+    //var_dump($uploadErrors);
     //TODO:Decidi che fare quando se mette errori
+    $result=-1;//Not yet set
     if (strlen($alt) <= 50 && strlen($txt) <= 100) {
         $index=$dbh->addPost($img, $alt, $alt, $user);
         if($index!=-1){
             //Aggiunta andata a buon fine
             if(!empty($pets)){
-                //TODO: query per aggiungere animali al post
-                //Se va tutto bene, result=1 altrimenti 0
+                foreach($pets as $single){
+                    $tmp=$dbh->addAnimalToPost($index, $single);
+                    if($tmp==false){
+                        $result=0;
+                        //C'è stato un errore in un inserimento
+                    }
+                }
+                if($result==-1){
+                    //No errori
+                    $result=1;
+                }
             }else{
                 //Non ci sono animali
                 $result = 1;
             }
             
         }else{
-
+            $result=0;
         }
     } else {
+        $result=0;
         $errors[] = "La descrizione dell'immagine deve essere di meno di 50 caratteri e il testo meno di 100 caratteri";
     }
 
