@@ -12,6 +12,10 @@ if(isset($_GET["user"]) && count($dbh->getUserFromName($_GET["user"])) == 1){
     $templateParams["user"] = $_SESSION["username"];
 }
 
+if(isset($_GET["error"])){
+    $templateParams["error"] = $_GET["error"];
+}
+
 $templateParams["page"] = "base-animal-list.php";
 $templateParams["animals"] = $dbh->getAnimalsFromUser($templateParams["user"]);
 

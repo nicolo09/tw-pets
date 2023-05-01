@@ -1,4 +1,7 @@
 <h1 class="text-center">Animali di <?php echo $templateParams["user"]?></h1>
+<?php if(isset($templateParams["error"])):?>
+<p class="text-danger text-center text-decoration-underline"><?php echo $templateParams["error"]; ?></p>
+<?php endif; ?>
 <div class="d-grid gap-3">
     <div class="mobile-view">
     <?php for($x = 0; $x < count($templateParams["animals"]); $x+=2): ?>
