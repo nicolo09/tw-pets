@@ -49,7 +49,7 @@ if(isset($_POST["username"], $_POST["type"])){
     } 
 }
 
-$templateParams["page"] = "add-animal-form.php";
+$templateParams["page"] = "manage-animal-form.php";
 if(isset($_GET["animal"])){
     
     $animal = $dbh->getAnimals($_GET["animal"]);
@@ -72,7 +72,7 @@ if(isset($_GET["animal"])){
 } else {
     $templateParams["img"] = "img/default_pet_image.png";
 }
-//$templateParams["user"] = $_SESSION['username']; TODO use it on add-animal-form.php
+//$templateParams["user"] = $_SESSION['username']; TODO use it on manage-animal-form.php
 
 require_once("template/base.php");
 ?>

@@ -1,5 +1,5 @@
 document.querySelector('#add-animal-button').addEventListener('click', () => {
-    window.location.href = 'profile-add-animal.php';
+    window.location.href = 'profile-manage-animal.php';
 });
 
 let buttons = document.getElementsByClassName("manage-button");
@@ -9,7 +9,7 @@ for (var i = 0; i < buttons.length; i++){
 };
 
 function goToEditAnimal(evt) {
-    window.location.href = 'profile-add-animal.php?animal=' + evt.currentTarget.myParam;
+    window.location.href = 'profile-manage-animal.php?animal=' + evt.currentTarget.myParam;
 };
 
 function goToAnimal(animal_username){

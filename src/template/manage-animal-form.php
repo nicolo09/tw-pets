@@ -10,7 +10,7 @@ if(isset($templateParams["errors"])) {
     <div class="container">
         <div class="card-body text-center">
             <h2 class="fw-bold">Aggiungi un nuovo animale</h2>
-            <form action="profile-add-animal.php<?php if(isset($templateParams["animal"])) {echo "?animal=" . $templateParams["animal"];}?>" method="post" enctype="multipart/form-data">
+            <form action="profile-manage-animal.php<?php if(isset($templateParams["animal"])) {echo "?animal=" . $templateParams["animal"];}?>" method="post" enctype="multipart/form-data">
 
                 <!-- Image input (optional) -->
                 <div class="form-outline">
