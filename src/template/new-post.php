@@ -26,7 +26,9 @@
         <div class="row w-100">
             <!--Animali presenti-->
             <label for="selectAnimals">Seleziona gli animali presenti in questo post</label>
-            <select name="selectAnimals[]" id="selectAnimals" multiple="multiple">
+            <p class="desktop-view">Tieni premuto control per selezionare multipli animali</p>
+            <p class="mobile-view">Clicca per selezionare multipli animali</p>
+            <select name="selectAnimals" id="selectAnimals" multiple="multiple" class="form-select" size=6>
             <?php
             if (isset($templateParams["animals"])) {
                 foreach ($templateParams["animals"] as $animal) {
