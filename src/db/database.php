@@ -22,6 +22,24 @@ class DatabaseHelper
         }
     }
 
+    public function getMutualFollowers($username) {
+        $query = "SELECT p.username, p.immagine
+        FROM PERSONA p
+        INNER JOIN SEGUE_PERSONA sp1 ON p.username = sp1.followed
+        INNER JOIN SEGUE_PERSONA sp2 ON p.username = sp2.follower
+        WHERE sp1.follower = ? AND sp2.followed = ? ORDER BY p.username ASC";
+
+        if($stmt = $this->db->prepare($query)){
+            $stmt->bind_param('ss', $username, $username);
+            $stmt->execute();
+            $result = $stmt->get_result();
+            return $result->fetch_all(MYSQLI_ASSOC);
+        } else {
+            return array();
+        }
+
+    }
+
     public function addAnimal($username, $type, $img, $description) {
         if ($stmt = $this->db->prepare("INSERT INTO animale (username, tipo, immagine, descrizione) VALUES (?, ?, ?, ?)")) {
             $stmt->bind_param('ssss', $username, $type, $img, $description);
