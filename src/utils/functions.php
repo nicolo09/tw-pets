@@ -230,9 +230,8 @@ function getUserName($dbh){
 
 function newPost($user, $img, $alt, $txt, $pets, DatabaseHelper $dbh)
 {
-    $PATH="C:\Users\eleon\OneDrive\Universita\Terzo anno\TecnologieWeb\Progetto\tw-pets\src\uploads";
     $errors=[];
-    $uploadErrors=uploadImage($PATH, $img);
+    $uploadErrors=uploadImage(IMG_DIR, $img);
     var_dump($uploadErrors);
     //Se mette errori stampa, non continuare con query
     $result=-1;//Not yet set
