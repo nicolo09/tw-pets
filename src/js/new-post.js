@@ -2,6 +2,22 @@ const img = document.getElementById("imgPreview");
 const file = document.getElementById("imgpostinput");
 const animals = document.getElementById("selectAnimals");
 img.style.display = "none";
+uploadDir="uploads"
+
+
+const finalAnimals = [];
+const animalList = fetch("tell-js-animals.php").then((response) => {
+    if (!response.ok) {
+        throw new Error("Something went wrong!");
+    }
+    return response.json();
+}).then((data) => {
+    data.forEach(element => {
+        finalAnimals.push(element);
+    })
+});
+
+console.log(finalAnimals);
 
 //First call to hide the image element
 file.addEventListener('change', () => {
@@ -24,6 +40,13 @@ function imagePreviewShow(input) {
     }
 }
 
+
+function getAnimal(username, fullList) {
+
+    fullList.forEach(animal => animal["username"].find(username));
+}
+
+
 function createAnimalDisplay(selectedAnimals) {
     const container = document.querySelector(".animal-display");
     let html = "";
@@ -31,18 +54,24 @@ function createAnimalDisplay(selectedAnimals) {
         const numRows = Math.ceil(selectedAnimals.length / 2);
         let counter = 0;
         for (let i = 0; i < numRows; i++) {
+            const anim = finalAnimals.forEach(animal => animal["username"].find(selectedAnimals[counter]));
+            console.log(anim);
+
             html += `
         <div class="row mt-5">`;
             html += `<div class="text-center col">
-                <img id="animalPreview" src="img/facebook-default-profile-pic.jpg" alt="Immagine profilo di ppepe" class="rounded-circle proPic">
-                <p>ppepe${counter}</p>
+                <img id="animalPreview" src="${uploadDir}/${anim["immagine"]}" alt="Immagine profilo di ${anim["username"]}" class="rounded-circle proPic">
+                <p>${anim["username"]}</p>
                 </div>`;
             counter++;
             if (counter + 1 <= selectedAnimals.length) {
                 //Ci stanno almeno due elementi
+                anim = finalAnimals.forEach(animal => animal["username"].find(selectedAnimals[counter]));
+                html += `
+        <div class="row mt-5">`;
                 html += `<div class="text-center col">
-                <img id="animalPreview" src="img/facebook-default-profile-pic.jpg" alt="Immagine profilo di ppepe" class="rounded-circle proPic">
-                <p>ppepe${counter}</p>
+                <img id="animalPreview" src="${uploadDir}/${anim["immagine"]}" alt="Immagine profilo di ${anim["username"]}" class="rounded-circle proPic">
+                <p>${anim["username"]}</p>
                 </div>`;
                 counter++;
             }
