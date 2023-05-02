@@ -85,6 +85,17 @@ class DatabaseHelper
         }
     }
 
+    public function getOwners($animal) {
+        if($stmt = $this->db->prepare("SELECT persona AS username FROM possiede WHERE animale = ?")) {
+            $stmt->bind_param('s',$animal);
+            $stmt->execute();
+            $result = $stmt->get_result();
+            return $result->fetch_all(MYSQLI_ASSOC);
+        } else {
+            return array();
+        }
+    }
+
     /* Returns true if the user owns the given animal */
     public function checkOwnership($owner, $animal) {
         if($stmt = $this->db->prepare("SELECT * FROM possiede WHERE persona = ? AND animale = ?")) {
