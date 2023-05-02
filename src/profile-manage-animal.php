@@ -69,12 +69,16 @@ if(isset($_GET["animal"])){
     $templateParams["img"] = IMG_DIR . $animal[0]["immagine"];
     $templateParams["description"] = $animal[0]["descrizione"];
     $templateParams["title"] = "Modifica - " . $animal[0]["username"];
+    $templateParams["subtitle"] = $templateParams["title"];
+    $templateParams["owners"] = $dbh->getOwners($animal[0]["username"]);
 
 } else {
     $templateParams["img"] = "img/default_pet_image.png";
     $templateParams["title"] = "Nuovo animale";
+    $templateParams["subtitle"] = "Aggiungi un nuovo animale!";
 }
 
+$templateParams["mutuals"] = $dbh->getMutualFollowers($_SESSION["username"]);
 //$templateParams["user"] = $_SESSION['username']; TODO use it on manage-animal-form.php
 
 require_once("template/base.php");
