@@ -121,7 +121,8 @@ alter table TENTATIVO_LOGIN add constraint FKEFFETTUA
 
 alter table IMPOSTAZIONE add constraint FKIMPOSTA_FK
      foreign key (username)
-     references PERSONA (username);
+     references PERSONA (username)
+     ON DELETE CASCADE;
 
 alter table LIKES add constraint FKPERSONALIKES
      foreign key (username)
