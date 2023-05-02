@@ -30,4 +30,12 @@ $.ajax({
     //TODO: Handle error
 });
 
+$("#change-email").on('click', function () {
+    //Redirect to change email page
+    window.location.href = "change-email.php";
+});
 
+$("#change-password").on('click', function () {
+    //Redirect to change password page
+    window.location.href = "change-password.php";
+});

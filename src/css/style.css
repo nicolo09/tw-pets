@@ -170,3 +170,7 @@ button > img{
     border-top: solid 1px lightgrey;
     padding: 4% 0 0 0;
 }
+
+.btn.settings-item{
+    width: 100%;
+}
