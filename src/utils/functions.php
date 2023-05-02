@@ -213,6 +213,8 @@ function register(string $user, string $email, string $password, string $confirm
     if (count($errors) == 0) {
         if ($dbh->addUser($user, $password, $email)) {
             $result = 1;
+            $headers = 'From: noreply@twpets.com' . "\r\n";
+            mail($email, "TWPETS - Registrazione completata", "La registrazione è avvenuta con successo.\n Grazie per esserti registrato su TWPETS!\n Il tuo nome utente è $user", $headers);
         }
     }
     return array($result, $errors);
