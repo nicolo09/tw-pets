@@ -31,12 +31,12 @@ create table TENTATIVO_LOGIN (
 
 create table IMPOSTAZIONE (
      username varchar(25) not null,
-     alert-new-access boolean not null default true,
-     alert-change-password boolean not null default true,
-     alert-likes boolean not null default true,
-     alert-comments boolean not null default true,
-     alert-new-post-person boolean not null default false,
-     alert-new-post-animal boolean not null default false,
+     `alert-new-access` boolean not null default true,
+     `alert-change-password` boolean not null default true,
+     `alert-likes` boolean not null default true,
+     `alert-comments` boolean not null default true,
+     `alert-new-post-person` boolean not null default false,
+     `alert-new-post-animal` boolean not null default false,
      constraint FKIMPOSTA_ID primary key (username));
 
 create table LIKES (
