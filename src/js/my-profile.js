@@ -17,4 +17,3 @@ document.querySelector('#logout-button').addEventListener('click', () => {
         window.location.href = 'tab-profile.php';
     });
 });
-
