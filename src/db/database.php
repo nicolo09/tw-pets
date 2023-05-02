@@ -102,4 +102,14 @@ class DatabaseHelper
             return $result->fetch_all(MYSQLI_ASSOC);
         }
     }
+
+    public function changeEmail($oldEmail, $newEmail)
+    {
+        if ($stmt = $this->db->prepare("UPDATE persona SET email = ? WHERE email = ?")) {
+            $stmt->bind_param('ss', $newEmail, $oldEmail);
+            return $stmt->execute();
+        } else {
+            return false;
+        }
+    }
 }
