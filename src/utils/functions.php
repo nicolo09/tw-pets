@@ -127,7 +127,7 @@ function checkBrute($username, $dbh)
     }
 }
 
-function registerAnimal($animal, $type, $img, $description, $owners, $dbh){
+function registerAnimal($animal, $type, $file, $description, $owners, $dbh){
     /* TODO make it better and add type length checking */
     $result = 0;
     $errors = array();
@@ -147,7 +147,7 @@ function registerAnimal($animal, $type, $img, $description, $owners, $dbh){
     /* If there are already errors it's useless to upload the image */
     if(count($errors) == 0){
         if(!empty($file["imgprofile"]["name"])) {
-            list($imgresult, $msg) = uploadImage(IMG_DIR, $_FILES["imgprofile"]);
+            list($imgresult, $msg) = uploadImage(IMG_DIR, $file["imgprofile"]);
             if($imgresult != 0) {
                 $img = $msg;
             } else {
