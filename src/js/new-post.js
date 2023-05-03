@@ -2,7 +2,6 @@ const img = document.getElementById("imgPreview");
 const file = document.getElementById("imgpostinput");
 const animals = document.getElementById("selectAnimals");
 img.style.display = "none";
-uploadDir="uploads"
 
 
 const finalAnimals = [];
@@ -63,7 +62,7 @@ function createAnimalDisplay(selectedAnimals) {
             html += `
         <div class="row mt-5">`;
             html += `<div class="text-center col">
-                <img id="animalPreview" src="${uploadDir}/${anim["immagine"]}" alt="Immagine profilo di ${anim["username"]}" class="rounded-circle proPic">
+                <img id="animalPreview" src="${IMG_DIR}${anim["immagine"]}" alt="Immagine profilo di ${anim["username"]}" class="rounded-circle proPic">
                 <p>${anim["username"]}</p>
                 </div>`;
             counter++;
@@ -72,7 +71,7 @@ function createAnimalDisplay(selectedAnimals) {
                 const index=getAnimalIndex(selectedAnimals[counter],finalAnimals);
                 const anim = finalAnimals[index];
                 html += `<div class="text-center col">
-                <img id="animalPreview" src="${uploadDir}/${anim["immagine"]}" alt="Immagine profilo di ${anim["username"]}" class="rounded-circle proPic">
+                <img id="animalPreview" src="${IMG_DIR}${anim["immagine"]}" alt="Immagine profilo di ${anim["username"]}" class="rounded-circle proPic">
                 <p>${anim["username"]}</p>
                 </div>`;
                 counter++;

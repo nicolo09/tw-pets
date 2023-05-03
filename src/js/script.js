@@ -1,3 +1,5 @@
+const IMG_DIR= "img/";
+
 /* When selecting an image this shows its preview on 
  * an img tag with id=#imgPreview */
 function imagePreview(input) {
