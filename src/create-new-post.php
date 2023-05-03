@@ -38,6 +38,13 @@ foreach($animalList as $singleAnimal){
     $templateParams["animals"][]=$singleAnimal["username"];
 }
 
+if(empty($_POST)==false&&isset($templateParams["error"])==true&&strlen($templateParams["error"][0])==0){
+    //Andato a buon fine l'inserimento di un post
+    //Magari redirect a tuo profilo, con nuovo post?
+    header("Location: home.php");
+    exit;
+}
+
 $templateParams["page"] = "new-post.php";
 $templateParams["title"] = "Crea nuovo post";
 require_once("template/base.php");
