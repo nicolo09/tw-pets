@@ -13,7 +13,7 @@ if(isset($_POST["username"], $_POST["type"])){
     $type = htmlspecialchars($_POST["type"]);
     $description = htmlspecialchars($_POST["description"]);
 
-    $owners = $_POST["owners"]; // TODO let user choose owners
+    $owners = $_POST["owners"]; 
     $owners[] = $_SESSION["username"];
 
     if(!isset($_GET["animal"])){
@@ -35,7 +35,7 @@ if(isset($_POST["username"], $_POST["type"])){
     $type = htmlspecialchars($_POST["type"]);
     $description = htmlspecialchars($_POST["description"]);
 
-    $owners = $_POST["owners"]; // TODO let user choose owners
+    $owners = $_POST["owners"]; 
     $owners[] = $_SESSION["username"];
     /* An animal was set, so it must be updated */
     list($result, $error) = editAnimal($animal[0], $type, $_FILES, $description, $owners, $dbh);
