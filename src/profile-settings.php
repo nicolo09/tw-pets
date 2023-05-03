@@ -13,7 +13,7 @@ if (isset($_GET["json"])) {
 }
 
 if (isset($_GET["success"]) && $_GET["success"] == "1") {
-    $templateParams["message"] = "Operazione eseguita con successo";
+    $templateParams["messages"][] = "Operazione eseguita con successo";
 }
 
 if (isset($_POST["setting"]) && isset($_POST["value"])) {

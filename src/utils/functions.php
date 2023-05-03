@@ -310,7 +310,7 @@ function changePassword(string $oldPassword, string $newPassword, string $confir
         }
     }
     if (count($errors) == 0) {
-        $user = $dbh->getUser($_SESSION['username']);
+        $user = $dbh->getUserFromName($_SESSION['username']);
         if (password_verify($oldPassword, $user[0]['password'])) {
             $result = $dbh->changePassword($_SESSION['username'], $newPassword);
         } else {
