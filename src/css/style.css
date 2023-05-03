@@ -174,3 +174,7 @@ button > img{
 .btn.settings-item{
     width: 100%;
 }
+
+.top-page-popup{
+    font-size: larger;
+}

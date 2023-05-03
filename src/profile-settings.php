@@ -12,6 +12,10 @@ if (isset($_GET["json"])) {
     exit;
 }
 
+if (isset($_GET["success"]) && $_GET["success"] == "1") {
+    $templateParams["message"] = "Operazione eseguita con successo";
+}
+
 if (isset($_POST["setting"]) && isset($_POST["value"])) {
     isset($_SESSION["username"]);
     $dbh->updateSetting($_SESSION["username"], $_POST["setting"], $_POST["value"]);
