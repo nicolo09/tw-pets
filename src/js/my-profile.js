@@ -2,6 +2,10 @@ document.querySelector('#settings-button').addEventListener('click', () => {
     window.location.href = 'profile-settings.php';
 });
 
+document.querySelector('#add-post-button').addEventListener('click', () => {
+    window.location.href = 'create-new-post.php';
+});
+
 document.querySelector('#logout-button').addEventListener('click', () => {
     // Ask for confirmation
     $('#buttons-div').empty();

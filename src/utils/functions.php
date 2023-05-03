@@ -219,3 +219,64 @@ function register(string $user, string $email, string $password, string $confirm
     }
     return array($result, $errors);
 }
+
+//Returns the username of the user logged in
+function getUserName($dbh)
+{
+    if (isUserLoggedIn($dbh)) {
+        return $_SESSION['username'];
+    } else {
+        return "";
+    }
+}
+
+function newPost($user, $img, $alt, $txt, $pets, DatabaseHelper $dbh)
+{
+    $errors = [];
+    $uploadErrors = uploadImage(IMG_DIR, $img);
+    //Se mette errori stampa, non continuare con query
+    if ($uploadErrors[0] == 1) {
+        //Non ci sono stati errori di upload, continua con query
+        $result = -1; //Not yet set
+        if (strlen($alt) <= 50 && strlen($txt) <= 100) {
+            $index = $dbh->addPost(basename($img["name"]), $alt, $alt, $user);
+            if ($index != -1) {
+                //Aggiunta andata a buon fine
+                if (!empty($pets)) {
+                    foreach ($pets as $single) {
+                        $tmp = $dbh->addAnimalToPost($index, $single);
+                        if ($tmp == false) {
+                            $result = 0;
+                            //C'è stato un errore in un inserimento
+                            $errors = "C'è stato un errore nell'esecuzione della query sul database";
+                        }
+                    }
+                    if ($result == -1) {
+                        //No errori
+                        $result = 1;
+                    }
+                } else {
+                    //Non ci sono animali
+                    $result = 1;
+                }
+            } else {
+                $result = 0;
+                $errors = "C'è stato un errore nell'esecuzione della query sul database";
+            }
+        } else {
+            $result = 0;
+            $errors = "La descrizione dell'immagine deve essere di meno di 50 caratteri e il testo meno di 100 caratteri";
+        }
+    }else{
+        //C'è stato un qualche errore con l'upload
+        $result = 0;
+        $errors= $uploadErrors[1];
+    }
+    return array($result, $errors);
+}
+
+function getManagedAnimals(string $user, DatabaseHelper $dbh)
+{
+    //Ritorna array di array, rimuovo il nesting
+    return $dbh->getOwnedAnimals($user);
+}

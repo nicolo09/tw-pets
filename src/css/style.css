@@ -178,3 +178,26 @@ button > img{
 .top-page-popup{
     font-size: larger;
 }
+
+button.btn{
+    border-width: 3px;
+}
+
+div.row button{
+    height: 100%;
+    width: 75%;
+    max-height: 150px;
+}
+
+button > img{
+    height: 70%;
+}
+
+.d-grid > button{
+    margin: 0 6.2%;
+}
+
+div.my-son-textarea{
+    margin-left: 0;
+    margin-right: 0;
+}
