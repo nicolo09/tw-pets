@@ -13,19 +13,19 @@ if(isset($_POST["username"], $_POST["type"])){
     $type = htmlspecialchars($_POST["type"]);
     $description = htmlspecialchars($_POST["description"]);
 
-    $owners = array(); // TODO let user choose owners
+    $owners = $_POST["owners"]; // TODO let user choose owners
     $owners[] = $_SESSION["username"];
 
     if(!isset($_GET["animal"])){
         /* No animal was set, so a new one has to be added  */
-        list($result, $msg) = registerAnimal($animal, $type, $_FILES, $description, $owners, $dbh);
+        list($result, $error) = registerAnimal($animal, $type, $_FILES, $description, $owners, $dbh);
         if($result == 1){
             // New animal added
             header("Location: profile-animals.php");
             exit;
         } else {
             // Unable to add the animal
-            $templateParams["errors"] = $msg;
+            $templateParams["errors"] = $error;
         }
     }
 } elseif(isset($_GET["animal"], $_POST["type"])) {
@@ -35,17 +35,17 @@ if(isset($_POST["username"], $_POST["type"])){
     $type = htmlspecialchars($_POST["type"]);
     $description = htmlspecialchars($_POST["description"]);
 
-    $owners = array(); // TODO let user choose owners
+    $owners = $_POST["owners"]; // TODO let user choose owners
     $owners[] = $_SESSION["username"];
     /* An animal was set, so it must be updated */
-    list($result, $msg) = editAnimal($animal[0], $type, $_FILES, $description, $owners, $dbh, $_SESSION["username"]);
+    list($result, $error) = editAnimal($animal[0], $type, $_FILES, $description, $owners, $dbh);
     if($result == 1){
         // Animal profile edited
         header("Location: profile-animals.php");
         exit;
     } else {
         // Unable to edit the animal profile
-        $templateParams["errors"] = $msg;
+        $templateParams["errors"] = $error;
     } 
 }
 
