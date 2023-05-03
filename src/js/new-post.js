@@ -71,8 +71,6 @@ function createAnimalDisplay(selectedAnimals) {
                 //Ci stanno almeno due elementi
                 const index=getAnimalIndex(selectedAnimals[counter],finalAnimals);
                 const anim = finalAnimals[index];
-                html += `
-        <div class="row mt-5">`;
                 html += `<div class="text-center col">
                 <img id="animalPreview" src="${uploadDir}/${anim["immagine"]}" alt="Immagine profilo di ${anim["username"]}" class="rounded-circle proPic">
                 <p>${anim["username"]}</p>
