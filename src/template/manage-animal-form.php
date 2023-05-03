@@ -9,7 +9,7 @@ if(isset($templateParams["errors"])) {
 <section class="text-center text-lg-start">
     <div class="container">
         <div class="card-body text-center">
-            <h2 class="fw-bold">Aggiungi un nuovo animale</h2>
+            <h2 class="fw-bold"><?php echo $templateParams["subtitle"] ?></h2>
             <form action="profile-manage-animal.php<?php if(isset($templateParams["animal"])) {echo "?animal=" . $templateParams["animal"];}?>" method="post" enctype="multipart/form-data">
 
                 <!-- Image input (optional) -->
@@ -35,10 +35,41 @@ if(isset($templateParams["errors"])) {
                 <!-- Description (optional) -->
                 <div class="form-outline">
                     <label class="form-label" for="descriptionTextArea">Descrizione (opzionale)</label>
-                    <textarea placeholder="Max 100 caratteri" <?php if(isset($templateParams["description"]) && !empty($templateParams["description"])) { echo "value=\"" . $templateParams["description"] . "\"";}?> class="form-control" maxlength="100" id="descriptionTextArea" name="description"></textarea>
+                    <textarea placeholder="Max 100 caratteri" class="form-control" maxlength="100" id="descriptionTextArea" name="description"><?php if(isset($templateParams["description"])) { echo $templateParams["description"]; }?></textarea>
                 </div>
 
                 <!-- TODO others owner input -->
+                <div class="form-outline">
+                    <label class="form-label w-100 pb-2" for="multiSelector">Padroni selezionati:</label>
+                    <?php if(!empty($templateParams["mutuals"])):?>
+    
+                    <select class="form-select" id="multiSelector" name="owners[]" multiple="multiple" size=6>
+                    <?php
+                    foreach($templateParams["mutuals"] as $mutual) {
+                        
+                        $active = isset($templateParams["owners"]) 
+                            && in_array($mutual, $templateParams["owners"]) 
+                            ? " selected"
+                            : "";
+                        
+                        echo "<option value="
+                        . $mutual["username"] 
+                        . " data-img=" 
+                        . IMG_DIR . $mutual["immagine"]
+                        . $active
+                        .">" 
+                        . $mutual["username"] 
+                        . "</option>";
+                    }
+                    ?>
+                    <option value="Pappero">Pappero1</option>
+                    </select>
+                    
+                    <?php else : ?>
+                    <label class="text-decoration-underline fw-bold">Al momento non ci sono utenti che puoi aggiungere come padroni</label>
+                    <?php endif ?>
+                    <label class="w-100 pt-2">Solo gli utenti che segui e ti seguono possono essere aggiunti.</label>
+                </div>
 
                 <!-- Submit button -->
                 <button type="submit" class="btn btn-primary btn-block mb-4">Conferma</button>
@@ -47,3 +78,4 @@ if(isset($templateParams["errors"])) {
         </div>
     </div>
 </section>
+<script src="js/form-utils.js"></script>
