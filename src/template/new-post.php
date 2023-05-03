@@ -38,6 +38,7 @@
                 ?>
             </select>
             <!--Guarda post in anteprima-->
+            <!--TODO: Da implementare-->
             <button class="btn btn-outline-primary col w-40"><img src="img/preview.svg" alt=""><a href="preview-post.php">Guarda post in anteprima</a></button>
         </div>
     </div>
