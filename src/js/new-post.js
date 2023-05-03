@@ -17,8 +17,6 @@ const animalList = fetch("tell-js-animals.php").then((response) => {
     })
 });
 
-console.log(finalAnimals);
-
 //First call to hide the image element
 file.addEventListener('change', () => {
     imagePreviewShow(file);
@@ -41,9 +39,14 @@ function imagePreviewShow(input) {
 }
 
 
-function getAnimal(username, fullList) {
-
-    fullList.forEach(animal => animal["username"].find(username));
+function getAnimalIndex(username, fullList) {
+    let tmp=-1;
+    fullList.forEach(animal=>{
+        if(animal["username"]==username){
+            tmp=fullList.indexOf(animal);
+        }
+    })
+    return tmp;
 }
 
 
@@ -54,7 +57,11 @@ function createAnimalDisplay(selectedAnimals) {
         const numRows = Math.ceil(selectedAnimals.length / 2);
         let counter = 0;
         for (let i = 0; i < numRows; i++) {
-            const anim = finalAnimals.forEach(animal => animal["username"].find(selectedAnimals[counter]));
+            //console.log(finalAnimals);
+            //console.log(getAnimalIndex(selectedAnimals[counter],finalAnimals));
+            const index=getAnimalIndex(selectedAnimals[counter],finalAnimals);
+            console.log(index)
+            const anim = finalAnimals[index];
             console.log(anim);
 
             html += `
@@ -66,7 +73,8 @@ function createAnimalDisplay(selectedAnimals) {
             counter++;
             if (counter + 1 <= selectedAnimals.length) {
                 //Ci stanno almeno due elementi
-                anim = finalAnimals.forEach(animal => animal["username"].find(selectedAnimals[counter]));
+                const index=getAnimalIndex(selectedAnimals[counter],finalAnimals);
+                const anim = finalAnimals[index];
                 html += `
         <div class="row mt-5">`;
                 html += `<div class="text-center col">
