@@ -29,13 +29,13 @@
             <p class="desktop-view">Tieni premuto control per selezionare multipli animali</p>
             <p class="mobile-view">Clicca per selezionare multipli animali</p>
             <select name="selectAnimals" id="selectAnimals" multiple="multiple" class="form-select" size=6>
-            <?php
-            if (isset($templateParams["animals"])) {
-                foreach ($templateParams["animals"] as $animal) {
-                    echo "<option value=". $animal .">" . $animal . "</option>";
+                <?php
+                if (isset($templateParams["animals"])) {
+                    foreach ($templateParams["animals"] as $animal) {
+                        echo "<option value=" . $animal . ">" . $animal . "</option>";
+                    }
                 }
-            }
-            ?> 
+                ?>
             </select>
             <!--Guarda post in anteprima-->
             <button class="btn btn-outline-primary col w-40"><img src="img/preview.svg" alt=""><a href="preview-post.php">Guarda post in anteprima</a></button>
@@ -44,7 +44,9 @@
     <!--Gli errori, se presenti-->
     <?php
     if (isset($templateParams["error"])) {
-        echo "<p class='text-danger'>" . $templateParams["error"] . "</p>";
+        foreach ($templateParams["error"] as $error) {
+            echo "<p class='text-danger'>" . $error . "</p>";
+        }
     }
     ?>
     <!--Mostro gli animali, dinamicamente con js-->

@@ -12,20 +12,23 @@ if (isUserLoggedIn($dbh)==false) {
 if (empty($_POST)) {
     //Non è stato inviato nulla per post, probabilmente viene fatto accesso alla pagina direttamente
 } else {
+    $templateParams["error"][]="";
     $animals=array();
     if(isset($_POST["selectAnimals"])){
-        $animals=$_POST["selectAnimals"];
+        $animals=array($_POST["selectAnimals"]);
     }
 
     if (isset($_POST["imgalt"]) && isset($_FILES) && isset($_POST["txtpost"])) {
         $img = $_FILES["imgpost"];
-        var_dump($img);
         $alt = $_POST["imgalt"];
         $text = $_POST["txtpost"];
-        newPost(getUserName($dbh), $img, $alt, $text, $animals, $dbh);
-
+        $postErrors=newPost(getUserName($dbh), $img, $alt, $text, $animals, $dbh);
+        if($postErrors[0]!=1){
+            //Ci sono stati errori
+            $templateParams["error"][]=$postErrors[1];
+        }
     } else {
-        $templateParams["error"] = "Compila tutti i campi e metti un'immagine con estensione jpg, jpeg, png o gif";
+        $templateParams["error"][]="Compila tutti i campi e metti un'immagine con estensione jpg, jpeg, png o gif";
     }
 }
 
