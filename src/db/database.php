@@ -146,4 +146,14 @@ class DatabaseHelper
             return false;
         }
     }
+
+    public function changePassword($username, $newPassword){
+        if ($stmt = $this->db->prepare("UPDATE persona SET password = ? WHERE username = ?")) {
+            $newPassword = password_hash($newPassword, PASSWORD_DEFAULT);
+            $stmt->bind_param('ss', $newPassword, $username);
+            return $stmt->execute();
+        } else {
+            return false;
+        }
+    }
 }

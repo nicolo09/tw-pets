@@ -174,6 +174,34 @@ function uploadImage($path, $image)
     return array($result, $msg);
 }
 
+function isPasswordStrong($password)
+{
+    $result = true;
+    $errors = array();
+    # Check sulla password solo se uguale a conferma password
+    if (strlen($password) < 6) {
+        $errors[] = "La password deve essere lunga almeno 6 caratteri.";
+        $result = false;
+    }
+    if (!preg_match('@[0-9]@', $password)) {
+        $errors[] = "La password deve contenere almeno un numero.";
+        $result = false;
+    }
+    if (!preg_match('@[A-Z]@', $password)) {
+        $errors[] = "La password deve contenere almeno una lettera maiuscola.";
+        $result = false;
+    }
+    if (!preg_match('@[a-z]@', $password)) {
+        $errors[] = "La password deve contenere almeno una lettera minuscola.";
+        $result = false;
+    }
+    if (!preg_match('@[^\w]@', $password)) {
+        $errors[] = "La password deve contenere almeno un carattere speciale.";
+        $result = false;
+    }
+    return array($result, $errors);
+}
+
 function register(string $user, string $email, string $password, string $confirm_password, DatabaseHelper $dbh)
 {
     $errors = array();
@@ -193,21 +221,9 @@ function register(string $user, string $email, string $password, string $confirm
     if ($password != $confirm_password) {
         $errors[] = "Le password non coincidono.";
     } else {
-        # Check sulla password solo se uguale a conferma password
-        if (strlen($password) < 6) {
-            $errors[] = "La password deve essere lunga almeno 6 caratteri.";
-        }
-        if (!preg_match('@[0-9]@', $password)) {
-            $errors[] = "La password deve contenere almeno un numero.";
-        }
-        if (!preg_match('@[A-Z]@', $password)) {
-            $errors[] = "La password deve contenere almeno una lettera maiuscola.";
-        }
-        if (!preg_match('@[a-z]@', $password)) {
-            $errors[] = "La password deve contenere almeno una lettera minuscola.";
-        }
-        if (!preg_match('@[^\w]@', $password)) {
-            $errors[] = "La password deve contenere almeno un carattere speciale.";
+        $passwordStrength = isPasswordStrong($password);
+        if (!$passwordStrength[0]) {
+            $errors = array_merge($errors, $passwordStrength[1]);
         }
     }
     if (count($errors) == 0) {
@@ -267,10 +283,10 @@ function newPost($user, $img, $alt, $txt, $pets, DatabaseHelper $dbh)
             $result = 0;
             $errors = "La descrizione dell'immagine deve essere di meno di 50 caratteri e il testo meno di 100 caratteri";
         }
-    }else{
+    } else {
         //C'è stato un qualche errore con l'upload
         $result = 0;
-        $errors= $uploadErrors[1];
+        $errors = $uploadErrors[1];
     }
     return array($result, $errors);
 }
@@ -279,4 +295,27 @@ function getManagedAnimals(string $user, DatabaseHelper $dbh)
 {
     //Ritorna array di array, rimuovo il nesting
     return $dbh->getOwnedAnimals($user);
+}
+
+function changePassword(string $oldPassword, string $newPassword, string $confirmPassword, DatabaseHelper $dbh)
+{
+    $errors = [];
+    $result = false;
+    if ($newPassword != $confirmPassword) {
+        $errors[] = "Le password non coincidono.";
+    } else {
+        $passwordStrength = isPasswordStrong($newPassword);
+        if (!$passwordStrength[0]) {
+            $errors = array_merge($errors, $passwordStrength[1]);
+        }
+    }
+    if (count($errors) == 0) {
+        $user = $dbh->getUser($_SESSION['username']);
+        if (password_verify($oldPassword, $user[0]['password'])) {
+            $result = $dbh->changePassword($_SESSION['username'], $newPassword);
+        } else {
+            $errors[] = "La password attuale non è corretta.";
+        }
+    }
+    return array($result, $errors);
 }
