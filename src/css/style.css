@@ -21,6 +21,7 @@ body {
     }
 }
 
+
 /* otherwise sometimes chrome doesn't center elements*/
 .center-align{
     text-align:center !important;
@@ -71,6 +72,13 @@ body {
 
 .proPicContainer {
     min-height: 180px !important;
+    padding-bottom: 1%;
+}
+
+.proPicLabel {
+    width: 50%;
+    overflow: hidden;
+    text-overflow: ellipsis;
 }
 
 .proPicBtn {
@@ -89,18 +97,38 @@ body {
 
     .proPicContainer {
         min-height: 120px !important;
+        padding-bottom: 5%;
     }
 }
 
-/* button style */
-button.btn{
-    border-width: 3px;
+.miniature {
+    height: 60px;
+    width: 60px;
+    border-radius: 50%;
+    vertical-align: middle;
+    background: linear-gradient(white, white) padding-box,
+              linear-gradient(to right, darkblue, darkorchid) border-box;
+    border: 2px solid transparent;
+    padding: 1px;
+    margin: 1%;
 }
 
-div.row button{
+/* button style */
+
+.profile-button {
     height: 100%;
     width: 75%;
     max-height: 150px;
+}
+
+.manage-button {
+    color: white !important;
+    background-size: 200% auto;
+    background-image: linear-gradient(to right, darkblue 0%, darkorchid 51%, darkblue 100%);
+}
+
+.manage-button:hover {
+    background-position: right center;
 }
 
 button > img{
@@ -111,9 +139,27 @@ button > img{
     margin: 0 6.2%;
 }
 
+/* Other */
+
+div.my-son-textarea{
+    margin-left: 0;
+    margin-right: 0;
+}
+
 .form-outline{
     padding-bottom: 3%;
 }
+
+/* addition to other classes*/
+
+li.select2-results__option {
+    border-bottom: 1px solid #ccc;
+}
+
+.select2-container .select2-dropdown {
+    top: auto !important;
+}
+
 
 .btn-outline-animals{
     --bs-btn-color:#0eeb49;
@@ -177,27 +223,4 @@ button > img{
 
 .top-page-popup{
     font-size: larger;
-}
-
-button.btn{
-    border-width: 3px;
-}
-
-div.row button{
-    height: 100%;
-    width: 75%;
-    max-height: 150px;
-}
-
-button > img{
-    height: 70%;
-}
-
-.d-grid > button{
-    margin: 0 6.2%;
-}
-
-div.my-son-textarea{
-    margin-left: 0;
-    margin-right: 0;
 }

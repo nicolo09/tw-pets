@@ -127,6 +127,112 @@ function checkBrute($username, $dbh)
     }
 }
 
+function registerAnimal($animal, $type, $file, $description, $owners, $dbh){
+    /* TODO make it better and add type length checking */
+    $result = 0;
+    $errors = array();
+    
+    if(strlen($animal) < 3) {
+        $errors[] = "Lo username deve essere lungo almeno 3 caratteri.";
+    }
+
+    if (strlen($type) < 3) {
+        $errors[] = "Il tipo deve essere lungo almeno 3 caratteri.";
+    }
+
+    if(count($dbh->getAnimals($animal)) > 0) {
+        $errors[] = "Lo username " . $animal . " è già in uso.";
+    }
+
+    /* If there are already errors it's useless to upload the image */
+    if(count($errors) == 0){
+        if(!empty($file["imgprofile"]["name"])) {
+            list($imgresult, $msg) = uploadImage(IMG_DIR, $file["imgprofile"]);
+            if($imgresult != 0) {
+                $img = $msg;
+            } else {
+                $errors[] = $msg;
+            }
+        } else {
+            $img = DEFAULT_IMG;
+        }
+
+        if(count($errors) == 0) {
+            if($dbh->addAnimal($animal, $type, $img, $description)) {
+                foreach ($owners as $owner) {
+                    if(!$dbh->registerOwnership($owner, $animal)){
+                        $errors[] = "Impossibile assegnare l'animale a " . $owner . ".";
+                    }
+                }
+                if(count($errors) == 0){
+                    $result = 1;
+                } 
+            } else {
+                $errors[] = "Si è verificato un problema nell'aggiunta dell'account, riprovare più tardi";
+            }
+        }
+    }
+        
+    return array($result, $errors);
+    
+}
+
+function editAnimal($animal, $type, $file, $description, $owners, $dbh){
+
+    $result = 0;
+    $errors = array();
+       
+    if(strlen($type) < 3){
+        $errors[] = "Il tipo deve contenere almeno 3 caratteri";
+    }
+
+    /* If there are already errors it's useless to upload the image */
+    if(count($errors) == 0) {
+
+        if(!empty($file["imgprofile"]["name"])) {
+            list($imgresult, $msg) = uploadImage(IMG_DIR, $_FILES["imgprofile"]);
+            if($imgresult != 0) {
+                $img = $msg;
+            } else {
+                $errors[] = $msg;
+            }
+        } else {
+            $img = $animal["immagine"];
+        }
+
+        if(count($errors) == 0){
+            if($dbh->updateAnimal($animal["username"], $type, $img, $description)) { 
+                if($img != $animal["immagine"] && $animal["immagine"] != DEFAULT_IMG) {
+                    unlink(IMG_DIR . $animal["immagine"]);
+                }
+                list($result, $errors) = editOwnerships($owners, $animal["username"], $dbh);
+            } else {
+                $errors[] = "Si è verificato un errore, riprovare più tardi";
+            }
+        }
+    }
+        
+    
+    return array($result, $errors);
+}
+
+function editOwnerships($owners, $animal, $dbh) {
+    $errors = array();
+    $oldOwners = $dbh->getOwners($animal);
+    foreach(array_diff($owners, $oldOwners) as $newOwner){
+        if(!$dbh->registerOwnership($newOwner, $animal)){
+            $errors[] = "Impossibile assegnare l'animale a " . $newOwner . ".";
+        }
+    }
+    foreach(array_diff($oldOwners, $owners) as $deleteOwner){
+        if(!$dbh->deleteOwnership($deleteOwner, $animal)){
+            $errors[] = "Impossibile rimuovere l'appartenenza di " . $animal . " a " . $deleteOwner . ".";
+        }
+    }
+    $result = count($errors) == 0 ? 1 : 0;
+    return array($result, $errors);
+}
+
 function uploadImage($path, $image)
 {
     $imageName = basename($image["name"]);
