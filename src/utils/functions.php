@@ -177,7 +177,7 @@ function registerAnimal($animal, $type, $file, $description, $owners, $dbh){
     
 }
 
-function editAnimal($animal, $type, $file, $description, $owners, $dbh, $currentUser){
+function editAnimal($animal, $type, $file, $description, $owners, $dbh){
 
     $result = 0;
     $errors = array();
@@ -185,8 +185,6 @@ function editAnimal($animal, $type, $file, $description, $owners, $dbh, $current
     if(strlen($type) < 3){
         $errors[] = "Il tipo deve contenere almeno 3 caratteri";
     }
-
-    /* TODO decide if user can remove himself from owners */
 
     /* If there are already errors it's useless to upload the image */
     if(count($errors) == 0) {
@@ -203,11 +201,11 @@ function editAnimal($animal, $type, $file, $description, $owners, $dbh, $current
         }
 
         if(count($errors) == 0){
-            if($dbh->updateAnimal($animal["username"], $type, $img, $description)){ /* TODO Must update ownerships */
-                $result = 1;
-                if($img != $animal["immagine"] && $animal["immagine"] != DEFAULT_IMG){
+            if($dbh->updateAnimal($animal["username"], $type, $img, $description)) { 
+                if($img != $animal["immagine"] && $animal["immagine"] != DEFAULT_IMG) {
                     unlink(IMG_DIR . $animal["immagine"]);
                 }
+                list($result, $errors) = editOwnerships($owners, $animal["username"], $dbh);
             } else {
                 $errors[] = "Si è verificato un errore, riprovare più tardi";
             }
@@ -215,6 +213,23 @@ function editAnimal($animal, $type, $file, $description, $owners, $dbh, $current
     }
         
     
+    return array($result, $errors);
+}
+
+function editOwnerships($owners, $animal, $dbh) {
+    $errors = array();
+    $oldOwners = $dbh->getOwners($animal);
+    foreach(array_diff($owners, $oldOwners) as $newOwner){
+        if(!$dbh->registerOwnership($newOwner, $animal)){
+            $errors[] = "Impossibile assegnare l'animale a " . $newOwner . ".";
+        }
+    }
+    foreach(array_diff($oldOwners, $owners) as $deleteOwner){
+        if(!$dbh->deleteOwnership($deleteOwner, $animal)){
+            $errors[] = "Impossibile rimuovere l'appartenenza di " . $animal . " a " . $deleteOwner . ".";
+        }
+    }
+    $result = count($errors) == 0 ? 1 : 0;
     return array($result, $errors);
 }
 
