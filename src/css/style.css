@@ -139,6 +139,13 @@ button > img{
     margin: 0 6.2%;
 }
 
+/* Other */
+
+div.my-son-textarea{
+    margin-left: 0;
+    margin-right: 0;
+}
+
 .form-outline{
     padding-bottom: 3%;
 }
@@ -203,27 +210,4 @@ li.select2-results__option {
     --bs-btn-disabled-bg:transparent;
     --bs-btn-disabled-border-color:#ed2939;
     --bs-gradient:none
-}
-
-button.btn{
-    border-width: 3px;
-}
-
-div.row button{
-    height: 100%;
-    width: 75%;
-    max-height: 150px;
-}
-
-button > img{
-    height: 70%;
-}
-
-.d-grid > button{
-    margin: 0 6.2%;
-}
-
-div.my-son-textarea{
-    margin-left: 0;
-    margin-right: 0;
 }
