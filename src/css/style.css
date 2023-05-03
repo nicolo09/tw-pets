@@ -101,12 +101,21 @@ body {
     }
 }
 
-/* button style */
-button.btn{
-    border-width: 3px;
+.miniature {
+    height: 60px;
+    width: 60px;
+    border-radius: 50%;
+    vertical-align: middle;
+    background: linear-gradient(white, white) padding-box,
+              linear-gradient(to right, darkblue, darkorchid) border-box;
+    border: 2px solid transparent;
+    padding: 1px;
+    margin: 1%;
 }
 
-div.row button{
+/* button style */
+
+.profile-button {
     height: 100%;
     width: 75%;
     max-height: 150px;
@@ -133,6 +142,17 @@ button > img{
 .form-outline{
     padding-bottom: 3%;
 }
+
+/* addition to other classes*/
+
+li.select2-results__option {
+    border-bottom: 1px solid #ccc;
+}
+
+.select2-container .select2-dropdown {
+    top: auto !important;
+}
+
 
 .btn-outline-animals{
     --bs-btn-color:#0eeb49;
