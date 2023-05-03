@@ -173,4 +173,38 @@ class DatabaseHelper
             return false;
         }
     }
+
+    /*This function returns the id of the created post or -1 if something went wrong*/
+    public function addPost($img, $alt, $txt, $user)
+    {
+        if ($stmt = $this->db->prepare("INSERT INTO post (immagine, alt, username, testo) VALUES (?, ?, ?, ?)")) {
+            $stmt->bind_param('ssss', $img, $alt, $user, $txt);
+            if ($stmt->execute() == true) {
+                return $this->db->insert_id;
+            }
+        }
+        return -1;
+    }
+
+    public function getOwnedAnimals($user)
+    {
+        if ($stmt = $this->db->prepare("SELECT * FROM possiede JOIN animale ON animale.username=possiede.animale WHERE persona = ?")) {
+            $stmt->bind_param('s', $user);
+            $stmt->execute();
+            $result = $stmt->get_result();
+            return $result->fetch_all(MYSQLI_ASSOC);
+        } else {
+            return array();
+        }
+    }
+
+    public function addAnimalToPost($idPost, $username)
+    {
+        if ($stmt = $this->db->prepare("INSERT INTO riguarda (id_post, animale) VALUES (?,?)")) {
+            $stmt->bind_param('is', $idPost, $username);
+            return $stmt->execute();
+        } else {
+            return false;
+        }
+    }
 }
