@@ -67,15 +67,6 @@ class DatabaseHelper
         }
     }
 
-    public function getAnimalsFromUser($username){
-        if($stmt = $this->db->prepare("SELECT username, immagine FROM animale INNER JOIN possiede ON animale.username = possiede.animale WHERE possiede.persona = ?")){
-            $stmt->bind_param('s', $username);
-            $stmt->execute();
-            $result = $stmt->get_result();
-            return $result->fetch_all(MYSQLI_ASSOC);
-        }
-    }
-
     public function registerOwnership($owner, $animal) {
         if(count($this->getUserFromName($owner)) == 1) {
             if($stmt = $this->db->prepare("INSERT INTO possiede (persona, animale) VALUES (?, ?)")) {

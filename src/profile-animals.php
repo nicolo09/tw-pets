@@ -18,7 +18,7 @@ if(isset($_GET["error"])){
 
 $templateParams["title"] = "Animali di " . $templateParams["user"];
 $templateParams["page"] = "base-animal-list.php";
-$templateParams["animals"] = $dbh->getAnimalsFromUser($templateParams["user"]);
+$templateParams["animals"] = $dbh->getOwnedAnimals($templateParams["user"]);
 
 require_once("template/base.php");
 ?>
