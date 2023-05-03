@@ -6,6 +6,10 @@ document.querySelector('#add-post-button').addEventListener('click', () => {
     window.location.href = 'create-new-post.php';
 });
 
+document.querySelector('#view-profile-button').addEventListener('click', () => {
+    window.location.href = 'view-user-profile.php';
+});
+
 document.querySelector('#logout-button').addEventListener('click', () => {
     // Ask for confirmation
     $('#buttons-div').empty();
