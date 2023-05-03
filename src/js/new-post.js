@@ -57,12 +57,8 @@ function createAnimalDisplay(selectedAnimals) {
         const numRows = Math.ceil(selectedAnimals.length / 2);
         let counter = 0;
         for (let i = 0; i < numRows; i++) {
-            //console.log(finalAnimals);
-            //console.log(getAnimalIndex(selectedAnimals[counter],finalAnimals));
             const index=getAnimalIndex(selectedAnimals[counter],finalAnimals);
-            console.log(index)
             const anim = finalAnimals[index];
-            console.log(anim);
 
             html += `
         <div class="row mt-5">`;
