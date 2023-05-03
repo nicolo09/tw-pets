@@ -48,7 +48,7 @@ if(isset($templateParams["errors"])) {
                     foreach($templateParams["mutuals"] as $mutual) {
                         
                         $active = isset($templateParams["owners"]) 
-                            && in_array($mutual, $templateParams["owners"]) 
+                            && in_array($mutual["username"], $templateParams["owners"]) 
                             ? " selected"
                             : "";
                         
@@ -62,9 +62,7 @@ if(isset($templateParams["errors"])) {
                         . "</option>";
                     }
                     ?>
-                    <option value="Pappero">Pappero1</option>
                     </select>
-                    
                     <?php else : ?>
                     <label class="text-decoration-underline fw-bold">Al momento non ci sono utenti che puoi aggiungere come padroni</label>
                     <?php endif ?>
