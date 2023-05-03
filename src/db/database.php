@@ -76,8 +76,21 @@ class DatabaseHelper
         }
     }
 
-    public function registerOwnership($owner, $animal){
-        if($stmt = $this->db->prepare("INSERT INTO possiede (persona, animale) VALUES (?, ?)")) {
+    public function registerOwnership($owner, $animal) {
+        if(count($this->getUserFromName($owner)) == 1) {
+            if($stmt = $this->db->prepare("INSERT INTO possiede (persona, animale) VALUES (?, ?)")) {
+                $stmt->bind_param('ss', $owner, $animal);
+                return $stmt->execute();
+            } else {
+                return false;
+            }
+        } else {
+            return false;
+        }
+    }
+
+    public function deleteOwnership($owner, $animal) {
+        if($stmt = $this->db->prepare("DELETE FROM possiede WHERE persona = ? AND animale = ?")) {
             $stmt->bind_param('ss', $owner, $animal);
             return $stmt->execute();
         } else {
@@ -90,7 +103,7 @@ class DatabaseHelper
             $stmt->bind_param('s',$animal);
             $stmt->execute();
             $result = $stmt->get_result();
-            return $result->fetch_all(MYSQLI_ASSOC);
+            return array_column($result->fetch_all(MYSQLI_ASSOC), "username");
         } else {
             return array();
         }
