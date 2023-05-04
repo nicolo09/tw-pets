@@ -280,7 +280,13 @@ function getManagedAnimals(string $user, DatabaseHelper $dbh)
 
 function getUserData(string $user, DatabaseHelper $dbh)
 {
-    return $dbh->getUserInfo($user);
+    $tmp=$dbh->getUserInfo($user);
+    if(empty($tmp)){
+        return array();
+    }else{
+        #Dato che l'username è univoco, rendo l'array con i dati direttamente accessibile
+        return $tmp[0];
+    }
 }
 
 function getUserCreatedPosts(string $user, DatabaseHelper $dbh)
