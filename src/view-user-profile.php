@@ -8,6 +8,15 @@ if (isUserLoggedIn($dbh)==false) {
     exit;
 }
 #Altrimenti può guardare un utente
+#Carico i dati utente da db
+$user=getUserData(getUserName($dbh), $dbh);
+if(empty($user)==false){
+    $templateParams["username"]=$user["username"];
+    $templateParams["img"]=IMG_DIR . $user["immagine"];
+    $templateParams["role"]=$user["impiego"];
+    $templateParams["description"]=$user["descrizione"];
+}
+#TODO: Error
 
 $templateParams["page"] = "user-profile.php";
 $templateParams["title"] = "Titolo";

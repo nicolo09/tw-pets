@@ -1,10 +1,20 @@
 <div class="container-fluid text-center pb-2">
     <div class="row">
-        <img src="img/facebook-default-profile-pic.jpg" alt="Foto profilo di ginopino00" class="proPic col p-0 mt-2 d-flex justify-content-end" />
+        <img src="<?php if (isset($templateParams["img"])) {
+                    echo $templateParams["img"];
+                } ?>" alt="Foto profilo di <?php if (isset($templateParams["username"])) {
+                    echo $templateParams["username"];
+                } ?>" class="proPic col p-0 mt-2 d-flex justify-content-end" />
         <div class="col p-0 w-25">
-            <h1>ginopino00</h1>
-            <h2>Persona/Coach di me stesso</h2>
-            <p>Scopri come diventare milionario grazie al mio novo canale cryptocurrencyt telegram</p>
+            <h1><?php if (isset($templateParams["username"])) {
+                    echo $templateParams["username"];
+                } ?></h1>
+            <h2>Persona/<?php if (isset($templateParams["role"])) {
+                    echo $templateParams["role"];
+                } ?></h2>
+            <p><?php if (isset($templateParams["description"])) {
+                    echo $templateParams["description"];
+                } ?></p>
         </div>
         <!--Bottoni-->
         <div class="text-center row w-100 g-0">
