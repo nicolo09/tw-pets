@@ -16,6 +16,13 @@ if(empty($user)==false){
     $templateParams["role"]=$user["impiego"];
     $templateParams["description"]=$user["descrizione"];
 }
+$posts=getUserCreatedPosts(getUserName($dbh), $dbh);
+if(empty($posts)==false){
+    foreach($posts as $single){
+        $templateParams["postimg"][]="img/" . $single["immagine"];
+        $templateParams["alt"][]=$single["alt"];
+    }
+}
 #TODO: Error
 
 $templateParams["page"] = "user-profile.php";
