@@ -5,8 +5,8 @@
                 <div class="card mb-2 search-bar">
                     <div class="card-body p-2">
                         <div class="input-group input-group-lg">
-                            <input type="text" class="form-control form-control-lg rounde bg-transparent" placeholder="Cerca persone e animali.." aria-label="Type Keywords" aria-describedby="basic-addon2" />
-                            <div class="search-button">
+                            <input type="text" class="form-control form-control-lg bg-transparent" placeholder="Cerca persone e animali.." aria-label="Type Keywords" aria-describedby="basic-addon2" name="username"/>
+                            <div class="search-button" onclick="javascript:document.forms[0].submit();">
                                 <img src="img/search.svg" />
                             </div>
                         </div>

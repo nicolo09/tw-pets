@@ -157,6 +157,25 @@ div.my-son-textarea{
     background: linear-gradient(to right, darkblue, darkorchid);
 }
 
+.search-button {
+    cursor: pointer;
+}
+
+.search-button:hover {
+    animation: rotation 0.4s alternate; 
+    animation-iteration-count: 2;
+    animation-fill-mode: both;
+}
+
+@keyframes rotation {
+    from {
+        transform: rotate(0deg);
+    }
+    to {
+        transform: rotate(-30deg);
+    }
+}
+
 .input-group>.form-control, .input-group>.form-control:focus {
     color: #fff;
     border-color: transparent;
