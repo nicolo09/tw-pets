@@ -6,5 +6,6 @@ if (!isUserLoggedIn($dbh)) {
     exit;
 }
 
+$templateParams["page"] = "search-users.php";
 require_once("template/base.php");
 ?>
