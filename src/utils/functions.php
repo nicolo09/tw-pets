@@ -275,6 +275,15 @@ function newPost($user, $img, $alt, $txt, $pets, DatabaseHelper $dbh)
 
 function getManagedAnimals(string $user, DatabaseHelper $dbh)
 {
-    //Ritorna array di array, rimuovo il nesting
     return $dbh->getOwnedAnimals($user);
+}
+
+function getUserData(string $user, DatabaseHelper $dbh)
+{
+    return $dbh->getUserInfo($user);
+}
+
+function getUserCreatedPosts(string $user, DatabaseHelper $dbh)
+{
+    return $dbh->getUserPosts($user);
 }
