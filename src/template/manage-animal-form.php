@@ -38,7 +38,7 @@ if(isset($templateParams["errors"])) {
                     <textarea placeholder="Max 100 caratteri" class="form-control" maxlength="100" id="descriptionTextArea" name="description"><?php if(isset($templateParams["description"])) { echo $templateParams["description"]; }?></textarea>
                 </div>
 
-                <!-- TODO others owner input -->
+                <!-- Additional owners input -->
                 <div class="form-outline">
                     <label class="form-label w-100 pb-2" for="multiSelector">Padroni selezionati:</label>
                     <?php if(!empty($templateParams["mutuals"])):?>

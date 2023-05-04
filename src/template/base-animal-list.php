@@ -14,7 +14,7 @@
                         alt="Profilo di <?php echo $templateParams["animals"][$x + $y]["username"]?>"
                         onclick='goToAnimal("<?php echo $templateParams["animals"][$x + $y]["username"]?>")'></div>
                         <label class="fs-4 fw-bolder proPicLabel"><?php echo $templateParams["animals"][$x + $y]["username"]?></label>
-                        <?php if($_SESSION["username"] == $templateParams["user"]):?> <!-- TODO check if right way to do this -->
+                        <?php if(getUserName($dbh) == $templateParams["user"]):?> 
                             <div class="w-100"><button class="btn manage-button" id="modify_<?php echo $templateParams["animals"][$x + $y]["username"]?>_mobile">Modifica</button></div>
                         <?php endif ?>
                     <?php endif ?>
@@ -34,7 +34,7 @@
                         alt="Profilo di <?php echo $templateParams["animals"][$x + $y]["username"]?>"
                         onclick='goToAnimal("<?php echo $templateParams["animals"][$x + $y]["username"]?>")'></div>
                         <label class=" fs-4 fw-bolder proPicLabel"><?php echo $templateParams["animals"][$x + $y]["username"]?></label>
-                        <?php if($_SESSION["username"] == $templateParams["user"]):?>
+                        <?php if(getUserName($dbh) == $templateParams["user"]):?>
                             <div class="w-100"><button class="btn manage-button" id="modify_<?php echo $templateParams["animals"][$x + $y]["username"]?>_desktop">Modifica</button></div>
                         <?php endif ?>
                     <?php endif ?>
@@ -43,7 +43,7 @@
         </div>
     <?php endfor; ?>
     </div>        
-    <?php if($_SESSION["username"] == $templateParams["user"]):?>
+    <?php if(getUserName($dbh) == $templateParams["user"]):?>
     <button class="btn btn-primary" id="add-animal-button"><img src="/img/add_animal.svg" alt="add animal icon">Aggiungi animale</button>
     <?php endif ?>
 </div>
