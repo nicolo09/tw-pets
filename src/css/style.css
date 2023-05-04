@@ -2,6 +2,10 @@ body {
     padding-top: 70px;
 }
 
+textarea {
+    resize: none !important;
+}
+
 /* Simple way to display differently on desktop and mobile */
 .mobile-view {
     display: none;
