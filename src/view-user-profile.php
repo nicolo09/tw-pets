@@ -12,7 +12,7 @@ if (isUserLoggedIn($dbh)==false) {
 $user=getUserData(getUserName($dbh), $dbh);
 if(empty($user)==false){
     $templateParams["username"]=$user["username"];
-    $templateParams["img"]=IMG_DIR . $user["immagine"];
+    $templateParams["img"]="img/" . $user["immagine"];
     $templateParams["role"]=$user["impiego"];
     $templateParams["description"]=$user["descrizione"];
 }
