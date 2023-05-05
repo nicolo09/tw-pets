@@ -54,6 +54,7 @@
                 }
                 echo html_entity_decode($end);
             }
+            return;
         }
     }
     //Se hai un numero immagini diverso dal numero di alt-> non mostro nessuna immagine
