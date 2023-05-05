@@ -32,8 +32,8 @@
     if(isset($templateParams["postimg"])&&isset($templateParams["alt"])){
         if(count($templateParams["postimg"])==isset($templateParams["alt"])){
             //Ogni immagine deve avere un alt
-            $n=count($templateParams["postimg"]);
-            $rows=($n%2)+1; //Il numero di righe, almeno una esiste
+            $n=count($templateParams["postimg"]);//Hai n elementi, tra 0 e n-1
+            $rows=ceil($n/2); //Il numero di righe, almeno una esiste
             $start='<div class="row w-100 g-0">';
             $end='</div>';
             $counter=0;
@@ -42,7 +42,7 @@
                 $tmp='<img src="'.$templateParams["postimg"][$counter].'" alt="'.$templateParams["alt"][$counter].'" class="col w-50 p-0 border border-black"/>';
                 echo html_entity_decode($tmp);
                 $counter++;
-                if($counter<=$n){
+                if($counter<$n){
                     //Ci sono altre immagini da mostrare
                     $tmp='<img src="'.$templateParams["postimg"][$counter].'" alt="'.$templateParams["alt"][$counter].'" class="col w-50 p-0 border border-black"/>';
                     echo html_entity_decode($tmp);
