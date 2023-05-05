@@ -40,6 +40,30 @@ class DatabaseHelper
 
     }
 
+    public function getPersonsLike($username, $offset){
+        $value = "%".$username."%";
+        if($stmt = $this->db->prepare("SELECT * FROM persona WHERE username LIKE ? LIMIT 10 OFFSET $offset")) {
+            $stmt->bind_param('s', $value);
+            $stmt->execute();
+            $result = $stmt->get_result();
+            return $result->fetch_all(MYSQLI_ASSOC);
+        } else {
+            return array();
+        }
+    }
+
+    public function getAnimalsLike($username, $offset){
+        $value = "%".$username."%";
+        if($stmt = $this->db->prepare("SELECT * FROM animale WHERE username LIKE ? LIMIT 10 OFFSET $offset")) {
+            $stmt->bind_param('s', $value);
+            $stmt->execute();
+            $result = $stmt->get_result();
+            return $result->fetch_all(MYSQLI_ASSOC);
+        } else {
+            return array();
+        }
+    }
+
     public function addAnimal($username, $type, $img, $description) {
         if ($stmt = $this->db->prepare("INSERT INTO animale (username, tipo, immagine, descrizione) VALUES (?, ?, ?, ?)")) {
             $stmt->bind_param('ssss', $username, $type, $img, $description);
