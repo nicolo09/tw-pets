@@ -30,7 +30,7 @@
 <div class="container-fluid g-0 w-100 border-top border-black mt-3 pt-2">
     <?php
     if(isset($templateParams["postimg"])&&isset($templateParams["alt"])){
-        if(count($templateParams["postimg"])==isset($templateParams["alt"])){
+        if(count($templateParams["postimg"])==isset($templateParams["alt"])&&count($templateParams["postimg"])>0){
             //Ogni immagine deve avere un alt
             $n=count($templateParams["postimg"]);//Hai n elementi, tra 0 e n-1
             $rows=ceil($n/2); //Il numero di righe, almeno una esiste
@@ -55,7 +55,8 @@
                 echo html_entity_decode($end);
             }
         }
-        //TODO: Gestisci caso 0 immagini
     }
+    //Se hai un numero immagini diverso dal numero di alt-> non mostro nessuna immagine
+    echo html_entity_decode('<h3 class="text-center">Nessun post</h3>');
     ?>
 </div>
