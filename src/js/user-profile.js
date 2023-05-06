@@ -10,8 +10,6 @@ const postList = fetch("tell-js-posts.php").then((response) => {
     })
 });
 
-console.log(finalPosts);
-
 const imgs=document.querySelectorAll('#immagine').forEach((item, index)=>{
     item.addEventListener('click', () => {
         id=finalPosts[index]["id_post"];
