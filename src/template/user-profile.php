@@ -39,12 +39,12 @@
             $counter=0;
             for($i=0; $i<$rows; $i++){
                 echo html_entity_decode($start);
-                $tmp='<img src="'.$templateParams["postimg"][$counter].'" alt="'.$templateParams["alt"][$counter].'" class="col w-50 p-0 border border-black"/>';
+                $tmp='<img src="'.$templateParams["postimg"][$counter].'" alt="'.$templateParams["alt"][$counter].'" class="col w-50 p-0 border border-black" id="immagine"/>';
                 echo html_entity_decode($tmp);
                 $counter++;
                 if($counter<$n){
                     //Ci sono altre immagini da mostrare
-                    $tmp='<img src="'.$templateParams["postimg"][$counter].'" alt="'.$templateParams["alt"][$counter].'" class="col w-50 p-0 border border-black"/>';
+                    $tmp='<img src="'.$templateParams["postimg"][$counter].'" alt="'.$templateParams["alt"][$counter].'" class="col w-50 p-0 border border-black" id="immagine"/>';
                     echo html_entity_decode($tmp);
                     $counter++;
                 }else{
@@ -54,10 +54,15 @@
                 }
                 echo html_entity_decode($end);
             }
-            return;
+        }else{
+            //Se hai un numero immagini diverso dal numero di alt-> non mostro nessuna immagine
+            echo html_entity_decode('<h3 class="text-center">Nessun post</h3>');
         }
+    }else{
+        //Se non hai settato le immagini
+        echo html_entity_decode('<h3 class="text-center">Nessun post</h3>');
     }
-    //Se hai un numero immagini diverso dal numero di alt-> non mostro nessuna immagine
-    echo html_entity_decode('<h3 class="text-center">Nessun post</h3>');
+    
     ?>
 </div>
+<script src="js/user-profile.js" type="text/javascript"></script>
