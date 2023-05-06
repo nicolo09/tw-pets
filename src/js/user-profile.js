@@ -14,7 +14,7 @@ console.log(finalPosts);
 
 const imgs=document.querySelectorAll('#immagine').forEach((item, index)=>{
     item.addEventListener('click', () => {
-        console.log(finalPosts[index]["id_post"]);
-        console.log(index);
+        id=finalPosts[index]["id_post"];
+        window.location.href = `post.php?id=${id}`;
     });
 });
