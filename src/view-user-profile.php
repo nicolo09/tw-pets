@@ -32,11 +32,16 @@ if (empty($username) == false) {
             $templateParams["alt"][] = $single["alt"];
         }
     }
+    $templateParams["title"] = "Pagina profilo di " . $username;
 } else {
     //Non c'è l'utente che vuoi
-    #TODO: Error
+    $templateParams["title"] = "Utente non esiste";
+    $templateParams["username"] = "Utente non esiste";
+    $templateParams["img"] = "#";
+    $templateParams["role"] = "Utente non esiste";
+    $templateParams["description"] = "Utente non esiste";
+
 }
 
 $templateParams["page"] = "user-profile.php";
-$templateParams["title"] = "Pagina profilo di " . $username;
 require_once("template/base.php");
