@@ -49,8 +49,8 @@
 <!--Galleria immagini-->
 <div class="container-fluid g-0 w-100 border-top border-black mt-3 pt-2">
     <?php
-    if(isset($templateParams["postimg"])&&isset($templateParams["alt"])){
-        if(count($templateParams["postimg"])==isset($templateParams["alt"])&&count($templateParams["postimg"])>0){
+    if(isset($templateParams["postimg"])&&isset($templateParams["alt"])&&isset($templateParams["id"])){
+        if(count($templateParams["postimg"])==isset($templateParams["alt"])&&count($templateParams["postimg"])>0&&count($templateParams["id"])==count($templateParams["postimg"])){
             //Ogni immagine deve avere un alt
             $n=count($templateParams["postimg"]);//Hai n elementi, tra 0 e n-1
             $rows=ceil($n/2); //Il numero di righe, almeno una esiste
@@ -59,12 +59,12 @@
             $counter=0;
             for($i=0; $i<$rows; $i++){
                 echo html_entity_decode($start);
-                $tmp='<img src="'.$templateParams["postimg"][$counter].'" alt="'.$templateParams["alt"][$counter].'" class="col w-50 p-0 border border-black" id="immagine"/>';
+                $tmp='<a href="post.php?id='.$templateParams["id"][$counter].'" class="col w-50 p-0 border border-black"> <img src="'.$templateParams["postimg"][$counter].'" alt="'.$templateParams["alt"][$counter].'" class="w-100"/> </a>';
                 echo html_entity_decode($tmp);
                 $counter++;
                 if($counter<$n){
                     //Ci sono altre immagini da mostrare
-                    $tmp='<img src="'.$templateParams["postimg"][$counter].'" alt="'.$templateParams["alt"][$counter].'" class="col w-50 p-0 border border-black" id="immagine"/>';
+                    $tmp='<a href="post.php?id='.$templateParams["id"][$counter].'" class="col w-50 p-0 border border-black"> <img src="'.$templateParams["postimg"][$counter].'" alt="'.$templateParams["alt"][$counter].'" class="w-100" /> </a>';
                     echo html_entity_decode($tmp);
                     $counter++;
                 }else{
@@ -85,4 +85,4 @@
     
     ?>
 </div>
-<script src="js/user-profile.js" type="text/javascript"></script>
+

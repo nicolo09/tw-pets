@@ -33,6 +33,7 @@ if (empty($username) == false) {
         foreach ($posts as $single) {
             $templateParams["postimg"][] = "img/" . $single["immagine"];
             $templateParams["alt"][] = $single["alt"];
+            $templateParams["id"][] = $single["id_post"];
         }
     }
     $templateParams["title"] = "Pagina profilo di " . $username;
