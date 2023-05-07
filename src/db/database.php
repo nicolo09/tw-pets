@@ -135,7 +135,7 @@ class DatabaseHelper
 
     public function doesUserExist($username)
     {
-        if ($stmt = $this->db->prepare("SELECT username FROM persona WHERE username=?")) {
+        if ($stmt = $this->db->prepare("SELECT COUNT(username) FROM persona WHERE username=?")) {
             $stmt->bind_param('s', $username);
             $stmt->execute();
             $result = $stmt->get_result();
