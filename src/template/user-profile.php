@@ -18,9 +18,29 @@
         </div>
         <!--Bottoni-->
         <div class="text-center row w-100 g-0">
-            <button class="btn btn-outline-primary col m-2"><img src="img/add-user.svg" alt="" class="w-50">Segui</button>
-            <button class="btn btn-outline-primary col m-2"><img src="img/pets.svg" alt="" class="w-50">Animali</button>
-            <button class="btn btn-outline-primary col m-2"><img src="img/groups.svg" alt="" class="w-50">Followers</button>
+            <button class="btn btn-outline-primary col m-2" 
+            <?php if (isset($templateParams["followDisabled"])){
+                if($templateParams["followDisabled"]==true){
+                    echo "disabled";
+                }
+            }  
+            ?>>
+            <img src="img/add-user.svg" alt="" class="w-50" >Segui
+            </button>
+            <button class="btn btn-outline-primary col m-2" <?php if (isset($templateParams["animalsDisabled"])){
+                if($templateParams["animalsDisabled"]==true){
+                    echo "disabled";
+                }
+            }  
+            ?>>
+            <img src="img/pets.svg" alt="" class="w-50">Animali</button>
+            <button class="btn btn-outline-primary col m-2"><?php if (isset($templateParams["followersDisabled"])){
+                if($templateParams["followersDisabled"]==true){
+                    echo "disabled";
+                }
+            }  
+            ?>>
+            <img src="img/groups.svg" alt="" class="w-50">Followers</button>
         </div>
     </div>
 

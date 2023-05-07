@@ -33,6 +33,11 @@ if (empty($username) == false) {
         }
     }
     $templateParams["title"] = "Pagina profilo di " . $username;
+    if($username===getUserName($dbh)){
+        $templateParams["followDisabled"]=true;
+        $templateParams["animalsDisabled"]=false;
+        $templateParams["followersDisabled"]=false;
+    }
 } else {
     //Non c'è l'utente che vuoi
     $templateParams["title"] = "Utente non esiste";
@@ -40,6 +45,9 @@ if (empty($username) == false) {
     $templateParams["img"] = "#";
     $templateParams["role"] = "Utente non esiste";
     $templateParams["description"] = "Utente non esiste";
+    $templateParams["followDisabled"]=true;
+    $templateParams["animalsDisabled"]=true;
+    $templateParams["followersDisabled"]=true;
 
 }
 
