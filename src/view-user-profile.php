@@ -14,6 +14,9 @@ if (isset($_GET["username"])) {
     if (doesPersonUsernameExist($_GET["username"], $dbh) == 1) {
         $username = $_GET["username"];
     }
+}else{
+    //Se non hai settato username guardo tuo profilo
+    $username=getUserName($dbh);
 }
 
 
