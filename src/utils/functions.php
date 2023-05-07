@@ -307,3 +307,14 @@ function doesPersonUsernameExist(string $username, DatabaseHelper $dbh){
     return 0;
     
 }
+
+//Returns true if user owns any animals
+function doesUserOwnAnimals(string $username, DatabaseHelper $dbh){
+    $animals=$dbh->getOwnedAnimals($username);
+    if(count($animals)==0){
+        return false;
+    }else{
+        return true;
+    }
+    
+}

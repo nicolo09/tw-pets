@@ -44,6 +44,13 @@ if (empty($username) == false) {
         $templateParams["animalsDisabled"]=false;
         $templateParams["followersDisabled"]=false;
     }
+    $ownsAnimals=doesUserOwnAnimals($username, $dbh);
+    if($ownsAnimals==false){
+        //Se non ha animali non posso premere il tasto
+        //Altrimenti si, ma solo se utente esiste ecc... quindi seguo le regole sopra
+        $templateParams["animalsDisabled"]=true;
+    }
+    
 } else {
     //Non c'è l'utente che vuoi
     $templateParams["title"] = "Utente non esiste";
