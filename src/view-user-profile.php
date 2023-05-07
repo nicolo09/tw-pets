@@ -34,7 +34,13 @@ if (empty($username) == false) {
     }
     $templateParams["title"] = "Pagina profilo di " . $username;
     if($username===getUserName($dbh)){
+        //E' il tuo profilo
         $templateParams["followDisabled"]=true;
+        $templateParams["animalsDisabled"]=false;
+        $templateParams["followersDisabled"]=false;
+    }else{
+        //E' il profilo di qualcun altro
+        $templateParams["followDisabled"]=false;
         $templateParams["animalsDisabled"]=false;
         $templateParams["followersDisabled"]=false;
     }
