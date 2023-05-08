@@ -318,3 +318,22 @@ function doesUserOwnAnimals(string $username, DatabaseHelper $dbh){
     }
     
 }
+
+function allFollowers(string $username, DatabaseHelper $dbh){
+    $followers=$dbh->getAllFollowers($username);
+    $result=array();
+    if(empty($followers)==false){
+        foreach($followers as $single){
+            $result.array_push($single["follower"]);
+        }
+    }
+    return $result;
+}
+
+function doesUserFollowMe(string $self, string $follower, DatabaseHelper $dbh){
+    $result=$dbh->doesUserFollowMyAccount($self, $follower);
+    if($result==1){
+        return true;
+    }
+    return false;
+}

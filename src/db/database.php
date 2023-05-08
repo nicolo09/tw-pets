@@ -144,4 +144,32 @@ class DatabaseHelper
             return -1;
         }
     }
+
+    public function getAllFollowers($username){
+        if ($stmt = $this->db->prepare("SELECT followers FROM segue_persona WHERE followed=?")) {
+            $stmt->bind_param('s', $username);
+            $stmt->execute();
+            $result = $stmt->get_result();
+            return $result->fetch_all(MYSQLI_ASSOC);
+        } else {
+            return array();
+        }
+    }
+
+    //Ritorna 0 se gli follower non segue followed
+    public function doesUserFollowMyAccount($followedUsername, $followerUsername){
+        if ($stmt = $this->db->prepare("SELECT * FROM segue_persona WHERE followed=? AND follower=?")) {
+            $stmt->bind_param('ss', $followedUsername, $followerUsername);
+            $stmt->execute();
+            $result = $stmt->get_result();
+            $tmp=$result->fetch_all(MYSQLI_ASSOC);
+            if(count($tmp)==1){
+                return 1;
+            }
+            return 0;
+        } else {
+            return 0;
+        }
+
+    }
 }
