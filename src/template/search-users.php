@@ -1,3 +1,6 @@
+<?php if(isset($templateParams["error"])):?>
+<p class="text-danger text-center text-decoration-underline"><?php echo $templateParams["error"]; ?></p>
+<?php endif; ?>
 <form id="search-form" action="search.php" method="get">
     <div class="container">
         <div class="row justify-content-center">
@@ -16,7 +19,7 @@
                     <h3 class="results-title">P E R S O N E</h3>
                     <?php if(!empty($templateParams["persons"])): ?>
                         <div class="results-container">
-                            <?php for($x = 0; $x < 3 && $x < count($templateParams["persons"]); $x++): ?> <!-- TODO change to normal for cicle (try with 5 iter) -->
+                            <?php for($x = 0; $x < 3 && $x < count($templateParams["persons"]); $x++): ?> 
                                 <div class="card result-bar">
                                     <div class="card-body p-2">
                                         <div class="result-element">
@@ -27,6 +30,9 @@
                                 </div>
                             <?php endfor; ?>
                         </div>
+                        <?php if(count($templateParams["persons"]) > 3): ?>
+                            <a class="d-flex justify-content-center" href="search-results.php?persons=<?php echo $templateParams["search"] ?>">Mostra tutti</a>
+                        <?php endif; ?>
                     <?php else: ?>
                         <label class="w-100 text-center text-muted text-decoration-underline my-3">Non ci sono utenti che corrispondo alla ricerca</label>
                     <?php endif; ?>
@@ -35,7 +41,7 @@
                     <h3 class="results-title">A N I M A L I</h3>
                     <?php if(!empty($templateParams["animals"])): ?>
                         <div class="results-container">
-                            <?php for($x = 0; $x < 3 && $x < count($templateParams["animals"]); $x++): ?> <!-- TODO change to normal for cicle (try with 5 iter) -->
+                            <?php for($x = 0; $x < 3 && $x < count($templateParams["animals"]); $x++): ?> 
                                 <div class="card result-bar">
                                     <div class="card-body p-2">
                                         <div class="result-element">
@@ -46,6 +52,9 @@
                                 </div>
                             <?php endfor; ?>
                         </div>
+                        <?php if(count($templateParams["animals"]) > 3): ?>
+                            <a class="d-flex justify-content-center" href="search-results.php?animals=<?php echo $templateParams["search"] ?>">Mostra tutti</a>
+                        <?php endif; ?>
                     <?php else: ?>
                         <label class="w-100 text-center text-muted text-decoration-underline my-3">Non ci sono animali che corrispondo alla ricerca</label>
                     <?php endif; ?>
