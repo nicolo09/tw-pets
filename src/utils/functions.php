@@ -337,3 +337,33 @@ function doesUserFollowMe(string $self, string $follower, DatabaseHelper $dbh){
     }
     return false;
 }
+
+//Return 1 if username exists, otherwise 0
+function doesAnimalUsernameExist(string $username, DatabaseHelper $dbh){
+    $users=$dbh->doesAnimalExist($username);
+    if(empty($users)){
+        return 0;
+    }else{
+        if($users[0]["COUNT(username)"]==1){
+            return 1;
+        }
+    }
+    return 0;
+    
+}
+
+function getAnimalData(string $user, DatabaseHelper $dbh)
+{
+    $tmp=$dbh->getAnimalInfo($user);
+    if(empty($tmp)){
+        return array();
+    }else{
+        #Dato che l'username è univoco, rendo l'array con i dati direttamente accessibile
+        return $tmp[0];
+    }
+}
+
+function getAnimalRelatedPosts(string $username, DatabaseHelper $dbh)
+{
+    return $dbh->getAnimalPosts($username);
+}

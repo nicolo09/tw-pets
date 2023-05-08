@@ -170,6 +170,41 @@ class DatabaseHelper
         } else {
             return 0;
         }
+    }
 
+    public function doesAnimalExist($username)
+    {
+        if ($stmt = $this->db->prepare("SELECT COUNT(username) FROM animale WHERE username=?")) {
+            $stmt->bind_param('s', $username);
+            $stmt->execute();
+            $result = $stmt->get_result();
+            return $result->fetch_all(MYSQLI_ASSOC);
+        } else {
+            return -1;
+        }
+    }
+
+    public function getAnimalInfo($username)
+    {
+        if ($stmt = $this->db->prepare("SELECT username, descrizione, immagine, tipo FROM animale WHERE username = ?")) {
+            $stmt->bind_param('s', $username);
+            $stmt->execute();
+            $result = $stmt->get_result();
+            return $result->fetch_all(MYSQLI_ASSOC);
+        } else {
+            return array();
+        }
+    }
+
+    public function getAnimalPosts($username)
+    {
+        if ($stmt = $this->db->prepare("SELECT * FROM riguarda JOIN post ON riguarda.id_post=post.id_post WHERE riguarda.animale=?")) {
+            $stmt->bind_param('s', $username);
+            $stmt->execute();
+            $result = $stmt->get_result();
+            return $result->fetch_all(MYSQLI_ASSOC);
+        } else {
+            return array();
+        }
     }
 }
