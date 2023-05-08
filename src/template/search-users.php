@@ -8,7 +8,7 @@
                 <div class="card search-bar">
                     <div class="card-body p-2">
                         <div class="input-group input-group-lg">
-                            <input type="text" class="form-control form-control-lg bg-transparent" placeholder="Cerca persone e animali.." aria-label="Type Keywords" aria-describedby="basic-addon2" name="username"/>
+                            <input type="text" class="form-control form-control-lg bg-transparent" <?php if(isset($templateParams["search"])) { echo " value=".$templateParams["search"] ;} ?> placeholder="Cerca persone e animali.." aria-label="Type Keywords" aria-describedby="basic-addon2" name="username"/>
                             <div id="search-button" class="search-button">
                                 <img src="img/search.svg" />
                             </div>
