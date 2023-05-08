@@ -34,7 +34,7 @@
             }  
             ?>>
             <img src="img/pets.svg" alt="" class="w-50">Animali</button>
-            <button class="btn btn-outline-primary col m-2"><?php if (isset($templateParams["followersDisabled"])){
+            <button class="btn btn-outline-primary col m-2"<?php if (isset($templateParams["followersDisabled"])){
                 if($templateParams["followersDisabled"]==true){
                     echo "disabled";
                 }
