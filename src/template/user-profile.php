@@ -25,7 +25,21 @@
                 }
             }  
             ?>>
-            <img src="img/add-user.svg" alt="" class="w-50" >Segui
+            <?php if (isset($templateParams["followDisabled"])&&$templateParams["followDisabled"]==false){
+                if(isset($templateParams["userFollows"])){
+                    if($templateParams["userFollows"]==true){
+                    //Utente segue
+                        echo html_entity_decode('<img src="img/remove-user.svg" alt="" class="w-50" >Smetti di seguire');
+                    }else{
+                        echo html_entity_decode('<img src="img/add-user.svg" alt="" class="w-50" >Segui');
+                    }
+                }else{
+                    echo html_entity_decode('<img src="img/add-user.svg" alt="" class="w-50" >Segui');
+                }
+            }else{
+                echo html_entity_decode('<img src="img/add-user.svg" alt="" class="w-50" >Segui');
+            }  
+            ?>
             </button>
             <button class="btn btn-outline-primary col m-2" <?php if (isset($templateParams["animalsDisabled"])){
                 if($templateParams["animalsDisabled"]==true){

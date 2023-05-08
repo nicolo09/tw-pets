@@ -47,6 +47,13 @@ if (empty($username) == false) {
         $templateParams["followDisabled"]=false;
         $templateParams["animalsDisabled"]=false;
         $templateParams["followersDisabled"]=false;
+        if(doesUserFollowMe($username, getUserName($dbh), $dbh)){
+            //Cambia icona
+            $templateParams["userFollows"]=true;
+        }else{
+            //Utente non mi segue
+            $templateParams["userFollows"]=false;
+        }
     }
     $ownsAnimals=doesUserOwnAnimals($username, $dbh);
     if($ownsAnimals==false){
