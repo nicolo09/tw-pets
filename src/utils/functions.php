@@ -342,13 +342,13 @@ function doesUserFollowMe(string $self, string $follower, DatabaseHelper $dbh){
 function doesAnimalUsernameExist(string $username, DatabaseHelper $dbh){
     $users=$dbh->doesAnimalExist($username);
     if(empty($users)){
-        return 0;
+        return false;
     }else{
         if($users[0]["COUNT(username)"]==1){
-            return 1;
+            return true;
         }
     }
-    return 0;
+    return false;
     
 }
 
@@ -377,4 +377,28 @@ function doIFollowAnimal(string $username, string $animal, DatabaseHelper $dbh){
         return true;
     }
 
+}
+
+function followPerson(string $followed, string $follower, DatabaseHelper $dbh){
+    return $dbh->addFollowPerson($followed, $follower);
+}
+
+function unfollowPerson(string $followed, string $follower, DatabaseHelper $dbh){
+    return $dbh->removeFollowPerson($followed, $follower);
+}
+
+function isAnimalManagedByMe(string $username, string $animal, DatabaseHelper $dbh){
+    $result=$dbh->isAnimalManagedByUser($username, $animal);
+    if(empty($result)==false){
+        return true;
+    }
+    return false;
+}
+
+function followAnimal(string $animal, string $follower, DatabaseHelper $dbh){
+    return $dbh->addFollowAnimal($animal, $follower);
+}
+
+function unfollowAnimal(string $animal, string $follower, DatabaseHelper $dbh){
+    return $dbh->removeFollowAnimal($animal, $follower);
 }

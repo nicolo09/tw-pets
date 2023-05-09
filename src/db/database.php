@@ -218,4 +218,51 @@ class DatabaseHelper
             return array();
         }
     }
+
+    public function addFollowPerson($followed, $follower){
+        if ($stmt = $this->db->prepare("INSERT INTO segue_persona (followed, follower) VALUES (?,?)")) {
+            $stmt->bind_param('ss', $followed, $follower);
+            return $stmt->execute();
+        } else {
+            return false;
+        }
+    }
+
+    public function removeFollowPerson($followed, $follower){
+        if ($stmt = $this->db->prepare("DELETE FROM segue_persona WHERE followed=? AND follower=?")) {
+            $stmt->bind_param('ss', $followed, $follower);
+            return $stmt->execute();
+        } else {
+            return false;
+        }
+    }
+
+    public function isAnimalManagedByUser($username, $animale){
+        if ($stmt = $this->db->prepare("SELECT COUNT(*) FROM posside WHERE persona=? AND animale=?")) {
+            $stmt->bind_param('ss', $username, $animale);
+            $stmt->execute();
+            $result = $stmt->get_result();
+            return $result->fetch_all(MYSQLI_ASSOC);
+        } else {
+            return array();
+        }
+    }
+
+    public function addFollowAnimal($animal, $follower){
+        if ($stmt = $this->db->prepare("INSERT INTO segue_animale (followed, follower) VALUES (?,?)")) {
+            $stmt->bind_param('ss', $animal, $follower);
+            return $stmt->execute();
+        } else {
+            return false;
+        }
+    }
+
+    public function removeFollowAnimal($animal, $follower){
+        if ($stmt = $this->db->prepare("DELETE FROM segue_animale WHERE followed=? AND follower=?")) {
+            $stmt->bind_param('ss', $animal, $follower);
+            return $stmt->execute();
+        } else {
+            return false;
+        }
+    }
 }
