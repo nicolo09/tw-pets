@@ -9,7 +9,7 @@
             <h1><?php if (isset($templateParams["username"])) {
                     echo $templateParams["username"];
                 } ?></h1>
-            <h2>Persona/<?php if (isset($templateParams["role"])) {
+            <h2><?php if (isset($templateParams["role"])) {
                     echo $templateParams["role"];
                 } ?></h2>
             <p><?php if (isset($templateParams["description"])) {
@@ -25,22 +25,18 @@
                 }
             }  
             ?>>
-            <?php if (isset($templateParams["followDisabled"])&&$templateParams["followDisabled"]==false){
-                if(isset($templateParams["userFollows"])){
-                    if($templateParams["userFollows"]==true){
+            <?php if(isset($templateParams["userFollows"])&&$templateParams["userFollows"]==true){
                     //Utente segue
                         echo html_entity_decode('<img src="img/remove-user.svg" alt="" class="w-50" >Smetti di seguire');
                     }else{
                         echo html_entity_decode('<img src="img/add-user.svg" alt="" class="w-50" >Segui');
                     }
-                }else{
-                    echo html_entity_decode('<img src="img/add-user.svg" alt="" class="w-50" >Segui');
-                }
-            }else{
-                echo html_entity_decode('<img src="img/add-user.svg" alt="" class="w-50" >Segui');
-            }  
             ?>
             </button>
+            <?php if(isset($templateParams["animalAccount"])&&$templateParams["animalAccount"]==true) :?>
+            <!--E' un animale, niente bottone animale-->
+            <?php else : ?>
+            <!--Non è un animale-->
             <button class="btn btn-outline-primary col m-2" <?php if (isset($templateParams["animalsDisabled"])){
                 if($templateParams["animalsDisabled"]==true){
                     echo "disabled";
@@ -48,6 +44,7 @@
             }  
             ?>>
             <img src="img/pets.svg" alt="" class="w-50">Animali</button>
+            <?php endif ;?>
             <button class="btn btn-outline-primary col m-2"<?php if (isset($templateParams["followersDisabled"])){
                 if($templateParams["followersDisabled"]==true){
                     echo "disabled";
