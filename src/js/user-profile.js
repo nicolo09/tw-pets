@@ -70,7 +70,7 @@ if(username!=""){
     //Se non segui->inizi a seguire
     //Se lo segui->smetti di seguire
     document.getElementById("follow").addEventListener('click', ()=>{
-        window.location.href = 'follow.php?username='+username;
+        window.location.href = 'follow.php?username='+username+"&type="+type;
     });
 }
 
