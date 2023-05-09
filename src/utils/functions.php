@@ -294,17 +294,17 @@ function getUserCreatedPosts(string $user, DatabaseHelper $dbh)
     return $dbh->getUserPosts($user);
 }
 
-//Return 1 if username exists, otherwise 0
+//Return true if username exists, otherwise false
 function doesPersonUsernameExist(string $username, DatabaseHelper $dbh){
     $users=$dbh->doesUserExist($username);
     if(empty($users)){
-        return 0;
+        return false;
     }else{
         if($users[0]["COUNT(username)"]==1){
-            return 1;
+            return true;
         }
     }
-    return 0;
+    return false;
     
 }
 
