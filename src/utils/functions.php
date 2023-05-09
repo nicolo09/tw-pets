@@ -367,3 +367,14 @@ function getAnimalRelatedPosts(string $username, DatabaseHelper $dbh)
 {
     return $dbh->getAnimalPosts($username);
 }
+
+//Ritorna vero se l'utente segue l'animale dato
+function doIFollowAnimal(string $username, string $animal, DatabaseHelper $dbh){
+    $result=$dbh->doesUserFollowAnimal($username, $animal);
+    if(empty($result)){
+        return false;
+    }else{
+        return true;
+    }
+
+}

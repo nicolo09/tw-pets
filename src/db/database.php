@@ -207,4 +207,15 @@ class DatabaseHelper
             return array();
         }
     }
+
+    public function doesUserFollowAnimal($username, $animal){
+        if ($stmt = $this->db->prepare("SELECT * FROM segue_animale WHERE follower=? AND followed=?")) {
+            $stmt->bind_param('ss', $username, $animal);
+            $stmt->execute();
+            $result = $stmt->get_result();
+            return $result->fetch_all(MYSQLI_ASSOC);
+        } else {
+            return array();
+        }
+    }
 }
