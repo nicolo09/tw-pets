@@ -18,7 +18,7 @@
         </div>
         <!--Bottoni-->
         <div class="text-center row w-100 g-0">
-            <button class="btn btn-outline-primary col m-2" 
+            <button class="btn btn-outline-primary col m-2" id="follow"
             <?php if (isset($templateParams["followDisabled"])){
                 if($templateParams["followDisabled"]==true){
                     echo "disabled";
@@ -37,7 +37,7 @@
             <!--E' un animale, niente bottone animale-->
             <?php else : ?>
             <!--Non è un animale-->
-            <button class="btn btn-outline-primary col m-2" <?php if (isset($templateParams["animalsDisabled"])){
+            <button class="btn btn-outline-primary col m-2" id="animals" <?php if (isset($templateParams["animalsDisabled"])){
                 if($templateParams["animalsDisabled"]==true){
                     echo "disabled";
                 }
@@ -45,7 +45,7 @@
             ?>>
             <img src="img/pets.svg" alt="" class="w-50">Animali</button>
             <?php endif ;?>
-            <button class="btn btn-outline-primary col m-2"<?php if (isset($templateParams["followersDisabled"])){
+            <button class="btn btn-outline-primary col m-2" id="followers"<?php if (isset($templateParams["followersDisabled"])){
                 if($templateParams["followersDisabled"]==true){
                     echo "disabled";
                 }
@@ -96,4 +96,4 @@
     
     ?>
 </div>
-
+<script src="js/user-profile.js" type="text/javascript"></script>
