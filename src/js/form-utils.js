@@ -1,6 +1,20 @@
 $.fn.select2.defaults.set( "theme", "bootstrap-5" );
 
-$(document).ready(function() {
+/* When selecting an image this shows its preview on 
+ * an img tag with id=#imgPreview */
+function imagePreview(input) {
+    if (input.files && input.files[0] && input.files[0].name.match(/\.(jpg|jpeg|png|gif)$/i)) {
+        var reader = new FileReader();
+        reader.onload = function (e) {
+            $('#imgPreview')
+                .attr('src', e.target.result)
+        };
+
+        reader.readAsDataURL(input.files[0]);
+    }
+}
+
+$(function() {
     $('#multiSelector').select2({
         placeholder: "Seleziona altri padroni del tuo animale (opzionale)",
         closeOnSelect: false,
