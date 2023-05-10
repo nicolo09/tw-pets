@@ -9,10 +9,9 @@
             <?php for($y = 0; $y < 2; $y++):?>
                 <div class="col w-50 text-center">
                     <?php if(isset($templateParams["animals"][$x + $y])): ?>
-                    <div class="w-100"><img class="proPicBtn" 
+                    <div class="w-100"><img class="proPicBtn" id="<?php echo $templateParams["animals"][$x + $y]["username"]?>_image_mobile"
                         src="<?php echo IMG_DIR.$templateParams["animals"][$x + $y]["immagine"]?>" 
-                        alt="Profilo di <?php echo $templateParams["animals"][$x + $y]["username"]?>"
-                        onclick='goToAnimal("<?php echo $templateParams["animals"][$x + $y]["username"]?>")'></div>
+                        alt="Profilo di <?php echo $templateParams["animals"][$x + $y]["username"]?>"></div>
                         <label class="fs-4 fw-bolder proPicLabel"><?php echo $templateParams["animals"][$x + $y]["username"]?></label>
                         <?php if(getUserName($dbh) == $templateParams["user"]):?> 
                             <div class="w-100"><button class="btn manage-button" id="modify_<?php echo $templateParams["animals"][$x + $y]["username"]?>_mobile">Modifica</button></div>
@@ -29,10 +28,9 @@
             <?php for($y = 0; $y < 4; $y++):?>
                 <div class="col w-25 text-center">
                     <?php if(isset($templateParams["animals"][$x + $y])): ?>
-                        <div class="w-100"><img class="proPicBtn" 
+                        <div class="w-100"><img class="proPicBtn" id="<?php echo $templateParams["animals"][$x + $y]["username"]?>_image_desktop"
                         src="<?php echo IMG_DIR.$templateParams["animals"][$x + $y]["immagine"]?>" 
-                        alt="Profilo di <?php echo $templateParams["animals"][$x + $y]["username"]?>"
-                        onclick='goToAnimal("<?php echo $templateParams["animals"][$x + $y]["username"]?>")'></div>
+                        alt="Profilo di <?php echo $templateParams["animals"][$x + $y]["username"]?>"></div>
                         <label class=" fs-4 fw-bolder proPicLabel"><?php echo $templateParams["animals"][$x + $y]["username"]?></label>
                         <?php if(getUserName($dbh) == $templateParams["user"]):?>
                             <div class="w-100"><button class="btn manage-button" id="modify_<?php echo $templateParams["animals"][$x + $y]["username"]?>_desktop">Modifica</button></div>
