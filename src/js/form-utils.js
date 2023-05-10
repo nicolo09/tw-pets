@@ -1,5 +1,11 @@
 $.fn.select2.defaults.set( "theme", "bootstrap-5" );
 
+const filePicker = document.getElementById('imgprofile');
+
+filePicker.addEventListener('change', function(){
+    imagePreview(filePicker);
+})
+
 /* When selecting an image this shows its preview on 
  * an img tag with id=#imgPreview */
 function imagePreview(input) {
