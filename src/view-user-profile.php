@@ -160,7 +160,7 @@ if ($profileType == PERSON) {
         $templateParams["animalAccount"]=true;
         $templateParams["title"] = "Animale non esiste";
         $templateParams["username"] = "Animale non esiste";
-        $templateParams["img"] = "#";
+        $templateParams["img"] = "img/default_pet_image.png";
         $templateParams["role"] = "Animale non esiste";
         $templateParams["description"] = "Animale non esiste";
         $templateParams["followDisabled"] = true;
