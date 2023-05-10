@@ -127,6 +127,112 @@ function checkBrute($username, $dbh)
     }
 }
 
+function registerAnimal($animal, $type, $file, $description, $owners, $dbh){
+    /* TODO make it better and add type length checking */
+    $result = 0;
+    $errors = array();
+    
+    if(strlen($animal) < 3) {
+        $errors[] = "Lo username deve essere lungo almeno 3 caratteri.";
+    }
+
+    if (strlen($type) < 3) {
+        $errors[] = "Il tipo deve essere lungo almeno 3 caratteri.";
+    }
+
+    if(count($dbh->getAnimals($animal)) > 0) {
+        $errors[] = "Lo username " . $animal . " è già in uso.";
+    }
+
+    /* If there are already errors it's useless to upload the image */
+    if(count($errors) == 0){
+        if(!empty($file["imgprofile"]["name"])) {
+            list($imgresult, $msg) = uploadImage(IMG_DIR, $file["imgprofile"]);
+            if($imgresult != 0) {
+                $img = $msg;
+            } else {
+                $errors[] = $msg;
+            }
+        } else {
+            $img = DEFAULT_IMG;
+        }
+
+        if(count($errors) == 0) {
+            if($dbh->addAnimal($animal, $type, $img, $description)) {
+                foreach ($owners as $owner) {
+                    if(!$dbh->registerOwnership($owner, $animal)){
+                        $errors[] = "Impossibile assegnare l'animale a " . $owner . ".";
+                    }
+                }
+                if(count($errors) == 0){
+                    $result = 1;
+                } 
+            } else {
+                $errors[] = "Si è verificato un problema nell'aggiunta dell'account, riprovare più tardi";
+            }
+        }
+    }
+        
+    return array($result, $errors);
+    
+}
+
+function editAnimal($animal, $type, $file, $description, $owners, $dbh){
+
+    $result = 0;
+    $errors = array();
+       
+    if(strlen($type) < 3){
+        $errors[] = "Il tipo deve contenere almeno 3 caratteri";
+    }
+
+    /* If there are already errors it's useless to upload the image */
+    if(count($errors) == 0) {
+
+        if(!empty($file["imgprofile"]["name"])) {
+            list($imgresult, $msg) = uploadImage(IMG_DIR, $_FILES["imgprofile"]);
+            if($imgresult != 0) {
+                $img = $msg;
+            } else {
+                $errors[] = $msg;
+            }
+        } else {
+            $img = $animal["immagine"];
+        }
+
+        if(count($errors) == 0){
+            if($dbh->updateAnimal($animal["username"], $type, $img, $description)) { 
+                if($img != $animal["immagine"] && $animal["immagine"] != DEFAULT_IMG) {
+                    unlink(IMG_DIR . $animal["immagine"]);
+                }
+                list($result, $errors) = editOwnerships($owners, $animal["username"], $dbh);
+            } else {
+                $errors[] = "Si è verificato un errore, riprovare più tardi";
+            }
+        }
+    }
+        
+    
+    return array($result, $errors);
+}
+
+function editOwnerships($owners, $animal, $dbh) {
+    $errors = array();
+    $oldOwners = $dbh->getOwners($animal);
+    foreach(array_diff($owners, $oldOwners) as $newOwner){
+        if(!$dbh->registerOwnership($newOwner, $animal)){
+            $errors[] = "Impossibile assegnare l'animale a " . $newOwner . ".";
+        }
+    }
+    foreach(array_diff($oldOwners, $owners) as $deleteOwner){
+        if(!$dbh->deleteOwnership($deleteOwner, $animal)){
+            $errors[] = "Impossibile rimuovere l'appartenenza di " . $animal . " a " . $deleteOwner . ".";
+        }
+    }
+    $result = count($errors) == 0 ? 1 : 0;
+    return array($result, $errors);
+}
+
 function uploadImage($path, $image)
 {
     $imageName = basename($image["name"]);
@@ -174,6 +280,34 @@ function uploadImage($path, $image)
     return array($result, $msg);
 }
 
+function isPasswordStrong($password)
+{
+    $result = true;
+    $errors = array();
+    # Check sulla password solo se uguale a conferma password
+    if (strlen($password) < 6) {
+        $errors[] = "La password deve essere lunga almeno 6 caratteri.";
+        $result = false;
+    }
+    if (!preg_match('@[0-9]@', $password)) {
+        $errors[] = "La password deve contenere almeno un numero.";
+        $result = false;
+    }
+    if (!preg_match('@[A-Z]@', $password)) {
+        $errors[] = "La password deve contenere almeno una lettera maiuscola.";
+        $result = false;
+    }
+    if (!preg_match('@[a-z]@', $password)) {
+        $errors[] = "La password deve contenere almeno una lettera minuscola.";
+        $result = false;
+    }
+    if (!preg_match('@[^\w]@', $password)) {
+        $errors[] = "La password deve contenere almeno un carattere speciale.";
+        $result = false;
+    }
+    return array($result, $errors);
+}
+
 function register(string $user, string $email, string $password, string $confirm_password, DatabaseHelper $dbh)
 {
     $errors = array();
@@ -193,26 +327,16 @@ function register(string $user, string $email, string $password, string $confirm
     if ($password != $confirm_password) {
         $errors[] = "Le password non coincidono.";
     } else {
-        # Check sulla password solo se uguale a conferma password
-        if (strlen($password) < 6) {
-            $errors[] = "La password deve essere lunga almeno 6 caratteri.";
-        }
-        if (!preg_match('@[0-9]@', $password)) {
-            $errors[] = "La password deve contenere almeno un numero.";
-        }
-        if (!preg_match('@[A-Z]@', $password)) {
-            $errors[] = "La password deve contenere almeno una lettera maiuscola.";
-        }
-        if (!preg_match('@[a-z]@', $password)) {
-            $errors[] = "La password deve contenere almeno una lettera minuscola.";
-        }
-        if (!preg_match('@[^\w]@', $password)) {
-            $errors[] = "La password deve contenere almeno un carattere speciale.";
+        $passwordStrength = isPasswordStrong($password);
+        if (!$passwordStrength[0]) {
+            $errors = array_merge($errors, $passwordStrength[1]);
         }
     }
     if (count($errors) == 0) {
         if ($dbh->addUser($user, $password, $email)) {
             $result = 1;
+            $headers = 'From: noreply@twpets.com' . "\r\n";
+            mail($email, "TWPETS - Registrazione completata", "La registrazione è avvenuta con successo.\n Grazie per esserti registrato su TWPETS!\n Il tuo nome utente è $user", $headers);
         }
     }
     return array($result, $errors);
@@ -265,10 +389,10 @@ function newPost($user, $img, $alt, $txt, $pets, DatabaseHelper $dbh)
             $result = 0;
             $errors = "La descrizione dell'immagine deve essere di meno di 50 caratteri e il testo meno di 100 caratteri";
         }
-    }else{
+    } else {
         //C'è stato un qualche errore con l'upload
         $result = 0;
-        $errors= $uploadErrors[1];
+        $errors = $uploadErrors[1];
     }
     return array($result, $errors);
 }
@@ -401,4 +525,26 @@ function followAnimal(string $animal, string $follower, DatabaseHelper $dbh){
 
 function unfollowAnimal(string $animal, string $follower, DatabaseHelper $dbh){
     return $dbh->removeFollowAnimal($animal, $follower);
+}
+function changePassword(string $oldPassword, string $newPassword, string $confirmPassword, DatabaseHelper $dbh)
+{
+    $errors = [];
+    $result = false;
+    if ($newPassword != $confirmPassword) {
+        $errors[] = "Le password non coincidono.";
+    } else {
+        $passwordStrength = isPasswordStrong($newPassword);
+        if (!$passwordStrength[0]) {
+            $errors = array_merge($errors, $passwordStrength[1]);
+        }
+    }
+    if (count($errors) == 0) {
+        $user = $dbh->getUserFromName($_SESSION['username']);
+        if (password_verify($oldPassword, $user[0]['password'])) {
+            $result = $dbh->changePassword($_SESSION['username'], $newPassword);
+        } else {
+            $errors[] = "La password attuale non è corretta.";
+        }
+    }
+    return array($result, $errors);
 }

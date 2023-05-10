@@ -31,10 +31,12 @@ create table TENTATIVO_LOGIN (
 
 create table IMPOSTAZIONE (
      username varchar(25) not null,
-     notifica_like boolean not null,
-     notifica_commento boolean not null,
-     notifica_follow boolean not null,
-     notifica_follow_animale boolean not null,
+     `alert-new-access` boolean not null default true,
+     `alert-change-password` boolean not null default true,
+     `alert-likes` boolean not null default true,
+     `alert-comments` boolean not null default true,
+     `alert-new-post-person` boolean not null default false,
+     `alert-new-post-animal` boolean not null default false,
      constraint FKIMPOSTA_ID primary key (username));
 
 create table LIKES (
@@ -52,7 +54,7 @@ create table NOTIFICA (
 create table PERSONA (
      username varchar(25) not null,
      descrizione varchar(100),
-     immagine varchar(200) not null,
+     immagine varchar(200) not null default "default.jpg",
      email varchar(30) not null,
      password char(255) not null,
      impiego varchar(20),
@@ -119,7 +121,8 @@ alter table TENTATIVO_LOGIN add constraint FKEFFETTUA
 
 alter table IMPOSTAZIONE add constraint FKIMPOSTA_FK
      foreign key (username)
-     references PERSONA (username);
+     references PERSONA (username)
+     ON DELETE CASCADE;
 
 alter table LIKES add constraint FKPERSONALIKES
      foreign key (username)

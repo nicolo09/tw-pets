@@ -22,6 +22,96 @@ class DatabaseHelper
         }
     }
 
+    public function getMutualFollowers($username) {
+        $query = "SELECT p.username, p.immagine
+        FROM PERSONA p
+        INNER JOIN SEGUE_PERSONA sp1 ON p.username = sp1.followed
+        INNER JOIN SEGUE_PERSONA sp2 ON p.username = sp2.follower
+        WHERE sp1.follower = ? AND sp2.followed = ? ORDER BY p.username ASC";
+
+        if($stmt = $this->db->prepare($query)){
+            $stmt->bind_param('ss', $username, $username);
+            $stmt->execute();
+            $result = $stmt->get_result();
+            return $result->fetch_all(MYSQLI_ASSOC);
+        } else {
+            return array();
+        }
+
+    }
+
+    public function addAnimal($username, $type, $img, $description) {
+        if ($stmt = $this->db->prepare("INSERT INTO animale (username, tipo, immagine, descrizione) VALUES (?, ?, ?, ?)")) {
+            $stmt->bind_param('ssss', $username, $type, $img, $description);
+            return $stmt->execute();
+        } else {
+            return false;
+        }
+    }
+
+    public function updateAnimal($username, $type, $img, $description){
+        if($stmt = $this->db->prepare("UPDATE animale SET tipo = ?, immagine = ?, descrizione = ? WHERE username = ?")){
+            $stmt->bind_param("ssss", $type, $img, $description, $username);
+            return $stmt->execute();
+        } else {
+            return false;
+        }
+    }
+
+    public function getAnimals($animal){
+        if($stmt = $this->db->prepare("SELECT * FROM animale WHERE username = ?")){
+            $stmt->bind_param('s', $animal);
+            $stmt->execute();
+            $result = $stmt->get_result();
+            return $result->fetch_all(MYSQLI_ASSOC);
+        }
+    }
+
+    public function registerOwnership($owner, $animal) {
+        if(count($this->getUserFromName($owner)) == 1) {
+            if($stmt = $this->db->prepare("INSERT INTO possiede (persona, animale) VALUES (?, ?)")) {
+                $stmt->bind_param('ss', $owner, $animal);
+                return $stmt->execute();
+            } else {
+                return false;
+            }
+        } else {
+            return false;
+        }
+    }
+
+    public function deleteOwnership($owner, $animal) {
+        if($stmt = $this->db->prepare("DELETE FROM possiede WHERE persona = ? AND animale = ?")) {
+            $stmt->bind_param('ss', $owner, $animal);
+            return $stmt->execute();
+        } else {
+            return false;
+        }
+    }
+
+    public function getOwners($animal) {
+        if($stmt = $this->db->prepare("SELECT persona AS username FROM possiede WHERE animale = ?")) {
+            $stmt->bind_param('s',$animal);
+            $stmt->execute();
+            $result = $stmt->get_result();
+            return array_column($result->fetch_all(MYSQLI_ASSOC), "username");
+        } else {
+            return array();
+        }
+    }
+
+    /* Returns true if the user owns the given animal */
+    public function checkOwnership($owner, $animal) {
+        if($stmt = $this->db->prepare("SELECT * FROM possiede WHERE persona = ? AND animale = ?")) {
+            $stmt->bind_param('ss', $owner, $animal);
+            $stmt->execute();
+            $result = $stmt->get_result();
+            return count($result->fetch_all(MYSQLI_ASSOC)) == 1;
+        } else {
+            return false;
+        }
+    }
+    
     public function getPassword($username)
     {
         // Usando statement sql 'prepared' non sarà possibile attuare un attacco di tipo SQL injection.
@@ -69,6 +159,44 @@ class DatabaseHelper
         if ($stmt = $this->db->prepare("INSERT INTO persona (username, password, email) VALUES (?, ?, ?)")) {
             $password = password_hash($password, PASSWORD_DEFAULT);
             $stmt->bind_param('sss', $user, $password, $email);
+            if ($stmt->execute()) {
+                $stmt = $this->db->prepare("INSERT INTO impostazione(username) VALUES (?)");
+                $stmt->bind_param('s', $user);
+                return $stmt->execute();
+            } else {
+                return false;
+            }
+        } else {
+            return false;
+        }
+    }
+
+    public function updateSetting($username, $setting, $value)
+    {
+        if ($stmt = $this->db->prepare("UPDATE impostazione SET `$setting` = ? WHERE username = ?")) {
+            $value = $value == "true" ? 1 : 0;
+            $stmt->bind_param('is', $value, $username);
+
+            return $stmt->execute();
+        } else {
+            return false;
+        }
+    }
+
+    public function getSettings($username)
+    {
+        if ($stmt = $this->db->prepare("SELECT * FROM impostazione WHERE username = ? LIMIT 1")) {
+            $stmt->bind_param('s', $username);
+            $stmt->execute();
+            $result = $stmt->get_result();
+            return $result->fetch_all(MYSQLI_ASSOC);
+        }
+    }
+
+    public function changeEmail($oldEmail, $newEmail)
+    {
+        if ($stmt = $this->db->prepare("UPDATE persona SET email = ? WHERE email = ?")) {
+            $stmt->bind_param('ss', $newEmail, $oldEmail);
             return $stmt->execute();
         } else {
             return false;
@@ -260,6 +388,15 @@ class DatabaseHelper
     public function removeFollowAnimal($animal, $follower){
         if ($stmt = $this->db->prepare("DELETE FROM segue_animale WHERE followed=? AND follower=?")) {
             $stmt->bind_param('ss', $animal, $follower);
+            return $stmt->execute();
+        } else {
+            return false;
+        }
+    }
+    public function changePassword($username, $newPassword){
+        if ($stmt = $this->db->prepare("UPDATE persona SET password = ? WHERE username = ?")) {
+            $newPassword = password_hash($newPassword, PASSWORD_DEFAULT);
+            $stmt->bind_param('ss', $newPassword, $username);
             return $stmt->execute();
         } else {
             return false;
