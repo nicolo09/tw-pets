@@ -101,7 +101,7 @@ if ($profileType == PERSON) {
         //Non c'è l'utente che vuoi
         $templateParams["title"] = "Utente non esiste";
         $templateParams["username"] = "Utente non esiste";
-        $templateParams["img"] = "#";
+        $templateParams["img"] = "img/default.jpg";
         $templateParams["role"] = "Utente non esiste";
         $templateParams["description"] = "Utente non esiste";
         $templateParams["followDisabled"] = true;
