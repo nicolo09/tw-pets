@@ -366,7 +366,7 @@ class DatabaseHelper
     }
 
     public function isAnimalManagedByUser($username, $animale){
-        if ($stmt = $this->db->prepare("SELECT COUNT(*) FROM posside WHERE persona=? AND animale=?")) {
+        if ($stmt = $this->db->prepare("SELECT COUNT(*) FROM possiede WHERE persona=? AND animale=?")) {
             $stmt->bind_param('ss', $username, $animale);
             $stmt->execute();
             $result = $stmt->get_result();
