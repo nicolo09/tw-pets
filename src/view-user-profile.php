@@ -169,5 +169,10 @@ if ($profileType == PERSON) {
     }
 }
 
+if(isset($_GET["success"])&&$_GET["success"]==0){
+    //Outcome del follow
+    $templateParams["success"]=$_GET["success"];
+}
+
 $templateParams["page"] = "user-profile.php";
 require_once("template/base.php");

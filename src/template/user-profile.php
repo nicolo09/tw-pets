@@ -53,6 +53,11 @@
             ?>>
             <img src="img/groups.svg" alt="" class="w-50">Followers</button>
         </div>
+        <?php 
+        if(isset($templateParams["success"])&&$templateParams["success"]==0){
+            echo "<p class='text-danger'> C'è stato un errore </p>";
+        }
+        ?>
     </div>
 
 </div>

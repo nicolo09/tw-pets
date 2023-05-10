@@ -7,6 +7,7 @@ define("ANIMAL", "animal");
 
 $username = "";
 $type = PERSON;
+$success=1;
 
 if (isset($_GET["username"])) {
     $username = $_GET["username"];
@@ -23,12 +24,18 @@ if (isset($_GET["username"])) {
             if (doesUserFollowMe($username, getUserName($dbh), $dbh)) {
                 //Lo seguo, faccio unfollow
                 $out = unfollowPerson($username, getUserName($dbh), $dbh);
+                if($out==false){
+                    $success=0;
+                }
             } else {
                 //Non lo seguo, faccio follow
                 $out = followPerson($username, getUserName($dbh), $dbh);
+                if($out==false){
+                    $success=0;
+                }
             }
             //E' un account che esiste e non è il mio
-            header("Location: view-user-profile.php?username=" . $username . "&type=" . $type);
+            header("Location: view-user-profile.php?username=" . $username . "&type=" . $type."&success=".$success);
         } else {
             //Non esiste account
             header("Location: view-user-profile.php");
@@ -40,16 +47,22 @@ if (isset($_GET["username"])) {
             if (doIFollowAnimal(getUserName($dbh), $username, $dbh)) {
                 //Lo seguo, faccio unfollow
                 $out = unfollowAnimal($username, getUserName($dbh), $dbh);
+                if($out==false){
+                    $success=0;
+                }
             } else {
                 //Non lo seguo, faccio follow
                 $out = followAnimal($username, getUserName($dbh), $dbh);
+                if($out==false){
+                    $success=0;
+                }
             }
             //E' un account che esiste
-            header("Location: view-user-profile.php?username=" . $username . "&type=" . $type);
+            header("Location: view-user-profile.php?username=" . $username . "&type=" . $type."&success=".$success);
         } else {
             if ($dbh->checkOwnership(getUserName($dbh), $username)) {
                 //Account che gestisco io, non posso smettere di seguire
-                header("Location: view-user-profile.php?username=" . $username . "&type=" . $type);
+                header("Location: view-user-profile.php?username=" . $username . "&type=" . $type."&success=".$success);
             } else {
                 //Account che non esiste
                 header("Location: view-user-profile.php");
