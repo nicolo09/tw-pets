@@ -60,14 +60,14 @@ if ($profileType == PERSON) {
         $user = getUserData($username, $dbh);
         if (empty($user) == false) {
             $templateParams["username"] = $user["username"];
-            $templateParams["img"] = "img/" . $user["immagine"];
+            $templateParams["img"] = IMG_DIR . $user["immagine"];
             $templateParams["role"] = "Persona/".$user["impiego"];
             $templateParams["description"] = $user["descrizione"];
         }
         $posts = getUserCreatedPosts($username, $dbh);
         if (empty($posts) == false) {
             foreach ($posts as $single) {
-                $templateParams["postimg"][] = "img/" . $single["immagine"];
+                $templateParams["postimg"][] = IMG_DIR . $single["immagine"];
                 $templateParams["alt"][] = $single["alt"];
                 $templateParams["id"][] = $single["id_post"];
             }
@@ -113,14 +113,14 @@ if ($profileType == PERSON) {
         $user = getAnimalData($username, $dbh);
         if (empty($user) == false) {
             $templateParams["username"] = $user["username"];
-            $templateParams["img"] = "img/" . $user["immagine"];
+            $templateParams["img"] = IMG_DIR . $user["immagine"];
             $templateParams["role"] = "Animale/".$user["tipo"];
             $templateParams["description"] = $user["descrizione"];
         }
         $posts = getAnimalRelatedPosts($username, $dbh);
         if (empty($posts) == false) {
             foreach ($posts as $single) {
-                $templateParams["postimg"][] = "img/" . $single["immagine"];
+                $templateParams["postimg"][] = IMG_DIR . $single["immagine"];
                 $templateParams["alt"][] = $single["alt"];
                 $templateParams["id"][] = $single["id_post"];
             }
