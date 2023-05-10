@@ -8,13 +8,13 @@
                         <!-- Username input -->
                         <div class="form-outline">
                             <label class="form-label" for="usernameTextBox">Nome Utente o Email</label>
-                            <input type="text" placeholder="Username / Email" class="form-control" id="usernameTextBox" name="username" />
+                            <input type="text" placeholder="Username / Email" class="form-control" id="usernameTextBox" name="username" autocomplete="username" />
                         </div>
 
                         <!-- Password input -->
                         <div class="form-outline">
                             <label class="form-label" for="passwordTextBox">Password</label>
-                            <input type="password" placeholder="Password" class="form-control" id="passwordTextBox" name="password" />
+                            <input type="password" placeholder="Password" class="form-control" id="passwordTextBox" name="password" autocomplete="current-password" />
                             <a href="reset-password.php">Password dimenticata?</a>
                         </div>
 
