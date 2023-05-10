@@ -33,8 +33,13 @@ if (isset($_GET["username"])) {
                     $templateParams["error"] = "Errore nel seguire l'utente";
                 }
             }
+            //E' un account che esiste e non è il mio
+            header("Location: view-user-profile.php?username=" . $username . "&type=" . $type);
+        }else{
+            //Non esiste account
+            header("Location: view-user-profile.php");
         }
-        header("Location: view-user-profile.php?username" . $username . "&type=" . $type);
+        
     } else if ($type == ANIMAL) {
         //Controlla se animale esiste e se non è il mio
         if (doesAnimalUsernameExist($username, $dbh) && isAnimalManagedByMe(getUserName($dbh), $username, $dbh) == false) {
@@ -53,8 +58,8 @@ if (isset($_GET["username"])) {
                 }
             }
         }
-        header("Location: view-user-profile.php?username" . $username . "&type=" . $type);
+        header("Location: view-user-profile.php?username=" . $username . "&type=" . $type);
     }
+}else{
+    header("Location: view-user-profile.php");
 }
-
-header("Location: view-user-profile.php");
