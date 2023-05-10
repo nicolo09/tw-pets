@@ -42,7 +42,7 @@ class DatabaseHelper
 
     public function getPersonsLike($username, $offset){
         $value = "%".$username."%";
-        if($stmt = $this->db->prepare("SELECT * FROM persona WHERE username LIKE ? LIMIT 10 OFFSET $offset")) {
+        if($stmt = $this->db->prepare("SELECT * FROM persona WHERE username LIKE ? LIMIT $offset, 10")) {
             $stmt->bind_param('s', $value);
             $stmt->execute();
             $result = $stmt->get_result();
@@ -54,7 +54,7 @@ class DatabaseHelper
 
     public function getAnimalsLike($username, $offset){
         $value = "%".$username."%";
-        if($stmt = $this->db->prepare("SELECT * FROM animale WHERE username LIKE ? LIMIT 10 OFFSET $offset")) {
+        if($stmt = $this->db->prepare("SELECT * FROM animale WHERE username LIKE ? LIMIT $offset, 10")) {
             $stmt->bind_param('s', $value);
             $stmt->execute();
             $result = $stmt->get_result();
