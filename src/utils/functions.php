@@ -518,17 +518,6 @@ function unfollowPerson(string $followed, string $follower, DatabaseHelper $dbh)
     return $dbh->removeFollowPerson($followed, $follower);
 }
 
-function isAnimalManagedByMe(string $username, string $animal, DatabaseHelper $dbh){
-    $result=$dbh->isAnimalManagedByUser($username, $animal);
-    if(empty($result)){
-        return false;
-    }else{
-        if($result[0]["COUNT(*)"]==1){
-            return true;
-        }
-    }
-    return false;
-}
 
 function followAnimal(string $animal, string $follower, DatabaseHelper $dbh){
     return $dbh->addFollowAnimal($animal, $follower);

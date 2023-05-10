@@ -35,7 +35,7 @@ if (isset($_GET["username"])) {
         }
     } else if ($type == ANIMAL) {
         //Controlla se animale esiste e se non è il mio
-        if (doesAnimalUsernameExist($username, $dbh) && isAnimalManagedByMe(getUserName($dbh), $username, $dbh) == false) {
+        if (doesAnimalUsernameExist($username, $dbh) && $dbh->checkOwnership(getUserName($dbh), $username) == false) {
             //Posso seguirlo
             if (doIFollowAnimal(getUserName($dbh), $username, $dbh)) {
                 //Lo seguo, faccio unfollow
@@ -47,7 +47,7 @@ if (isset($_GET["username"])) {
             //E' un account che esiste
             header("Location: view-user-profile.php?username=" . $username . "&type=" . $type);
         } else {
-            if (isAnimalManagedByMe(getUserName($dbh), $username, $dbh)) {
+            if ($dbh->checkOwnership(getUserName($dbh), $username)) {
                 //Account che gestisco io, non posso smettere di seguire
                 header("Location: view-user-profile.php?username=" . $username . "&type=" . $type);
             } else {
