@@ -23,15 +23,9 @@ if (isset($_GET["username"])) {
             if (doesUserFollowMe($username, getUserName($dbh), $dbh)) {
                 //Lo seguo, faccio unfollow
                 $out = unfollowPerson($username, getUserName($dbh), $dbh);
-                if ($out == false) {
-                    $templateParams["error"] = "Errore nello smettere di seguire l'utente";
-                }
             } else {
                 //Non lo seguo, faccio follow
                 $out = followPerson($username, getUserName($dbh), $dbh);
-                if ($out == false) {
-                    $templateParams["error"] = "Errore nel seguire l'utente";
-                }
             }
             //E' un account che esiste e non è il mio
             header("Location: view-user-profile.php?username=" . $username . "&type=" . $type);
@@ -46,15 +40,9 @@ if (isset($_GET["username"])) {
             if (doIFollowAnimal(getUserName($dbh), $username, $dbh)) {
                 //Lo seguo, faccio unfollow
                 $out = unfollowAnimal($username, getUserName($dbh), $dbh);
-                if ($out == false) {
-                    $templateParams["error"] = "Errore nello smettere di seguire l'animale";
-                }
             } else {
                 //Non lo seguo, faccio follow
                 $out = followAnimal($username, getUserName($dbh), $dbh);
-                if ($out == false) {
-                    $templateParams["error"] = "Errore nel seguire l'animale";
-                }
             }
             //E' un account che esiste
             header("Location: view-user-profile.php?username=" . $username . "&type=" . $type);
