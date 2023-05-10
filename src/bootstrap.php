@@ -1,7 +1,7 @@
 <?php
 /* Path to image dir, to be used when uploading images */
 define("BASE_FOLDER", __DIR__ . "/");
-define("IMG_DIR", BASE_FOLDER . "img/");
+define("IMG_DIR", "img/");
 
 require_once("utils/functions.php");
 sec_session_start();
