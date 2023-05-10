@@ -9,7 +9,7 @@
         <div class="col text-center"><button class="btn btn-secondary profile-button row" id="animals-button"><img src="img/pets.svg">Animali</button></div>
     </div>
     <div class="row">
-        <div class="col text-center"><button class="btn btn-secondary profile-button row"><img src="img/extension.svg">Tasto bonus</button></div>
+        <div class="col text-center"><button class="btn btn-secondary profile-button row"><img src="img/saved_posts.svg">Post salvati</button></div>
         <div class="col text-center"><button class="btn btn-secondary profile-button row" id="settings-button"><img src="img/settings.svg">Impostazioni</button></div>
     </div>
     <button class="btn btn-danger" id="logout-button"><img src="img/logout.svg">Logout</button>

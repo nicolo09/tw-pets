@@ -8,25 +8,25 @@
                         <!-- Username input -->
                         <div class="form-outline">
                             <label class="form-label">Nome Utente</label>
-                            <input type="text" placeholder="username" class="form-control" name="username"/>
+                            <input type="text" placeholder="username" class="form-control" name="username" autocomplete="username" />
                         </div>
 
                         <!-- Email input -->
                         <div class="form-outline">
                             <label class="form-label">Indirizzo Email</label>
-                            <input type="email" placeholder="esempio@dominio.com" class="form-control" name="email"/>
+                            <input type="email" placeholder="esempio@dominio.com" class="form-control" name="email" autocomplete="username" />
                         </div>
 
                         <!-- Password input -->
                         <div class="form-outline">
                             <label class="form-label">Password</label>
-                            <input type="password" placeholder="Inserire la password" class="form-control" name="password"/>
+                            <input type="password" placeholder="Inserire la password" class="form-control" name="password" autocomplete="new-password" />
                         </div>
 
                         <!-- Password confirm -->
                         <div class="form-outline">
                             <label class="form-label">Conferma Password</label>
-                            <input type="password" placeholder="Ripetere la password" class="form-control" name="confirm_password"/>
+                            <input type="password" placeholder="Ripetere la password" class="form-control" name="confirm_password" autocomplete="new-password" />
                         </div>
 
                         <!-- Submit button -->
