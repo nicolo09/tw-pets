@@ -1,11 +1,3 @@
-<?php 
-if(isset($templateParams["errors"])) {
-    foreach ($templateParams["errors"] as $error) {
-        echo "<p class='text-danger'>" . $error . "</p>";
-    }
-}
-?>
-
 <section class="text-center text-lg-start">
     <div class="container">
         <div class="card-body text-center">

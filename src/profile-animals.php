@@ -13,7 +13,7 @@ if(isset($_GET["user"]) && count($dbh->getUserFromName($_GET["user"])) == 1){
 }
 
 if(isset($_GET["error"])){
-    $templateParams["error"] = $_GET["error"];
+    $templateParams["errors"] = array($_GET["error"]);
 }
 
 $templateParams["title"] = "Animali di " . $templateParams["user"];
