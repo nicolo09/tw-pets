@@ -35,16 +35,15 @@ if (isset($_GET["username"])) {
             }
             //E' un account che esiste e non è il mio
             header("Location: view-user-profile.php?username=" . $username . "&type=" . $type);
-        }else{
+        } else {
             //Non esiste account
             header("Location: view-user-profile.php");
         }
-        
     } else if ($type == ANIMAL) {
         //Controlla se animale esiste e se non è il mio
         if (doesAnimalUsernameExist($username, $dbh) && isAnimalManagedByMe(getUserName($dbh), $username, $dbh) == false) {
             //Posso seguirlo
-            if (doIFollowAnimal(getUserName($dbh), $animal, $dbh)) {
+            if (doIFollowAnimal(getUserName($dbh), $username, $dbh)) {
                 //Lo seguo, faccio unfollow
                 $out = unfollowAnimal($username, getUserName($dbh), $dbh);
                 if ($out == false) {
@@ -57,9 +56,18 @@ if (isset($_GET["username"])) {
                     $templateParams["error"] = "Errore nel seguire l'animale";
                 }
             }
+            //E' un account che esiste
+            header("Location: view-user-profile.php?username=" . $username . "&type=" . $type);
+        } else {
+            if (isAnimalManagedByMe(getUserName($dbh), $username, $dbh)) {
+                //Account che gestisco io, non posso smettere di seguire
+                header("Location: view-user-profile.php?username=" . $username . "&type=" . $type);
+            } else {
+                //Account che non esiste
+                header("Location: view-user-profile.php");
+            }
         }
-        header("Location: view-user-profile.php?username=" . $username . "&type=" . $type);
+    } else {
+        header("Location: view-user-profile.php");
     }
-}else{
-    header("Location: view-user-profile.php");
 }
