@@ -14,7 +14,7 @@
                                     <p class="text-muted mb-0">Inserisci la tua password corrente.</p>
                                 </div>
                                 <div class="col-auto">
-                                    <input type="password" id="old-password" name="old-password" />
+                                    <input type="password" id="old-password" name="old-password" autocomplete="current-password" />
                                 </div>
                             </div>
                         </div>
@@ -25,7 +25,7 @@
                                     <p class="text-muted mb-0">Inserisci la nuova password.</p>
                                 </div>
                                 <div class="col-auto">
-                                    <input type="password" id="new-password" name="new-password" />
+                                    <input type="password" id="new-password" name="new-password" autocomplete="new-password" />
                                 </div>
                             </div>
                         </div>
@@ -36,7 +36,7 @@
                                     <p class="text-muted mb-0">Inserisci di nuovo la nuova password.</p>
                                 </div>
                                 <div class="col-auto">
-                                    <input type="password" id="new-password-repeat" name="new-password-repeat" />
+                                    <input type="password" id="new-password-repeat" name="new-password-repeat" autocomplete="new-password" />
                                 </div>
                             </div>
                         </div>

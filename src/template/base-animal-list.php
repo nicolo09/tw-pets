@@ -1,7 +1,4 @@
 <h1 class="text-center">Animali di <?php echo $templateParams["user"]?></h1>
-<?php if(isset($templateParams["error"])):?>
-<p class="text-danger text-center text-decoration-underline"><?php echo $templateParams["error"]; ?></p>
-<?php endif; ?>
 <div class="d-grid gap-3">
     <div class="mobile-view">
     <?php for($x = 0; $x < count($templateParams["animals"]); $x+=2): ?>
@@ -45,4 +42,4 @@
     <button class="btn btn-primary" id="add-animal-button"><img src="/img/add_animal.svg" alt="add animal icon">Aggiungi animale</button>
     <?php endif ?>
 </div>
-<script src="/js/animal-explorer-utils.js"></script>
+<script src="/js/animal-explorer.js"></script>
