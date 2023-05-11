@@ -3,7 +3,7 @@ var offset = 1;
 const queryString = window.location.search
 const urlParams = new URLSearchParams(queryString)
 
-const type = urlParams.has('animals') ? "Animali" : (urlParams.has('persons') ? "Persone" : null)
+const type = urlParams.has('animals') ? "animal" : (urlParams.has('persons') ? "person" : null)
 const search = urlParams.has('animals') ? urlParams.get('animals') : (urlParams.has('persons') ? urlParams.get('persons') : null)
 
 const intersectionObserver = new IntersectionObserver(entries => {
@@ -24,7 +24,7 @@ const intersectionObserver = new IntersectionObserver(entries => {
                 $("#spinner").removeClass("d-none")
                 if(response["results"].length > 0){
                     response["results"].forEach(key => {
-                        let container = $("<a></a>").attr('href',"#").append( //TODO change href
+                        let container = $("<a></a>").attr('href',"view-user-profile.php?username=" + key["username"] + "&type=" + type).append( 
                         $("<div></div>").addClass("card result-bar").append(
                             $("<div></div>").addClass("card-body p-2").append(
                                 $("<div></div>").addClass("result-element").append(

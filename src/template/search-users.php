@@ -20,13 +20,15 @@
                     <?php if(!empty($templateParams["persons"])): ?>
                         <div class="results-container">
                             <?php for($x = 0; $x < 3 && $x < count($templateParams["persons"]); $x++): ?> 
-                                <a href=#><div class="card result-bar"> <!-- TODO change href with profile link -->
-                                    <div class="card-body p-2">
-                                        <div class="result-element"> <!-- img and label on same line to avoid empty space -->
-                                            <img class="miniature" src="<?php echo IMG_DIR.$templateParams["persons"][$x]["immagine"] ?>" alt="Immagine profilo di <?php echo $templateParams["persons"][$x]["username"] ?>"/><label class="fs-4 fw-bold miniatureLabel"><?php echo $templateParams["persons"][$x]["username"] ?></label>
+                                <a href="view-user-profile.php?username=<?php echo $templateParams["persons"][$x]["username"]?>&type=person">
+                                    <div class="card result-bar"> 
+                                        <div class="card-body p-2">
+                                            <div class="result-element"> <!-- img and label on same line to avoid empty space -->
+                                                <img class="miniature" src="<?php echo IMG_DIR.$templateParams["persons"][$x]["immagine"] ?>" alt="Immagine profilo di <?php echo $templateParams["persons"][$x]["username"] ?>"/><label class="fs-4 fw-bold miniatureLabel"><?php echo $templateParams["persons"][$x]["username"] ?></label>
+                                            </div>
                                         </div>
                                     </div>
-                                </div></a>
+                                </a>
                             <?php endfor; ?>
                         </div>
                         <?php if(count($templateParams["persons"]) > 3): ?>
@@ -41,13 +43,15 @@
                     <?php if(!empty($templateParams["animals"])): ?>
                         <div class="results-container">
                             <?php for($x = 0; $x < 3 && $x < count($templateParams["animals"]); $x++): ?> 
-                                <a href=#><div class="card result-bar"> <!-- TODO change href with profile link -->
-                                    <div class="card-body p-2">
-                                        <div class="result-element"> <!-- img and label on same line to avoid empty space -->
-                                            <img class="miniature" src="<?php echo IMG_DIR.$templateParams["animals"][$x]["immagine"] ?>" alt="Immagine profilo di <?php echo $templateParams["animals"][$x]["username"] ?>"/><label class="fs-4 fw-bold miniatureLabel"><?php echo $templateParams["animals"][$x]["username"] ?></label>
+                                <a href="view-user-profile.php?username=<?php echo $templateParams["animals"][$x]["username"]?>&type=animal">
+                                    <div class="card result-bar"> 
+                                        <div class="card-body p-2">
+                                            <div class="result-element"> <!-- img and label on same line to avoid empty space -->
+                                                <img class="miniature" src="<?php echo IMG_DIR.$templateParams["animals"][$x]["immagine"] ?>" alt="Immagine profilo di <?php echo $templateParams["animals"][$x]["username"] ?>"/><label class="fs-4 fw-bold miniatureLabel"><?php echo $templateParams["animals"][$x]["username"] ?></label>
+                                            </div>
                                         </div>
                                     </div>
-                                </div></a>
+                                </a>
                             <?php endfor; ?>
                         </div>
                         <?php if(count($templateParams["animals"]) > 3): ?>

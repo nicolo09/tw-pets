@@ -2,15 +2,17 @@
     <div class="row justify-content-center">
         <div class="col-12 col-lg-10 col-xl-8 mx-auto">
             <div class="results-container" id="container">
-                <h2 class="text-center fw-bold mb-3"><?php echo $templateParams["type"]?> risultanti per "<?php echo $templateParams["search"]?>": </h2>
+                <h2 class="text-center fw-bold mb-3"><?php echo $templateParams["type"] == "animal" ? "Animali" : "Persone" ?> risultanti per "<?php echo $templateParams["search"]?>": </h2>
                 <?php for($x = 0; $x < count($templateParams["results"]); $x++): ?> 
-                    <a href=#><div class="card result-bar"> <!-- TODO change href with profile link -->
-                        <div class="card-body p-2">
-                            <div class="result-element"> <!-- img and label on same line to avoid empty space -->
-                                <img class="miniature" src="<?php echo IMG_DIR.$templateParams["results"][$x]["immagine"] ?>" alt="Immagine profilo di <?php echo $templateParams["results"][$x]["username"] ?>"/><label class="fs-4 fw-bold miniatureLabel"><?php echo $templateParams["results"][$x]["username"] ?></label>
+                    <a href="view-user-profile.php?username=<?php echo $templateParams["results"][$x]["username"]?>&type=<?php echo $templateParams["type"]?>">
+                        <div class="card result-bar"> <!-- TODO change href with profile link -->
+                            <div class="card-body p-2">
+                                <div class="result-element"> <!-- img and label on same line to avoid empty space -->
+                                    <img class="miniature" src="<?php echo IMG_DIR.$templateParams["results"][$x]["immagine"] ?>" alt="Immagine profilo di <?php echo $templateParams["results"][$x]["username"] ?>"/><label class="fs-4 fw-bold miniatureLabel"><?php echo $templateParams["results"][$x]["username"] ?></label>
+                                </div>
                             </div>
                         </div>
-                    </div></a>
+                    </a>
                 <?php endfor; ?>
             </div>
             <div class="d-flex justify-content-center align-items-center mt-4" id="spinner">
