@@ -21,6 +21,5 @@ function goToEditAnimal(evt) {
 };
 
 function goToAnimal(evt){
-    //location.href = "user-profile.php?animal=" + evt.currentTarget.myParam; //TODO go to animal page
-    console.log(evt.currentTarget.myParam);
+    location.href = "view-user-profile.php?username=" + evt.currentTarget.myParam+"&type=animal";
 };
