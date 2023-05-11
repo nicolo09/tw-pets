@@ -406,10 +406,126 @@ function newPost($user, $img, $alt, $txt, $pets, DatabaseHelper $dbh)
 
 function getManagedAnimals(string $user, DatabaseHelper $dbh)
 {
-    //Ritorna array di array, rimuovo il nesting
     return $dbh->getOwnedAnimals($user);
 }
 
+function getUserData(string $user, DatabaseHelper $dbh)
+{
+    $tmp=$dbh->getUserInfo($user);
+    if(empty($tmp)){
+        return array();
+    }else{
+        #Dato che l'username è univoco, rendo l'array con i dati direttamente accessibile
+        return $tmp[0];
+    }
+}
+
+function getUserCreatedPosts(string $user, DatabaseHelper $dbh)
+{
+    return $dbh->getUserPosts($user);
+}
+
+//Return true if username exists, otherwise false
+function doesPersonUsernameExist(string $username, DatabaseHelper $dbh){
+    $users=$dbh->doesUserExist($username);
+    if(empty($users)){
+        return false;
+    }else{
+        if($users[0]["COUNT(username)"]==1){
+            return true;
+        }
+    }
+    return false;
+    
+}
+
+//Returns true if user owns any animals
+function doesUserOwnAnimals(string $username, DatabaseHelper $dbh){
+    $animals=$dbh->getOwnedAnimals($username);
+    if(count($animals)==0){
+        return false;
+    }else{
+        return true;
+    }
+    
+}
+
+function allFollowers(string $username, DatabaseHelper $dbh){
+    $followers=$dbh->getAllFollowers($username);
+    $result=array();
+    if(empty($followers)==false){
+        foreach($followers as $single){
+            $result.array_push($single["follower"]);
+        }
+    }
+    return $result;
+}
+
+function doesUserFollowMe(string $self, string $follower, DatabaseHelper $dbh){
+    $result=$dbh->doesUserFollowMyAccount($self, $follower);
+    if($result==1){
+        return true;
+    }
+    return false;
+}
+
+//Return 1 if username exists, otherwise 0
+function doesAnimalUsernameExist(string $username, DatabaseHelper $dbh){
+    $users=$dbh->doesAnimalExist($username);
+    if(empty($users)){
+        return false;
+    }else{
+        if($users[0]["COUNT(username)"]==1){
+            return true;
+        }
+    }
+    return false;
+    
+}
+
+function getAnimalData(string $user, DatabaseHelper $dbh)
+{
+    $tmp=$dbh->getAnimalInfo($user);
+    if(empty($tmp)){
+        return array();
+    }else{
+        #Dato che l'username è univoco, rendo l'array con i dati direttamente accessibile
+        return $tmp[0];
+    }
+}
+
+function getAnimalRelatedPosts(string $username, DatabaseHelper $dbh)
+{
+    return $dbh->getAnimalPosts($username);
+}
+
+//Ritorna vero se l'utente segue l'animale dato
+function doIFollowAnimal(string $username, string $animal, DatabaseHelper $dbh){
+    $result=$dbh->doesUserFollowAnimal($username, $animal);
+    if(empty($result)){
+        return false;
+    }else{
+        return true;
+    }
+
+}
+
+function followPerson(string $followed, string $follower, DatabaseHelper $dbh){
+    return $dbh->addFollowPerson($followed, $follower);
+}
+
+function unfollowPerson(string $followed, string $follower, DatabaseHelper $dbh){
+    return $dbh->removeFollowPerson($followed, $follower);
+}
+
+
+function followAnimal(string $animal, string $follower, DatabaseHelper $dbh){
+    return $dbh->addFollowAnimal($animal, $follower);
+}
+
+function unfollowAnimal(string $animal, string $follower, DatabaseHelper $dbh){
+    return $dbh->removeFollowAnimal($animal, $follower);
+}
 function changePassword(string $oldPassword, string $newPassword, string $confirmPassword, DatabaseHelper $dbh)
 {
     $errors = [];

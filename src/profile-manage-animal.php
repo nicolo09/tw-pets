@@ -14,7 +14,7 @@ if(isset($_POST["username"], $_POST["type"])){
     $description = htmlspecialchars($_POST["description"]);
 
     $owners = isset($_POST["owners"]) ? $_POST["owners"] : array(); 
-    $owners[] = $_SESSION["username"];
+    $owners[] = getUserName($dbh);
 
     if(!isset($_GET["animal"])){
         /* No animal was set, so a new one has to be added  */
@@ -36,7 +36,7 @@ if(isset($_POST["username"], $_POST["type"])){
     $description = htmlspecialchars($_POST["description"]);
 
     $owners = isset($_POST["owners"]) ? $_POST["owners"] : array(); 
-    $owners[] = $_SESSION["username"];
+    $owners[] = getUserName($dbh);
     /* An animal was set, so it must be updated */
     list($result, $error) = editAnimal($animal[0], $type, $_FILES, $description, $owners, $dbh);
     if($result == 1){
@@ -55,7 +55,7 @@ if(isset($_GET["animal"])){
     $animal = $dbh->getAnimals($_GET["animal"]);
     if(count($animal) != 1) {
         $msg = "Animale " . $_GET["animal"] . " non trovato";
-    } elseif (!$dbh->checkOwnership($_SESSION["username"], $animal[0]["username"])) { 
+    } elseif (!$dbh->checkOwnership(getUserName($dbh), $animal[0]["username"])) { 
         $msg = "Non puoi modificare l'account di " . $animal[0]["username"] . " non essendone proprietario";
     }
 
@@ -78,7 +78,7 @@ if(isset($_GET["animal"])){
     $templateParams["subtitle"] = "Aggiungi un nuovo animale!";
 }
 
-$templateParams["mutuals"] = $dbh->getMutualFollowers($_SESSION["username"]);
+$templateParams["mutuals"] = $dbh->getMutualFollowers(getUserName($dbh));
 //$templateParams["user"] = $_SESSION['username']; TODO use it on manage-animal-form.php
 
 require_once("template/base.php");

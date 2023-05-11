@@ -261,6 +261,162 @@ class DatabaseHelper
         }
     }
 
+    public function getUserInfo($username)
+    {
+        if ($stmt = $this->db->prepare("SELECT username, descrizione, immagine, impiego FROM persona WHERE username = ?")) {
+            $stmt->bind_param('s', $username);
+            $stmt->execute();
+            $result = $stmt->get_result();
+            return $result->fetch_all(MYSQLI_ASSOC);
+        } else {
+            return array();
+        }
+    }
+
+    public function getUserPosts($username)
+    {
+        if ($stmt = $this->db->prepare("SELECT * FROM post WHERE username = ? ORDER BY post.timestamp DESC")) {
+            $stmt->bind_param('s', $username);
+            $stmt->execute();
+            $result = $stmt->get_result();
+            return $result->fetch_all(MYSQLI_ASSOC);
+        } else {
+            return array();
+        }
+    }
+
+    public function doesUserExist($username)
+    {
+        if ($stmt = $this->db->prepare("SELECT COUNT(username) FROM persona WHERE username=?")) {
+            $stmt->bind_param('s', $username);
+            $stmt->execute();
+            $result = $stmt->get_result();
+            return $result->fetch_all(MYSQLI_ASSOC);
+        } else {
+            return -1;
+        }
+    }
+
+    public function getAllFollowers($username){
+        if ($stmt = $this->db->prepare("SELECT followers FROM segue_persona WHERE followed=?")) {
+            $stmt->bind_param('s', $username);
+            $stmt->execute();
+            $result = $stmt->get_result();
+            return $result->fetch_all(MYSQLI_ASSOC);
+        } else {
+            return array();
+        }
+    }
+
+    //Ritorna 0 se gli follower non segue followed
+    public function doesUserFollowMyAccount($followedUsername, $followerUsername){
+        if ($stmt = $this->db->prepare("SELECT * FROM segue_persona WHERE followed=? AND follower=?")) {
+            $stmt->bind_param('ss', $followedUsername, $followerUsername);
+            $stmt->execute();
+            $result = $stmt->get_result();
+            $tmp=$result->fetch_all(MYSQLI_ASSOC);
+            if(count($tmp)==1){
+                return 1;
+            }
+            return 0;
+        } else {
+            return 0;
+        }
+    }
+
+    public function doesAnimalExist($username)
+    {
+        if ($stmt = $this->db->prepare("SELECT COUNT(username) FROM animale WHERE username=?")) {
+            $stmt->bind_param('s', $username);
+            $stmt->execute();
+            $result = $stmt->get_result();
+            return $result->fetch_all(MYSQLI_ASSOC);
+        } else {
+            return -1;
+        }
+    }
+
+    public function getAnimalInfo($username)
+    {
+        if ($stmt = $this->db->prepare("SELECT username, descrizione, immagine, tipo FROM animale WHERE username = ?")) {
+            $stmt->bind_param('s', $username);
+            $stmt->execute();
+            $result = $stmt->get_result();
+            return $result->fetch_all(MYSQLI_ASSOC);
+        } else {
+            return array();
+        }
+    }
+
+    public function getAnimalPosts($username)
+    {
+        if ($stmt = $this->db->prepare("SELECT * FROM riguarda JOIN post ON riguarda.id_post=post.id_post WHERE riguarda.animale=?")) {
+            $stmt->bind_param('s', $username);
+            $stmt->execute();
+            $result = $stmt->get_result();
+            return $result->fetch_all(MYSQLI_ASSOC);
+        } else {
+            return array();
+        }
+    }
+
+    public function doesUserFollowAnimal($username, $animal){
+        if ($stmt = $this->db->prepare("SELECT * FROM segue_animale WHERE follower=? AND followed=?")) {
+            $stmt->bind_param('ss', $username, $animal);
+            $stmt->execute();
+            $result = $stmt->get_result();
+            return $result->fetch_all(MYSQLI_ASSOC);
+        } else {
+            return array();
+        }
+    }
+
+    public function addFollowPerson($followed, $follower){
+        if ($stmt = $this->db->prepare("INSERT INTO segue_persona (followed, follower) VALUES (?,?)")) {
+            $stmt->bind_param('ss', $followed, $follower);
+            return $stmt->execute();
+        } else {
+            return false;
+        }
+    }
+
+    public function removeFollowPerson($followed, $follower){
+        if ($stmt = $this->db->prepare("DELETE FROM segue_persona WHERE followed=? AND follower=?")) {
+            $stmt->bind_param('ss', $followed, $follower);
+            return $stmt->execute();
+        } else {
+            return false;
+        }
+    }
+
+    public function isAnimalManagedByUser($username, $animale){
+        if ($stmt = $this->db->prepare("SELECT COUNT(*) FROM possiede WHERE persona=? AND animale=?")) {
+            $stmt->bind_param('ss', $username, $animale);
+            $stmt->execute();
+            $result = $stmt->get_result();
+            return $result->fetch_all(MYSQLI_ASSOC);
+        } else {
+            return array();
+        }
+    }
+
+    public function addFollowAnimal($animal, $follower){
+        if ($stmt = $this->db->prepare("INSERT INTO segue_animale (followed, follower) VALUES (?,?)")) {
+            $stmt->bind_param('ss', $animal, $follower);
+            return $stmt->execute();
+        } else {
+            return false;
+        }
+    }
+
+    public function removeFollowAnimal($animal, $follower){
+        if ($stmt = $this->db->prepare("DELETE FROM segue_animale WHERE followed=? AND follower=?")) {
+            $stmt->bind_param('ss', $animal, $follower);
+            return $stmt->execute();
+        } else {
+            return false;
+        }
+    }
     public function changePassword($username, $newPassword){
         if ($stmt = $this->db->prepare("UPDATE persona SET password = ? WHERE username = ?")) {
             $newPassword = password_hash($newPassword, PASSWORD_DEFAULT);
