@@ -1,23 +1,24 @@
+<div class="card mx-auto col-12 col-lg-10 col-xl-8 g-0 text-center d-flex justify-content-center">
 <h1>Crea nuovo post</h1>
-<form action="#" method="POST" class="w-100" enctype="multipart/form-data">
+<form action="#" method="POST" class="" enctype="multipart/form-data">
     <!--Immagine mostrata qui-->
     <div>
         <img id="imgPreview" src="#" alt="Immagine inserita da utente" class="w-100">
     </div>
     <!--Immagine da inserire-->
-    <div class="row mt-2">
-        <label for="imgpostinput">Scegli l'immagine del post</label>
-        <input required type="file" name="imgpost" id="imgpostinput" accept="image/jpg, image/jpeg, image/png, image/gif" />
+    <div class="row mt-2 g-0 d-flex justify-content-center">
+        <label for="imgpostinput" class="form-label">Scegli l'immagine del post</label>
+        <input required type="file" name="imgpost" id="imgpostinput" accept="image/jpg, image/jpeg, image/png, image/gif" class="form-control w-50 g-0 d-flex justify-content-center" />
     </div>
     <!--Alt immagine-->
-    <div class="row mt-2 my-son-textarea">
-        <label for="imgalt" class="p-0">Scrivi una breve descrizione dell'immagine scelta:</label>
+    <div class="row mt-2 g-0">
+        <label for="imgalt" class="p-0 form-label">Scrivi una breve descrizione dell'immagine scelta:</label>
         <textarea required id="imgalt" name="imgalt" maxlength=50 
         placeholder="Descrizione immagine in meno di 50 caratteri" class="p-0 m-0"></textarea>
     </div>
     <!--Testo da inserire-->
-    <div class="row mt-2 my-son-textarea">
-        <label for="txtpost" class="p-0">Testo Post:</label>
+    <div class="row mt-2 g-0">
+        <label for="txtpost" class="p-0 form-label">Testo Post:</label>
         <textarea required id="txtpost" name="txtpost" maxlength=100 
         placeholder="Scrivi una descrizione per il tuo post di meno di 100 caratteri" class="p-0 m-0"></textarea>
     </div>
@@ -60,4 +61,5 @@
             <img src="img/publish.svg" alt=""> Pubblica il nuovo post</button>
     </div>
 </form>
+</div>
 <script src="js/new-post.js" type="text/javascript"></script>
