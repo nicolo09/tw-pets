@@ -8,7 +8,7 @@
                         <div class="card result-bar"> <!-- TODO change href with profile link -->
                             <div class="card-body p-2">
                                 <div class="result-element"> <!-- img and label on same line to avoid empty space -->
-                                    <img class="miniature" src="<?php echo IMG_DIR.$templateParams["results"][$x]["immagine"] ?>" alt="Immagine profilo di <?php echo $templateParams["results"][$x]["username"] ?>"/><label class="fs-4 fw-bold miniatureLabel"><?php echo $templateParams["results"][$x]["username"] ?></label>
+                                    <img class="miniature" src="<?php echo IMG_DIR.$templateParams["results"][$x]["immagine"] ?>" alt="Immagine profilo di <?php echo $templateParams["results"][$x]["username"] ?>"/><span class="fs-4 fw-bold miniatureLabel"><?php echo $templateParams["results"][$x]["username"] ?></span>
                                 </div>
                             </div>
                         </div>

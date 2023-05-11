@@ -8,9 +8,9 @@
                 <div class="card search-bar">
                     <div class="card-body p-2">
                         <div class="input-group input-group-lg">
-                            <input type="text" class="form-control form-control-lg bg-transparent" <?php if(isset($templateParams["search"])) { echo " value=".$templateParams["search"] ;} ?> placeholder="Cerca persone e animali.." aria-label="Type Keywords" aria-describedby="basic-addon2" name="username"/>
+                            <input type="text" class="form-control form-control-lg bg-transparent" <?php if(isset($templateParams["search"])) { echo " value=".$templateParams["search"] ;} ?> placeholder="Cerca persone e animali.." name="username"/>
                             <div id="search-button" class="search-button">
-                                <img src="img/search.svg" />
+                                <img src="img/search.svg" alt="Search icon"/>
                             </div>
                         </div>
                     </div>
@@ -24,7 +24,7 @@
                                     <div class="card result-bar"> 
                                         <div class="card-body p-2">
                                             <div class="result-element"> <!-- img and label on same line to avoid empty space -->
-                                                <img class="miniature" src="<?php echo IMG_DIR.$templateParams["persons"][$x]["immagine"] ?>" alt="Immagine profilo di <?php echo $templateParams["persons"][$x]["username"] ?>"/><label class="fs-4 fw-bold miniatureLabel"><?php echo $templateParams["persons"][$x]["username"] ?></label>
+                                                <img class="miniature" src="<?php echo IMG_DIR.$templateParams["persons"][$x]["immagine"] ?>" alt="Immagine profilo di <?php echo $templateParams["persons"][$x]["username"] ?>"/><span class="fs-4 fw-bold miniatureLabel"><?php echo $templateParams["persons"][$x]["username"] ?></span>
                                             </div>
                                         </div>
                                     </div>
@@ -47,7 +47,7 @@
                                     <div class="card result-bar"> 
                                         <div class="card-body p-2">
                                             <div class="result-element"> <!-- img and label on same line to avoid empty space -->
-                                                <img class="miniature" src="<?php echo IMG_DIR.$templateParams["animals"][$x]["immagine"] ?>" alt="Immagine profilo di <?php echo $templateParams["animals"][$x]["username"] ?>"/><label class="fs-4 fw-bold miniatureLabel"><?php echo $templateParams["animals"][$x]["username"] ?></label>
+                                                <img class="miniature" src="<?php echo IMG_DIR.$templateParams["animals"][$x]["immagine"] ?>" alt="Immagine profilo di <?php echo $templateParams["animals"][$x]["username"] ?>"/><span class="fs-4 fw-bold miniatureLabel"><?php echo $templateParams["animals"][$x]["username"] ?></span>
                                             </div>
                                         </div>
                                     </div>

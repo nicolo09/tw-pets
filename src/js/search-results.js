@@ -30,7 +30,7 @@ const intersectionObserver = new IntersectionObserver(entries => {
                                 $("<div></div>").addClass("result-element").append(
                                     $("<img></img>").addClass("miniature").attr('src', IMG_DIR + key["immagine"]).attr('alt', "Immagine profilo di " + key["username"])
                                 ).append(
-                                    $("<label></label>").addClass("fs-4 fw-bold miniatureLabel").text(key["username"])
+                                    $("<span></span>").addClass("fs-4 fw-bold miniatureLabel").text(key["username"])
                                 ))))
             
                         $("#container").append(container)

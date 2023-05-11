@@ -217,6 +217,11 @@ button > img{
     margin-bottom: 10px;
 }
 
+.results-container > a {
+    text-decoration: none !important;
+    color: #000000 !important;
+}
+
 .input-group>.form-control, .input-group>.form-control:focus {
     color: black;
     border-color: transparent;
