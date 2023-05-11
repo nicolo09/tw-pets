@@ -49,7 +49,6 @@ if(isset($_POST["username"], $_POST["type"])){
     } 
 }
 
-$templateParams["page"] = "manage-animal-form.php";
 if(isset($_GET["animal"])){
     
     $animal = $dbh->getAnimals($_GET["animal"]);
@@ -78,8 +77,8 @@ if(isset($_GET["animal"])){
     $templateParams["subtitle"] = "Aggiungi un nuovo animale!";
 }
 
+$templateParams["page"] = "manage-animal-form.php";
 $templateParams["mutuals"] = $dbh->getMutualFollowers(getUserName($dbh));
-//$templateParams["user"] = $_SESSION['username']; TODO use it on manage-animal-form.php
 
 require_once("template/base.php");
 ?>
