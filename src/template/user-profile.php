@@ -28,9 +28,9 @@
             ?>>
             <?php if(isset($templateParams["userFollows"])&&$templateParams["userFollows"]==true){
                     //Utente segue
-                        echo html_entity_decode('<img src="img/remove-user.svg" alt="" class="w-50" >Smetti di seguire');
+                        echo html_entity_decode('<img src="img/remove-user.svg" alt="" class="w-25" >Smetti di seguire');
                     }else{
-                        echo html_entity_decode('<img src="img/add-user.svg" alt="" class="w-50" >Segui');
+                        echo html_entity_decode('<img src="img/add-user.svg" alt="" class="w-25" >Segui');
                     }
             ?>
             </button>
@@ -44,7 +44,7 @@
                 }
             }  
             ?>>
-            <img src="img/pets.svg" alt="" class="w-50">Animali</button>
+            <img src="img/pets.svg" alt="" class="w-25">Animali</button>
             <?php endif ;?>
             <button class="btn btn-outline-primary col m-2" id="followers"<?php if (isset($templateParams["followersDisabled"])){
                 if($templateParams["followersDisabled"]==true){
@@ -52,7 +52,7 @@
                 }
             }  
             ?>>
-            <img src="img/groups.svg" alt="" class="w-50">Followers</button>
+            <img src="img/groups.svg" alt="" class="w-25">Followers</button>
         </div>
         <?php 
         if(isset($templateParams["success"])&&$templateParams["success"]==0){
