@@ -10,7 +10,7 @@
                         <label class="form-label fs-3 w-100" for="imgprofile">Immagine di profilo</label>
                         <div class="w-100 mb-4">
                             <img class="proPic" title="Cambia immagine" id="imgPreview" src="<?php echo $templateParams["img"] ?>" alt="Current profile picture" />
-                        </div> <!-- TODO make user click image to change it-->
+                        </div> 
                         <input class="form-control" type="file" accept=".png,.jpg,.jpeg" id="imgprofile" name="imgprofile" />
                     </div>
 
