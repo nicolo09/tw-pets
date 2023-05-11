@@ -162,10 +162,9 @@ function registerAnimal($animal, $type, $file, $description, $owners, $dbh){
                     if(!$dbh->registerOwnership($owner, $animal)){
                         $errors[] = "Impossibile assegnare l'animale a " . $owner . ".";
                     }
-                    /* TODO uncomment when addFollowAnimal is implemented */
-                    /*if(!$dbh->addFollowAnimal($animal, $owner)){ 
+                    if(!$dbh->addFollowAnimal($animal, $owner)){ 
                         $errors[] = "Non è stato possibile rendere " . $owner . " follower di " . $animal;
-                    }*/
+                    }
                 }
                 if(count($errors) == 0){
                     $result = 1;
@@ -226,10 +225,9 @@ function editOwnerships($owners, $animal, $dbh) {
         if(!$dbh->registerOwnership($newOwner, $animal)){
             $errors[] = "Impossibile assegnare l'animale a " . $newOwner . ".";
         }
-        /* TODO uncomment when addFollowAnimal is implemented */
-        /*if(!$dbh->addFollowAnimal($animal, $newOwner)){ 
+        if(!$dbh->addFollowAnimal($animal, $newOwner)){ 
             $errors[] = "Non è stato possibile rendere " . $newOwner . " follower di " . $animal;
-        }*/
+        }
     }
     foreach(array_diff($oldOwners, $owners) as $deleteOwner){
         if(!$dbh->deleteOwnership($deleteOwner, $animal)){
