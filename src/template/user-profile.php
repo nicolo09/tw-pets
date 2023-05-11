@@ -1,10 +1,11 @@
-<div class="container-fluid text-center pb-2">
+<div class="card mx-auto col-12 col-lg-10 col-xl-8">
+<div class="container-fluid pb-2">
     <div class="row">
         <img src="<?php if (isset($templateParams["img"])) {
                     echo $templateParams["img"];
                 } ?>" alt="Foto profilo di <?php if (isset($templateParams["username"])) {
                     echo $templateParams["username"];
-                } ?>" class="proPic col p-0 mt-2 d-flex justify-content-end" />
+                } ?>" class="proPic col p-0 m-4 d-flex justify-content-end" />
         <div class="col p-0 w-25">
             <h1><?php if (isset($templateParams["username"])) {
                     echo $templateParams["username"];
@@ -17,7 +18,7 @@
                 } ?></p>
         </div>
         <!--Bottoni-->
-        <div class="text-center row w-100 g-0">
+        <div class="text-center row g-0">
             <button class="btn btn-outline-primary col m-2" id="follow"
             <?php if (isset($templateParams["followDisabled"])){
                 if($templateParams["followDisabled"]==true){
@@ -63,7 +64,7 @@
 </div>
 
 <!--Galleria immagini-->
-<div class="container-fluid g-0 w-100 border-top border-black mt-3 pt-2">
+<div class="container-fluid g-0 border-top border-black mt-3 pt-2">
     <?php
     if(isset($templateParams["postimg"])&&isset($templateParams["alt"])&&isset($templateParams["id"])){
         if(count($templateParams["postimg"])==isset($templateParams["alt"])&&count($templateParams["postimg"])>0&&count($templateParams["id"])==count($templateParams["postimg"])){
@@ -100,5 +101,6 @@
     }
     
     ?>
+</div>
 </div>
 <script src="js/user-profile.js" type="text/javascript"></script>
