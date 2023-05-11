@@ -6,7 +6,7 @@
             <?php for($y = 0; $y < 2; $y++):?>
                 <div class="col w-50 text-center">
                     <?php if(isset($templateParams["animals"][$x + $y])): ?>
-                    <div class="w-100"><img class="proPicBtn" id="<?php echo $templateParams["animals"][$x + $y]["username"]?>_image_mobile"
+                    <div class="w-100"><img class="proPicBtn" id="<?php echo $templateParams["animals"][$x + $y]["username"]?>_image_mobile" title="Vai al profilo di <?php echo $templateParams["animals"][$x + $y]["username"]?>"
                         src="<?php echo IMG_DIR.$templateParams["animals"][$x + $y]["immagine"]?>" 
                         alt="Profilo di <?php echo $templateParams["animals"][$x + $y]["username"]?>"></div>
                         <label class="fs-4 fw-bolder proPicLabel"><?php echo $templateParams["animals"][$x + $y]["username"]?></label>
@@ -25,7 +25,7 @@
             <?php for($y = 0; $y < 4; $y++):?>
                 <div class="col w-25 text-center">
                     <?php if(isset($templateParams["animals"][$x + $y])): ?>
-                        <div class="w-100"><img class="proPicBtn" id="<?php echo $templateParams["animals"][$x + $y]["username"]?>_image_desktop"
+                        <div class="w-100"><img class="proPicBtn" id="<?php echo $templateParams["animals"][$x + $y]["username"]?>_image_desktop" title="Vai al profilo di <?php echo $templateParams["animals"][$x + $y]["username"]?>"
                         src="<?php echo IMG_DIR.$templateParams["animals"][$x + $y]["immagine"]?>" 
                         alt="Profilo di <?php echo $templateParams["animals"][$x + $y]["username"]?>"></div>
                         <label class=" fs-4 fw-bolder proPicLabel"><?php echo $templateParams["animals"][$x + $y]["username"]?></label>
