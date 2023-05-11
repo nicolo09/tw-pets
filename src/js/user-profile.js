@@ -56,11 +56,11 @@ if (type == PERSON) {
     //Redirect a pagina con get nome utente della persona che li gestisce, username
     if(username==""){
         document.getElementById("animals").addEventListener('click', ()=>{
-            window.location.href = 'show-animals.php';
+            window.location.href = 'profile-animals.php';
         });
     }else{
         document.getElementById("animals").addEventListener('click', ()=>{
-            window.location.href = 'show-animals.php?username='+username;
+            window.location.href = 'profile-animals.php?user='+username;
         });
     }
     
