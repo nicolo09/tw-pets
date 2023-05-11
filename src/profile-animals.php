@@ -9,7 +9,7 @@ if(!login_check($dbh)){
 if(isset($_GET["user"]) && count($dbh->getUserFromName($_GET["user"])) == 1){
     $templateParams["user"] = $_GET["user"]; 
 } else {
-    $templateParams["user"] = $_SESSION["username"];
+    $templateParams["user"] = getUserName($dbh);
 }
 
 if(isset($_GET["error"])){
