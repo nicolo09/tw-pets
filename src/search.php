@@ -16,6 +16,7 @@ if(isset($_GET["error"])) {
     $templateParams["error"] = $_GET["error"];
 }
 
+$templateParams["title"] = "Cerca";
 $templateParams["page"] = "search-users.php";
 require_once("template/base.php");
 ?>

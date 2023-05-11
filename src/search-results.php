@@ -8,17 +8,18 @@ if (!isUserLoggedIn($dbh)) {
 
 if(isset($_GET["animals"]) && !empty($_GET["animals"])) {
     $templateParams["results"] = $dbh->getAnimalsLike($_GET["animals"], 0);
-    $templateParams["type"] = "Animali";
+    $templateParams["type"] = "animal";
     $templateParams["search"] = $_GET["animals"];
 } elseif (isset($_GET["persons"]) && !empty($_GET["persons"])) {
     $templateParams["results"] = $dbh->getPersonsLike($_GET["persons"], 0);
-    $templateParams["type"] = "Persone";
+    $templateParams["type"] = "person";
     $templateParams["search"] = $_GET["persons"];
 } else {
     header("Location: search.php?error=Errore, ricerca nulla");
     exit;
 }
 
+$templateParams["title"] = "Risultati";
 $templateParams["page"] = "full-search-results.php";
 require_once("template/base.php");
 ?>
