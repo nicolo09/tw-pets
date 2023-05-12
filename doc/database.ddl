@@ -69,7 +69,7 @@ create table POST (
      id_post int not null auto_increment,
      immagine varchar(200) not null,
 	 alt varchar(50) not null,
-     testo varchar(100) not null,
+     testo varchar(200) not null,
      timestamp timestamp not null,
      username varchar(25) not null,
      constraint IDPOST primary key (id_post));

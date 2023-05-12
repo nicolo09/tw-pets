@@ -19,8 +19,8 @@
     <!--Testo da inserire-->
     <div class="row mt-2 g-0">
         <label for="txtpost" class="p-0 form-label">Testo Post:</label>
-        <textarea required id="txtpost" name="txtpost" maxlength=100 
-        placeholder="Scrivi una descrizione per il tuo post di meno di 100 caratteri" class="p-0 m-0"></textarea>
+        <textarea required id="txtpost" name="txtpost" maxlength=200 
+        placeholder="Scrivi una descrizione per il tuo post di meno di 200 caratteri" class="p-0 m-0"></textarea>
     </div>
     <!--Per stilizzare i bottoni-->
     <div class="container">

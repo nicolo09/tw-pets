@@ -365,7 +365,7 @@ function newPost($user, $img, $alt, $txt, $pets, DatabaseHelper $dbh)
     if ($uploadErrors[0] == 1) {
         //Non ci sono stati errori di upload, continua con query
         $result = -1; //Not yet set
-        if (strlen($alt) <= 50 && strlen($txt) <= 100) {
+        if (strlen($alt) <= 50 && strlen($txt) <= 200) {
             $index = $dbh->addPost(basename($img["name"]), $alt, $alt, $user);
             if ($index != -1) {
                 //Aggiunta andata a buon fine
@@ -392,7 +392,7 @@ function newPost($user, $img, $alt, $txt, $pets, DatabaseHelper $dbh)
             }
         } else {
             $result = 0;
-            $errors = "La descrizione dell'immagine deve essere di meno di 50 caratteri e il testo meno di 100 caratteri";
+            $errors = "La descrizione dell'immagine deve essere di meno di 50 caratteri e il testo meno di 200 caratteri";
         }
     } else {
         //C'è stato un qualche errore con l'upload
