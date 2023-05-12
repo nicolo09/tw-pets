@@ -1,4 +1,4 @@
-<div class="card mx-auto col-12 col-lg-10 col-xl-8">
+<div class="card mx-auto col-12 col-lg-10 col-xl-8 border-0">
 <div class="container-fluid pb-2">
     <div class="row">
         <img src="<?php if (isset($templateParams["img"])) {

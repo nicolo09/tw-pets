@@ -1,4 +1,4 @@
-<div class="card mx-auto col-12 col-lg-10 col-xl-8 g-0 text-center d-flex justify-content-center">
+<div class="card mx-auto col-12 col-lg-10 col-xl-8 g-0 text-center d-flex justify-content-center border-0">
 <h1>Crea nuovo post</h1>
 <form action="#" method="POST" class="" enctype="multipart/form-data">
     <!--Immagine mostrata qui-->
