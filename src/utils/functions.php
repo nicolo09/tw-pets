@@ -15,6 +15,7 @@ function sec_session_start()
 
 function isActive($pagename)
 {
+    //TODO Improve this system
     if (strpos($_SERVER['REQUEST_URI'], $pagename) !== false) {
         echo ("active");
     }
