@@ -3,7 +3,7 @@
 <form action="#" method="POST" class="" enctype="multipart/form-data">
     <!--Immagine mostrata qui-->
     <div>
-        <img id="imgPreview" src="#" alt="Immagine inserita da utente" class="w-100">
+        <img id="imgPreview" src="#" alt="Immagine inserita da utente" class=" w-100 post-image">
     </div>
     <!--Immagine da inserire-->
     <div class="row mt-2 g-0 d-flex justify-content-center">

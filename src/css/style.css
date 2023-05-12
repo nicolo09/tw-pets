@@ -306,3 +306,7 @@ li.select2-results__option {
 .top-page-popup{
     font-size: larger;
 }
+
+.post-image{
+    max-width: 600px;
+}
