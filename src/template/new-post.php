@@ -23,26 +23,20 @@
         placeholder="Scrivi una descrizione per il tuo post di meno di 200 caratteri" class="p-0 m-0"></textarea>
     </div>
     <!--Per stilizzare i bottoni-->
-    <div class="container">
-        <div class="row w-100">
+        <div class="w-100">
             <!--Animali presenti-->
             <label for="selectAnimals">Seleziona gli animali presenti in questo post</label>
-            <p class="desktop-view">Tieni premuto control per selezionare multipli animali</p>
-            <p class="mobile-view">Clicca per selezionare multipli animali</p>
-            <select name="selectAnimals" id="selectAnimals" multiple="multiple" class="form-select" size=6>
+            <select name="selectAnimals[]" id="selectAnimals" multiple="multiple" class="form-select selectAnimals w-100 p-0" size=6>
                 <?php
-                if (isset($templateParams["animals"])) {
-                    foreach ($templateParams["animals"] as $animal) {
-                        echo "<option value=" . $animal . ">" . $animal . "</option>";
+                if (isset($templateParams["animals"])&&isset($templateParams["animalsImg"])
+                    &&count($templateParams["animals"])==count($templateParams["animalsImg"])) {
+                    for ($i=0; $i<count($templateParams["animals"]); $i++) {
+                        echo "<option value=" . $templateParams["animals"][$i] . " data-img=".$templateParams["animalsImg"][$i].">" . $templateParams["animals"][$i] . "</option>";
                     }
                 }
                 ?>
             </select>
-            <!--Guarda post in anteprima-->
-            <!--TODO: Da implementare-->
-            <button class="btn btn-outline-primary col w-40"><img src="img/preview.svg" alt="">Guarda post in anteprima</button>
         </div>
-    </div>
     <!--Gli errori, se presenti-->
     <?php
     if (isset($templateParams["error"])) {
@@ -54,6 +48,10 @@
     <!--Mostro gli animali, dinamicamente con js-->
     <div class="animal-display">
     </div>
+
+    <!--Guarda post in anteprima-->
+    <!--TODO: Da implementare-->
+    <button class="btn btn-outline-primary col w-40 mt-4"><img src="img/preview.svg" alt="">Guarda post in anteprima</button>
 
     <!--Invia-->
     <div class="col text-center w-80 mt-5 p-10">

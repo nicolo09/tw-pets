@@ -15,7 +15,7 @@ if (empty($_POST)) {
     $templateParams["error"][]="";
     $animals=array();
     if(isset($_POST["selectAnimals"])){
-        $animals=array($_POST["selectAnimals"]);
+        $animals=$_POST["selectAnimals"];
     }
 
     if (isset($_POST["imgalt"]) && isset($_FILES) && isset($_POST["txtpost"])) {
@@ -36,6 +36,7 @@ $animalList=getManagedAnimals(getUserName($dbh),$dbh);
 $templateParams["animals"]=array();
 foreach($animalList as $singleAnimal){
     $templateParams["animals"][]=$singleAnimal["username"];
+    $templateParams["animalsImg"][]=IMG_DIR.$singleAnimal["immagine"];
 }
 
 if(empty($_POST)==false&&isset($templateParams["error"])==true&&strlen($templateParams["error"][0])==0){
