@@ -1,5 +1,3 @@
-$.fn.select2.defaults.set( "theme", "bootstrap-5" );
-
 const filePicker = document.getElementById('imgprofile');
 const image = document.getElementById('imgPreview');
 
