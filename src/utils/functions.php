@@ -547,3 +547,13 @@ function changePassword(string $oldPassword, string $newPassword, string $confir
     }
     return array($result, $errors);
 }
+
+function getPost(int $id, DatabaseHelper $dbh){
+    $result=$dbh->getPostInfo($id);
+    if(empty($result)==false){
+        //Visto che l'id è univoco per post, è inutile avere un array di un array di un singolo risultato
+        return $result[0];
+    }else{
+        return $result;
+    }
+}
