@@ -33,7 +33,7 @@
                                                                     } ?>>
     <div class="w-100 m-0 border-bottom border-top border-black d-flex justify-content-center g-0">
         <!--Tasti-->
-        <div class="border-end border-black row w-50 g-0">
+        <div class="row w-50 g-0">
             <button class="btn btn-outline btn-outline-primary col"><img class="w-25" src="img/thumb_up.svg" alt="">136 Mi Piace</button>
         </div>
         <div class="row w-50 g-0">
