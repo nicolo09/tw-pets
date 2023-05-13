@@ -7,7 +7,6 @@ if(isset($_GET["id"])){
 }
 
 $result=getPost($id, $dbh);
-var_dump($result);
 if(empty($result)==false){
     //Non è vuoto
     $templateParams["immagine"]=IMG_DIR.$result["immagine"];
