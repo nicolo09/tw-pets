@@ -1,6 +1,13 @@
 <?php
 require_once("bootstrap.php");
 
+# Se l'utente non è già loggato, viene reindirizzato alla home
+
+if (isUserLoggedIn($dbh) == false) {
+    header("Location: login.php");
+    exit;
+}
+
 $id=-1;
 if(isset($_GET["id"])){
     $id=$_GET["id"];
