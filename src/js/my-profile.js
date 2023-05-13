@@ -7,7 +7,7 @@ document.querySelector('#animals-button').addEventListener('click', () =>{
 });
 
 document.querySelector('#add-post-button').addEventListener('click', () => {
-    window.location.href = 'create-new-post.php';
+    window.location.href = 'create-new-post-profile.php';
 });
 
 document.querySelector('#view-profile-button').addEventListener('click', () => {
