@@ -557,3 +557,21 @@ function getPost(int $id, DatabaseHelper $dbh){
         return $result;
     }
 }
+
+function getLikes(int $id, DatabaseHelper $dbh){
+    $result=$dbh->getPostLikes($id);
+    if(empty($result)){
+        return 0;
+    }else{
+        return $result[0]["COUNT(*)"];
+    }
+}
+
+function isPostLikedBy(int $id, string $username, DatabaseHelper $dbh){
+    $result=$dbh->doesUserLikePost($id, $username);
+    if(empty($result)){
+        return false;
+    }else{
+        return $result[0]["COUNT(*)"]==1;
+    }
+}

@@ -437,4 +437,26 @@ class DatabaseHelper
             return array();
         }
     }
+
+    public function getPostLikes($id){
+        if ($stmt = $this->db->prepare("SELECT COUNT(*) FROM likes WHERE id_post=?")) {
+            $stmt->bind_param('i', $id);
+            $stmt->execute();
+            $result = $stmt->get_result();
+            return $result->fetch_all(MYSQLI_ASSOC);
+        } else {
+            return array();
+        }
+    }
+
+    public function doesUserLikePost($id, $username){
+        if ($stmt = $this->db->prepare("SELECT COUNT(*) FROM `likes` WHERE username=? AND id_post=?")) {
+            $stmt->bind_param('si',$username, $id);
+            $stmt->execute();
+            $result = $stmt->get_result();
+            return $result->fetch_all(MYSQLI_ASSOC);
+        } else {
+            return array();
+        }
+    }
 }
