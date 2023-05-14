@@ -36,8 +36,8 @@
         <div class="row w-50 g-0">
             <button class="btn btn-outline btn-outline-primary col <?php if (isset($templateParams["nlikes"]) == false || $templateParams["nlikes"] < 0) {
                                                                         echo "disabled";
-                                                                    } ?>">
-                <?php if (isset($templateParams["nlikes"]) && $templateParams["nlikes"] > 0) {
+                                                                    } ?>" id="likeB">
+                <?php if (isset($templateParams["nlikes"]) && $templateParams["nlikes"] >= 0) {
                     if (isset($templateParams["liked"]) && $templateParams["liked"] == true) {
                         //Post con mi piace
                         echo html_entity_decode('<img class="w-25" src=' . IMG_DIR . "thumb_up_filled.svg" . ' alt="">' . $templateParams["nlikes"] . ' Mi Piace</button>');
@@ -53,8 +53,8 @@
         <div class="row w-50 g-0">
             <button class="btn btn-outline btn-outline-primary col <?php if (isset($templateParams["nlikes"]) == false || $templateParams["nlikes"] < 0) {
                                                                         echo "disabled";
-                                                                    } ?>">
-                <?php if (isset($templateParams["nlikes"]) && $templateParams["nlikes"] > 0) {
+                                                                    } ?>" id="saveB">
+                <?php if (isset($templateParams["nlikes"]) && $templateParams["nlikes"] >= 0) {
                     if (isset($templateParams["saved"]) && $templateParams["saved"] == true) {
                         //Post salvato
                         echo html_entity_decode('<img class="w-25" src=' . IMG_DIR . "star_filled.svg" . ' alt=""> Salvato </button>');
@@ -68,6 +68,14 @@
                 ?>
         </div>
     </div>
+    <div>
+        <?php if (isset($_GET["successL"]) && $_GET["successL"] == 0) : ?>
+            <p class="text-danger">Qualcosa è andato storto nel mettere un like</p>
+        <?php endif ?>
+        <?php if (isset($_GET["successS"]) && $_GET["successS"] == 0) : ?>
+            <p class="text-danger">Qualcosa è andato storto nel salvare il post</p>
+        <?php endif ?>
+    </div>
     <div class="text-left">
         <p>
             <?php if (isset($templateParams["descrizione"]) && isset($templateParams["username"])) {
@@ -78,3 +86,4 @@
         </p>
     </div>
 </div>
+<script src="js/post.js" type="text/javascript"></script>
