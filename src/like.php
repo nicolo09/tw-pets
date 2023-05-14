@@ -36,3 +36,4 @@ if (isIdPostValid($id, $dbh)) {
 
 //Ritorna a pagina post, success=0/1
 header("Location: view-post-profile.php?id=".$id."&successL=".$success);
+?>
