@@ -27,6 +27,8 @@ if(empty($result)==false){
     $isLiked=isPostLikedBy($id, getUserName($dbh), $dbh);
     $templateParams["nlikes"]=$likes;
     $templateParams["liked"]=$isLiked;
+    $isSaved=isPostSavedBy($id, getUserName($dbh), $dbh);
+    $templateParams["saved"]=$isSaved;
 }else{
 //E' vuoto
     $templateParams["immagine"]="#";
