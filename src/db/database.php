@@ -470,4 +470,16 @@ class DatabaseHelper
             return array();
         }
     }
+
+    public function isIdPostCorrect($id){
+        if ($stmt = $this->db->prepare("SELECT COUNT(id_post) FROM post WHERE id_post=?")) {
+            $stmt->bind_param('i', $id);
+            $stmt->execute();
+            $result = $stmt->get_result();
+            return $result->fetch_all(MYSQLI_ASSOC);
+        } else {
+            return array();
+        }
+    }
+
 }

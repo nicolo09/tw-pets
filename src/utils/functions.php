@@ -584,3 +584,12 @@ function isPostSavedBy(int $id, string $username, DatabaseHelper $dbh){
         return $result[0]["COUNT(*)"]==1;
     }
 }
+
+function isIdPostValid(int $id, DatabaseHelper $dbh){
+    $result=$dbh->isIdPostCorrect($id);
+    if(empty($result)){
+        return false;
+    }else{
+        return $result[0]["COUNT(*)"]==1;
+    }
+}
