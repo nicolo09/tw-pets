@@ -23,6 +23,10 @@ if(empty($result)==false){
     $templateParams["username"]=$result["username"];
     $templateParams["immagineprofilo"]=IMG_DIR.$result["immagineprofilo"];
     $templateParams["title"]="Post di ".$templateParams["username"];
+    $likes=getLikes($id, $dbh);
+    $isLiked=isPostLikedBy($id, getUserName($dbh), $dbh);
+    $templateParams["nlikes"]=$likes;
+    $templateParams["liked"]=$isLiked;
 }else{
 //E' vuoto
     $templateParams["immagine"]="#";
@@ -30,6 +34,7 @@ if(empty($result)==false){
     $templateParams["descrizione"]="Post non esiste";
     $templateParams["timestamp"]="Post non esiste";
     $templateParams["title"]="Post non esiste";
+    $templateParams["nlikes"]=-1; //Se il post non esiste, non esiste neanche il numero di like e quindi con -1 disabilito i bottoni
 }
 
 $templateParams["page"] = "post.php";
