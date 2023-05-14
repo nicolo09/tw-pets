@@ -482,4 +482,22 @@ class DatabaseHelper
         }
     }
 
+    public function addLikePost($id, $username){
+        if ($stmt = $this->db->prepare("INSERT INTO likes (id_post, username) VALUES (?,?)")) {
+            $stmt->bind_param('is', $id, $username);
+            return $stmt->execute();
+        } else {
+            return false;
+        }
+    }
+
+    public function removeLikePost($id, $username){
+        if ($stmt = $this->db->prepare("DELETE FROM likes WHERE id_post=? AND username=?")) {
+            $stmt->bind_param('is', $id, $username);
+            return $stmt->execute();
+        } else {
+            return false;
+        }
+    }
+
 }

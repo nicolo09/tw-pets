@@ -593,3 +593,11 @@ function isIdPostValid(int $id, DatabaseHelper $dbh){
         return $result[0]["COUNT(*)"]==1;
     }
 }
+
+function likePost(int $id, string $username, DatabaseHelper $dbh){
+    return $dbh->addLikePost($id, $username);
+}
+
+function unLikePost(int $id, string $username, DatabaseHelper $dbh){
+    return $dbh->removeLikePost($id, $username);
+}
