@@ -590,7 +590,7 @@ function isIdPostValid(int $id, DatabaseHelper $dbh){
     if(empty($result)){
         return false;
     }else{
-        return $result[0]["COUNT(*)"]==1;
+        return $result[0]["COUNT(id_post)"]==1;
     }
 }
 
