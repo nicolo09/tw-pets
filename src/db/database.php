@@ -500,4 +500,22 @@ class DatabaseHelper
         }
     }
 
+    public function addSavePost($id, $username){
+        if ($stmt = $this->db->prepare("INSERT INTO salvati (id_post, username) VALUES (?,?)")) {
+            $stmt->bind_param('is', $id, $username);
+            return $stmt->execute();
+        } else {
+            return false;
+        }
+    }
+
+    public function removeSavePost($id, $username){
+        if ($stmt = $this->db->prepare("DELETE FROM salvati WHERE id_post=? AND username=?")) {
+            $stmt->bind_param('is', $id, $username);
+            return $stmt->execute();
+        } else {
+            return false;
+        }
+    }
+
 }

@@ -601,3 +601,11 @@ function likePost(int $id, string $username, DatabaseHelper $dbh){
 function unLikePost(int $id, string $username, DatabaseHelper $dbh){
     return $dbh->removeLikePost($id, $username);
 }
+
+function savePost(int $id, string $username, DatabaseHelper $dbh){
+    return $dbh->addSavePost($id, $username);
+}
+
+function unSavePost(int $id, string $username, DatabaseHelper $dbh){
+    return $dbh->removeSavePost($id, $username);
+}
