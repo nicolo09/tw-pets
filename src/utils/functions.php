@@ -575,3 +575,12 @@ function isPostLikedBy(int $id, string $username, DatabaseHelper $dbh){
         return $result[0]["COUNT(*)"]==1;
     }
 }
+
+function isPostSavedBy(int $id, string $username, DatabaseHelper $dbh){
+    $result=$dbh->hasUserSavedPost($id, $username);
+    if(empty($result)){
+        return false;
+    }else{
+        return $result[0]["COUNT(*)"]==1;
+    }
+}

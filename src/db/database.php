@@ -459,4 +459,15 @@ class DatabaseHelper
             return array();
         }
     }
+
+    public function hasUserSavedPost($id, $username){
+        if ($stmt = $this->db->prepare("SELECT COUNT(*) FROM salvati WHERE username=? AND id_post=?")) {
+            $stmt->bind_param('si',$username, $id);
+            $stmt->execute();
+            $result = $stmt->get_result();
+            return $result->fetch_all(MYSQLI_ASSOC);
+        } else {
+            return array();
+        }
+    }
 }
