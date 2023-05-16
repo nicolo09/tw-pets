@@ -31,6 +31,7 @@ if(empty($result)==false){
     $templateParams["saved"]=$isSaved;
 }else{
 //E' vuoto
+    //TODO: REDIRECT
     $templateParams["immagine"]="#";
     $templateParams["alt"]="Post non esiste";
     $templateParams["descrizione"]="Post non esiste";
