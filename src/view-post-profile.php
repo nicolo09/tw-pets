@@ -16,6 +16,7 @@ if(isset($_GET["id"])){
 $result=getPost($id, $dbh);
 if(empty($result)==false){
     //Non è vuoto
+    $templateParams["id"]=$id;
     $templateParams["immagine"]=IMG_DIR.$result["immagine"];
     $templateParams["alt"]=$result["alt"];
     $templateParams["descrizione"]=$result["testo"];
@@ -23,12 +24,6 @@ if(empty($result)==false){
     $templateParams["username"]=$result["username"];
     $templateParams["immagineprofilo"]=IMG_DIR.$result["immagineprofilo"];
     $templateParams["title"]="Post di ".$templateParams["username"];
-    $likes=getLikes($id, $dbh);
-    $isLiked=isPostLikedBy($id, getUserName($dbh), $dbh);
-    $templateParams["nlikes"]=$likes;
-    $templateParams["liked"]=$isLiked;
-    $isSaved=isPostSavedBy($id, getUserName($dbh), $dbh);
-    $templateParams["saved"]=$isSaved;
 }else{
     //Post non esiste, redirect
     header("Location: tab-profile.php");
