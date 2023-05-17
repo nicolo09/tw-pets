@@ -30,14 +30,9 @@ if(empty($result)==false){
     $isSaved=isPostSavedBy($id, getUserName($dbh), $dbh);
     $templateParams["saved"]=$isSaved;
 }else{
-//E' vuoto
-    //TODO: REDIRECT
-    $templateParams["immagine"]="#";
-    $templateParams["alt"]="Post non esiste";
-    $templateParams["descrizione"]="Post non esiste";
-    $templateParams["timestamp"]="Post non esiste";
-    $templateParams["title"]="Post non esiste";
-    $templateParams["nlikes"]=-1; //Se il post non esiste, non esiste neanche il numero di like e quindi con -1 disabilito i bottoni
+    //Post non esiste, redirect
+    header("Location: tab-profile.php");
+    exit;
 }
 
 $templateParams["page"] = "post.php";
