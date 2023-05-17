@@ -12,6 +12,8 @@
     <!-- CSS -->
     <link rel="stylesheet" href="../css/style.css"> <!-- TODO define better path -->
 
+    <!-- TODO add favicon -->
+    <!-- TODO add title templateParams["title"] -->
     <title>Pets - Login</title>
 </head>
 
