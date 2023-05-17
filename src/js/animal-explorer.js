@@ -1,6 +1,10 @@
-document.querySelector('#add-animal-button').addEventListener('click', () => {
-    window.location.href = 'profile-manage-animal.php';
-});
+const addbutton = document.querySelector('#add-animal-button')
+
+if(addbutton) { 
+    document.querySelector('#add-animal-button').addEventListener('click', () => {
+        window.location.href = 'profile-manage-animal.php';
+    });
+}
 
 let modifyButtons = document.getElementsByClassName("manage-button");
 let profileButtons = document.getElementsByClassName("proPicBtn");
