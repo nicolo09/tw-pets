@@ -1,7 +1,7 @@
 <!--Rettangolo-->
-<div class="card mx-auto col-12 col-lg-10 col-xl-8 border-black align-items-center justify-content-center post" id="post-card-<?php if (isset($templateParams["id"])) {
-                                                                                                                                    echo $templateParams["id"];
-                                                                                                                                } ?>">
+<div class="card mx-auto col-12 col-sm-8 col-md-6 col-lg-5 col-xl-4 border-black align-items-center justify-content-center post" id="post-card-<?php if (isset($templateParams["id"])) {
+                                                                                                                                                    echo $templateParams["id"];
+                                                                                                                                                } ?>">
     <div class="card-header row border-bottom border-black post-header p-1">
         <!--Utente che ha postato-->
         <div class="col p-0">
@@ -19,35 +19,37 @@
                                             } else {
                                                 echo html_entity_decode('href=#');
                                             } ?>><?php if (isset($templateParams["username"])) {
-                                                                    echo $templateParams["username"];
-                                                                } else {
-                                                                    echo "Utente non esiste";
-                                                                } ?></a>
+                                                        echo $templateParams["username"];
+                                                    } else {
+                                                        echo "Utente non esiste";
+                                                    } ?></a>
         </div>
     </div>
     <!--Immagine-->
-    <img class="post-image w-100 pt-1 pb-1" src=<?php if (isset($templateParams["immagine"])) {
-                                                    echo $templateParams["immagine"];
-                                                } else {
-                                                    echo "#";
-                                                } ?> alt=<?php if (isset($templateParams["alt"])) {
+    <img class="w-100" src=<?php if (isset($templateParams["immagine"])) {
+                                echo $templateParams["immagine"];
+                            } else {
+                                echo "#";
+                            } ?> alt=<?php if (isset($templateParams["alt"])) {
                                                                 echo $templateParams["alt"];
                                                             } else {
                                                                 echo "Alt non presente";
                                                             } ?>>
     <div class="card-footer w-100 p-0 m-0">
-        <div class="w-100 m-0 d-flex justify-content-center g-0 row">
+        <div class="w-100 m-0 d-flex justify-content-center row">
             <!--Tasti-->
-            <div class="col g-0 div-button-post">
-                <button class="btn btn-outline btn-outline-primary button-post w-100 align-middle" id="post-card-<?php if (isset($templateParams["id"])) {
-                                                                                                                        echo $templateParams["id"];
-                                                                                                                    } ?>">
+            <div class="col div-button-post">
+                <button class="btn btn-outline btn-outline-primary button-post align-middle" id="post-card-<?php if (isset($templateParams["id"])) {
+                                                                                                                echo $templateParams["id"];
+                                                                                                            } ?>">
+                </button>
 
             </div>
-            <div class="col g-0 div-button-post">
-                <button class="btn btn-outline btn-outline-primary button-post w-100 align-middle" id="post-card-<?php if (isset($templateParams["id"])) {
-                                                                                                                        echo $templateParams["id"];
-                                                                                                                    } ?>">
+            <div class="col div-button-post">
+                <button class="btn btn-outline btn-outline-primary button-post align-middle" id="post-card-<?php if (isset($templateParams["id"])) {
+                                                                                                                echo $templateParams["id"];
+                                                                                                            } ?>">
+                </button>
 
             </div>
         </div>
