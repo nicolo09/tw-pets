@@ -7,35 +7,33 @@ const id = [];
 //Se un post ha il like o no
 const likedID = {};
 const savedID = {};
+const nlikesID = {};
 for (i = 0; i < cards.length; i++) {
     tmp = cards[i].id.split("-")[2];
     id.push(tmp);
     likedID[tmp] = false;
     savedID[tmp] = false;
+    nlikesID[tmp] = 0;
 }
 
 //Chiedo al db se i post hanno like o no
-id.forEach(element => getPostLiked(element));
-id.forEach(element => getPostSaved(element));
-
-//Metto la grafica dei bottoni
 id.forEach(element => {
-    styleButtonLike(element);
-    styleButtonSave(element);
+    getPostLiked(element);
+    getPostSaved(element);
     attachLike(element);
-    attachSave(element)
+    attachSave(element);
 });
 
 function styleButtonLike(id) {
-    //TODO: Add n likes
     const buttonL = document.getElementById("like-post-card-" + id);
+    const n=nlikesID[id];
     if (buttonL != null) {
         if (likedID[id] == true) {
             //Post ha like
-            buttonL.innerHTML = '<img src="' + IMGDIR + 'thumb_up_filled.svg" alt="" />Mi Piace ';
+            buttonL.innerHTML = '<img src="' + IMGDIR + 'thumb_up_filled.svg" alt="" />'+n+' Mi Piace ';
         } else {
             //Post non ha like
-            buttonL.innerHTML = '<img src="' + IMGDIR + 'thumb_up.svg" alt="" />Mi Piace ';
+            buttonL.innerHTML = '<img src="' + IMGDIR + 'thumb_up.svg" alt="" />'+n+' Mi Piace ';
         }
     }
 }
@@ -43,11 +41,11 @@ function styleButtonLike(id) {
 function styleButtonSave(id) {
     const buttonS = document.getElementById("save-post-card-" + id);
     if (buttonS != null) {
-        if (likedID[id] == true) {
-            //Post ha like
+        if (savedID[id] == true) {
+            //Post è stato salvato
             buttonS.innerHTML = '<img src="' + IMGDIR + 'star_filled.svg" alt="" />Salvato ';
         } else {
-            //Post non ha like
+            //Post non è stato salvato
             buttonS.innerHTML = '<img src="' + IMGDIR + 'star.svg" alt="" />Salva ';
         }
     }
@@ -61,6 +59,16 @@ function getPostLiked(id) {
         return response.json();
     }).then((data) => {
         likedID[id] = data;
+        styleButtonLike(id);
+    });
+    const nLike = fetch("tell-js-n-likes.php?id=" + id).then((response) => {
+        if (!response.ok) {
+            throw new Error("Something went wrong!");
+        }
+        return response.json();
+    }).then((data) => {
+        nlikesID[id] = data;
+        styleButtonLike(id);
     });
 }
 
@@ -72,6 +80,7 @@ function getPostSaved(id) {
         return response.json();
     }).then((data) => {
         savedID[id] = data;
+        styleButtonSave(id);
     });
 }
 
