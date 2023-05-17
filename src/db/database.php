@@ -42,7 +42,16 @@ class DatabaseHelper
 
     public function getPersonsLike($username, $offset){
         $value = "%".$username."%";
-        if($stmt = $this->db->prepare("SELECT * FROM persona WHERE username LIKE ? LIMIT $offset, 10")) {
+
+        $query = "SELECT p.*
+        FROM PERSONA p
+        LEFT JOIN SEGUE_PERSONA sp ON p.username = sp.followed
+        WHERE p.username LIKE ?
+        GROUP BY p.username
+        ORDER BY COUNT(sp.follower) DESC
+        LIMIT $offset, 10";
+
+        if($stmt = $this->db->prepare($query)) {
             $stmt->bind_param('s', $value);
             $stmt->execute();
             $result = $stmt->get_result();
@@ -54,7 +63,16 @@ class DatabaseHelper
 
     public function getAnimalsLike($username, $offset){
         $value = "%".$username."%";
-        if($stmt = $this->db->prepare("SELECT * FROM animale WHERE username LIKE ? LIMIT $offset, 10")) {
+
+        $query = "SELECT a.*
+        FROM ANIMALE a
+        LEFT JOIN SEGUE_ANIMALE sa ON a.username = sa.followed
+        WHERE a.username LIKE ?
+        GROUP BY a.username
+        ORDER BY COUNT(sa.follower) DESC
+        LIMIT $offset, 10";
+
+        if($stmt = $this->db->prepare($query)) {
             $stmt->bind_param('s', $value);
             $stmt->execute();
             $result = $stmt->get_result();

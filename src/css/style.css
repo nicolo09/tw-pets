@@ -40,7 +40,6 @@ textarea {
     text-decoration: none;
     transition: color .15s ease-in-out, background-color .15s ease-in-out, border-color .15s ease-in-out;
     color: #000000;
-    margin-right: 10px;
     text-transform: uppercase;
     font-weight: 200 !important;
     font-size: 14px;
@@ -72,7 +71,7 @@ textarea {
     background: linear-gradient(white, white) padding-box,
         linear-gradient(to right, darkblue, darkorchid) border-box;
     border: 4px solid transparent;
-
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.75);
 }
 
 .proPicContainer {
@@ -99,7 +98,6 @@ textarea {
         max-width: 120px !important;
         min-height: 120px !important;
         min-width: 120px !important;
-        border-radius: 50%;
     }
 
     .proPicContainer {
@@ -118,6 +116,7 @@ textarea {
     border: 2px solid transparent;
     padding: 1px;
     margin: 1%;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.75);
 }
 
 .miniatureLabel {
