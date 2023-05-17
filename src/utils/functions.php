@@ -221,7 +221,7 @@ function editAnimal($animal, $type, $file, $description, $owners, $dbh){
 
 function editOwnerships($owners, $animal, $dbh) {
     $errors = array();
-    $oldOwners = $dbh->getOwners($animal);
+    $oldOwners = array_column($dbh->getOwners($animal), "username");
     foreach(array_diff($owners, $oldOwners) as $newOwner){
         if(!$dbh->registerOwnership($newOwner, $animal)){
             $errors[] = "Impossibile assegnare l'animale a " . $newOwner . ".";

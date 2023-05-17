@@ -82,6 +82,43 @@ class DatabaseHelper
         }
     }
 
+    public function getPersonFollowers($username, $offset){
+
+        $query = "SELECT p.username, p.immagine /* TODO order by followers */
+        FROM persona p
+        JOIN segue_persona sp ON p.username = sp.follower
+        WHERE sp.followed = ?
+        LIMIT $offset, 30";
+
+        if($stmt = $this->db->prepare($query)) {
+            $stmt->bind_param('s', $username);
+            $stmt->execute();
+            $result = $stmt->get_result();
+            return $result->fetch_all(MYSQLI_ASSOC);
+        } else {
+            return array();
+        }
+    }
+
+    public function getAnimalFollowers($username, $offset){
+
+        $query = "SELECT p.username, p.immagine /* TODO order by followers */
+        FROM persona p
+        JOIN segue_animale sa ON sa.follower = p.username
+        LEFT JOIN possiede po ON po.persona = sa.follower AND po.animale = ?
+        WHERE sa.followed = ? AND po.animale IS NULL
+        LIMIT $offset, 30";
+
+        if($stmt = $this->db->prepare($query)) {
+            $stmt->bind_param('ss', $username, $username);
+            $stmt->execute();
+            $result = $stmt->get_result();
+            return $result->fetch_all(MYSQLI_ASSOC);
+        } else {
+            return array();
+        }
+    }
+
     public function addAnimal($username, $type, $img, $description) {
         if ($stmt = $this->db->prepare("INSERT INTO animale (username, tipo, immagine, descrizione) VALUES (?, ?, ?, ?)")) {
             $stmt->bind_param('ssss', $username, $type, $img, $description);
@@ -132,11 +169,17 @@ class DatabaseHelper
     }
 
     public function getOwners($animal) {
-        if($stmt = $this->db->prepare("SELECT persona AS username FROM possiede WHERE animale = ?")) {
+
+        $query = "SELECT p.username, p.immagine
+        FROM persona p
+        JOIN possiede po ON p.username = po.persona
+        WHERE po.animale = ?";
+
+        if($stmt = $this->db->prepare($query)) {
             $stmt->bind_param('s',$animal);
             $stmt->execute();
             $result = $stmt->get_result();
-            return array_column($result->fetch_all(MYSQLI_ASSOC), "username");
+            return $result->fetch_all(MYSQLI_ASSOC);
         } else {
             return array();
         }
