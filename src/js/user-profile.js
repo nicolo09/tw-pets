@@ -1,5 +1,3 @@
-//params = window.location.search.split("&");
-
 //Possibili costanti del parametro type
 const ANIMAL = "animal";
 const PERSON = "person";
@@ -7,7 +5,7 @@ const PERSON = "person";
 const queryString = window.location.search
 const urlParams = new URLSearchParams(queryString)
 
-let type = urlParams.has('type') ? urlParams.get('type') : PERSON; /*TODO discutere se ha senso dire che di base è una persona */
+let type = urlParams.has('type') ? urlParams.get('type') : PERSON;
 let username = urlParams.has('username') ? urlParams.get('username') : null;
 
 if (type == PERSON) {
