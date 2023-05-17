@@ -463,4 +463,23 @@ class DatabaseHelper
             return array();
         }
     }
+
+    /**
+     * Recupera i post preferiti dell'utente
+     * @param string $username username dell'utente di cui si vuole ottenere i post preferiti
+     * @param int $from timestamp di inizio del periodo di cui si vuole ottenere i post preferiti
+     * @param int $offset offset dei post preferiti
+     * @param int $n numero di post preferiti da ottenere
+     * @return array array associativo contenente i post preferiti dell'utente
+     */
+    public function getFavoritePosts(string $username,int $from,int $offset,int $n){
+        if ($stmt = $this->db->prepare("SELECT * FROM salvati JOIN post ON salvati.id_post=post.id_post WHERE salvati.username=? AND post.timestamp>? ORDER BY timestamp DESC LIMIT ?,?")) {
+            $stmt->bind_param('siii', $username, $from, $offset, $n);
+            $stmt->execute();
+            $result = $stmt->get_result();
+            return $result->fetch_all(MYSQLI_ASSOC);
+        } else {
+            return array();
+        }
+    }
 }
