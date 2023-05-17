@@ -39,14 +39,14 @@
         <div class="w-100 m-0 d-flex justify-content-center row">
             <!--Tasti-->
             <div class="col div-button-post">
-                <button class="btn btn-outline btn-outline-primary button-post align-middle" id="post-card-<?php if (isset($templateParams["id"])) {
+                <button class="btn btn-outline btn-outline-primary button-post align-middle" id="like-post-card-<?php if (isset($templateParams["id"])) {
                                                                                                                 echo $templateParams["id"];
                                                                                                             } ?>">
                 </button>
 
             </div>
             <div class="col div-button-post">
-                <button class="btn btn-outline btn-outline-primary button-post align-middle" id="post-card-<?php if (isset($templateParams["id"])) {
+                <button class="btn btn-outline btn-outline-primary button-post align-middle" id="save-post-card-<?php if (isset($templateParams["id"])) {
                                                                                                                 echo $templateParams["id"];
                                                                                                             } ?>">
                 </button>
