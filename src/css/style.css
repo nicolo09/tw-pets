@@ -11,7 +11,7 @@ textarea {
     display: none;
 }
 
-.desktop-view{
+.desktop-view {
     display: block;
 }
 
@@ -19,18 +19,18 @@ textarea {
     .mobile-view {
         display: block;
     }
-    
-    .desktop-view{
+
+    .desktop-view {
         display: none;
     }
 }
 
 
 /* otherwise sometimes chrome doesn't center elements*/
-.center-align{
-    text-align:center !important;
+.center-align {
+    text-align: center !important;
     width: 100% !important;
-    text-align-last:center !important;
+    text-align-last: center !important;
 }
 
 /* navbar */
@@ -38,7 +38,7 @@ textarea {
     display: block;
     padding: .5rem 1rem;
     text-decoration: none;
-    transition: color .15s ease-in-out,background-color .15s ease-in-out,border-color .15s ease-in-out;
+    transition: color .15s ease-in-out, background-color .15s ease-in-out, border-color .15s ease-in-out;
     color: #000000;
     margin-right: 10px;
     text-transform: uppercase;
@@ -46,32 +46,33 @@ textarea {
     font-size: 14px;
 }
 
-.nav-link:hover{
+.nav-link:hover {
     background: #e1e1e1
 }
 
-.navbar-nav .active{
-	border-bottom: 4px solid #000000;
+.navbar-nav .active {
+    border-bottom: 4px solid #000000;
 }
 
-.navbar-nav{
+.navbar-nav {
     width: 100%;
 }
 
 /* Profile Picture style settings */
 
-.proPic, .proPicBtn {
+.proPic,
+.proPicBtn {
     object-fit: cover;
     max-height: 180px !important;
     max-width: 180px !important;
     min-height: 180px !important;
     min-width: 180px !important;
     border-radius: 50%;
-    
+
     background: linear-gradient(white, white) padding-box,
-              linear-gradient(to right, darkblue, darkorchid) border-box;
+        linear-gradient(to right, darkblue, darkorchid) border-box;
     border: 4px solid transparent;
-    
+
 }
 
 .proPicContainer {
@@ -90,7 +91,9 @@ textarea {
 }
 
 @media (max-width: 1000px) {
-    .proPic, .proPicBtn {
+
+    .proPic,
+    .proPicBtn {
         object-fit: cover;
         max-height: 120px !important;
         max-width: 120px !important;
@@ -111,7 +114,7 @@ textarea {
     border-radius: 50%;
     vertical-align: middle;
     background: linear-gradient(white, white) padding-box,
-              linear-gradient(to right, darkblue, darkorchid) border-box;
+        linear-gradient(to right, darkblue, darkorchid) border-box;
     border: 2px solid transparent;
     padding: 1px;
     margin: 1%;
@@ -122,7 +125,8 @@ textarea {
     overflow: hidden;
     text-overflow: ellipsis;
     white-space: nowrap;
-    max-width: 80%; /* adjust this value as needed */
+    max-width: 80%;
+    /* adjust this value as needed */
     vertical-align: middle;
     margin-left: 3px;
 }
@@ -145,17 +149,17 @@ textarea {
     background-position: right center;
 }
 
-button > img{
+button>img {
     height: 70%;
 }
 
-.d-grid > button{
+.d-grid>button {
     margin: 0 6.2%;
 }
 
 /* Other */
 
-.form-outline{
+.form-outline {
     padding-bottom: 3%;
 }
 
@@ -166,8 +170,9 @@ button > img{
 
 /* Search */
 
-.search-bar, .result-bar {
-    border-radius: 10em !important; 
+.search-bar,
+.result-bar {
+    border-radius: 10em !important;
     /*background: linear-gradient(to right, darkblue, darkorchid);*/
     background: white;
     border-width: 3px !important;
@@ -192,7 +197,7 @@ button > img{
 }
 
 .search-button:hover {
-    animation: rotation 0.4s alternate; 
+    animation: rotation 0.4s alternate;
     animation-iteration-count: 2;
     animation-fill-mode: both;
 }
@@ -201,6 +206,7 @@ button > img{
     from {
         transform: rotate(0deg);
     }
+
     to {
         transform: rotate(-30deg);
     }
@@ -217,12 +223,13 @@ button > img{
     margin-bottom: 10px;
 }
 
-.results-container > a {
+.results-container>a {
     text-decoration: none !important;
     color: #000000 !important;
 }
 
-.input-group>.form-control, .input-group>.form-control:focus {
+.input-group>.form-control,
+.input-group>.form-control:focus {
     color: black;
     border-color: transparent;
     box-shadow: inset 0 0 0 5px transparent;
@@ -243,70 +250,107 @@ li.select2-results__option {
 }
 
 
-.btn-outline-animals{
-    --bs-btn-color:#0eeb49;
-    --bs-btn-border-color:#0eeb49;
-    --bs-btn-hover-color:#fff;
-    --bs-btn-hover-bg:#0eeb49;
-    --bs-btn-hover-border-color:#0eeb49;
-    --bs-btn-focus-shadow-rgb:13,110,253;
-    --bs-btn-active-color:#fff;
-    --bs-btn-active-bg:#0eeb49;
-    --bs-btn-active-border-color:#0eeb49;
-    --bs-btn-active-shadow:inset 0 3px 5px rgba(0, 0, 0, 0.125);
-    --bs-btn-disabled-color:#0eeb49;
-    --bs-btn-disabled-bg:transparent;
-    --bs-btn-disabled-border-color:#0eeb49;
-    --bs-gradient:none
+.btn-outline-animals {
+    --bs-btn-color: #0eeb49;
+    --bs-btn-border-color: #0eeb49;
+    --bs-btn-hover-color: #fff;
+    --bs-btn-hover-bg: #0eeb49;
+    --bs-btn-hover-border-color: #0eeb49;
+    --bs-btn-focus-shadow-rgb: 13, 110, 253;
+    --bs-btn-active-color: #fff;
+    --bs-btn-active-bg: #0eeb49;
+    --bs-btn-active-border-color: #0eeb49;
+    --bs-btn-active-shadow: inset 0 3px 5px rgba(0, 0, 0, 0.125);
+    --bs-btn-disabled-color: #0eeb49;
+    --bs-btn-disabled-bg: transparent;
+    --bs-btn-disabled-border-color: #0eeb49;
+    --bs-gradient: none
 }
 
-.btn-outline-logout{
-    --bs-btn-color:#9A9A9A;
-    --bs-btn-border-color:#9A9A9A;
-    --bs-btn-hover-color:#fff;
-    --bs-btn-hover-bg:#9A9A9A;
-    --bs-btn-hover-border-color:#9A9A9A;
-    --bs-btn-focus-shadow-rgb:13,110,253;
-    --bs-btn-active-color:#fff;
-    --bs-btn-active-bg:#9A9A9A;
-    --bs-btn-active-border-color:#9A9A9A;
-    --bs-btn-active-shadow:inset 0 3px 5px rgba(0, 0, 0, 0.125);
-    --bs-btn-disabled-color:#9A9A9A;
-    --bs-btn-disabled-bg:transparent;
-    --bs-btn-disabled-border-color:#9A9A9A;
-    --bs-gradient:none
+.btn-outline-logout {
+    --bs-btn-color: #9A9A9A;
+    --bs-btn-border-color: #9A9A9A;
+    --bs-btn-hover-color: #fff;
+    --bs-btn-hover-bg: #9A9A9A;
+    --bs-btn-hover-border-color: #9A9A9A;
+    --bs-btn-focus-shadow-rgb: 13, 110, 253;
+    --bs-btn-active-color: #fff;
+    --bs-btn-active-bg: #9A9A9A;
+    --bs-btn-active-border-color: #9A9A9A;
+    --bs-btn-active-shadow: inset 0 3px 5px rgba(0, 0, 0, 0.125);
+    --bs-btn-disabled-color: #9A9A9A;
+    --bs-btn-disabled-bg: transparent;
+    --bs-btn-disabled-border-color: #9A9A9A;
+    --bs-gradient: none
 }
 
-.btn-outline-posts{
-    --bs-btn-color:#ed2939;
-    --bs-btn-border-color:#ed2939;
-    --bs-btn-hover-color:#fff;
-    --bs-btn-hover-bg:#ed2939;
-    --bs-btn-hover-border-color:#ed2939;
-    --bs-btn-focus-shadow-rgb:13,110,253;
-    --bs-btn-active-color:#fff;
-    --bs-btn-active-bg:#ed2939;
-    --bs-btn-active-border-color:#ed2939;
-    --bs-btn-active-shadow:inset 0 3px 5px rgba(0, 0, 0, 0.125);
-    --bs-btn-disabled-color:#ed2939;
-    --bs-btn-disabled-bg:transparent;
-    --bs-btn-disabled-border-color:#ed2939;
-    --bs-gradient:none
+.btn-outline-posts {
+    --bs-btn-color: #ed2939;
+    --bs-btn-border-color: #ed2939;
+    --bs-btn-hover-color: #fff;
+    --bs-btn-hover-bg: #ed2939;
+    --bs-btn-hover-border-color: #ed2939;
+    --bs-btn-focus-shadow-rgb: 13, 110, 253;
+    --bs-btn-active-color: #fff;
+    --bs-btn-active-bg: #ed2939;
+    --bs-btn-active-border-color: #ed2939;
+    --bs-btn-active-shadow: inset 0 3px 5px rgba(0, 0, 0, 0.125);
+    --bs-btn-disabled-color: #ed2939;
+    --bs-btn-disabled-bg: transparent;
+    --bs-btn-disabled-border-color: #ed2939;
+    --bs-gradient: none
 }
 
-.setting-section{
+.setting-section {
     border-top: solid 1px lightgrey;
     padding: 4% 0 0 0;
 }
 
-.btn.settings-item{
+.btn.settings-item {
     width: 100%;
 }
 
-.top-page-popup{
+.top-page-popup {
     font-size: larger;
 }
 
-.post-image{
+.post-image {
     max-width: 600px;
+}
+
+.post-header {
+    padding: 0.5%;
+    border: 0;
+    margin: 0;
+    width: 100%;
+}
+
+/* TODO: Merge propic rules */
+.post-header .pro-pic{
+    max-width: 50px;
+    min-width: 50px;
+    max-height: 50px;
+    min-height: 50px;
+    /*max-width: 11%;*/
+    border-radius: 50%;
+    padding: 0;
+    background: linear-gradient(white, white) padding-box,
+        linear-gradient(to right, darkblue, darkorchid) border-box;
+    border: 2px solid transparent;
+}
+
+.post .button-post{
+    /*height: 35%;*/
+    padding: 0;
+
+}
+
+.post .div-button-post{
+    max-height: 3rem;
+    padding: 0;
+}
+
+.div-button-post .btn{
+    max-height: 100%;
+    height: 100%;
 }
