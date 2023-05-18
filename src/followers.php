@@ -36,6 +36,7 @@ if(isset($_GET["animal"]) && !empty($_GET["animal"])) {
     exit;
 }
 
+$templateParams["title"] = "Followers di " . $templateParams["user"];
 $templateParams["page"] = "followers-list.php";
 require_once("template/base.php");
 
