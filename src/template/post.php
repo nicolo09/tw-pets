@@ -31,40 +31,42 @@
                             } else {
                                 echo "#";
                             } ?> alt=<?php if (isset($templateParams["alt"])) {
-                                                                echo $templateParams["alt"];
-                                                            } else {
-                                                                echo "Alt non presente";
-                                                            } ?>>
+                                            echo $templateParams["alt"];
+                                        } else {
+                                            echo "Alt non presente";
+                                        } ?>>
     <div class="card-footer w-100 p-0 m-0">
         <div class="w-100 m-0 d-flex justify-content-center row">
             <!--Tasti-->
             <div class="col div-button-post">
                 <button class="btn btn-outline btn-outline-primary button-post align-middle" id="like-post-card-<?php if (isset($templateParams["id"])) {
-                                                                                                                echo $templateParams["id"];
-                                                                                                            } ?>" <?php if (isset($templateParams["disableLike"])&&$templateParams["disableLike"]==true) {
-                                                                                                                echo "disabled";
-                                                                                                            } ?>>
+                                                                                                                    echo $templateParams["id"];
+                                                                                                                } ?>" <?php if (isset($templateParams["disableLike"]) && $templateParams["disableLike"] == true) {
+                                                                                                                            echo "disabled";
+                                                                                                                        } ?>>
                 </button>
 
             </div>
             <div class="col div-button-post">
                 <button class="btn btn-outline btn-outline-primary button-post align-middle" id="save-post-card-<?php if (isset($templateParams["id"])) {
-                                                                                                                echo $templateParams["id"];
-                                                                                                            } ?>" <?php if (isset($templateParams["disableSave"])&&$templateParams["disableSave"]==true) {
-                                                                                                                echo "disabled";
-                                                                                                            } ?>>
+                                                                                                                    echo $templateParams["id"];
+                                                                                                                } ?>" <?php if (isset($templateParams["disableSave"]) && $templateParams["disableSave"] == true) {
+                                                                                                                            echo "disabled";
+                                                                                                                        } ?>>
                 </button>
 
             </div>
         </div>
         <div class="comments text-left">
-            <p>
-                <?php if (isset($templateParams["descrizione"]) && isset($templateParams["username"])) {
-                    $tmp = $templateParams["username"] . ":" . $templateParams["descrizione"];
-                    echo $tmp;
-                    //TODO:Animali che ci sono
-                } ?>
-            </p>
+            <?php
+            if (isset($templateParams["descrizione"]) && isset($templateParams["username"])) {
+                //Descrizione
+                echo html_entity_decode("<p>" . $templateParams["username"] . ": " . $templateParams["descrizione"] . "</p>");
+            }
+            //TODO:Animali che ci sono
+            if (isset($templateParams["timestamp"]) && isset($templateParams["username"])) {
+                echo html_entity_decode("<p>" . "Post creato alle " . $templateParams["timestamp"] . "</p>");
+            } ?>
         </div>
     </div>
 </div>

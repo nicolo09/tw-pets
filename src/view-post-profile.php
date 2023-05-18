@@ -20,7 +20,7 @@ if(empty($result)==false){
     $templateParams["immagine"]=IMG_DIR.$result["immagine"];
     $templateParams["alt"]=$result["alt"];
     $templateParams["descrizione"]=$result["testo"];
-    $templateParams["timestamp"]=$result["timestamp"];
+    $templateParams["timestamp"]=date( "d/m/Y H:i", strtotime($result["timestamp"]));
     $templateParams["username"]=$result["username"];
     $templateParams["immagineprofilo"]=IMG_DIR.$result["immagineprofilo"];
     $templateParams["title"]="Post di ".$templateParams["username"];
