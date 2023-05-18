@@ -53,7 +53,7 @@
 
             </div>
         </div>
-        <div class="text-left">
+        <div class="comments text-left">
             <p>
                 <?php if (isset($templateParams["descrizione"]) && isset($templateParams["username"])) {
                     $tmp = $templateParams["username"] . ":" . $templateParams["descrizione"];

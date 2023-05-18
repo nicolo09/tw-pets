@@ -87,6 +87,9 @@ function attachLike(id) {
             },
             success: function (response) {
                 getPostLiked(id);
+            },
+            error: function (request, status, error) {
+                $( ".comments" ).prepend( $( '<p class="text-danger">Errore nel mettere like</p>' ) );
             }
         });
     });
@@ -102,6 +105,9 @@ function attachSave(id) {
             },
             success: function (response) {
                 getPostSaved(id);
+            },
+            error: function (request, status, error) {
+                $( ".comments" ).prepend( $( '<p class="text-danger">Errore nel salvare il post</p>' ) );
             }
         });
     });
