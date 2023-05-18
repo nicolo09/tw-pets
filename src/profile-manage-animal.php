@@ -59,7 +59,8 @@ if(isset($_GET["animal"])){
     }
 
     if(!empty($msg)){
-        header("Location: profile-animals.php?error=" . $msg);
+        $_SESSION["error"] = $msg;
+        header("Location: profile-animals.php");
         exit;
     }
 
@@ -69,7 +70,7 @@ if(isset($_GET["animal"])){
     $templateParams["description"] = $animal[0]["descrizione"];
     $templateParams["title"] = "Modifica - " . $animal[0]["username"];
     $templateParams["subtitle"] = $templateParams["title"];
-    $templateParams["owners"] = $dbh->getOwners($animal[0]["username"]);
+    $templateParams["owners"] = array_column($dbh->getOwners($animal[0]["username"]), "username");
 
 } else {
     $templateParams["img"] = "img/default_pet_image.png";

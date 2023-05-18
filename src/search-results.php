@@ -15,11 +15,12 @@ if(isset($_GET["animals"]) && !empty($_GET["animals"])) {
     $templateParams["type"] = "person";
     $templateParams["search"] = $_GET["persons"];
 } else {
-    header("Location: search.php?error=Errore, ricerca nulla");
+    $_SESSION["error"] = "Errore, ricerca nulla";
+    header("Location: search.php");
     exit;
 }
 
-$templateParams["title"] = "Risultati";
+$templateParams["title"] = "Risultati per \"" . $templateParams["search"] . "\"";
 $templateParams["page"] = "full-search-results.php";
 require_once("template/base.php");
 ?>

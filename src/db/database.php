@@ -43,12 +43,12 @@ class DatabaseHelper
     public function getPersonsLike($username, $offset){
         $value = "%".$username."%";
 
-        $query = "SELECT p.*
+        $query = "SELECT p.username, p.immagine
         FROM PERSONA p
         LEFT JOIN SEGUE_PERSONA sp ON p.username = sp.followed
         WHERE p.username LIKE ?
         GROUP BY p.username
-        ORDER BY COUNT(sp.follower) DESC
+        ORDER BY COUNT(sp.follower) DESC, p.username 
         LIMIT $offset, 10";
 
         if($stmt = $this->db->prepare($query)) {
@@ -64,16 +64,67 @@ class DatabaseHelper
     public function getAnimalsLike($username, $offset){
         $value = "%".$username."%";
 
-        $query = "SELECT a.*
+        $query = "SELECT a.username, a.immagine
         FROM ANIMALE a
         LEFT JOIN SEGUE_ANIMALE sa ON a.username = sa.followed
         WHERE a.username LIKE ?
         GROUP BY a.username
-        ORDER BY COUNT(sa.follower) DESC
+        ORDER BY COUNT(sa.follower) DESC, a.username
         LIMIT $offset, 10";
 
         if($stmt = $this->db->prepare($query)) {
             $stmt->bind_param('s', $value);
+            $stmt->execute();
+            $result = $stmt->get_result();
+            return $result->fetch_all(MYSQLI_ASSOC);
+        } else {
+            return array();
+        }
+    }
+
+    public function getPersonFollowers($username, $offset){
+
+        $query = "SELECT P.username, P.immagine
+        FROM PERSONA P
+        LEFT JOIN SEGUE_PERSONA SP ON P.username = SP.followed
+        JOIN (
+            SELECT P.username
+            FROM PERSONA P
+            JOIN SEGUE_PERSONA SP ON p.username = SP.follower
+            WHERE sp.followed = ?
+        ) AS subquery ON P.username = subquery.username
+        GROUP BY P.username
+        ORDER BY COUNT(SP.follower) DESC, P.username
+        LIMIT $offset, 30";
+
+        if($stmt = $this->db->prepare($query)) {
+            $stmt->bind_param('s', $username);
+            $stmt->execute();
+            $result = $stmt->get_result();
+            return $result->fetch_all(MYSQLI_ASSOC);
+        } else {
+            return array();
+        }
+    }
+
+    public function getAnimalFollowers($username, $offset){
+
+        $query = "SELECT P.username, P.immagine
+        FROM PERSONA P
+        LEFT JOIN SEGUE_PERSONA SP ON P.username = SP.followed
+        JOIN (
+            SELECT P.username
+            FROM PERSONA P
+            JOIN SEGUE_ANIMALE SA ON p.username = SA.follower
+            LEFT JOIN POSSIEDE PO ON PO.persona = SA.follower AND PO.animale = ?
+            WHERE SA.followed = ? AND PO.animale IS NULL
+        ) AS subquery ON P.username = subquery.username
+        GROUP BY P.username
+        ORDER BY COUNT(SP.follower) DESC, P.username
+        LIMIT $offset, 30";
+
+        if($stmt = $this->db->prepare($query)) {
+            $stmt->bind_param('ss', $username, $username);
             $stmt->execute();
             $result = $stmt->get_result();
             return $result->fetch_all(MYSQLI_ASSOC);
@@ -132,11 +183,24 @@ class DatabaseHelper
     }
 
     public function getOwners($animal) {
-        if($stmt = $this->db->prepare("SELECT persona AS username FROM possiede WHERE animale = ?")) {
+
+        $query = "SELECT P.username, P.immagine
+        FROM PERSONA P
+        LEFT JOIN SEGUE_PERSONA SP ON P.username = SP.followed
+        JOIN (
+            SELECT p.username
+            FROM persona p
+            JOIN possiede po ON p.username = po.persona
+            WHERE po.animale = ?
+        ) AS subquery ON P.username = subquery.username
+        GROUP BY P.username
+        ORDER BY COUNT(SP.follower) DESC, P.username";
+
+        if($stmt = $this->db->prepare($query)) {
             $stmt->bind_param('s',$animal);
             $stmt->execute();
             $result = $stmt->get_result();
-            return array_column($result->fetch_all(MYSQLI_ASSOC), "username");
+            return $result->fetch_all(MYSQLI_ASSOC);
         } else {
             return array();
         }
