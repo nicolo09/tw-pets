@@ -20,7 +20,7 @@ if(isset($_GET["animals"]) && !empty($_GET["animals"])) {
     exit;
 }
 
-$templateParams["title"] = "Risultati";
+$templateParams["title"] = "Risultati per \"" . $templateParams["search"] . "\"";
 $templateParams["page"] = "full-search-results.php";
 require_once("template/base.php");
 ?>
