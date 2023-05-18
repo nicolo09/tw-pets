@@ -58,16 +58,9 @@ function getPostLiked(id) {
         }
         return response.json();
     }).then((data) => {
-        likedID[id] = data;
-        styleButtonLike(id);
-    });
-    const nLike = fetch("tell-js-n-likes.php?id=" + id).then((response) => {
-        if (!response.ok) {
-            throw new Error("Something went wrong!");
-        }
-        return response.json();
-    }).then((data) => {
-        nlikesID[id] = data;
+        //I dati vengono inviati come {bool, num}
+        likedID[id] = data[0];
+        nlikesID[id]=data[1];
         styleButtonLike(id);
     });
 }
@@ -94,7 +87,6 @@ function attachLike(id) {
             },
             success: function (response) {
                 getPostLiked(id);
-                styleButtonLike(id);
             }
         });
     });
@@ -110,7 +102,6 @@ function attachSave(id) {
             },
             success: function (response) {
                 getPostSaved(id);
-                styleButtonSave(id);
             }
         });
     });

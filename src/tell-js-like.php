@@ -6,6 +6,7 @@ if(isset($_GET["id"])){
 }
 
 $like=isPostLikedBy($id, getUserName($dbh), $dbh);
-//This list is to be communicated to javascript to show images
-echo json_encode($like);
+$likes=getLikes($id, $dbh);
+//This list is to be communicated to javascript to show if a post is liked and the number of likes
+echo json_encode(array($like, $likes));
 ?>
