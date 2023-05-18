@@ -47,10 +47,10 @@ create table LIKES (
 create table NOTIFICA (
      letta boolean not null,
      timestamp timestamp not null,
-     id int not null,
+     id int not null auto_increment,
      destinatario varchar(25) not null,
      tipo varchar(25) not null,
-     origine varchar(70) not null,
+     origine JSON not null,
      constraint IDNOTIFICA primary key (id));
 
 create table PERSONA (
