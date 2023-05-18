@@ -61,9 +61,8 @@
             <?php
             if (isset($templateParams["descrizione"]) && isset($templateParams["username"])) {
                 //Descrizione
-                echo html_entity_decode("<p>" . $templateParams["username"] . ": " . $templateParams["descrizione"] . "</p>");
+                echo html_entity_decode("<p><a href=".getUserProfileHref($templateParams["username"]).">".$templateParams["username"] ."</a>". ": " . $templateParams["descrizione"] . "</p>");
             }
-            //TODO:Aggiungi link ad animali 
             if (isset($templateParams["animals"]) && count($templateParams["animals"]) > 0) {
                 $row = "<p>";
                 if (count($templateParams["animals"]) == 1) {
@@ -73,7 +72,7 @@
                 }
                 for ($i=0; $i<count($templateParams["animals"]); $i++ ) {
                     $single=$templateParams["animals"][$i];
-                    $row = $row . $single;
+                    $row = $row ."<a href=".getAnimalProfileHref($single).">".$single ."</a>";
                     if($i+1==count($templateParams["animals"])){
                         //Non è l'ultimo elemento
                         $row=$row.".";
