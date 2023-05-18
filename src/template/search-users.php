@@ -1,6 +1,3 @@
-<?php if(isset($templateParams["error"])):?>
-<p class="text-danger text-center text-decoration-underline"><?php echo $templateParams["error"]; ?></p>
-<?php endif; ?>
 <form id="search-form" action="search.php" method="get">
     <div class="container">
         <div class="row justify-content-center">

@@ -6,14 +6,15 @@ if(!login_check($dbh)){
     exit;
 }
 
+if(!empty($_SESSION["error"])) {
+    $templateParams["errors"] = array($_SESSION["error"]);
+    unset($_SESSION["error"]);
+}
+
 if(isset($_GET["user"]) && count($dbh->getUserFromName($_GET["user"])) == 1){
     $templateParams["user"] = $_GET["user"]; 
 } else {
     $templateParams["user"] = getUserName($dbh);
-}
-
-if(isset($_GET["error"])){
-    $templateParams["errors"] = array($_GET["error"]);
 }
 
 $templateParams["title"] = "Animali di " . $templateParams["user"];
