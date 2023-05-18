@@ -444,4 +444,61 @@ class DatabaseHelper
             return false;
         }
     }
+
+    /**
+     * This function returns true if the user has more than X notifications
+     * @param string $username
+     * @param int $x
+     * @return bool
+     */
+    public function hasMoreThanXNotifications(string $username, int $x)
+    {
+        if ($stmt = $this->db->prepare("SELECT COUNT(*)>? FROM notifica WHERE destinatario = ?")) {
+            $stmt->bind_param('is', $x, $username);
+            $stmt->execute();
+            $result = $stmt->get_result();
+            $tmp = $result->fetch_all(MYSQLI_NUM);
+            if ($tmp[0][0] == 1) {
+                return true;
+            } else if ($tmp[0][0] == 0) {
+                return false;
+            }
+        }
+        throw new Exception("Error Processing Request", 1);
+    }
+
+    /**
+     * This function returns the number of notifications of the user
+     * @param string $username
+     * @return int
+     */
+    public function getNumberOfNotifications(string $username): int
+    {
+        if ($stmt = $this->db->prepare("SELECT COUNT(*) FROM notifica WHERE destinatario = ?")) {
+            $stmt->bind_param('s', $username);
+            $stmt->execute();
+            $result = $stmt->get_result();
+            $tmp = $result->fetch_all(MYSQLI_NUM);
+            return $tmp[0][0];
+        }
+        throw new Exception("Error Processing Request", 1);
+    }
+
+    /**
+     * This function returns the first n notifications of the user ordered by timestamp with offset o
+     * @param string $username
+     * @param int $n how many notifications to return
+     * @param int $o offset
+     * @return array
+     */
+    public function getNotifications(string $username, int $n, int $o): array
+    {
+        if ($stmt = $this->db->prepare("SELECT * FROM notifica WHERE destinatario = ? ORDER BY timestamp DESC LIMIT $o, $n")) {
+            $stmt->bind_param('s', $username);
+            $stmt->execute();
+            $result = $stmt->get_result();
+            return $result->fetch_all(MYSQLI_ASSOC);
+        }
+        throw new Exception("Error Processing Request", 1);
+    }
 }
