@@ -6,6 +6,11 @@ if (!isUserLoggedIn($dbh)) {
     exit;
 }
 
+if(!empty($_SESSION["error"])) {
+    $templateParams["errors"] = array($_SESSION["error"]);
+    unset($_SESSION["error"]);
+}
+
 $templateParams["page"] = "my-profile.php";
 require_once("template/base.php");
 
