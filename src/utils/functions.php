@@ -547,3 +547,47 @@ function changePassword(string $oldPassword, string $newPassword, string $confir
     }
     return array($result, $errors);
 }
+
+/**
+ * Ritorna l'href per la pagina di un profilo utente di una persona
+ * @param string $username username della persona
+ * @return string href
+ */
+function getUserProfileHref(string $username)
+{
+    return "view-user-profile.php?username=" . $username . "&type=person";
+}
+
+/**
+ * Ritorna l'href per la pagina di un profilo utente di un animale
+ * @param string $username username della persona
+ * @return string href
+ */
+function getAnimalProfileHref(string $username)
+{
+    return "view-user-profile.php?username=" . $username . "&type=animal";
+}
+
+/**
+ * Ritorna l'href per la pagina di visualizzazione di un post
+ * @param int $id id del post
+ * @return string href
+ */
+function getPostHref(int $id)
+{
+    return "view-post-profile.php?id=" . $id;
+}
+ 
+/**
+ * Ritorna l'src dell'immagine di profilo di un utente
+ * @param string $user username dell'utente
+ * @return string src
+ */
+function getUserProfilePic(string $user, DatabaseHelper $dbh){
+    $result=$dbh->getUserFromName($user);
+    if(empty($result)){
+        return "img/default.jpg";
+    }else{
+        return "img/".$result[0]["immagine"];
+    }
+}
