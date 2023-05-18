@@ -446,7 +446,7 @@ class DatabaseHelper
     }
 
     /**
-     * This function returns true if the user has more than X notifications
+     * Returns true if the user has more than X notifications
      * @param string $username
      * @param int $x
      * @return bool
@@ -468,7 +468,7 @@ class DatabaseHelper
     }
 
     /**
-     * This function returns the number of notifications of the user
+     * Returns the number of notifications of the user
      * @param string $username
      * @return int
      */
@@ -485,7 +485,7 @@ class DatabaseHelper
     }
 
     /**
-     * This function returns the first n notifications of the user ordered by timestamp with offset o
+     * Returns the first n notifications of the user ordered by timestamp with offset o
      * @param string $username
      * @param int $n how many notifications to return
      * @param int $o offset
@@ -501,4 +501,22 @@ class DatabaseHelper
         }
         throw new Exception("Error Processing Request", 1);
     }
+
+    /**
+     * Adds a notification to the database
+     * @param string $destinatario
+     * @param NotificationType $tipo
+     * @param string $origine notification parameters
+     */
+    public function addNotification(string $destinatario, NotificationType $tipo, array $origine)
+    {
+        if ($stmt = $this->db->prepare("INSERT INTO notifica (destinatario, tipo, origine) VALUES (?,?,?)")) {
+            $parameters = json_encode($origine);
+            $type = $tipo->name;
+            $stmt->bind_param('sss', $destinatario, $type, $parameters);
+            return $stmt->execute();
+        }
+        throw new Exception("Error Processing Request", 1);
+    }
+
 }
