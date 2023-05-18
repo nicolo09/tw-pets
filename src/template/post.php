@@ -63,7 +63,28 @@
                 //Descrizione
                 echo html_entity_decode("<p>" . $templateParams["username"] . ": " . $templateParams["descrizione"] . "</p>");
             }
-            //TODO:Animali che ci sono
+            //TODO:Aggiungi link ad animali 
+            if (isset($templateParams["animals"]) && count($templateParams["animals"]) > 0) {
+                $row = "<p>";
+                if (count($templateParams["animals"]) == 1) {
+                    $row = $row . " Animale: ";
+                } else {
+                    $row = $row . " Animali: ";
+                }
+                for ($i=0; $i<count($templateParams["animals"]); $i++ ) {
+                    $single=$templateParams["animals"][$i];
+                    $row = $row . $single;
+                    if($i+1==count($templateParams["animals"])){
+                        //Non è l'ultimo elemento
+                        $row=$row.".";
+                    }else{
+                        //Ultimo elemento
+                        $row=$row.", ";
+                    }
+                }
+                $row = $row . "</p>";
+                echo html_entity_decode($row);
+            }
             if (isset($templateParams["timestamp"]) && isset($templateParams["username"])) {
                 echo html_entity_decode("<p>" . "Post creato alle " . $templateParams["timestamp"] . "</p>");
             } ?>

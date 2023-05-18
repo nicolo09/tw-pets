@@ -32,6 +32,7 @@ if(empty($result)==false){
         $templateParams["disableLike"]=false;
         $templateParams["disableSave"]=false;
     }
+    $templateParams["animals"]=getAnimalsInPost($id, $dbh);
 }else{
     //Post non esiste, redirect
     header("Location: tab-profile.php");
