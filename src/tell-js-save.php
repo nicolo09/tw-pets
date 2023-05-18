@@ -6,6 +6,6 @@ if(isset($_GET["id"])){
 }
 
 $like=isPostSavedBy($id, getUserName($dbh), $dbh);
-//This list is to be communicated to javascript to show images
+//This list is to be communicated to javascript
 echo json_encode($like);
 ?>
