@@ -34,10 +34,10 @@ if(username != null){
 
 if(username==null){
     document.getElementById("followers").addEventListener('click', ()=>{
-        window.location.href = 'followers.php';
+        window.location.href = 'profile-followers.php';
     });
 }else{
     document.getElementById("followers").addEventListener('click', ()=>{
-        window.location.href = 'followers.php?'+type+'='+username;
+        window.location.href = 'profile-followers.php?'+type+'='+username;
     });
 }

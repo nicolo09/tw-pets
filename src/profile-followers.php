@@ -32,7 +32,7 @@ if(isset($_GET["animal"]) && !empty($_GET["animal"])) {
     }
 
 } else {
-    header("Location: followers.php?person=".getUserName($dbh));
+    header("Location: profile-followers.php?person=".getUserName($dbh));
     exit;
 }
 
