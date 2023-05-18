@@ -43,12 +43,12 @@ class DatabaseHelper
     public function getPersonsLike($username, $offset){
         $value = "%".$username."%";
 
-        $query = "SELECT p.*
+        $query = "SELECT p.username, p.immagine
         FROM PERSONA p
         LEFT JOIN SEGUE_PERSONA sp ON p.username = sp.followed
         WHERE p.username LIKE ?
         GROUP BY p.username
-        ORDER BY COUNT(sp.follower) DESC
+        ORDER BY COUNT(sp.follower) DESC, p.username 
         LIMIT $offset, 10";
 
         if($stmt = $this->db->prepare($query)) {
@@ -64,12 +64,12 @@ class DatabaseHelper
     public function getAnimalsLike($username, $offset){
         $value = "%".$username."%";
 
-        $query = "SELECT a.*
+        $query = "SELECT a.username, a.immagine
         FROM ANIMALE a
         LEFT JOIN SEGUE_ANIMALE sa ON a.username = sa.followed
         WHERE a.username LIKE ?
         GROUP BY a.username
-        ORDER BY COUNT(sa.follower) DESC
+        ORDER BY COUNT(sa.follower) DESC, a.username 
         LIMIT $offset, 10";
 
         if($stmt = $this->db->prepare($query)) {
