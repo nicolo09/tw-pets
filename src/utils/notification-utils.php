@@ -3,11 +3,16 @@
 /**
  * Returns the thumbnail src for a notification
  * @param $notification the notification
+ * @param $dbh the database helper
  * @return array src and alt of the thumbnail
  */
-function getNotificationThumbnail($notification){
-    //TODO: Implementare
-    return null;
+function getNotificationThumbnail($notification, DatabaseHelper $dbh){
+    return match(getNotificationType($notification)){
+        NotificationType::FOLLOW => array("src" => getUserProfilePic(getNotificationParameter($notification, "follower"), $dbh), "alt" => "Foto profilo di " . getNotificationParameter($notification, "follower")),
+        NotificationType::LIKE => array("src" => getUserProfilePic(getNotificationParameter($notification, "user"), $dbh), "alt" => "Foto profilo di " . getNotificationParameter($notification, "user")),
+        NotificationType::COMMENT => array("src" => getUserProfilePic(getNotificationParameter($notification, "user"), $dbh), "alt" => "Foto profilo di " . getNotificationParameter($notification, "user")),
+        default => array("src" => "", "alt" => "")
+    };
 }
 
 /**
@@ -16,7 +21,12 @@ function getNotificationThumbnail($notification){
  * @return string the message
  */
 function getNotificationMessage($notification){
-    //TODO: Implementare
+    return match(getNotificationType($notification)){
+        NotificationType::FOLLOW => getNotificationParameter($notification, "follower") . " ha iniziato a seguirti",
+        NotificationType::LIKE => getNotificationParameter($notification, "user") . " ha messo mi piace al tuo post",
+        NotificationType::COMMENT => getNotificationParameter($notification, "user") . " ha commentato il tuo post",
+        default => ""
+    };
 }
 
 /**
@@ -25,7 +35,26 @@ function getNotificationMessage($notification){
  * @return string the ref
  */
 function getNotificationRef($notification){
-    //TODO: Implementare
+    return match(getNotificationType($notification)){
+        NotificationType::FOLLOW => getUserProfileHref(getNotificationParameter($notification, "follower")),
+        NotificationType::LIKE => getPostHref(getNotificationParameter($notification, "post")),
+        NotificationType::COMMENT => getPostHref(getNotificationParameter($notification, "post")),
+        default => "#"
+    };
+}
+
+/**
+ * Returns the parameter of a notification
+ * @param $notification the notification
+ * @param $parameter the parameter
+ * @return string the parameter
+ */
+function getNotificationParameter($notification, $parameter){
+    $origin = json_decode($notification["origine"], true);
+    if (isset($origin[$parameter])){
+        return $origin[$parameter];
+    }
+    return null;
 }
 
 /**
@@ -34,7 +63,11 @@ function getNotificationRef($notification){
  * @return NotificationType the type
  */
 function getNotificationType($notification){
-    //TODO: Implementare
+    return match($notification["tipo"]){
+        "FOLLOW" => NotificationType::FOLLOW,
+        "LIKE" => NotificationType::LIKE,
+        "COMMENT" => NotificationType::COMMENT,
+        "POST" => NotificationType::POST,
+        "MESSAGE" => NotificationType::MESSAGE
+    };
 }
-
-?>
