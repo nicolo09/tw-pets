@@ -536,4 +536,15 @@ class DatabaseHelper
         }
     }
 
+    public function getTaggedAnimals($post){
+        if ($stmt = $this->db->prepare("SELECT animale FROM riguarda WHERE id_post=?")) {
+            $stmt->bind_param('i', $post);
+            $stmt->execute();
+            $result = $stmt->get_result();
+            return $result->fetch_all(MYSQLI_ASSOC);
+        } else {
+            return array();
+        }
+    }
+
 }

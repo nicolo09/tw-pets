@@ -609,3 +609,12 @@ function savePost(int $id, string $username, DatabaseHelper $dbh){
 function unSavePost(int $id, string $username, DatabaseHelper $dbh){
     return $dbh->removeSavePost($id, $username);
 }
+
+function getAnimalsInPost(int $id, DatabaseHelper $dbh){
+    $final=array();
+    $result=$dbh->getTaggedAnimals($id);
+    foreach($result as $animal){
+        $final[]=$animal["animale"];
+    }
+    return $final;
+}
