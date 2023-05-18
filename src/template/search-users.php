@@ -1,6 +1,3 @@
-<?php if(isset($templateParams["error"])):?>
-<p class="text-danger text-center text-decoration-underline"><?php echo $templateParams["error"]; ?></p>
-<?php endif; ?>
 <form id="search-form" action="search.php" method="get">
     <div class="container">
         <div class="row justify-content-center">
@@ -32,7 +29,7 @@
                             <?php endfor; ?>
                         </div>
                         <?php if(count($templateParams["persons"]) > 3): ?>
-                            <div class="d-flex justify-content-center"><a href="search-results.php?persons=<?php echo $templateParams["search"] ?>">Mostra tutti</a><div>
+                            <div class="d-flex justify-content-center"><a href="search-results.php?persons=<?php echo $templateParams["search"] ?>">Mostra tutti</a></div>
                         <?php endif; ?>
                     <?php else: ?>
                         <label class="w-100 text-center text-muted text-decoration-underline my-3">Non ci sono utenti che corrispondo alla ricerca</label>
@@ -55,7 +52,7 @@
                             <?php endfor; ?>
                         </div>
                         <?php if(count($templateParams["animals"]) > 3): ?>
-                            <div class="d-flex justify-content-center"><a href="search-results.php?animals=<?php echo $templateParams["search"] ?>">Mostra tutti</a><div>
+                            <div class="d-flex justify-content-center"><a href="search-results.php?animals=<?php echo $templateParams["search"] ?>">Mostra tutti</a></div>
                         <?php endif; ?>
                     <?php else: ?>
                         <label class="w-100 text-center text-muted text-decoration-underline my-3">Non ci sono animali che corrispondo alla ricerca</label>
