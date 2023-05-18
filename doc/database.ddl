@@ -49,6 +49,8 @@ create table NOTIFICA (
      timestamp timestamp not null,
      id int not null,
      destinatario varchar(25) not null,
+     tipo varchar(25) not null,
+     origine varchar(70) not null,
      constraint IDNOTIFICA primary key (id));
 
 create table PERSONA (
