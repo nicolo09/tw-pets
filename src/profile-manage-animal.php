@@ -59,7 +59,8 @@ if(isset($_GET["animal"])){
     }
 
     if(!empty($msg)){
-        header("Location: profile-animals.php?error=" . $msg);
+        $_SESSION["error"] = $msg;
+        header("Location: profile-animals.php");
         exit;
     }
 
