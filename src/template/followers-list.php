@@ -8,7 +8,7 @@
                 <div class="results-container">
                     <h3 class="results-title">P A D R O N I</h3>
                     <?php for($x = 0; $x < count($templateParams["owners"]); $x++): ?> 
-                        <a href="view-user-profile.php?username=<?php echo $templateParams["owners"][$x]["username"]?>&type=person?>">
+                        <a href="<?php echo getUserProfileHref($templateParams["owners"][$x]["username"])?>">
                             <div class="card result-bar"> 
                                 <div class="card-body p-2">
                                     <div class="result-element"> <!-- img and label on same line to avoid empty space -->
@@ -26,7 +26,7 @@
                 <?php endif; ?>
                 <?php if(count($templateParams["results"])): ?>
                     <?php for($x = 0; $x < count($templateParams["results"]); $x++): ?> 
-                        <a href="view-user-profile.php?username=<?php echo $templateParams["results"][$x]["username"]?>&type=person">
+                        <a href="<?php echo getUserProfileHref($templateParams["results"][$x]["username"])?>">
                             <div class="card result-bar"> 
                                 <div class="card-body p-2">
                                     <div class="result-element"> <!-- img and label on same line to avoid empty space -->

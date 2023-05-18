@@ -17,7 +17,7 @@
                     <?php if(!empty($templateParams["persons"])): ?>
                         <div class="results-container">
                             <?php for($x = 0; $x < 3 && $x < count($templateParams["persons"]); $x++): ?> 
-                                <a href="view-user-profile.php?username=<?php echo $templateParams["persons"][$x]["username"]?>&type=person">
+                                <a href="<?php echo getUserProfileHref($templateParams["persons"][$x]["username"])?>">
                                     <div class="card result-bar"> 
                                         <div class="card-body p-2">
                                             <div class="result-element"> <!-- img and label on same line to avoid empty space -->
@@ -40,7 +40,7 @@
                     <?php if(!empty($templateParams["animals"])): ?>
                         <div class="results-container">
                             <?php for($x = 0; $x < 3 && $x < count($templateParams["animals"]); $x++): ?> 
-                                <a href="view-user-profile.php?username=<?php echo $templateParams["animals"][$x]["username"]?>&type=animal">
+                                <a href="<?php echo getAnimalProfileHref($templateParams["animals"][$x]["username"]) ?>">
                                     <div class="card result-bar"> 
                                         <div class="card-body p-2">
                                             <div class="result-element"> <!-- img and label on same line to avoid empty space -->

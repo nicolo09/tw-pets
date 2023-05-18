@@ -4,7 +4,7 @@
             <div class="results-container" id="container">
                 <h2 class="text-center fw-bold mb-3"><?php echo $templateParams["type"] == "animal" ? "Animali" : "Persone" ?> risultanti per "<?php echo $templateParams["search"]?>": </h2>
                 <?php for($x = 0; $x < count($templateParams["results"]); $x++): ?> 
-                    <a href="view-user-profile.php?username=<?php echo $templateParams["results"][$x]["username"]?>&type=<?php echo $templateParams["type"]?>">
+                    <a href="<?php echo getProfileHref($templateParams["results"][$x]["username"], $templateParams["type"])?>">
                         <div class="card result-bar"> 
                             <div class="card-body p-2">
                                 <div class="result-element"> <!-- img and label on same line to avoid empty space -->

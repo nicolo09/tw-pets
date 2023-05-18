@@ -569,6 +569,17 @@ function getAnimalProfileHref(string $username)
 }
 
 /**
+ * Returns user profile href reference 
+ * @param string $username the user's username
+ * @param string $type defines if the user is an animal or a person
+ * @return string href
+ */
+function getProfileHref(string $username, string $type)
+{
+    return "view-user-profile.php?username=" . $username . "&type=" . $type;
+}
+
+/**
  * Ritorna l'href per la pagina di visualizzazione di un post
  * @param int $id id del post
  * @return string href
