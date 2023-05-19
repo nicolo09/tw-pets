@@ -22,18 +22,19 @@ id.forEach(element => {
     getPostSaved(element);
     attachLike(element);
     attachSave(element);
+    attachNewComment(element);
 });
 
 function styleButtonLike(id) {
     const buttonL = document.getElementById("like-post-card-" + id);
-    const n=nlikesID[id];
+    const n = nlikesID[id];
     if (buttonL != null) {
         if (likedID[id] == true) {
             //Post ha like
-            buttonL.innerHTML = '<img src="' + IMGDIR + 'thumb_up_filled.svg" alt="" />'+n+' Mi Piace ';
+            buttonL.innerHTML = '<img src="' + IMGDIR + 'thumb_up_filled.svg" alt="" />' + n + ' Mi Piace ';
         } else {
             //Post non ha like
-            buttonL.innerHTML = '<img src="' + IMGDIR + 'thumb_up.svg" alt="" />'+n+' Mi Piace ';
+            buttonL.innerHTML = '<img src="' + IMGDIR + 'thumb_up.svg" alt="" />' + n + ' Mi Piace ';
         }
     }
 }
@@ -60,7 +61,7 @@ function getPostLiked(id) {
     }).then((data) => {
         //I dati vengono inviati come {bool, num}
         likedID[id] = data[0];
-        nlikesID[id]=data[1];
+        nlikesID[id] = data[1];
         styleButtonLike(id);
     });
 }
@@ -89,7 +90,7 @@ function attachLike(id) {
                 getPostLiked(id);
             },
             error: function (request, status, error) {
-                $( ".comments" ).prepend( $( '<p class="text-danger">Errore nel mettere like</p>' ) );
+                $(".comments").prepend($('<p class="text-danger">Errore nel mettere like</p>'));
             }
         });
     });
@@ -107,8 +108,28 @@ function attachSave(id) {
                 getPostSaved(id);
             },
             error: function (request, status, error) {
-                $( ".comments" ).prepend( $( '<p class="text-danger">Errore nel salvare il post</p>' ) );
+                $(".comments").prepend($('<p class="text-danger">Errore nel salvare il post</p>'));
             }
         });
     });
+}
+
+function attachNewComment(id) {
+    document.getElementById(id + "-new-comment").addEventListener('click', () => {
+        $.ajax({
+            method: "GET",
+            url: "comment.php",
+            data: {
+                "id": id
+            },
+            success: function (response) {
+                //TODO: Salva il commento e i suoi dati
+                getPostSaved(id);
+            },
+            error: function (request, status, error) {
+                $(".comments").prepend($('<p class="text-danger">Errore nel salvare il commento</p>'));
+            }
+        });
+    });
+
 }
