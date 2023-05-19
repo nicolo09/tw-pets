@@ -71,3 +71,25 @@ function getNotificationType($notification){
         "MESSAGE" => NotificationType::MESSAGE
     };
 }
+
+/**
+ * Returns the date and time of a notification in the format "hh:mm:ss dd/mm/yyyy"
+ * @param $notification the notification
+ * @return string the date and time
+ */
+function getNotificationDateTime($notification)
+{
+    return date("H:i:s d/m/Y", strtotime($notification["timestamp"]));
+}
+
+/**
+ * Returns true if the recipient for the specified notification is the current user
+ * @param $notificationId the notification id
+ * @param $user the user id
+ * @param $dbh the database helper
+ * @return bool true if the recipient for the specified notification is the current user
+ */
+function isNotificationForUser($notificationId, $user, $dbh)
+{
+    return $dbh->getNotification($notificationId)[0]["destinatario"] == $user;
+}
