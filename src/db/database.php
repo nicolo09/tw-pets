@@ -151,6 +151,15 @@ class DatabaseHelper
         }
     }
 
+    public function updateUserProfile($username, $employment, $img, $description){
+        if($stmt = $this->db->prepare("UPDATE persona SET impiego = ?, immagine = ?, descrizione = ? WHERE username = ?")){
+            $stmt->bind_param("ssss", $employment, $img, $description, $username);
+            return $stmt->execute();
+        } else {
+            return false;
+        }
+    }
+
     public function getAnimals($animal){
         if($stmt = $this->db->prepare("SELECT * FROM animale WHERE username = ?")){
             $stmt->bind_param('s', $animal);

@@ -155,7 +155,7 @@ function registerAnimal($animal, $type, $file, $description, $owners, $dbh)
                 $errors[] = $msg;
             }
         } else {
-            $img = DEFAULT_IMG;
+            $img = DEFAULT_PET_IMG;
         }
 
         if (count($errors) == 0) {
@@ -206,7 +206,7 @@ function editAnimal($animal, $type, $file, $description, $owners, $dbh)
 
         if (count($errors) == 0) {
             if ($dbh->updateAnimal($animal["username"], $type, $img, $description)) {
-                if ($img != $animal["immagine"] && $animal["immagine"] != DEFAULT_IMG) {
+                if ($img != $animal["immagine"] && $animal["immagine"] != DEFAULT_PET_IMG) {
                     unlink(IMG_DIR . $animal["immagine"]);
                 }
                 list($result, $errors) = editOwnerships($owners, $animal["username"], $dbh);
@@ -347,6 +347,45 @@ function register(string $user, string $email, string $password, string $confirm
             mail($email, "TWPETS - Registrazione completata", "La registrazione è avvenuta con successo.\n Grazie per esserti registrato su TWPETS!\n Il tuo nome utente è $user", $headers);
         }
     }
+    return array($result, $errors);
+}
+
+function editUserProfile(string $user, string $employment, array $file, string $description, DatabaseHelper $dbh){
+    $errors = array();
+    $result = 0;
+    $oldImage = $dbh->getUserFromName($user)[0]["immagine"];
+
+    if(!doesPersonUsernameExist($user, $dbh)) {
+        $errors[] = "Non è possibile modificare un account inesistente";
+    }
+    if(!empty($employment) && strlen($employment) < 3) {
+        $errors[] = "L'impiego deve essere lungo almeno 3 caratteri";
+    }
+
+    if(count($errors) == 0) {
+        if (!empty($file["imgprofile"]["name"])) {
+            list($imgresult, $msg) = uploadImage(IMG_DIR, $_FILES["imgprofile"]);
+            if ($imgresult != 0) {
+                $img = $msg;
+            } else {
+                $errors[] = $msg;
+            }
+        } else {
+            $img = $oldImage;
+        }
+
+        if(count($errors) == 0) {
+            if($dbh->updateUserProfile($user, $employment, $img, $description)) {
+                if($img != $oldImage && $oldImage != DEFAULT_USER_IMG) {
+                    unlink(IMG_DIR . $oldImage);
+                }
+                $result = 1;
+            } else {
+                $errors[] = "Si è verificato un errore, riprovare più tardi";
+            }
+        }
+    }
+
     return array($result, $errors);
 }
 
