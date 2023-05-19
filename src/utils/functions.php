@@ -685,3 +685,13 @@ function loadMostRecentComments(int $id_post,int $n, DatabaseHelper $dbh){
     return $dbh->getMostRecentComments($id_post, $n);
 
 }
+
+/**
+ * Ritorna tutti commenti in ordine dai più recenti lasciati sul post
+ * @param int $id_post post di cui si vogliono caricare i commenti
+ * @param DatabaseHelper $dbh il database in cui sono salvati i commenti
+ * @return array vettore di commenti
+ */
+function allLoadMostRecentComments(int $id_post, DatabaseHelper $dbh){
+    return $dbh->getAllMostRecentComments($id_post);
+}
