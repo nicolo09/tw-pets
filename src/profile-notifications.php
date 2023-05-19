@@ -9,7 +9,7 @@ if (!isUserLoggedIn($dbh)) {
 
 //TODO: remove this
 //Add a notification
-$dbh->addNotification(getUserName($dbh), NotificationType::FOLLOW, array("follower" => "pippo"));
+//$dbh->addNotification(getUserName($dbh), NotificationType::FOLLOW, array("follower" => "pippo"));
 
 if (isset($_GET["number"])) {
     header("Content-Type: application/json");
