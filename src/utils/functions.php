@@ -695,3 +695,19 @@ function loadMostRecentComments(int $id_post,int $n, DatabaseHelper $dbh){
 function allLoadMostRecentComments(int $id_post, DatabaseHelper $dbh){
     return $dbh->getAllMostRecentComments($id_post);
 }
+
+/**
+ * Ritorna se il commento ha "commenti figli"
+ * @param int $id_comment l'identificatore del commento padre
+ * @param DatabaseHelper $dbh il database in cui sono salvati i commenti
+ * @return true se il commento ha "commenti figli"
+ */
+function doesCommentHaveComments($id_comment, $dbh){
+    $result=$dbh->doesCommentHaveAnswers($id_comment);
+    if(empty($result)){
+        return false;
+    }else{
+        return $result[0]["COUNT(*)"]>0;
+    }
+
+}

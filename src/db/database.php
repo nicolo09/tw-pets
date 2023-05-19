@@ -624,7 +624,18 @@ class DatabaseHelper
 
     public function getAllMostRecentComments($id_post){
         if ($stmt = $this->db->prepare("SELECT * FROM `commento` WHERE id_padre IS NULL AND id_post=? ORDER BY timestamp DESC")) {
-            $stmt->bind_param('i', $id_post,);
+            $stmt->bind_param('i', $id_post);
+            $stmt->execute();
+            $result = $stmt->get_result();
+            return $result->fetch_all(MYSQLI_ASSOC);
+        } else {
+            return array();
+        }
+    }
+
+    public function doesCommentHaveAnswers($id_comment){
+        if ($stmt = $this->db->prepare("SELECT COUNT(*) FROM `commento` WHERE id_padre=? ORDER BY timestamp DESC")) {
+            $stmt->bind_param('i', $id_comment);
             $stmt->execute();
             $result = $stmt->get_result();
             return $result->fetch_all(MYSQLI_ASSOC);
