@@ -2,6 +2,9 @@
 /* Path to image dir, to be used when uploading images */
 define("BASE_FOLDER", __DIR__ . "/");
 define("IMG_DIR", "img/");
+define("MAX_NOTIFICATIONS", 99);
+
+
 
 require_once("utils/functions.php");
 sec_session_start();

@@ -643,4 +643,120 @@ class DatabaseHelper
             return array();
         }
     }
+    /**
+     * Returns true if the user has more than X notifications
+     * @param string $username
+     * @param int $x
+     * @return bool
+     */
+    public function hasMoreThanXNotifications(string $username, int $x)
+    {
+        if ($stmt = $this->db->prepare("SELECT COUNT(*)>? FROM notifica WHERE destinatario = ?")) {
+            $stmt->bind_param('is', $x, $username);
+            $stmt->execute();
+            $result = $stmt->get_result();
+            $tmp = $result->fetch_all(MYSQLI_NUM);
+            if ($tmp[0][0] == 1) {
+                return true;
+            } else if ($tmp[0][0] == 0) {
+                return false;
+            }
+        }
+        throw new Exception("Error Processing Request", 1);
+    }
+
+    /**
+     * Returns the number of notifications of the user
+     * @param string $username
+     * @return int
+     */
+    public function getNumberOfNotifications(string $username): int
+    {
+        if ($stmt = $this->db->prepare("SELECT COUNT(*) FROM notifica WHERE destinatario = ?")) {
+            $stmt->bind_param('s', $username);
+            $stmt->execute();
+            $result = $stmt->get_result();
+            $tmp = $result->fetch_all(MYSQLI_NUM);
+            return $tmp[0][0];
+        }
+        throw new Exception("Error Processing Request", 1);
+    }
+
+    /**
+     * Returns the first n notifications of the user ordered by timestamp with offset o
+     * @param string $username
+     * @param int $n how many notifications to return
+     * @param int $o offset
+     * @return array
+     */
+    public function getNotifications(string $username, int $n, int $o): array
+    {
+        if ($stmt = $this->db->prepare("SELECT * FROM notifica WHERE destinatario = ? ORDER BY timestamp DESC LIMIT $o, $n")) {
+            $stmt->bind_param('s', $username);
+            $stmt->execute();
+            $result = $stmt->get_result();
+            return $result->fetch_all(MYSQLI_ASSOC);
+        }
+        throw new Exception("Error Processing Request", 1);
+    }
+
+    /**
+     * Adds a notification to the database
+     * @param string $destinatario
+     * @param NotificationType $tipo
+     * @param string $origine notification parameters
+     */
+    public function addNotification(string $destinatario, NotificationType $tipo, array $origine)
+    {
+        if ($stmt = $this->db->prepare("INSERT INTO notifica (destinatario, tipo, origine) VALUES (?,?,?)")) {
+            $parameters = json_encode($origine);
+            $type = $tipo->name;
+            $stmt->bind_param('sss', $destinatario, $type, $parameters);
+            return $stmt->execute();
+        }
+        throw new Exception("Error Processing Request", 1);
+    }
+
+    /**
+     * Deletes a notification from the database
+     * @param int $id
+     * @return bool
+     */
+    public function deleteNotification(int $id){
+        if ($stmt = $this->db->prepare("DELETE FROM notifica WHERE id = ?")) {
+            $stmt->bind_param('i', $id);
+            return $stmt->execute();
+        }
+        throw new Exception("Error Processing Request", 1);
+    }
+
+    /**
+     * Deletes all notifications of a user
+     * @param string $username
+     * @return bool
+     */
+    public function deleteAllNotifications(string $username){
+        if ($stmt = $this->db->prepare("DELETE FROM notifica WHERE destinatario = ?")) {
+            $stmt->bind_param('s', $username);
+            return $stmt->execute();
+        }
+        throw new Exception("Error Processing Request", 1);
+    }
+
+    /**
+     * Returns the notification specified by id
+     * @param int $id
+     * @return array
+     */
+    public function getNotification(int $id): array
+    {
+        if ($stmt = $this->db->prepare("SELECT * FROM notifica WHERE id = ?")) {
+            $stmt->bind_param('i', $id);
+            $stmt->execute();
+            $result = $stmt->get_result();
+            return $result->fetch_all(MYSQLI_ASSOC);
+        }
+        throw new Exception("Error Processing Request", 1);
+    }
+
 }
