@@ -7,14 +7,17 @@ if (!isUserLoggedIn($dbh)) {
     exit;
 }
 
+//TODO: remove this
+//Add a notification
+$dbh->addNotification(getUserName($dbh), NotificationType::FOLLOW, array("follower" => "pippo"));
+
 if (isset($_GET["number"])) {
     header("Content-Type: application/json");
     if ($dbh->hasMoreThanXNotifications(getUserName($dbh), MAX_NOTIFICATIONS)) {
-        echo json_encode(array("hasMore" => true));
-        echo json_encode(array("count" => MAX_NOTIFICATIONS));
+        echo json_encode(array("count" => MAX_NOTIFICATIONS, "hasMore" => true));
     } else {
-        echo json_encode(array("hasMore" => false));
-        echo json_encode(array("count" => $dbh->getNumberOfNotifications(getUserName($dbh))));
+        //echo json_encode(array("hasMore" => false));
+        echo json_encode(array("count" => $dbh->getNumberOfNotifications(getUserName($dbh)), "hasMore" => false));
     }
     exit;
 }
