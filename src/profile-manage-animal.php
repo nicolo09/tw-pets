@@ -1,6 +1,5 @@
 <?php
 require_once("bootstrap.php");
-define("DEFAULT_IMG", "default_pet_image.png");
 
 if(!login_check($dbh)){
     header("Location: login.php");
