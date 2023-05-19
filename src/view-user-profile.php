@@ -27,8 +27,8 @@ if (isset($_GET["type"], $_GET["username"]) && ($_GET["type"] == ANIMAL || $_GET
             exit;
         }
         $templateParams["animalsDisabled"] = !doesUserOwnAnimals($username, $dbh);
-        $followDisabled = $username === $currentUser; //if true it's looking at own account /*TODO change follow button to modify button*/
-        $userFollows = !$followDisabled && doesUserFollowMe($username, $currentUser, $dbh);//if true it's following this account
+        $modifyEnabled = $username === $currentUser; //if true it's looking at own account 
+        $userFollows = !$modifyEnabled && doesUserFollowMe($username, $currentUser, $dbh);//if true it's following this account
         $data = getUserData($username, $dbh);
     } else {
         if(!doesAnimalUsernameExist($username, $dbh) == 1) {
@@ -37,8 +37,8 @@ if (isset($_GET["type"], $_GET["username"]) && ($_GET["type"] == ANIMAL || $_GET
             exit;
         }
         $templateParams["animalAccount"] = true;
-        $followDisabled = $dbh->checkOwnership($currentUser, $username); //if true it's looking at own animal /*TODO change follow button to modify button*/
-        $userFollows = $followDisabled || doIFollowAnimal($currentUser, $username, $dbh); //if true it's following this account
+        $modifyEnabled = $dbh->checkOwnership($currentUser, $username); //if true it's looking at own animal 
+        $userFollows = $modifyEnabled || doIFollowAnimal($currentUser, $username, $dbh); //if true it's following this account
         $data = getAnimalData($username, $dbh);
     }
 
@@ -62,7 +62,7 @@ if (isset($_GET["type"], $_GET["username"]) && ($_GET["type"] == ANIMAL || $_GET
         }
     }
 
-    $templateParams["followDisabled"] = $followDisabled;
+    $templateParams["modifyEnabled"] = $modifyEnabled;
     $templateParams["userFollows"] = $userFollows;
     $templateParams["title"] = "Pagina profilo di " . $username;
 

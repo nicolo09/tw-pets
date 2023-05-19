@@ -9,19 +9,21 @@
         </div>
         <!--Bottoni-->
         <div class="text-center row g-0">
-            <button class="btn btn-outline-primary col m-2" id="follow"
-            <?php if($templateParams["followDisabled"]==true){
-                echo "disabled";
-            }
-            ?>>
-            <?php if($templateParams["userFollows"] == true){
-            //Utente segue
-                echo html_entity_decode('<img src="img/remove-user.svg" alt="" class="w-25" >Smetti di seguire');
-            } else {
-                echo html_entity_decode('<img src="img/add-user.svg" alt="" class="w-25" >Segui');
-            }
-            ?>
-            </button>
+            <?php if($templateParams["modifyEnabled"] == true): ?>
+                <button class="btn btn-outline-primary col m-2" id="modify">
+                    <img src="img/edit-profile.svg" alt="edit-icon" class="w-25"/>Modifica
+                </button>
+            <?php else: ?>
+                <button class="btn btn-outline-primary col m-2" id="follow">
+                <?php if($templateParams["userFollows"] == true){
+                //Utente segue
+                    echo html_entity_decode('<img src="img/remove-user.svg" alt="" class="w-25" />Smetti di seguire');
+                } else {
+                    echo html_entity_decode('<img src="img/add-user.svg" alt="" class="w-25" />Segui');
+                }
+                ?>
+                </button>
+            <?php endif; ?>
             <?php if(isset($templateParams["animalAccount"]) && $templateParams["animalAccount"] == true) :?>
             <!--E' un animale, niente bottone animale-->
             <?php else : ?>
