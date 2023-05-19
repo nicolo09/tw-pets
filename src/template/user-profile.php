@@ -1,61 +1,42 @@
 <div class="card mx-auto col-12 col-lg-10 col-xl-8 border-0">
 <div class="container-fluid pb-2">
     <div class="row">
-        <img src="<?php if (isset($templateParams["img"])) {
-                    echo $templateParams["img"];
-                } ?>" alt="Foto profilo di <?php if (isset($templateParams["username"])) {
-                    echo $templateParams["username"];
-                } ?>" class="proPic col p-0 m-4 d-flex justify-content-end" />
+        <img src="<?php echo $templateParams["img"];?>" alt="Foto profilo di <?php echo $templateParams["username"];?>" class="proPic col p-0 m-4 d-flex justify-content-end" />
         <div class="col p-0 w-25">
-            <h1><?php if (isset($templateParams["username"])) {
-                    echo $templateParams["username"];
-                } ?></h1>
-            <h2><?php if (isset($templateParams["role"])) {
-                    echo $templateParams["role"];
-                } ?></h2>
-            <p><?php if (isset($templateParams["description"])) {
-                    echo $templateParams["description"];
-                } ?></p>
+            <h1><?php echo $templateParams["username"];?></h1>
+            <h2><?php echo $templateParams["role"];?></h2>
+            <p><?php echo $templateParams["description"];?></p>
         </div>
         <!--Bottoni-->
         <div class="text-center row g-0">
             <button class="btn btn-outline-primary col m-2" id="follow"
-            <?php if (isset($templateParams["followDisabled"])){
-                if($templateParams["followDisabled"]==true){
-                    echo "disabled";
-                }
-            }  
+            <?php if($templateParams["followDisabled"]==true){
+                echo "disabled";
+            }
             ?>>
-            <?php if(isset($templateParams["userFollows"])&&$templateParams["userFollows"]==true){
-                    //Utente segue
-                        echo html_entity_decode('<img src="img/remove-user.svg" alt="" class="w-25" >Smetti di seguire');
-                    }else{
-                        echo html_entity_decode('<img src="img/add-user.svg" alt="" class="w-25" >Segui');
-                    }
+            <?php if($templateParams["userFollows"] == true){
+            //Utente segue
+                echo html_entity_decode('<img src="img/remove-user.svg" alt="" class="w-25" >Smetti di seguire');
+            } else {
+                echo html_entity_decode('<img src="img/add-user.svg" alt="" class="w-25" >Segui');
+            }
             ?>
             </button>
-            <?php if(isset($templateParams["animalAccount"])&&$templateParams["animalAccount"]==true) :?>
+            <?php if(isset($templateParams["animalAccount"]) && $templateParams["animalAccount"] == true) :?>
             <!--E' un animale, niente bottone animale-->
             <?php else : ?>
             <!--Non è un animale-->
-            <button class="btn btn-outline-primary col m-2" id="animals" <?php if (isset($templateParams["animalsDisabled"])){
-                if($templateParams["animalsDisabled"]==true){
-                    echo "disabled";
-                }
+            <button class="btn btn-outline-primary col m-2" id="animals" <?php if($templateParams["animalsDisabled"] == true){
+                echo "disabled";
             }  
             ?>>
             <img src="img/pets.svg" alt="" class="w-25">Animali</button>
             <?php endif ;?>
-            <button class="btn btn-outline-primary col m-2" id="followers"<?php if (isset($templateParams["followersDisabled"])){
-                if($templateParams["followersDisabled"]==true){
-                    echo "disabled";
-                }
-            }  
-            ?>>
+            <button class="btn btn-outline-primary col m-2" id="followers">
             <img src="img/groups.svg" alt="" class="w-25">Followers</button>
         </div>
         <?php 
-        if(isset($templateParams["success"])&&$templateParams["success"]==0){
+        if(isset($templateParams["success"]) && $templateParams["success"] == 0){
             echo "<p class='text-danger'> C'è stato un errore </p>";
         }
         ?>
