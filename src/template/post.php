@@ -9,13 +9,13 @@
                                                                 echo $templateParams["immagineprofilo"];
                                                             } else {
                                                                 echo IMG_DIR . "default.jpg";
-                                                            } ?> alt=<?php if (isset($templateParams["username"])) {
+                                                            } ?> alt="<?php if (isset($templateParams["username"])) {
                                                                             echo "Foto profilo di " . $templateParams["username"];
                                                                         } else {
                                                                             echo "Foto profilo di utente non esistente";
-                                                                        } ?>>
+                                                                        } ?>">
             <a class="align-items-center" <?php if (isset($templateParams["username"])) {
-                                                echo html_entity_decode('href=view-user-profile.php?username=' . $templateParams["username"] . '&type=person');
+                                                echo html_entity_decode('href="'.getUserProfileHref($templateParams["username"]).'"');
                                             } else {
                                                 echo html_entity_decode('href=#');
                                             } ?>><?php if (isset($templateParams["username"])) {
@@ -30,11 +30,11 @@
                                 echo $templateParams["immagine"];
                             } else {
                                 echo "#";
-                            } ?> alt=<?php if (isset($templateParams["alt"])) {
+                            } ?> alt="<?php if (isset($templateParams["alt"])) {
                                             echo $templateParams["alt"];
                                         } else {
                                             echo "Alt non presente";
-                                        } ?>>
+                                        } ?>">
     <div class="card-footer w-100 p-0 m-0">
         <div class="w-100 m-0 d-flex justify-content-center row">
             <!--Tasti-->
@@ -57,47 +57,47 @@
 
             </div>
         </div>
-        <div class="comments text-left">
+        <div class="comments text-left m-1">
             <?php
             if (isset($templateParams["descrizione"]) && isset($templateParams["username"])) {
                 //Descrizione
-                echo html_entity_decode("<p><a href=" . getUserProfileHref($templateParams["username"]) . ">" . $templateParams["username"] . "</a>" . ": " . $templateParams["descrizione"] . "</p>");
+                echo html_entity_decode('<p><a href="' . getUserProfileHref($templateParams["username"]) . '">' . $templateParams["username"] . '</a>' . ': ' . $templateParams["descrizione"] . '</p>');
             }
             if (isset($templateParams["animals"]) && count($templateParams["animals"]) > 0) {
-                $row = "<p>";
+                $row = '<p>';
                 if (count($templateParams["animals"]) == 1) {
-                    $row = $row . " Animale: ";
+                    $row = $row . ' Animale: ';
                 } else {
-                    $row = $row . " Animali: ";
+                    $row = $row . ' Animali: ';
                 }
                 for ($i = 0; $i < count($templateParams["animals"]); $i++) {
                     $single = $templateParams["animals"][$i];
-                    $row = $row . "<a href=" . getAnimalProfileHref($single) . ">" . $single . "</a>";
+                    $row = $row . '<a href="' . getAnimalProfileHref($single) . '">' . $single . '</a>';
                     if ($i + 1 == count($templateParams["animals"])) {
                         //Non è l'ultimo elemento
-                        $row = $row . ".";
+                        $row = $row . '.';
                     } else {
                         //Ultimo elemento
-                        $row = $row . ", ";
+                        $row = $row . ', ';
                     }
                 }
-                $row = $row . "</p>";
+                $row = $row . '</p>';
                 echo html_entity_decode($row);
             }
             if (isset($templateParams["timestamp"]) && isset($templateParams["username"])) {
-                echo html_entity_decode("<p>" . "Post creato alle " . $templateParams["timestamp"] . "</p>");
+                echo html_entity_decode('<p>' . 'Post creato alle ' . $templateParams["timestamp"] . '</p>');
             } ?>
             <?php
             if (isset($templateParams["comments"]) && count($templateParams["comments"]) > 0) {
                 foreach ($templateParams["comments"] as $comment) {
-                    echo html_entity_decode('<p for="comment-'.$comment["id_commento"].'"><a href=' . getUserProfileHref($comment["username"]) . '>' . $comment["username"] . '</a>' . ': ' . $comment["testo"] . '</p>');
+                    echo html_entity_decode('<p for="comment-'.$comment["id_commento"].'"><a href="' . getUserProfileHref($comment["username"]) . '">' . $comment["username"] . '</a>' . ': ' . $comment["testo"] . '</p>');
                     echo html_entity_decode('<button id="comment-'.$comment["id_commento"].'">Rispondi a questo commento</button>');
                 }
             }
             ?>
             <!--New comment-->
             <div class="row g-0">
-                <label for="new-comment"> Aggiungi un commento a questo post:</label>
+                <label for="commentTextArea"> Aggiungi un commento a questo post:</label>
                 <textarea class="rounded col form-control" placeholder="Massimo 100 caratteri" maxlength="100" id="commentTextArea" name="new-comment"></textarea>
                 <button class="rounded col-2">Commenta</button>
             </div>
