@@ -28,14 +28,16 @@ function updateNotificationBadge() {
             } else {
                 $('#profile-nav-element').find('.notification-badge').remove();
             }
-            //Schedule next check
-            setTimeout(updateNotificationBadge, UPDATE_INTERVAL);
         },
         error: function (jqXHR, textStatus, errorThrown) {
             console.log("Error: " + jqXHR.responseText);
         }
     });
 }
+
+const refreshBadgeInterval = setInterval(function () {
+    updateNotificationBadge();
+}, UPDATE_INTERVAL);
 
 //Update notification badge on page load
 jQuery(function () {
