@@ -1,6 +1,22 @@
 <?php
 
 /**
+ * Parameters for the notification types are:
+ * FOLLOW: follower
+ * LIKE: user, post
+ * COMMENT: user, post
+ * POST: user, post
+ * MESSAGE: user
+ */
+ enum NotificationType {
+    case FOLLOW; //Sent to the followed user when someone starts following him
+    case LIKE; //Sent to the post owner when someone likes his post
+    case COMMENT; //Sent to the post owner when someone comments his post
+    case POST; //Sent to the followers of a user when he posts something
+    case MESSAGE; //Sent to the recipient when someone sends him a message
+}
+
+/**
  * Returns the thumbnail src for a notification
  * @param $notification the notification
  * @param $dbh the database helper
@@ -113,7 +129,7 @@ function addFollowNotification($follower, $followed, DatabaseHelper $dbh)
 
 /**
  * Adds a comment notification
- * @param $user the user
+ * @param $user the username
  * @param $post the post id
  * @param $dbh the database helper
  * @return void
@@ -125,7 +141,7 @@ function addCommentNotification($user, $post, DatabaseHelper $dbh)
 
 /**
  * Adds a like notification
- * @param $user the user
+ * @param $user the username
  * @param $post the post id
  * @param $dbh the database helper
  * @return void
