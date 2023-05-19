@@ -11,6 +11,11 @@ define("ANIMAL", "animal");
 
 if (isset($_GET["type"], $_GET["username"]) && ($_GET["type"] == ANIMAL || $_GET["type"] == PERSON)) {
 
+    if(!empty($_SESSION["message"])){
+        $templateParams["messages"] = array($_SESSION["message"]);
+        unset($_SESSION["message"]);
+    }
+
     $type = $_GET["type"];
     $currentUser = getUserName($dbh);
     $username = $_GET["username"];
