@@ -93,3 +93,39 @@ function isNotificationForUser($notificationId, $user, $dbh)
 {
     return $dbh->getNotification($notificationId)[0]["destinatario"] == $user;
 }
+
+/**
+ * Adds a follow notification
+ * @param $follower the follower
+ * @param $followed the followed
+ * @param $dbh the database helper
+ * @return void
+ */
+function addFollowNotification($follower, $followed, DatabaseHelper $dbh)
+{
+    $dbh->addNotification($followed, NotificationType::FOLLOW, array("follower" => $follower));
+}
+
+/**
+ * Adds a comment notification
+ * @param $user the user
+ * @param $post the post id
+ * @param $dbh the database helper
+ * @return void
+ */
+function addCommentNotification($user, $post, DatabaseHelper $dbh)
+{
+    $dbh->addNotification(getPost($post, $dbh)["username"], NotificationType::COMMENT, array("user" => $user, "post" => $post));
+}
+
+/**
+ * Adds a like notification
+ * @param $user the user
+ * @param $post the post id
+ * @param $dbh the database helper
+ * @return void
+ */
+function addLikeNotification($user, $post, DatabaseHelper $dbh)
+{
+    $dbh->addNotification(getPost($post, $dbh)["username"], NotificationType::LIKE, array("user" => $user, "post" => $post));
+}
