@@ -662,3 +662,15 @@ function getUserProfilePic(string $user, DatabaseHelper $dbh){
         return "img/".$result[0]["immagine"];
     }
 }
+
+/**
+ * Ritorna i n commenti più recenti lasciati sul post
+ * @param int $id_post post di cui si vogliono caricare i commenti
+ * @param int $n numero commenti da caricare
+ * @param DatabaseHelper $dbh il database in cui sono salvati i commenti
+ * @return array vettore di commenti
+ */
+function loadMostRecentComments(int $id_post,int $n, DatabaseHelper $dbh){
+    return $dbh->getMostRecentComments($id_post, $n);
+
+}

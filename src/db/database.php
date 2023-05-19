@@ -611,4 +611,14 @@ class DatabaseHelper
         }
     }
 
+    public function getMostRecentComments($id_post, $n){
+        if ($stmt = $this->db->prepare("SELECT * FROM `commento` WHERE id_padre IS NULL AND id_post=? ORDER BY timestamp DESC LIMIT ?")) {
+            $stmt->bind_param('ii', $id_post, $n);
+            $stmt->execute();
+            $result = $stmt->get_result();
+            return $result->fetch_all(MYSQLI_ASSOC);
+        } else {
+            return array();
+        }
+    }
 }
