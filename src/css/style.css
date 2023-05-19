@@ -216,7 +216,7 @@ button > img{
     margin-bottom: 10px;
 }
 
-.results-container > a {
+.results-container > a, .notification-text {
     text-decoration: none !important;
     color: #000000 !important;
 }
