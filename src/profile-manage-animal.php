@@ -21,6 +21,7 @@ if(isset($_POST["username"], $_POST["type"])){
         list($result, $error) = registerAnimal($animal, $type, $_FILES, $description, $owners, $dbh);
         if($result == 1){
             // New animal added
+            $_SESSION["message"] = "Aggiunto " . $animal . " con successo";
             header("Location: profile-animals.php");
             exit;
         } else {
@@ -41,6 +42,7 @@ if(isset($_POST["username"], $_POST["type"])){
     list($result, $error) = editAnimal($animal[0], $type, $_FILES, $description, $owners, $dbh);
     if($result == 1){
         // Animal profile edited
+        $_SESSION["message"] = "Modificato " . $animal[0]["username"] . " con successo";
         header("Location: profile-animals.php");
         exit;
     } else {

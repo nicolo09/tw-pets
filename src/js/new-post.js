@@ -97,7 +97,7 @@ $('#selectAnimals').on('change.select2', function (e) {
 
 
 //Select2, displays both text and image of possible animals
-$(document).ready(function () {
+jQuery(function () {
     $('#selectAnimals').select2({
         placeholder: "Scegli quali animali sono presenti nel tuo post (opzionale)",
         closeOnSelect: false,

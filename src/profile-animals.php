@@ -11,6 +11,11 @@ if(!empty($_SESSION["error"])) {
     unset($_SESSION["error"]);
 }
 
+if(!empty($_SESSION["message"])) {
+    $templateParams["messages"] = array($_SESSION["message"]);
+    unset($_SESSION["message"]);
+}
+
 if(isset($_GET["user"]) && count($dbh->getUserFromName($_GET["user"])) == 1){
     $templateParams["user"] = $_GET["user"]; 
 } else {
