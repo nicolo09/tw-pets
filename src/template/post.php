@@ -90,8 +90,8 @@
             <?php
             if (isset($templateParams["comments"]) && count($templateParams["comments"]) > 0) {
                 foreach ($templateParams["comments"] as $comment) {
-                    echo html_entity_decode('<p for="comment-'.$comment["id_commento"].'"><a href="' . getUserProfileHref($comment["username"]) . '">' . $comment["username"] . '</a>' . ': ' . $comment["testo"] . '</p>');
-                    echo html_entity_decode('<button id="comment-'.$comment["id_commento"].'">Rispondi a questo commento</button>');
+                    echo html_entity_decode('<p><a href="' . getUserProfileHref($comment["username"]) . '">' . $comment["username"] . '</a>' . ': ' . $comment["testo"] . '</p>');
+                    echo html_entity_decode('<button id="comment-'.$comment["id_commento"].'">Rispondi</button>');
                 }
             }
             ?>
