@@ -69,7 +69,7 @@ class DatabaseHelper
         LEFT JOIN SEGUE_ANIMALE sa ON a.username = sa.followed
         WHERE a.username LIKE ?
         GROUP BY a.username
-        ORDER BY COUNT(sa.follower) DESC, a.username 
+        ORDER BY COUNT(sa.follower) DESC, a.username
         LIMIT $offset, 10";
 
         if($stmt = $this->db->prepare($query)) {
@@ -84,10 +84,17 @@ class DatabaseHelper
 
     public function getPersonFollowers($username, $offset){
 
-        $query = "SELECT p.username, p.immagine /* TODO order by followers */
-        FROM persona p
-        JOIN segue_persona sp ON p.username = sp.follower
-        WHERE sp.followed = ?
+        $query = "SELECT P.username, P.immagine
+        FROM PERSONA P
+        LEFT JOIN SEGUE_PERSONA SP ON P.username = SP.followed
+        JOIN (
+            SELECT P.username
+            FROM PERSONA P
+            JOIN SEGUE_PERSONA SP ON p.username = SP.follower
+            WHERE sp.followed = ?
+        ) AS subquery ON P.username = subquery.username
+        GROUP BY P.username
+        ORDER BY COUNT(SP.follower) DESC, P.username
         LIMIT $offset, 30";
 
         if($stmt = $this->db->prepare($query)) {
@@ -102,11 +109,18 @@ class DatabaseHelper
 
     public function getAnimalFollowers($username, $offset){
 
-        $query = "SELECT p.username, p.immagine /* TODO order by followers */
-        FROM persona p
-        JOIN segue_animale sa ON sa.follower = p.username
-        LEFT JOIN possiede po ON po.persona = sa.follower AND po.animale = ?
-        WHERE sa.followed = ? AND po.animale IS NULL
+        $query = "SELECT P.username, P.immagine
+        FROM PERSONA P
+        LEFT JOIN SEGUE_PERSONA SP ON P.username = SP.followed
+        JOIN (
+            SELECT P.username
+            FROM PERSONA P
+            JOIN SEGUE_ANIMALE SA ON p.username = SA.follower
+            LEFT JOIN POSSIEDE PO ON PO.persona = SA.follower AND PO.animale = ?
+            WHERE SA.followed = ? AND PO.animale IS NULL
+        ) AS subquery ON P.username = subquery.username
+        GROUP BY P.username
+        ORDER BY COUNT(SP.follower) DESC, P.username
         LIMIT $offset, 30";
 
         if($stmt = $this->db->prepare($query)) {
@@ -170,10 +184,17 @@ class DatabaseHelper
 
     public function getOwners($animal) {
 
-        $query = "SELECT p.username, p.immagine
-        FROM persona p
-        JOIN possiede po ON p.username = po.persona
-        WHERE po.animale = ?";
+        $query = "SELECT P.username, P.immagine
+        FROM PERSONA P
+        LEFT JOIN SEGUE_PERSONA SP ON P.username = SP.followed
+        JOIN (
+            SELECT p.username
+            FROM persona p
+            JOIN possiede po ON p.username = po.persona
+            WHERE po.animale = ?
+        ) AS subquery ON P.username = subquery.username
+        GROUP BY P.username
+        ORDER BY COUNT(SP.follower) DESC, P.username";
 
         if($stmt = $this->db->prepare($query)) {
             $stmt->bind_param('s',$animal);

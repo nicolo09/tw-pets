@@ -128,11 +128,12 @@ function checkBrute($username, $dbh)
     }
 }
 
-function registerAnimal($animal, $type, $file, $description, $owners, $dbh){
+function registerAnimal($animal, $type, $file, $description, $owners, $dbh)
+{
     $result = 0;
     $errors = array();
-    
-    if(strlen($animal) < 3) {
+
+    if (strlen($animal) < 3) {
         $errors[] = "Lo username deve essere lungo almeno 3 caratteri.";
     }
 
@@ -140,15 +141,15 @@ function registerAnimal($animal, $type, $file, $description, $owners, $dbh){
         $errors[] = "Il tipo deve essere lungo almeno 3 caratteri.";
     }
 
-    if(count($dbh->getAnimals($animal)) > 0) {
+    if (count($dbh->getAnimals($animal)) > 0) {
         $errors[] = "Lo username " . $animal . " è già in uso.";
     }
 
     /* If there are already errors it's useless to upload the image */
-    if(count($errors) == 0){
-        if(!empty($file["imgprofile"]["name"])) {
+    if (count($errors) == 0) {
+        if (!empty($file["imgprofile"]["name"])) {
             list($imgresult, $msg) = uploadImage(IMG_DIR, $file["imgprofile"]);
-            if($imgresult != 0) {
+            if ($imgresult != 0) {
                 $img = $msg;
             } else {
                 $errors[] = $msg;
@@ -157,44 +158,44 @@ function registerAnimal($animal, $type, $file, $description, $owners, $dbh){
             $img = DEFAULT_IMG;
         }
 
-        if(count($errors) == 0) {
-            if($dbh->addAnimal($animal, $type, $img, $description)) {
+        if (count($errors) == 0) {
+            if ($dbh->addAnimal($animal, $type, $img, $description)) {
                 foreach ($owners as $owner) {
-                    if(!$dbh->registerOwnership($owner, $animal)){
+                    if (!$dbh->registerOwnership($owner, $animal)) {
                         $errors[] = "Impossibile assegnare l'animale a " . $owner . ".";
                     }
-                    if(!$dbh->addFollowAnimal($animal, $owner)){ 
+                    if (!$dbh->addFollowAnimal($animal, $owner)) {
                         $errors[] = "Non è stato possibile rendere " . $owner . " follower di " . $animal;
                     }
                 }
-                if(count($errors) == 0){
+                if (count($errors) == 0) {
                     $result = 1;
-                } 
+                }
             } else {
                 $errors[] = "Si è verificato un problema nell'aggiunta dell'account, riprovare più tardi";
             }
         }
     }
-        
+
     return array($result, $errors);
-    
 }
 
-function editAnimal($animal, $type, $file, $description, $owners, $dbh){
+function editAnimal($animal, $type, $file, $description, $owners, $dbh)
+{
 
     $result = 0;
     $errors = array();
-       
-    if(strlen($type) < 3){
+
+    if (strlen($type) < 3) {
         $errors[] = "Il tipo deve contenere almeno 3 caratteri";
     }
 
     /* If there are already errors it's useless to upload the image */
-    if(count($errors) == 0) {
+    if (count($errors) == 0) {
 
-        if(!empty($file["imgprofile"]["name"])) {
+        if (!empty($file["imgprofile"]["name"])) {
             list($imgresult, $msg) = uploadImage(IMG_DIR, $_FILES["imgprofile"]);
-            if($imgresult != 0) {
+            if ($imgresult != 0) {
                 $img = $msg;
             } else {
                 $errors[] = $msg;
@@ -203,9 +204,9 @@ function editAnimal($animal, $type, $file, $description, $owners, $dbh){
             $img = $animal["immagine"];
         }
 
-        if(count($errors) == 0){
-            if($dbh->updateAnimal($animal["username"], $type, $img, $description)) { 
-                if($img != $animal["immagine"] && $animal["immagine"] != DEFAULT_IMG) {
+        if (count($errors) == 0) {
+            if ($dbh->updateAnimal($animal["username"], $type, $img, $description)) {
+                if ($img != $animal["immagine"] && $animal["immagine"] != DEFAULT_IMG) {
                     unlink(IMG_DIR . $animal["immagine"]);
                 }
                 list($result, $errors) = editOwnerships($owners, $animal["username"], $dbh);
@@ -214,24 +215,25 @@ function editAnimal($animal, $type, $file, $description, $owners, $dbh){
             }
         }
     }
-        
-    
+
+
     return array($result, $errors);
 }
 
-function editOwnerships($owners, $animal, $dbh) {
+function editOwnerships($owners, $animal, $dbh)
+{
     $errors = array();
     $oldOwners = array_column($dbh->getOwners($animal), "username");
-    foreach(array_diff($owners, $oldOwners) as $newOwner){
-        if(!$dbh->registerOwnership($newOwner, $animal)){
+    foreach (array_diff($owners, $oldOwners) as $newOwner) {
+        if (!$dbh->registerOwnership($newOwner, $animal)) {
             $errors[] = "Impossibile assegnare l'animale a " . $newOwner . ".";
         }
-        if(!$dbh->addFollowAnimal($animal, $newOwner)){ 
+        if (!$dbh->addFollowAnimal($animal, $newOwner)) {
             $errors[] = "Non è stato possibile rendere " . $newOwner . " follower di " . $animal;
         }
     }
-    foreach(array_diff($oldOwners, $owners) as $deleteOwner){
-        if(!$dbh->deleteOwnership($deleteOwner, $animal)){
+    foreach (array_diff($oldOwners, $owners) as $deleteOwner) {
+        if (!$dbh->deleteOwnership($deleteOwner, $animal)) {
             $errors[] = "Impossibile rimuovere l'appartenenza di " . $animal . " a " . $deleteOwner . ".";
         }
     }
@@ -410,10 +412,10 @@ function getManagedAnimals(string $user, DatabaseHelper $dbh)
 
 function getUserData(string $user, DatabaseHelper $dbh)
 {
-    $tmp=$dbh->getUserInfo($user);
-    if(empty($tmp)){
+    $tmp = $dbh->getUserInfo($user);
+    if (empty($tmp)) {
         return array();
-    }else{
+    } else {
         #Dato che l'username è univoco, rendo l'array con i dati direttamente accessibile
         return $tmp[0];
     }
@@ -425,69 +427,71 @@ function getUserCreatedPosts(string $user, DatabaseHelper $dbh)
 }
 
 //Return true if username exists, otherwise false
-function doesPersonUsernameExist(string $username, DatabaseHelper $dbh){
-    $users=$dbh->doesUserExist($username);
-    if(empty($users)){
+function doesPersonUsernameExist(string $username, DatabaseHelper $dbh)
+{
+    $users = $dbh->doesUserExist($username);
+    if (empty($users)) {
         return false;
-    }else{
-        if($users[0]["COUNT(username)"]==1){
+    } else {
+        if ($users[0]["COUNT(username)"] == 1) {
             return true;
         }
     }
     return false;
-    
 }
 
 //Returns true if user owns any animals
-function doesUserOwnAnimals(string $username, DatabaseHelper $dbh){
-    $animals=$dbh->getOwnedAnimals($username);
-    if(count($animals)==0){
+function doesUserOwnAnimals(string $username, DatabaseHelper $dbh)
+{
+    $animals = $dbh->getOwnedAnimals($username);
+    if (count($animals) == 0) {
         return false;
-    }else{
+    } else {
         return true;
     }
-    
 }
 
-function allFollowers(string $username, DatabaseHelper $dbh){
-    $followers=$dbh->getAllFollowers($username);
-    $result=array();
-    if(empty($followers)==false){
-        foreach($followers as $single){
-            $result.array_push($single["follower"]);
+function allFollowers(string $username, DatabaseHelper $dbh)
+{
+    $followers = $dbh->getAllFollowers($username);
+    $result = array();
+    if (empty($followers) == false) {
+        foreach ($followers as $single) {
+            $result . array_push($single["follower"]);
         }
     }
     return $result;
 }
 
-function doesUserFollowMe(string $self, string $follower, DatabaseHelper $dbh){
-    $result=$dbh->doesUserFollowMyAccount($self, $follower);
-    if($result==1){
+function doesUserFollowMe(string $self, string $follower, DatabaseHelper $dbh)
+{
+    $result = $dbh->doesUserFollowMyAccount($self, $follower);
+    if ($result == 1) {
         return true;
     }
     return false;
 }
 
 //Return 1 if username exists, otherwise 0
-function doesAnimalUsernameExist(string $username, DatabaseHelper $dbh){
-    $users=$dbh->doesAnimalExist($username);
-    if(empty($users)){
+function doesAnimalUsernameExist(string $username, DatabaseHelper $dbh)
+{
+    $users = $dbh->doesAnimalExist($username);
+    if (empty($users)) {
         return false;
-    }else{
-        if($users[0]["COUNT(username)"]==1){
+    } else {
+        if ($users[0]["COUNT(username)"] == 1) {
             return true;
         }
     }
     return false;
-    
 }
 
 function getAnimalData(string $user, DatabaseHelper $dbh)
 {
-    $tmp=$dbh->getAnimalInfo($user);
-    if(empty($tmp)){
+    $tmp = $dbh->getAnimalInfo($user);
+    if (empty($tmp)) {
         return array();
-    }else{
+    } else {
         #Dato che l'username è univoco, rendo l'array con i dati direttamente accessibile
         return $tmp[0];
     }
@@ -499,30 +503,34 @@ function getAnimalRelatedPosts(string $username, DatabaseHelper $dbh)
 }
 
 //Ritorna vero se l'utente segue l'animale dato
-function doIFollowAnimal(string $username, string $animal, DatabaseHelper $dbh){
-    $result=$dbh->doesUserFollowAnimal($username, $animal);
-    if(empty($result)){
+function doIFollowAnimal(string $username, string $animal, DatabaseHelper $dbh)
+{
+    $result = $dbh->doesUserFollowAnimal($username, $animal);
+    if (empty($result)) {
         return false;
-    }else{
+    } else {
         return true;
     }
-
 }
 
-function followPerson(string $followed, string $follower, DatabaseHelper $dbh){
+function followPerson(string $followed, string $follower, DatabaseHelper $dbh)
+{
     return $dbh->addFollowPerson($followed, $follower);
 }
 
-function unfollowPerson(string $followed, string $follower, DatabaseHelper $dbh){
+function unfollowPerson(string $followed, string $follower, DatabaseHelper $dbh)
+{
     return $dbh->removeFollowPerson($followed, $follower);
 }
 
 
-function followAnimal(string $animal, string $follower, DatabaseHelper $dbh){
+function followAnimal(string $animal, string $follower, DatabaseHelper $dbh)
+{
     return $dbh->addFollowAnimal($animal, $follower);
 }
 
-function unfollowAnimal(string $animal, string $follower, DatabaseHelper $dbh){
+function unfollowAnimal(string $animal, string $follower, DatabaseHelper $dbh)
+{
     return $dbh->removeFollowAnimal($animal, $follower);
 }
 function changePassword(string $oldPassword, string $newPassword, string $confirmPassword, DatabaseHelper $dbh)
@@ -555,7 +563,28 @@ function changePassword(string $oldPassword, string $newPassword, string $confir
  */
 function getUserProfileHref(string $username)
 {
-    return "view-user-profile.php?user=" . $username . "&type=person";
+    return "view-user-profile.php?username=" . $username . "&type=person";
+}
+
+/**
+ * Ritorna l'href per la pagina di un profilo utente di un animale
+ * @param string $username username della persona
+ * @return string href
+ */
+function getAnimalProfileHref(string $username)
+{
+    return "view-user-profile.php?username=" . $username . "&type=animal";
+}
+
+/**
+ * Returns user profile href reference 
+ * @param string $username the user's username
+ * @param string $type defines if the user is an animal or a person
+ * @return string href
+ */
+function getProfileHref(string $username, string $type)
+{
+    return "view-user-profile.php?username=" . $username . "&type=" . $type;
 }
 
 /**
@@ -567,17 +596,17 @@ function getPostHref(int $id)
 {
     return "view-post-profile.php?id=" . $id;
 }
-
 /**
  * Ritorna l'src dell'immagine di profilo di un utente
  * @param string $user username dell'utente
  * @return string src
  */
-function getUserProfilePic(string $user, DatabaseHelper $dbh){
-    $result=$dbh->getUserFromName($user);
-    if(empty($result)){
+function getUserProfilePic(string $user, DatabaseHelper $dbh)
+{
+    $result = $dbh->getUserFromName($user);
+    if (empty($result)) {
         return "img/default.jpg";
-    }else{
-        return "img/".$result[0]["immagine"];
+    } else {
+        return "img/" . $result[0]["immagine"];
     }
 }
