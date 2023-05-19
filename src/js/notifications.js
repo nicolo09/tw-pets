@@ -1,25 +1,27 @@
 const numberToFetch = 10;
 
-$(".btn-delete-notification").on("click", function () {
-    var id = $(this).attr("id");
-    id = id.replace("btn-delete-", "");
-    $.ajax({
-        url: "delete-notification.php",
-        type: "GET",
-        data: {
-            "id": id
-        },
-        success: function (data) {
-            if (data["success"] == true) {
-                $("#notification-" + id).remove();
+function addEventListeners() {
+    $(".btn-delete-notification").on("click", function () {
+        var id = $(this).attr("id");
+        id = id.replace("btn-delete-", "");
+        $.ajax({
+            url: "delete-notification.php",
+            type: "GET",
+            data: {
+                "id": id
+            },
+            success: function (data) {
+                if (data["success"] == true) {
+                    $("#notification-" + id).remove();
+                }
+                else {
+                    alert(data["error"]);
+                }
+                updateTitleAndButton();
             }
-            else {
-                alert(data["error"]);
-            }
-            updateTitle();
-        }
-    })
-});
+        })
+    });
+}
 
 function updateTitleAndButton() {
     var count = $(".notification").length;
@@ -31,6 +33,7 @@ function updateTitleAndButton() {
         $("#title").text("Notifiche");
         $("#btn-delete-all-notifications").prop("disabled", false);
     }
+    updateNotificationBadge();
 }
 
 $("#btn-delete-all-notifications").on("click", function () {
@@ -63,6 +66,7 @@ const intersectionObserver = new IntersectionObserver(entries => {
             },
             success: function (data) {
                 $('#notifications-list').append(data);
+                addEventListeners();
                 if (data == "") {
                     intersectionObserver.unobserve($("#spinner").get(0));
                     //Hide spinner
