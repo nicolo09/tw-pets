@@ -94,11 +94,14 @@
                     echo html_entity_decode('<button id="comment-'.$comment["id_commento"].'">Rispondi</button>');
                 }
             }
+            if(isset($templateParams["more-comments"])&&$templateParams["more-comments"]==true){
+                echo html_entity_decode('<button id="comment-load">Carica altri commenti</button>');
+            }
             ?>
             <!--New comment-->
             <div class="row g-0">
                 <label for="commentTextArea"> Aggiungi un commento a questo post:</label>
-                <textarea class="rounded col form-control" placeholder="Massimo 100 caratteri" maxlength="100" id="commentTextArea" name="new-comment"></textarea>
+                <textarea class="rounded col form-control" placeholder="Massimo 200 caratteri" maxlength="200" id="commentTextArea" name="new-comment"></textarea>
                 <button class="rounded col-2">Commenta</button>
             </div>
         </div>

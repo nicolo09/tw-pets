@@ -36,6 +36,12 @@ if(empty($result)==false){
     //Carico 5 commenti (i più recenti)
     $n=5;
     $templateParams["comments"]=loadMostRecentComments($id, $n, $dbh);
+    $all=allLoadMostRecentComments($id, $dbh);
+    if(count($all)>count($templateParams["comments"])){
+        $templateParams["more-comments"]=true;
+    }else{
+        $templateParams["more-comments"]=false;
+    }
 }else{
     //Post non esiste, redirect
     header("Location: tab-profile.php");
