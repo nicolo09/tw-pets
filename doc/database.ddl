@@ -17,7 +17,7 @@ create table ANIMALE (
 
 create table COMMENTO (
      id_commento int not null auto_increment,
-     testo varchar(100) not null,
+     testo varchar(200) not null,
      timestamp timestamp not null,
      id_post int not null,
      id_padre int,
