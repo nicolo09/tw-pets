@@ -35,12 +35,17 @@ if(empty($result)==false){
     $templateParams["animals"]=getAnimalsInPost($id, $dbh);
     //Carico 5 commenti (i più recenti)
     $n=5;
-    $templateParams["comments"]=loadMostRecentComments($id, $n, $dbh);
+    $comments=loadMostRecentComments($id, $n, $dbh);
+    $templateParams["comments"]=$comments;
     $all=allLoadMostRecentComments($id, $dbh);
     if(count($all)>count($templateParams["comments"])){
         $templateParams["more-comments"]=true;
     }else{
         $templateParams["more-comments"]=false;
+    }
+    //I commenti che mostro hanno risposte?
+    foreach($comments as $comm){
+        $templateParams["son-comments-".$comm["id_commento"]]=doesCommentHaveComments($comm["id_commento"], $dbh);
     }
 }else{
     //Post non esiste, redirect

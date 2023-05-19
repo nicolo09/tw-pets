@@ -92,6 +92,10 @@
                 foreach ($templateParams["comments"] as $comment) {
                     echo html_entity_decode('<p><a href="' . getUserProfileHref($comment["username"]) . '">' . $comment["username"] . '</a>' . ': ' . $comment["testo"] . '</p>');
                     echo html_entity_decode('<button id="comment-'.$comment["id_commento"].'">Rispondi</button>');
+                    if(isset($templateParams["son-comments-".$comment["id_commento"]])&&$templateParams["son-comments-".$comment["id_commento"]]==true){
+                        //Ci sono commenti di risposta
+                        echo html_entity_decode('<button id="son-comment-'.$comment["id_commento"].'">Leggi le risposte</button>');
+                    }
                 }
             }
             if(isset($templateParams["more-comments"])&&$templateParams["more-comments"]==true){
