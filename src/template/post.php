@@ -15,7 +15,7 @@
                                                                             echo "Foto profilo di utente non esistente";
                                                                         } ?>">
             <a class="align-items-center" <?php if (isset($templateParams["username"])) {
-                                                echo html_entity_decode('href="'.getUserProfileHref($templateParams["username"]).'"');
+                                                echo html_entity_decode('href="' . getUserProfileHref($templateParams["username"]) . '"');
                                             } else {
                                                 echo html_entity_decode('href=#');
                                             } ?>><?php if (isset($templateParams["username"])) {
@@ -88,25 +88,29 @@
                 echo html_entity_decode('<p>' . 'Post creato alle ' . $templateParams["timestamp"] . '</p>');
             } ?>
             <?php
-            if (isset($templateParams["comments"]) && count($templateParams["comments"]) > 0) {
+            if (isset($templateParams["comments"]) && count($templateParams["comments"]) > 0 && isset($templateParams["id"])) {
+                $id = $templateParams["id"];
                 foreach ($templateParams["comments"] as $comment) {
                     echo html_entity_decode('<p><a href="' . getUserProfileHref($comment["username"]) . '">' . $comment["username"] . '</a>' . ': ' . $comment["testo"] . '</p>');
-                    echo html_entity_decode('<button id="comment-'.$comment["id_commento"].'">Rispondi</button>');
-                    if(isset($templateParams["son-comments-".$comment["id_commento"]])&&$templateParams["son-comments-".$comment["id_commento"]]==true){
+                    echo html_entity_decode('<button id="' . $id . '-comment-' . $comment["id_commento"] . '">Rispondi</button>');
+                    if (isset($templateParams["son-comments-" . $comment["id_commento"]]) && $templateParams["son-comments-" . $comment["id_commento"]] == true) {
                         //Ci sono commenti di risposta
-                        echo html_entity_decode('<button id="son-comment-'.$comment["id_commento"].'">Leggi le risposte</button>');
+                        echo html_entity_decode('<button id="' . $id . '-son-comment-' . $comment["id_commento"] . '">Leggi le risposte</button>');
                     }
                 }
             }
-            if(isset($templateParams["more-comments"])&&$templateParams["more-comments"]==true){
-                echo html_entity_decode('<button id="comment-load">Carica altri commenti</button>');
+            if (isset($templateParams["more-comments"]) && $templateParams["more-comments"] == true && isset($templateParams["id"])) {
+                $id = $templateParams["id"];
+                echo html_entity_decode('<button id="' . $id . '-comment-load">Carica altri commenti</button>');
             }
             ?>
             <!--New comment-->
             <div class="row g-0">
                 <label for="commentTextArea"> Aggiungi un commento a questo post:</label>
                 <textarea class="rounded col form-control" placeholder="Massimo 200 caratteri" maxlength="200" id="commentTextArea" name="new-comment"></textarea>
-                <button class="rounded col-2">Commenta</button>
+                <button class="rounded col-2" id="<?php if (isset($templateParams["id"])) {
+                                                        echo $templateParams["id"];
+                                                    } ?>-new-comment">Commenta</button>
             </div>
         </div>
     </div>
