@@ -562,4 +562,46 @@ class DatabaseHelper
         throw new Exception("Error Processing Request", 1);
     }
 
+    /**
+     * Deletes a notification from the database
+     * @param int $id
+     * @return bool
+     */
+    public function deleteNotification(int $id){
+        if ($stmt = $this->db->prepare("DELETE FROM notifica WHERE id = ?")) {
+            $stmt->bind_param('i', $id);
+            return $stmt->execute();
+        }
+        throw new Exception("Error Processing Request", 1);
+    }
+
+    /**
+     * Deletes all notifications of a user
+     * @param string $username
+     * @return bool
+     */
+    public function deleteAllNotifications(string $username){
+        if ($stmt = $this->db->prepare("DELETE FROM notifica WHERE destinatario = ?")) {
+            $stmt->bind_param('s', $username);
+            return $stmt->execute();
+        }
+        throw new Exception("Error Processing Request", 1);
+    }
+
+    /**
+     * Returns the notification specified by id
+     * @param int $id
+     * @return array
+     */
+    public function getNotification(int $id): array
+    {
+        if ($stmt = $this->db->prepare("SELECT * FROM notifica WHERE id = ?")) {
+            $stmt->bind_param('i', $id);
+            $stmt->execute();
+            $result = $stmt->get_result();
+            return $result->fetch_all(MYSQLI_ASSOC);
+        }
+        throw new Exception("Error Processing Request", 1);
+    }
+
 }
