@@ -61,7 +61,7 @@
             <?php
             if (isset($templateParams["descrizione"]) && isset($templateParams["username"])) {
                 //Descrizione
-                echo html_entity_decode("<p><a href=".getUserProfileHref($templateParams["username"]).">".$templateParams["username"] ."</a>". ": " . $templateParams["descrizione"] . "</p>");
+                echo html_entity_decode("<p><a href=" . getUserProfileHref($templateParams["username"]) . ">" . $templateParams["username"] . "</a>" . ": " . $templateParams["descrizione"] . "</p>");
             }
             if (isset($templateParams["animals"]) && count($templateParams["animals"]) > 0) {
                 $row = "<p>";
@@ -70,15 +70,15 @@
                 } else {
                     $row = $row . " Animali: ";
                 }
-                for ($i=0; $i<count($templateParams["animals"]); $i++ ) {
-                    $single=$templateParams["animals"][$i];
-                    $row = $row ."<a href=".getAnimalProfileHref($single).">".$single ."</a>";
-                    if($i+1==count($templateParams["animals"])){
+                for ($i = 0; $i < count($templateParams["animals"]); $i++) {
+                    $single = $templateParams["animals"][$i];
+                    $row = $row . "<a href=" . getAnimalProfileHref($single) . ">" . $single . "</a>";
+                    if ($i + 1 == count($templateParams["animals"])) {
                         //Non è l'ultimo elemento
-                        $row=$row.".";
-                    }else{
+                        $row = $row . ".";
+                    } else {
                         //Ultimo elemento
-                        $row=$row.", ";
+                        $row = $row . ", ";
                     }
                 }
                 $row = $row . "</p>";
@@ -87,6 +87,20 @@
             if (isset($templateParams["timestamp"]) && isset($templateParams["username"])) {
                 echo html_entity_decode("<p>" . "Post creato alle " . $templateParams["timestamp"] . "</p>");
             } ?>
+            <?php
+            if (isset($templateParams["comments"]) && count($templateParams["comments"]) > 0) {
+                foreach ($templateParams["comments"] as $comment) {
+                    echo html_entity_decode('<p for="comment-'.$comment["id_commento"].'"><a href=' . getUserProfileHref($comment["username"]) . '>' . $comment["username"] . '</a>' . ': ' . $comment["testo"] . '</p>');
+                    echo html_entity_decode('<button id="comment-'.$comment["id_commento"].'">Rispondi a questo commento</button>');
+                }
+            }
+            ?>
+            <!--New comment-->
+            <div class="row g-0">
+                <label for="new-comment"> Aggiungi un commento a questo post:</label>
+                <textarea class="rounded col form-control" placeholder="Massimo 100 caratteri" maxlength="100" id="commentTextArea" name="new-comment"></textarea>
+                <button class="rounded col-2">Commenta</button>
+            </div>
         </div>
     </div>
 </div>

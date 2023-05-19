@@ -33,6 +33,9 @@ if(empty($result)==false){
         $templateParams["disableSave"]=false;
     }
     $templateParams["animals"]=getAnimalsInPost($id, $dbh);
+    //Carico 5 commenti (i più recenti)
+    $n=5;
+    $templateParams["comments"]=loadMostRecentComments($id, $n, $dbh);
 }else{
     //Post non esiste, redirect
     header("Location: tab-profile.php");
