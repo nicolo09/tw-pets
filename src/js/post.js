@@ -9,6 +9,7 @@ const likedID = {};
 const savedID = {};
 const nlikesID = {};
 const shownComments = [];
+let postFather=-1;
 for (i = 0; i < cards.length; i++) {
     tmp = cards[i].id.split("-")[2];
     id.push(tmp);
@@ -119,15 +120,18 @@ function attachSave(id) {
 
 function attachNewComment(id) {
     document.getElementById(id + "-new-comment").addEventListener('click', () => {
+        const text=document.getElementById(id+"-commentTextArea").value;
         $.ajax({
             method: "GET",
             url: "comment.php",
             data: {
-                "id": id
+                "id_post": id,
+                "id_padre":postFather,
+                "text": text
             },
             success: function (response) {
-                //TODO: Salva il commento e i suoi dati
-                getPostSaved(id);
+                //TODO: Mostra che hai salvato il commento all'utente
+                
             },
             error: function (request, status, error) {
                 $(".comments").prepend($('<p class="text-danger">Errore nel salvare il commento</p>'));
@@ -150,6 +154,7 @@ function attachAnswerButton(id) {
     shownComments.forEach(element => {
         if (element[0] == id) {
             document.getElementById(id + "-comment-" + element[1]).addEventListener('click', () => {
+                postFather=-1;
                 changeLabel(id, element[1]);
             });
         }
@@ -166,8 +171,10 @@ function changeLabel(post_id, comment_id) {
         return response.json();
     }).then((data) => {
         if(data==null){
+            postFather=post_id;
             label.innerText="Aggiungi un commento a questo post:";
         }else{
+            postFather=-1;
             label.innerText="Rispondi al commento di "+data+":";
         }
     });
