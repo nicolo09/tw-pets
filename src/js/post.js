@@ -8,12 +8,14 @@ const id = [];
 const likedID = {};
 const savedID = {};
 const nlikesID = {};
+const shownComments = [];
 for (i = 0; i < cards.length; i++) {
     tmp = cards[i].id.split("-")[2];
     id.push(tmp);
     likedID[tmp] = false;
     savedID[tmp] = false;
     nlikesID[tmp] = 0;
+    findComments(tmp);
 }
 
 //Chiedo al db se i post hanno like o no
@@ -23,6 +25,7 @@ id.forEach(element => {
     attachLike(element);
     attachSave(element);
     attachNewComment(element);
+    attachAnswerButton(element);
 });
 
 function styleButtonLike(id) {
@@ -131,5 +134,42 @@ function attachNewComment(id) {
             }
         });
     });
+}
 
+//Riempie il vettore show comments di array id-post, id-commenti presenti
+function findComments(id) {
+    const comments = document.querySelectorAll('[id^="' + id + '-comment-"]');
+    for (i = 0; i < comments.length; i++) {
+        tmp = comments[i].id.split("-")[2];
+        shownComments.push([id, tmp]);
+    }
+}
+
+//Attacca gli event listener a tutti i bottoni "rispondi" in shownComments del post_id dato
+function attachAnswerButton(id) {
+    shownComments.forEach(element => {
+        if (element[0] == id) {
+            document.getElementById(id + "-comment-" + element[1]).addEventListener('click', () => {
+                changeLabel(id, element[1]);
+            });
+        }
+    })
+}
+
+//Cambia la label id-label 
+function changeLabel(post_id, comment_id) {
+    const label=document.getElementById(post_id + "-label");
+    const singleLike = fetch("tell-js-user-id-comment.php?id=" + comment_id).then((response) => {
+        if (!response.ok) {
+            throw new Error("Something went wrong!");
+        }
+        return response.json();
+    }).then((data) => {
+        if(data==null){
+            label.innerText="Aggiungi un commento a questo post:";
+        }else{
+            label.innerText="Rispondi al commento di "+data+":";
+        }
+    });
+    
 }

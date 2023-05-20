@@ -106,7 +106,9 @@
             ?>
             <!--New comment-->
             <div class="row g-0">
-                <label for="commentTextArea" id="<?php if (isset($templateParams["id"])) {
+                <label for="<?php if (isset($templateParams["id"])) {
+                                                        echo $templateParams["id"];
+                                                    } ?>-commentTextArea" id="<?php if (isset($templateParams["id"])) {
                                                         echo $templateParams["id"];
                                                     } ?>-label"> Aggiungi un commento a questo post:</label>
                 <textarea class="rounded col form-control" placeholder="Massimo 200 caratteri" maxlength="200" id="<?php if (isset($templateParams["id"])) {
