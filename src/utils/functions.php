@@ -734,3 +734,45 @@ function getUsernameOfCommenter(int $id, DatabaseHelper $dbh){
         return $result[0]["username"];
     }
 }
+
+/**
+ * Ritorna i dati del commento
+ * @param int $id l'identificatore del commento
+ * @param DatabaseHelper $dbh il database in cui sono salvati i commenti
+ * @return array di dati del commento preso in input
+ */
+function getCommentInfo(int $id, DatabaseHelper $dbh){
+    $result=$dbh->getComment($id);
+    if(empty($result)){
+        return array();
+    }else{
+        return $result[0];
+    }
+
+}
+
+/**
+ * Inserisce un commento
+ * @param string $username l'utente che crea il commento
+ * @param string $text il testo del commento
+ * @param int $id_post il post a cui fa il commento
+ * @param DatabaseHelper $dbh il database in cui sono salvati i commenti
+ * @return se l'inserimento è andato a buon fine
+ */
+function newComment(string $username, string $text, int $id_post, DatabaseHelper $dbh){
+    return $dbh->addNewComment($username, $text, $id_post);
+}
+
+/**
+ * Inserisce un commento
+ * @param string $username l'utente che crea il commento
+ * @param string $text il testo del commento
+ * @param int $id_post il post a cui fa il commento
+ * @param int $id_padre il commento a cui risponde
+ * @param DatabaseHelper $dbh il database in cui sono salvati i commenti
+ * @return se l'inserimento è andato a buon fine
+ */
+function newCommentAnswer(string $username, int $id_padre, string $text, int $id_post, DatabaseHelper $dbh){
+    return $dbh->addNewCommentToComment($username, $id_padre, $text, $id_post);
+}
+
