@@ -59,7 +59,7 @@ textarea {
 
 /* Profile Picture style settings */
 
-.proPic, .proPicBtn {
+.pro-pic, .pro-pic-btn {
     object-fit: cover;
     max-height: 180px !important;
     max-width: 180px !important;
@@ -73,31 +73,30 @@ textarea {
     box-shadow: 0 2px 8px rgba(0, 0, 0, 0.75);
 }
 
-.proPicContainer {
+.pro-pic-container {
     min-height: 180px !important;
     padding-bottom: 1%;
 }
 
-.proPicLabel {
+.pro-pic-label {
     width: 50%;
     overflow: hidden;
     text-overflow: ellipsis;
 }
 
-.proPicBtn {
+.pro-pic-btn {
     cursor: pointer;
 }
 
 @media (max-width: 1000px) {
-    .proPic, .proPicBtn {
-        object-fit: cover;
+    .pro-pic, .pro-pic-btn {
         max-height: 120px !important;
         max-width: 120px !important;
         min-height: 120px !important;
         min-width: 120px !important;
     }
 
-    .proPicContainer {
+    .pro-pic-container {
         min-height: 120px !important;
         padding-bottom: 5%;
     }
@@ -117,7 +116,7 @@ textarea {
     box-shadow: 0 2px 8px rgba(0, 0, 0, 0.75);
 }
 
-.miniatureLabel {
+.miniature-text {
     cursor: pointer;
     overflow: hidden;
     text-overflow: ellipsis;

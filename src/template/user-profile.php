@@ -1,7 +1,7 @@
 <div class="card mx-auto col-12 col-lg-10 col-xl-8 border-0">
 <div class="container-fluid pb-2">
     <div class="row">
-        <img src="<?php echo $templateParams["img"];?>" alt="Foto profilo di <?php echo $templateParams["username"];?>" class="proPic col p-0 m-4 d-flex justify-content-end" />
+        <img src="<?php echo $templateParams["img"];?>" alt="Foto profilo di <?php echo $templateParams["username"];?>" class="pro-pic col p-0 m-4 d-flex justify-content-end" />
         <div class="col p-0 w-25">
             <h1><?php echo $templateParams["username"];?></h1>
             <h2><?php echo $templateParams["role"];?></h2>

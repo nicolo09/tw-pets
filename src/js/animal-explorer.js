@@ -7,7 +7,7 @@ if(addbutton) {
 }
 
 let modifyButtons = document.getElementsByClassName("manage-button");
-let profileButtons = document.getElementsByClassName("proPicBtn");
+let profileButtons = document.getElementsByClassName("pro-pic-btn");
 
 for (var i = 0; i < modifyButtons.length; i++){
     modifyButtons[i].myParam = modifyButtons[i].id.split("_")[1];
