@@ -225,11 +225,13 @@ function editOwnerships($owners, $animal, $dbh)
     $errors = array();
     $oldOwners = array_column($dbh->getOwners($animal), "username");
     foreach (array_diff($owners, $oldOwners) as $newOwner) {
+        if(!doIFollowAnimal($newOwner, $animal, $dbh)) {
+            if (!$dbh->addFollowAnimal($animal, $newOwner)) {
+                $errors[] = "Non è stato possibile rendere " . $newOwner . " follower di " . $animal;
+            }
+        }
         if (!$dbh->registerOwnership($newOwner, $animal)) {
             $errors[] = "Impossibile assegnare l'animale a " . $newOwner . ".";
-        }
-        if (!$dbh->addFollowAnimal($animal, $newOwner)) {
-            $errors[] = "Non è stato possibile rendere " . $newOwner . " follower di " . $animal;
         }
     }
     foreach (array_diff($oldOwners, $owners) as $deleteOwner) {
