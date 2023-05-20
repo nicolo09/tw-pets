@@ -106,8 +106,12 @@
             ?>
             <!--New comment-->
             <div class="row g-0">
-                <label for="commentTextArea"> Aggiungi un commento a questo post:</label>
-                <textarea class="rounded col form-control" placeholder="Massimo 200 caratteri" maxlength="200" id="commentTextArea" name="new-comment"></textarea>
+                <label for="commentTextArea" id="<?php if (isset($templateParams["id"])) {
+                                                        echo $templateParams["id"];
+                                                    } ?>-label"> Aggiungi un commento a questo post:</label>
+                <textarea class="rounded col form-control" placeholder="Massimo 200 caratteri" maxlength="200" id="<?php if (isset($templateParams["id"])) {
+                                                                                                                        echo $templateParams["id"];
+                                                                                                                    } ?>-commentTextArea" name="new-comment"></textarea>
                 <button class="rounded col-2" id="<?php if (isset($templateParams["id"])) {
                                                         echo $templateParams["id"];
                                                     } ?>-new-comment">Commenta</button>
