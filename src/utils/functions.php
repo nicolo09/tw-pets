@@ -710,7 +710,7 @@ function allLoadMostRecentComments(int $id_post, DatabaseHelper $dbh){
  * @param DatabaseHelper $dbh il database in cui sono salvati i commenti
  * @return true se il commento ha "commenti figli"
  */
-function doesCommentHaveComments($id_comment, $dbh){
+function doesCommentHaveComments(int $id_comment, DatabaseHelper $dbh){
     $result=$dbh->doesCommentHaveAnswers($id_comment);
     if(empty($result)){
         return false;
@@ -718,4 +718,19 @@ function doesCommentHaveComments($id_comment, $dbh){
         return $result[0]["COUNT(*)"]>0;
     }
 
+}
+
+/**
+ * Ritorna lo username di chi ha lasciato il commento
+ * @param int $id l'identificatore del commento
+ * @param DatabaseHelper $dbh il database in cui sono salvati i commenti
+ * @return string lo username
+ */
+function getUsernameOfCommenter(int $id, DatabaseHelper $dbh){
+    $result=$dbh->getUsernameByComment($id);
+    if(empty($result)){
+        return null;
+    }else{
+        return $result[0]["username"];
+    }
 }

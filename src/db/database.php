@@ -759,4 +759,15 @@ class DatabaseHelper
         throw new Exception("Error Processing Request", 1);
     }
 
+    public function getUsernameByComment(int $id){
+        if ($stmt = $this->db->prepare("SELECT username FROM `commento` WHERE id_commento=?")) {
+            $stmt->bind_param('i', $id);
+            $stmt->execute();
+            $result = $stmt->get_result();
+            return $result->fetch_all(MYSQLI_ASSOC);
+        } else {
+            return array();
+        }
+    }
+
 }
