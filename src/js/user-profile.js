@@ -28,7 +28,7 @@ if(username != null){
     //Se non segui->inizi a seguire
     //Se lo segui->smetti di seguire
     let followButton = document.getElementById("follow");
-    if(followButton){
+    if(followButton != null){
         followButton.addEventListener('click', ()=>{
             window.location.href = 'follow.php?username='+username+"&type="+type;
         });

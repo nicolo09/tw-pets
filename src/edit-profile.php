@@ -10,8 +10,8 @@ $user = getUserName($dbh);
 
 if(isset($_GET["action"])){
     //Must update user data
-    $employment = $_POST["employment"];
-    $description = $_POST["description"];
+    $employment = htmlspecialchars($_POST["employment"]);
+    $description = htmlspecialchars($_POST["description"]);
 
     list($result, $errors) = editUserProfile($user, $employment, $_FILES, $description, $dbh);
     if($result == 1){
