@@ -9,13 +9,14 @@ const likedID = {};
 const savedID = {};
 const nlikesID = {};
 const shownComments = [];
-let postFather=-1;
+let postFather={};
 for (i = 0; i < cards.length; i++) {
     tmp = cards[i].id.split("-")[2];
     id.push(tmp);
     likedID[tmp] = false;
     savedID[tmp] = false;
     nlikesID[tmp] = 0;
+    postFather[tmp]=-1;
     findComments(tmp);
 }
 
@@ -126,7 +127,7 @@ function attachNewComment(id) {
             url: "comment.php",
             data: {
                 "id_post": id,
-                "id_padre":postFather,
+                "id_padre":postFather[id],
                 "text": text
             },
             success: function (response) {
@@ -154,7 +155,7 @@ function attachAnswerButton(id) {
     shownComments.forEach(element => {
         if (element[0] == id) {
             document.getElementById(id + "-comment-" + element[1]).addEventListener('click', () => {
-                postFather=-1;
+                postFather[id]=-1;
                 changeLabel(id, element[1]);
             });
         }
@@ -171,10 +172,10 @@ function changeLabel(post_id, comment_id) {
         return response.json();
     }).then((data) => {
         if(data==null){
-            postFather=post_id;
+            postFather[post_id]=-1;
             label.innerText="Aggiungi un commento a questo post:";
         }else{
-            postFather=-1;
+            postFather[post_id]=comment_id;
             label.innerText="Rispondi al commento di "+data+":";
         }
     });
