@@ -22,7 +22,7 @@ if (isset($_GET["text"])) {
 }
 
 //Se l'id è valido
-if (isIdPostValid($id_post, $dbh)) {
+if (isIdPostValid($id_post, $dbh)&&$text!="") {
     //Se esiste il commento padre ed è dello stesso post che vuoi fare tu il commento
     //Post valido
     $padre_comment=getCommentInfo($id_padre, $dbh);
