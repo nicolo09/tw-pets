@@ -131,7 +131,10 @@ function attachNewComment(id) {
                 "text": text
             },
             success: function (response) {
-                //TODO: Mostra che hai salvato il commento all'utente
+                $("#"+id+"-commentTextArea").val('');
+                postFather[id]=-1;
+                document.getElementById(id + "-label").innerText="Aggiungi un commento a questo post:";
+                //TODO: Cambia il display dei commenti o popup per mostrare che è stato aggiunto
                 
             },
             error: function (request, status, error) {
