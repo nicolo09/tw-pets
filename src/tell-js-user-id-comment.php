@@ -5,6 +5,8 @@ if(isset($_GET["id"])){
     $id=$_GET["id"];
 }
 
-$username=getUsernameOfCommenter($id, $dbh);
-echo json_encode($username);
+$comment=getCommentInfo($id, $dbh);
+if(empty($comment)==false){
+    echo json_encode($comment["username"]);
+}
 ?>
