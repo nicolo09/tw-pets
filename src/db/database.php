@@ -837,7 +837,7 @@ class DatabaseHelper
      */
     public function addNewComment($username, $text, $id_post)
     {
-        if ($stmt = $this->db->prepare("INSERT INTO commento (testo, id_post, username) VALUES ?, ?, ?")) {
+        if ($stmt = $this->db->prepare("INSERT INTO commento (testo, id_post, username) VALUES (?, ?, ?)")) {
             $stmt->bind_param('sis', $text, $id_post, $username);
             return $stmt->execute();
         } else {
@@ -856,7 +856,7 @@ class DatabaseHelper
      */
     public function addNewCommentToComment($username, $id_padre, $text, $id_post)
     {
-        if ($stmt = $this->db->prepare("INSERT INTO commento (testo, id_padre, id_post, username) VALUES ?, ?, ?")) {
+        if ($stmt = $this->db->prepare("INSERT INTO commento (testo, id_padre, id_post, username) VALUES (?, ?, ?, ?)")) {
             $stmt->bind_param('siis', $text, $id_padre, $id_post, $username);
             return $stmt->execute();
         } else {
