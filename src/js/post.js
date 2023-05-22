@@ -1,4 +1,5 @@
 const IMGDIR = "img/";
+const N=5;
 
 //Prendo id
 const cards = document.querySelectorAll('[id^="post-card-"]');
@@ -12,18 +13,15 @@ let savedID = false;
 getPostSaved(id);
 //ID dei commenti mostrati
 const shownComments = [];
-//TODO: ID dei commenti che hanno mostra 
-const showAllCommentsB = false;
 let postFather = -1;
 
 findComments(id);
-//TODO: da fare
-//findShowAllButton(id);
 
 attachLike(id);
 attachSave(id);
 attachNewComment(id);
 attachAnswerButton(id);
+attachShowAllButton(id);
 
 
 function styleButtonLike(id) {
@@ -149,16 +147,16 @@ function findComments(id) {
     }
 }
 
-//Riempie il vettore show all comments b di array id-post dove è presente 
-function findShowAllButton(id) {
+//Se c'è il pulsante Mostra altri commenti gli aggiunge la funzionalità
+function attachShowAllButton(id) {
     const button = document.getElementById(id + "-load-comment");
-    //console.log(button);
-    //TODO: Da completare
-    /*
-    for (i = 0; i < comments.length; i++) {
-        tmp = comments[i].id.split("-")[2];
-        shownComments.push([id, tmp]);
-    }*/
+    if(button!=null){
+        //Il pulsante esiste, ci sono più commenti da caricare
+        button.addEventListener('click',()=>{
+            console.log("TODO");
+            //loadMorePosts(id, N);
+        });
+    }
 }
 
 //Attacca gli event listener a tutti i bottoni "rispondi" in shownComments del post_id dato
@@ -190,4 +188,8 @@ function changeLabel(post_id, comment_id) {
         }
     });
 
+}
+
+function loadMorePosts(id, n){
+    console.log("TODO");
 }
