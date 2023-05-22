@@ -309,6 +309,7 @@ li.select2-results__option {
     border: 4px solid transparent;
     padding-left: 0;
     padding-right: 0;
+    margin:0 0 0 1%;
 }
 
 .comments .new-comment:hover{
