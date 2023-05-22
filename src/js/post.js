@@ -1,5 +1,5 @@
 const IMGDIR = "img/";
-const N=5;
+const N = 5;
 
 //Prendo id
 const cards = document.querySelectorAll('[id^="post-card-"]');
@@ -150,9 +150,9 @@ function findComments(id) {
 //Se c'è il pulsante Mostra altri commenti gli aggiunge la funzionalità
 function attachShowAllButton(id) {
     const button = document.getElementById(id + "-load-comment");
-    if(button!=null){
+    if (button != null) {
         //Il pulsante esiste, ci sono più commenti da caricare
-        button.addEventListener('click',()=>{
+        button.addEventListener('click', () => {
             console.log("TODO");
             //loadMorePosts(id, N);
         });
@@ -185,11 +185,16 @@ function changeLabel(post_id, comment_id) {
         } else {
             postFather = comment_id;
             label.innerText = "Rispondi al commento di " + data + ":";
+            $("#" + post_id + "-label").append('<button class="col-1 btn btn btn-outline-danger" id="' + post_id + '-close">X</button>');
+            const close = document.getElementById(post_id + "-close").addEventListener('click', () => {
+                postFather = -1;
+                label.innerText = "Aggiungi un commento a questo post:";
+            });
         }
     });
 
 }
 
-function loadMorePosts(id, n){
+function loadMorePosts(id, n) {
     console.log("TODO");
 }
