@@ -125,12 +125,13 @@ function attachNewComment(id) {
                 "text": text
             },
             success: function (response) {
-                $("#" + id + "-commentTextArea").val('');
-                postFather = -1;
-                document.getElementById(id + "-label").innerText = "Aggiungi un commento a questo post:";
-                //TODO: Cambia il display dei commenti
-                successPopUp("Commento pubblicato con successo");
-
+                if (text != "") {
+                    $("#" + id + "-commentTextArea").val('');
+                    postFather = -1;
+                    document.getElementById(id + "-label").innerText = "Aggiungi un commento a questo post:";
+                    //TODO: Cambia il display dei commenti
+                    successPopUp("Commento pubblicato con successo");
+                }
             },
             error: function (request, status, error) {
                 popUp("Errore nel salvare il commento");
@@ -200,10 +201,10 @@ function loadMorePosts(id, n) {
     console.log("TODO");
 }
 
-function popUp(text){
-    $(".comments").prepend($('<div class="alert alert-danger alert-dismissible fade show" role="alert"> <label class="top-page-popup">'+text+'</label> <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button></div>'));
+function popUp(text) {
+    $(".comments").prepend($('<div class="alert alert-danger alert-dismissible fade show" role="alert"> <label class="top-page-popup">' + text + '</label> <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button></div>'));
 }
 
-function successPopUp(text){
-    $(".comments").prepend($('<div class="alert alert-success alert-dismissible fade show" role="alert"> <label class="top-page-popup">'+text+'</label> <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button></div>'));
+function successPopUp(text) {
+    $(".comments").prepend($('<div class="alert alert-success alert-dismissible fade show" role="alert"> <label class="top-page-popup">' + text + '</label> <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button></div>'));
 }
