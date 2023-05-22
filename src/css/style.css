@@ -302,3 +302,21 @@ li.select2-results__option {
 .comments>p{
     margin:0;
 }
+
+.comments .new-comment{
+    background: linear-gradient(white, white) padding-box,
+        linear-gradient(to right, darkblue, darkorchid) border-box;
+    border: 4px solid transparent;
+    padding-left: 0;
+    padding-right: 0;
+}
+
+.comments .new-comment:hover{
+    background: linear-gradient(to right, darkblue, darkorchid) border-box;
+    color:white;
+}
+
+.comments button{
+    padding: 0 2% 0 2%;
+    margin:1%;
+}
