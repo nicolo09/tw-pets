@@ -3,38 +3,34 @@ const IMGDIR = "img/";
 //Prendo id
 const cards = document.querySelectorAll('[id^="post-card-"]');
 //ID ha tutti gli id dei post presenti
-const id = [];
+const id = cards[0].id.split("-")[2];
 //Se un post ha il like o no
-const likedID = {};
-const savedID = {};
-const nlikesID = {};
+let likedID = false;
+let nlikesID = 0;
+getPostLiked(id);
+let savedID = false;
+getPostSaved(id);
+//ID dei commenti mostrati
 const shownComments = [];
-let postFather={};
-for (i = 0; i < cards.length; i++) {
-    tmp = cards[i].id.split("-")[2];
-    id.push(tmp);
-    likedID[tmp] = false;
-    savedID[tmp] = false;
-    nlikesID[tmp] = 0;
-    postFather[tmp]=-1;
-    findComments(tmp);
-}
+//TODO: ID dei commenti che hanno mostra 
+const showAllCommentsB = false;
+let postFather = -1;
 
-//Chiedo al db se i post hanno like o no
-id.forEach(element => {
-    getPostLiked(element);
-    getPostSaved(element);
-    attachLike(element);
-    attachSave(element);
-    attachNewComment(element);
-    attachAnswerButton(element);
-});
+findComments(id);
+//TODO: da fare
+//findShowAllButton(id);
+
+attachLike(id);
+attachSave(id);
+attachNewComment(id);
+attachAnswerButton(id);
+
 
 function styleButtonLike(id) {
     const buttonL = document.getElementById("like-post-card-" + id);
-    const n = nlikesID[id];
+    const n = nlikesID;
     if (buttonL != null) {
-        if (likedID[id] == true) {
+        if (likedID == true) {
             //Post ha like
             buttonL.innerHTML = '<img src="' + IMGDIR + 'thumb_up_filled.svg" alt="" />' + n + ' Mi Piace ';
         } else {
@@ -47,7 +43,7 @@ function styleButtonLike(id) {
 function styleButtonSave(id) {
     const buttonS = document.getElementById("save-post-card-" + id);
     if (buttonS != null) {
-        if (savedID[id] == true) {
+        if (savedID == true) {
             //Post è stato salvato
             buttonS.innerHTML = '<img src="' + IMGDIR + 'star_filled.svg" alt="" />Salvato ';
         } else {
@@ -65,8 +61,8 @@ function getPostLiked(id) {
         return response.json();
     }).then((data) => {
         //I dati vengono inviati come {bool, num}
-        likedID[id] = data[0];
-        nlikesID[id] = data[1];
+        likedID = data[0];
+        nlikesID = data[1];
         styleButtonLike(id);
     });
 }
@@ -78,7 +74,7 @@ function getPostSaved(id) {
         }
         return response.json();
     }).then((data) => {
-        savedID[id] = data;
+        savedID = data;
         styleButtonSave(id);
     });
 }
@@ -121,21 +117,21 @@ function attachSave(id) {
 
 function attachNewComment(id) {
     document.getElementById(id + "-new-comment").addEventListener('click', () => {
-        const text=document.getElementById(id+"-commentTextArea").value;
+        const text = document.getElementById(id + "-commentTextArea").value;
         $.ajax({
             method: "GET",
             url: "comment.php",
             data: {
                 "id_post": id,
-                "id_padre":postFather[id],
+                "id_padre": postFather,
                 "text": text
             },
             success: function (response) {
-                $("#"+id+"-commentTextArea").val('');
-                postFather[id]=-1;
-                document.getElementById(id + "-label").innerText="Aggiungi un commento a questo post:";
+                $("#" + id + "-commentTextArea").val('');
+                postFather = -1;
+                document.getElementById(id + "-label").innerText = "Aggiungi un commento a questo post:";
                 //TODO: Cambia il display dei commenti o popup per mostrare che è stato aggiunto
-                
+
             },
             error: function (request, status, error) {
                 $(".comments").prepend($('<p class="text-danger">Errore nel salvare il commento</p>'));
@@ -149,38 +145,49 @@ function findComments(id) {
     const comments = document.querySelectorAll('[id^="' + id + '-comment-"]');
     for (i = 0; i < comments.length; i++) {
         tmp = comments[i].id.split("-")[2];
-        shownComments.push([id, tmp]);
+        shownComments.push(tmp);
     }
+}
+
+//Riempie il vettore show all comments b di array id-post dove è presente 
+function findShowAllButton(id) {
+    const button = document.getElementById(id + "-load-comment");
+    //console.log(button);
+    //TODO: Da completare
+    /*
+    for (i = 0; i < comments.length; i++) {
+        tmp = comments[i].id.split("-")[2];
+        shownComments.push([id, tmp]);
+    }*/
 }
 
 //Attacca gli event listener a tutti i bottoni "rispondi" in shownComments del post_id dato
 function attachAnswerButton(id) {
     shownComments.forEach(element => {
-        if (element[0] == id) {
-            document.getElementById(id + "-comment-" + element[1]).addEventListener('click', () => {
-                postFather[id]=-1;
-                changeLabel(id, element[1]);
-            });
-        }
+        document.getElementById(id + "-comment-" + element).addEventListener('click', () => {
+            postFather = -1;
+            changeLabel(id, element);
+        });
+
     })
 }
 
 //Cambia la label id-label 
 function changeLabel(post_id, comment_id) {
-    const label=document.getElementById(post_id + "-label");
+    const label = document.getElementById(post_id + "-label");
     const singleLike = fetch("tell-js-user-id-comment.php?id=" + comment_id).then((response) => {
         if (!response.ok) {
             throw new Error("Something went wrong!");
         }
         return response.json();
     }).then((data) => {
-        if(data==null){
-            postFather[post_id]=-1;
-            label.innerText="Aggiungi un commento a questo post:";
-        }else{
-            postFather[post_id]=comment_id;
-            label.innerText="Rispondi al commento di "+data+":";
+        if (data == null) {
+            postFather = -1;
+            label.innerText = "Aggiungi un commento a questo post:";
+        } else {
+            postFather = comment_id;
+            label.innerText = "Rispondi al commento di " + data + ":";
         }
     });
-    
+
 }
