@@ -299,7 +299,7 @@ li.select2-results__option {
     width:98%;
 }
 
-.comments>p{
+.comments p{
     margin:0;
 }
 
@@ -319,4 +319,9 @@ li.select2-results__option {
 .comments button{
     padding: 0 2% 0 2%;
     margin:1%;
+}
+
+.comment-slider{
+    overflow-y: scroll;
+    max-height: 200px;
 }

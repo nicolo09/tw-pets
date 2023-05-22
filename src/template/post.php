@@ -87,6 +87,7 @@
             if (isset($templateParams["timestamp"]) && isset($templateParams["username"])) {
                 echo html_entity_decode('<p>' . 'Post creato alle ' . $templateParams["timestamp"] . '</p>');
             } ?>
+            <div class="comment-slider">
             <?php
             if (isset($templateParams["comments"]) && count($templateParams["comments"]) > 0 && isset($templateParams["id"])) {
                 $id = $templateParams["id"];
@@ -114,6 +115,7 @@
                 }
             }
             ?>
+            </div>
             <!--New comment-->
             <div class="row g-0">
                 <label for="<?php if (isset($templateParams["id"])) {
