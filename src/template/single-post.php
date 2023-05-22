@@ -96,7 +96,7 @@
             }
             if (isset($templateParams["more-comments"]) && $templateParams["more-comments"] == true && isset($templateParams["id"])) {
                 $id = $templateParams["id"];
-                echo html_entity_decode('<button id="' . $id . '-comment-load" class="d-block rounded btn btn-outline-secondary">Carica altri commenti</button>');
+                echo html_entity_decode('<button id="' . $id . '-load-comment" class="d-block rounded btn btn-outline-secondary">Carica altri commenti</button>');
             }
             ?>
             </div>
