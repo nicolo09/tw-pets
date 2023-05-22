@@ -86,6 +86,7 @@
                 $id = $templateParams["id"];
                 foreach ($templateParams["comments"] as $comment) {
                     echo html_entity_decode('<p><a href="' . getUserProfileHref($comment["username"]) . '">' . $comment["username"] . '</a>' . ': ' . $comment["testo"] . '</p>');
+                    echo html_entity_decode('<p class="text-muted">'. date( "d/m/Y H:i", strtotime($comment["timestamp"])) . '</p>');
                     echo html_entity_decode('<button id="' . $id . '-comment-' . $comment["id_commento"] . '" class="comment-answer rounded btn btn-outline-primary">Rispondi</button>');
                     if (isset($templateParams["son-comments-" . $comment["id_commento"]]) && $templateParams["son-comments-" . $comment["id_commento"]] == true) {
                         //Ci sono commenti di risposta
