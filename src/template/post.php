@@ -95,22 +95,32 @@
                     echo html_entity_decode('<button id="' . $id . '-comment-' . $comment["id_commento"] . '">Rispondi</button>');
                     if (isset($templateParams["son-comments-" . $comment["id_commento"]]) && $templateParams["son-comments-" . $comment["id_commento"]] == true) {
                         //Ci sono commenti di risposta
-                        echo html_entity_decode('<button id="' . $id . '-son-comment-' . $comment["id_commento"] . '">Leggi le risposte</button>');
+                        if (isset($templateParams["canLoadMoreComments"]) && $templateParams["canLoadMoreComments"] == false) {
+                            //Non posso caricare in questa pagina altri commenti, redirect a pagina post singolo
+                            echo html_entity_decode('<button id="' . $id . '-son-comment-' . $comment["id_commento"] . '" onclick="window.location.href=\'view-post-profile.php?id=' . $id . '\';" >Leggi le risposte</button>');
+                        } else {
+                            echo html_entity_decode('<button id="' . $id . '-son-comment-' . $comment["id_commento"] . '">Leggi le risposte</button>');
+                        }
                     }
                 }
             }
             if (isset($templateParams["more-comments"]) && $templateParams["more-comments"] == true && isset($templateParams["id"])) {
                 $id = $templateParams["id"];
-                echo html_entity_decode('<button id="' . $id . '-comment-load">Carica altri commenti</button>');
+                if (isset($templateParams["canLoadMoreComments"]) && $templateParams["canLoadMoreComments"] == false) {
+                    //Non posso caricare in questa pagina altri commenti, redirect a pagina post singolo
+                    echo html_entity_decode('<button id="' . $id . '-comment-load" onclick="window.location.href=\'view-post-profile.php?id=' . $id . '\';">Carica altri commenti</button>');
+                } else {
+                    echo html_entity_decode('<button id="' . $id . '-comment-load">Carica altri commenti</button>');
+                }
             }
             ?>
             <!--New comment-->
             <div class="row g-0">
                 <label for="<?php if (isset($templateParams["id"])) {
-                                                        echo $templateParams["id"];
-                                                    } ?>-commentTextArea" id="<?php if (isset($templateParams["id"])) {
-                                                        echo $templateParams["id"];
-                                                    } ?>-label"> Aggiungi un commento a questo post:</label>
+                                echo $templateParams["id"];
+                            } ?>-commentTextArea" id="<?php if (isset($templateParams["id"])) {
+                                                                                    echo $templateParams["id"];
+                                                                                } ?>-label"> Aggiungi un commento a questo post:</label>
                 <textarea class="rounded col form-control" placeholder="Massimo 200 caratteri" maxlength="200" id="<?php if (isset($templateParams["id"])) {
                                                                                                                         echo $templateParams["id"];
                                                                                                                     } ?>-commentTextArea" name="new-comment"></textarea>

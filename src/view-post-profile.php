@@ -36,6 +36,7 @@ if(empty($result)==false){
     //Carico 5 commenti (i più recenti)
     $n=5;
     $comments=loadMostRecentComments($id, $n, $dbh);
+    $templateParams["canLoadMoreComments"]=true;
     $templateParams["comments"]=$comments;
     $all=allLoadMostRecentComments($id, $dbh);
     if(count($all)>count($templateParams["comments"])){
