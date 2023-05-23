@@ -762,3 +762,16 @@ function newCommentAnswer(string $username, int $id_padre, string $text, int $id
     return $dbh->addNewCommentToComment($username, $id_padre, $text, $id_post);
 }
 
+/**
+ * Ritorna n commenti del post con offset più vecchi del timestamp fornito
+ * @param int $id del post
+ * @param int $n numero commenti da caricare
+ * @param int $offset l'offset dei commenti
+ * @param string $timestamp del commento più recente
+ * @param DatabaseHelper $dbh il database in cui sono salvati i commenti
+ * @return i commenti
+ */
+function getRecentComments(int $id, int $n, int $offset,string $timestamp, DatabaseHelper $dbh){
+    return $dbh->getCommentOffset($id, $n, $offset, $timestamp);
+}
+

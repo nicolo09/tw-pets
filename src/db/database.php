@@ -846,4 +846,24 @@ class DatabaseHelper
             return false;
         }
     }
+
+    /**
+     * Ritorna n commenti del post con offset più vecchi del timestamp fornito
+     * @param int $id del post
+     * @param int $n numero commenti da caricare
+     * @param int $offset l'offset dei commenti
+     * @param string $timestamp del commento più recente
+     * @return i commenti
+     */
+    public function getCommentOffset($id, $n, $offset, $timestamp)
+    {
+        if ($stmt = $this->db->prepare("SELECT * FROM `commento` WHERE id_post=? AND id_padre IS NULL AND timestamp <? ORDER BY timestamp DESC LIMIT ? OFFSET ?")) {
+            $stmt->bind_param('isii', $id,$timestamp, $n, $offset);
+            $stmt->execute();
+            $result = $stmt->get_result();
+            return $result->fetch_all(MYSQLI_ASSOC);
+        } else {
+            return array();
+        }
+    }
 }
