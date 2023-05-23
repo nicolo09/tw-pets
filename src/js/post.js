@@ -14,7 +14,11 @@ getPostSaved(id);
 //ID dei commenti mostrati
 const shownComments = [];
 let postFather = -1;
+let timestamp=-1;
+let offset=0;
+let n=5;
 
+loadComment(n, offset, timestamp, id);
 findComments(id);
 
 attachLike(id);
@@ -207,4 +211,18 @@ function popUp(text) {
 
 function successPopUp(text) {
     $(".comments").prepend($('<div class="alert alert-success alert-dismissible fade show" role="alert"> <label class="top-page-popup">' + text + '</label> <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button></div>'));
+}
+
+function loadComment(n, offset, timestamp, id_post){
+    //Query al php per chiedere i commenti
+    //Se timestamp è -1, salvo il primo valore 
+    const comments = fetch("tell-js-comments.php?id_post=" + id_post+"&n="+n+"&offset="+offset+"&timestamp="+timestamp).then((response) => {
+        if (!response.ok) {
+            throw new Error("Something went wrong!");
+        }
+        return response.json();
+    }).then((data) => {
+        console.log(data);
+    });
+
 }
