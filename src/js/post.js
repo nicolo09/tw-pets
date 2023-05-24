@@ -19,12 +19,10 @@ let offset = 0;
 let n = 5;
 
 loadComment(n, offset, timestamp, id);
-findComments(id);
 
 attachLike(id);
 attachSave(id);
 attachNewComment(id);
-attachAnswerButton(id);
 attachShowAllButton(id);
 
 
@@ -143,15 +141,6 @@ function attachNewComment(id) {
     });
 }
 
-//Riempie il vettore show comments di array id-post, id-commenti presenti
-function findComments(id) {
-    const comments = document.querySelectorAll('[id^="' + id + '-comment-"]');
-    for (i = 0; i < comments.length; i++) {
-        tmp = comments[i].id.split("-")[2];
-        shownComments.push(tmp);
-    }
-}
-
 //Se c'è il pulsante Mostra altri commenti gli aggiunge la funzionalità
 function attachShowAllButton(id) {
     const button = document.getElementById(id + "-load-comment");
@@ -231,7 +220,9 @@ function loadComment(n, offset, timestamp, id_post) {
             }
             //aggiungo il commento alla pagina
             addComment(element, hasAnswers[index][element["id_commento"]]);
+            shownComments.push(element["id_commento"]);
         });
+        attachAnswerButton(id);
     });
 
 }
