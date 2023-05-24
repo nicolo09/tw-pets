@@ -226,6 +226,8 @@ function loadComment(n, offset, timestamp, id_post) {
             answerButtonToAttach.push(element["id_commento"]);
         });
         attachAnswerButton(id);
+        //La prossima volta inizio a leggere i commenti da offset incrementato
+        offset=offset+comm.length;
     });
 
 }
