@@ -866,4 +866,21 @@ class DatabaseHelper
             return array();
         }
     }
+
+    /**
+     * Returns the comment of the given id
+     * @param int $id of the comment
+     * @return array of results
+     */
+    public function getAllMostRecentCommentsAfter($id, $timestamp)
+    {
+        if ($stmt = $this->db->prepare("SELECT * FROM `commento` WHERE id_padre IS NULL AND id_post=? AND timestamp <? ORDER BY timestamp DESC")) {
+            $stmt->bind_param('is', $id_post, $timestamp);
+            $stmt->execute();
+            $result = $stmt->get_result();
+            return $result->fetch_all(MYSQLI_ASSOC);
+        } else {
+            return array();
+        }
+    }
 }
