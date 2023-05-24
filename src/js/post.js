@@ -1,5 +1,4 @@
 const IMGDIR = "img/";
-const N = 5;
 
 //Prendo id
 const cards = document.querySelectorAll('[id^="post-card-"]');
@@ -16,16 +15,24 @@ const answerButtonToAttach = [];
 let postFather = -1;
 let timestamp = -1;
 let offset = 0;
-let n = 5;
+const n = 5;
 let maxComments=0;
 
-loadComment(n, offset, timestamp, id);
+loadComment(id);
 
 attachLike(id);
 attachSave(id);
 attachNewComment(id);
 attachShowAllButton(id);
 
+const intersectionObserver = new IntersectionObserver(entries => {
+    if(entries[0].intersectionRatio != 0) {
+        loadComment(id);
+    }
+})
+
+//This observes the spinner
+intersectionObserver.observe(document.getElementById("spinner-post-"+id));
 
 function styleButtonLike(id) {
     const buttonL = document.getElementById("like-post-card-" + id);
@@ -205,7 +212,7 @@ function successPopUp(text) {
     $(".comments").prepend($('<div class="alert alert-success alert-dismissible fade show" role="alert"> <label class="top-page-popup">' + text + '</label> <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button></div>'));
 }
 
-function loadComment(n, offset, timestamp, id_post) {
+function loadComment(id_post) {
     //Query al php per chiedere i commenti
     const comments = fetch("tell-js-comments.php?id_post=" + id_post + "&n=" + n + "&offset=" + offset + "&timestamp=" + timestamp).then((response) => {
         if (!response.ok) {
