@@ -12,7 +12,7 @@ getPostLiked(id);
 let savedID = false;
 getPostSaved(id);
 //ID dei commenti mostrati
-const shownComments = [];
+const answerButtonToAttach = [];
 let postFather = -1;
 let timestamp = -1;
 let offset = 0;
@@ -153,15 +153,18 @@ function attachShowAllButton(id) {
     }
 }
 
-//Attacca gli event listener a tutti i bottoni "rispondi" in shownComments del post_id dato
+//Attacca gli event listener a tutti i bottoni "rispondi" in answerButtonToAttach del post_id dato
 function attachAnswerButton(id) {
-    shownComments.forEach(element => {
+    answerButtonToAttach.forEach(element => {
         document.getElementById(id + "-comment-" + element).addEventListener('click', () => {
             postFather = -1;
             changeLabel(id, element);
         });
 
-    })
+    });
+    //Così facendo, quando carico nuovi commenti attacco l'event listener solo a loro
+    //e non attacco allo stesso pulsante molti event listener per lo stesso evento
+    answerButtonToAttach.length=0;
 }
 
 //Cambia la label id-label 
@@ -220,7 +223,7 @@ function loadComment(n, offset, timestamp, id_post) {
             }
             //aggiungo il commento alla pagina
             addComment(element, hasAnswers[index][element["id_commento"]]);
-            shownComments.push(element["id_commento"]);
+            answerButtonToAttach.push(element["id_commento"]);
         });
         attachAnswerButton(id);
     });
