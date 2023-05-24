@@ -17,6 +17,7 @@ let postFather = -1;
 let timestamp = -1;
 let offset = 0;
 let n = 5;
+let maxComments=0;
 
 loadComment(n, offset, timestamp, id);
 
@@ -215,19 +216,47 @@ function loadComment(n, offset, timestamp, id_post) {
         //data è composta da vettore commenti e vettore haRisposte
         comm=data[0];
         hasAnswers=data[1];
+        
+        //La prossima volta inizio a leggere i commenti da offset incrementato
+        offset=offset+comm.length;
 
         comm.forEach((element, index)=>{
             if(timestamp==-1&&index==1){
                 //Se timestamp è -1, salvo il primo valore 
                 timestamp=element["timestamp"];
+                //Visto che solo la prima volta che faccio la query non ho settato la timestamp, carico anche quanti commenti carico max
+                const comments = fetch("tell-js-n-comments.php?id_post=" + id_post + "&timestamp=" + timestamp).then((response) => {
+                    if (!response.ok) {
+                        throw new Error("Something went wrong!");
+                    }
+                    return response.json();
+                }).then((data) => {
+                    maxComments=data[0];
+                    if(maxComments>=offset){
+                        //Non mostrare lo spinner
+                        $(".spinner-post-"+id).addClass("d-none");
+                    }else{
+                        //Spinner time
+                        $(".spinner-post-"+id).addClass("d-block");
+                    }
+                });
+            }else{
+                if(maxComments>=offset){
+                    //Non mostrare lo spinner
+                    $(".spinner-post-"+id).addClass("d-none");
+                }else{
+                    //Spinner time
+                    $(".spinner-post-"+id).addClass("d-block");
+                }
             }
             //aggiungo il commento alla pagina
             addComment(element, hasAnswers[index][element["id_commento"]]);
             answerButtonToAttach.push(element["id_commento"]);
         });
         attachAnswerButton(id);
-        //La prossima volta inizio a leggere i commenti da offset incrementato
-        offset=offset+comm.length;
+        if(offset==0){
+            $("#spinner-post-"+id).addClass("d-none");
+        }
     });
 
 }
@@ -238,7 +267,6 @@ function getUserProfileHref(username){
 
 function addComment(comment, hasAnswers){
     const date=new Date(comment["timestamp"]);
-    //22/05/2023 18:38
     const h=date.getHours() < 10?'0'+date.getHours(): date.getHours();
     const m=date.getMinutes() < 10?'0'+date.getMinutes(): date.getMinutes();
     const correctDate=date.getDate()+"/"+date.getMonth()+1+"/"+date.getFullYear()+" "+h+":"+m;
@@ -248,5 +276,5 @@ function addComment(comment, hasAnswers){
     if(hasAnswers==true){
         text+='<button id="' + id + '-son-comment-' + comment["id_commento"] + '" class="rounded btn btn-outline-primary">Leggi le risposte</button>';
     }
-    $(".comment-slider").append(text);
+    $(".comment-container").append(text);
 }
