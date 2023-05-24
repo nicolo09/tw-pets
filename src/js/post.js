@@ -230,7 +230,6 @@ function loadComment(n, offset, timestamp, id_post) {
                 timestamp=element["timestamp"];
             }
             //aggiungo il commento alla pagina
-            console.log();
             addComment(element, hasAnswers[index][element["id_commento"]]);
         });
     });
@@ -247,13 +246,11 @@ function addComment(comment, hasAnswers){
     const h=date.getHours() < 10?'0'+date.getHours(): date.getHours();
     const m=date.getMinutes() < 10?'0'+date.getMinutes(): date.getMinutes();
     const correctDate=date.getDate()+"/"+date.getMonth()+1+"/"+date.getFullYear()+" "+h+":"+m;
-    console.log();
     text='<p><a href="' + getUserProfileHref(comment["username"]) + '">' + comment["username"] + '</a>' + ': ' + comment["testo"] + '</p>';
     text+='<p class="text-muted">'+ correctDate + '</p>';
     text+='<button id="' + id + '-comment-' + comment["id_commento"] + '" class="comment-answer rounded btn btn-outline-primary">Rispondi</button>';
     if(hasAnswers==true){
         text+='<button id="' + id + '-son-comment-' + comment["id_commento"] + '" class="rounded btn btn-outline-primary">Leggi le risposte</button>';
     }
-    console.log(text);
     $(".comment-slider").append(text);
 }
