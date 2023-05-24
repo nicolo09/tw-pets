@@ -22,6 +22,11 @@ if($timestamp==-1){
 }
 
 $result=getRecentComments($id, $n, $offset, $timestamp, $dbh);
+$hasAnswers=array();
+foreach($result as $comment){
+    $id=$comment["id_commento"];
+    $hasAnswers[]=array($id=> doesCommentHaveComments($id, $dbh));
+}
 
-echo json_encode($result);
+echo json_encode(array($result, $hasAnswers));
 ?>
