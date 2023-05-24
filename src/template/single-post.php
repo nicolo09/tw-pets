@@ -8,7 +8,7 @@
                                                                 echo $templateParams["immagineprofilo"];
                                                             } ?> alt="<?php if (isset($templateParams["username"])) {
                                                                             echo "Foto profilo di " . $templateParams["username"];
-                                                                        }?>">
+                                                                        } ?>">
             <a class="align-items-center" <?php if (isset($templateParams["username"])) {
                                                 echo html_entity_decode('href="' . getUserProfileHref($templateParams["username"]) . '"');
                                             } else {
@@ -81,39 +81,47 @@
                 echo html_entity_decode('<p>' . 'Post creato alle ' . $templateParams["timestamp"] . '</p>');
             } ?>
             <div class="comment-slider">
-            <?php
-            if (isset($templateParams["comments"]) && count($templateParams["comments"]) > 0 && isset($templateParams["id"])) {
-                $id = $templateParams["id"];
-                foreach ($templateParams["comments"] as $comment) {
-                    echo html_entity_decode('<p><a href="' . getUserProfileHref($comment["username"]) . '">' . $comment["username"] . '</a>' . ': ' . $comment["testo"] . '</p>');
-                    echo html_entity_decode('<p class="text-muted">'. date( "d/m/Y H:i", strtotime($comment["timestamp"])) . '</p>');
-                    echo html_entity_decode('<button id="' . $id . '-comment-' . $comment["id_commento"] . '" class="comment-answer rounded btn btn-outline-primary">Rispondi</button>');
-                    if (isset($templateParams["son-comments-" . $comment["id_commento"]]) && $templateParams["son-comments-" . $comment["id_commento"]] == true) {
-                        //Ci sono commenti di risposta
-                        echo html_entity_decode('<button id="' . $id . '-son-comment-' . $comment["id_commento"] . '" class="rounded btn btn-outline-primary">Leggi le risposte</button>');
-                        
+                <div class="comment-container">
+                    <?php
+                    if (isset($templateParams["comments"]) && count($templateParams["comments"]) > 0 && isset($templateParams["id"])) {
+                        $id = $templateParams["id"];
+                        foreach ($templateParams["comments"] as $comment) {
+                            echo html_entity_decode('<p><a href="' . getUserProfileHref($comment["username"]) . '">' . $comment["username"] . '</a>' . ': ' . $comment["testo"] . '</p>');
+                            echo html_entity_decode('<p class="text-muted">' . date("d/m/Y H:i", strtotime($comment["timestamp"])) . '</p>');
+                            echo html_entity_decode('<button id="' . $id . '-comment-' . $comment["id_commento"] . '" class="comment-answer rounded btn btn-outline-primary">Rispondi</button>');
+                            if (isset($templateParams["son-comments-" . $comment["id_commento"]]) && $templateParams["son-comments-" . $comment["id_commento"]] == true) {
+                                //Ci sono commenti di risposta
+                                echo html_entity_decode('<button id="' . $id . '-son-comment-' . $comment["id_commento"] . '" class="rounded btn btn-outline-primary">Leggi le risposte</button>');
+                            }
+                        }
                     }
-                }
-            }
-            if (isset($templateParams["more-comments"]) && $templateParams["more-comments"] == true && isset($templateParams["id"])) {
-                $id = $templateParams["id"];
-                echo html_entity_decode('<button id="' . $id . '-load-comment" class="d-block rounded btn btn-outline-secondary">Carica altri commenti</button>');
-            }
-            ?>
+                    if (isset($templateParams["more-comments"]) && $templateParams["more-comments"] == true && isset($templateParams["id"])) {
+                        $id = $templateParams["id"];
+                        echo html_entity_decode('<button id="' . $id . '-load-comment" class="d-block rounded btn btn-outline-secondary">Carica altri commenti</button>');
+                    }
+                    ?>
+                </div>
+                <?php if (isset($templateParams["id"])) {
+                    echo html_entity_decode('<div class="d-flex justify-content-center align-items-center mt-4 spinner-post" id="spinner-post-' . $templateParams["id"] . '"> <div class="spinner-border text-primary spinner-border-sm"
+                            role="status">
+                            <span class="visually-hidden">Loading...</span>
+                        </div>
+                    </div>');
+                } ?>
             </div>
             <!--New comment-->
             <div class="row g-0">
                 <label for="<?php if (isset($templateParams["id"])) {
                                 echo $templateParams["id"];
                             } ?>-commentTextArea" id="<?php if (isset($templateParams["id"])) {
-                                                                                    echo $templateParams["id"];
-                                                                                } ?>-label"> Aggiungi un commento a questo post:</label>
+                                                            echo $templateParams["id"];
+                                                        } ?>-label"> Aggiungi un commento a questo post:</label>
                 <textarea class="rounded col form-control" placeholder="Massimo 200 caratteri" maxlength="200" id="<?php if (isset($templateParams["id"])) {
                                                                                                                         echo $templateParams["id"];
                                                                                                                     } ?>-commentTextArea" name="new-comment"></textarea>
                 <button class="rounded col-3 new-comment btn" id="<?php if (isset($templateParams["id"])) {
-                                                        echo $templateParams["id"];
-                                                    } ?>-new-comment">Commenta</button>
+                                                                        echo $templateParams["id"];
+                                                                    } ?>-new-comment">Commenta</button>
             </div>
         </div>
     </div>
