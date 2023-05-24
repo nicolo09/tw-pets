@@ -33,20 +33,7 @@ if(empty($result)==false){
         $templateParams["disableSave"]=false;
     }
     $templateParams["animals"]=getAnimalsInPost($id, $dbh);
-    //Carico 5 commenti (i più recenti)
-    $n=5;
-    $comments=loadMostRecentComments($id, $n, $dbh);
-    $templateParams["comments"]=$comments;
-    $all=allLoadMostRecentComments($id, $dbh);
-    if(count($all)>count($templateParams["comments"])){
-        $templateParams["more-comments"]=true;
-    }else{
-        $templateParams["more-comments"]=false;
-    }
-    //I commenti che mostro hanno risposte?
-    foreach($comments as $comm){
-        $templateParams["son-comments-".$comm["id_commento"]]=doesCommentHaveComments($comm["id_commento"], $dbh);
-    }
+    //I commenti vengono caricati da Javascript
 }else{
     //Post non esiste, redirect
     header("Location: tab-profile.php");

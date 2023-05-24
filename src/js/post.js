@@ -14,9 +14,9 @@ getPostSaved(id);
 //ID dei commenti mostrati
 const shownComments = [];
 let postFather = -1;
-let timestamp=-1;
-let offset=0;
-let n=5;
+let timestamp = -1;
+let offset = 0;
+let n = 5;
 
 loadComment(n, offset, timestamp, id);
 findComments(id);
@@ -133,7 +133,6 @@ function attachNewComment(id) {
                     $("#" + id + "-commentTextArea").val('');
                     postFather = -1;
                     document.getElementById(id + "-label").innerText = "Aggiungi un commento a questo post:";
-                    //TODO: Cambia il display dei commenti
                     successPopUp("Commento pubblicato con successo");
                 }
             },
@@ -213,16 +212,48 @@ function successPopUp(text) {
     $(".comments").prepend($('<div class="alert alert-success alert-dismissible fade show" role="alert"> <label class="top-page-popup">' + text + '</label> <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button></div>'));
 }
 
-function loadComment(n, offset, timestamp, id_post){
+function loadComment(n, offset, timestamp, id_post) {
     //Query al php per chiedere i commenti
-    //Se timestamp è -1, salvo il primo valore 
-    const comments = fetch("tell-js-comments.php?id_post=" + id_post+"&n="+n+"&offset="+offset+"&timestamp="+timestamp).then((response) => {
+    const comments = fetch("tell-js-comments.php?id_post=" + id_post + "&n=" + n + "&offset=" + offset + "&timestamp=" + timestamp).then((response) => {
         if (!response.ok) {
             throw new Error("Something went wrong!");
         }
         return response.json();
     }).then((data) => {
-        console.log(data);
+        //data è composta da vettore commenti e vettore haRisposte
+        comm=data[0];
+        hasAnswers=data[1];
+
+        comm.forEach((element, index)=>{
+            if(timestamp==-1&&index==1){
+                //Se timestamp è -1, salvo il primo valore 
+                timestamp=element["timestamp"];
+            }
+            //aggiungo il commento alla pagina
+            console.log();
+            addComment(element, hasAnswers[index][element["id_commento"]]);
+        });
     });
 
+}
+
+function getUserProfileHref(username){
+    return "view-user-profile.php?username=" + username + "&type=person";
+}
+
+function addComment(comment, hasAnswers){
+    const date=new Date(comment["timestamp"]);
+    //22/05/2023 18:38
+    const h=date.getHours() < 10?'0'+date.getHours(): date.getHours();
+    const m=date.getMinutes() < 10?'0'+date.getMinutes(): date.getMinutes();
+    const correctDate=date.getDate()+"/"+date.getMonth()+1+"/"+date.getFullYear()+" "+h+":"+m;
+    console.log();
+    text='<p><a href="' + getUserProfileHref(comment["username"]) + '">' + comment["username"] + '</a>' + ': ' + comment["testo"] + '</p>';
+    text+='<p class="text-muted">'+ correctDate + '</p>';
+    text+='<button id="' + id + '-comment-' + comment["id_commento"] + '" class="comment-answer rounded btn btn-outline-primary">Rispondi</button>';
+    if(hasAnswers==true){
+        text+='<button id="' + id + '-son-comment-' + comment["id_commento"] + '" class="rounded btn btn-outline-primary">Leggi le risposte</button>';
+    }
+    console.log(text);
+    $(".comment-slider").append(text);
 }
