@@ -10,9 +10,9 @@ if(isset($_GET["timestamp"])){
 }
 if($timestamp!=-1){
     //Quanti commenti sono stati pubblicati su questo post dopo timestamp
-$ncomments=allLoadMostRecentComments($id, $timestamp, $dbh);
-echo json_encode(count($ncomments));
+    $ncomments=allLoadMostRecentCommentsAfter($id, $timestamp, $dbh);
+    echo json_encode(array(count($ncomments)));
 }else{
-    echo json_encode(count(array()));
+    echo json_encode(array(count(array())));
 }
 ?>
