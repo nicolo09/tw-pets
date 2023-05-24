@@ -234,19 +234,19 @@ function loadComment(n, offset, timestamp, id_post) {
                     maxComments=data[0];
                     if(maxComments>=offset){
                         //Non mostrare lo spinner
-                        $(".spinner-post-"+id).addClass("d-none");
+                        $("#spinner-post-"+id).addClass("d-none");
                     }else{
                         //Spinner time
-                        $(".spinner-post-"+id).addClass("d-block");
+                        $("#spinner-post-"+id).addClass("d-block");
                     }
                 });
             }else{
                 if(maxComments>=offset){
                     //Non mostrare lo spinner
-                    $(".spinner-post-"+id).addClass("d-none");
+                    $("#spinner-post-"+id).addClass("d-none");
                 }else{
                     //Spinner time
-                    $(".spinner-post-"+id).addClass("d-block");
+                    $("#spinner-post-"+id).addClass("d-block");
                 }
             }
             //aggiungo il commento alla pagina
