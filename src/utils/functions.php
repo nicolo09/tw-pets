@@ -786,3 +786,17 @@ function allLoadMostRecentCommentsAfter(int $id_post, string $timestamp, Databas
     return $dbh->getAllMostRecentCommentsAfter($id_post, $timestamp);
 }
 
+/**
+ * Ritorna n commenti in risposta al post con offset più vecchi del timestamp fornito
+ * @param int $id del post
+ * @param int $id_comment del commento
+ * @param int $n numero commenti da caricare
+ * @param int $offset l'offset dei commenti
+ * @param string $timestamp del commento più recente
+ * @param DatabaseHelper $dbh il database in cui sono salvati i commenti
+ * @return i commenti
+ */
+function getRecentCommentsAnswers(int $id,int $id_comment, int $n, int $offset,string $timestamp, DatabaseHelper $dbh){
+    return $dbh->getCommentAnswerOffset($id, $id_comment, $n, $offset, $timestamp);
+}
+

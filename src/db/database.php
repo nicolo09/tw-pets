@@ -858,7 +858,7 @@ class DatabaseHelper
     public function getCommentOffset($id, $n, $offset, $timestamp)
     {
         if ($stmt = $this->db->prepare("SELECT * FROM `commento` WHERE id_post=? AND id_padre IS NULL AND timestamp <? ORDER BY timestamp DESC LIMIT ? OFFSET ?")) {
-            $stmt->bind_param('isii', $id,$timestamp, $n, $offset);
+            $stmt->bind_param('isii', $id, $timestamp, $n, $offset);
             $stmt->execute();
             $result = $stmt->get_result();
             return $result->fetch_all(MYSQLI_ASSOC);
@@ -876,6 +876,28 @@ class DatabaseHelper
     {
         if ($stmt = $this->db->prepare("SELECT * FROM `commento` WHERE id_padre IS NULL AND id_post=? AND timestamp <? ORDER BY timestamp DESC")) {
             $stmt->bind_param('is', $id, $timestamp);
+            $stmt->execute();
+            $result = $stmt->get_result();
+            return $result->fetch_all(MYSQLI_ASSOC);
+        } else {
+            return array();
+        }
+    }
+
+    /**
+     * Ritorna n commenti in risposta al post con offset più vecchi del timestamp fornito
+     * @param int $id del post
+     * @param int $id_comment del commento
+     * @param int $n numero commenti da caricare
+     * @param int $offset l'offset dei commenti
+     * @param string $timestamp del commento più recente
+     * @param DatabaseHelper $dbh il database in cui sono salvati i commenti
+     * @return i commenti
+     */
+    public function getCommentAnswerOffset($id, $id_comment, $n, $offset, $timestamp)
+    {
+        if ($stmt = $this->db->prepare("SELECT * FROM `commento` WHERE id_post=? AND id_padre=? AND timestamp <? ORDER BY timestamp DESC LIMIT ? OFFSET ?")) {
+            $stmt->bind_param('iisii', $id, $id_comment, $timestamp, $n, $offset);
             $stmt->execute();
             $result = $stmt->get_result();
             return $result->fetch_all(MYSQLI_ASSOC);
