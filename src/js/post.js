@@ -21,7 +21,6 @@ loadComment(id);
 attachLike(id);
 attachSave(id);
 attachNewComment(id);
-attachShowAllButton(id);
 
 const intersectionObserver = new IntersectionObserver(entries => {
     if (entries[0].intersectionRatio != 0) {
@@ -147,18 +146,6 @@ function attachNewComment(id) {
             }
         });
     });
-}
-
-//Se c'è il pulsante Mostra altri commenti gli aggiunge la funzionalità
-function attachShowAllButton(id) {
-    const button = document.getElementById(id + "-load-comment");
-    if (button != null) {
-        //Il pulsante esiste, ci sono più commenti da caricare
-        button.addEventListener('click', () => {
-            console.log("TODO");
-            //loadMorePosts(id, N);
-        });
-    }
 }
 
 //Attacca gli event listener a tutti i bottoni "rispondi" in answerButtonToAttach del post_id dato
