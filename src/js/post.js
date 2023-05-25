@@ -170,7 +170,7 @@ function attachLoadAnswersButton(id_post) {
         document.getElementById(id_post + "-son-comment-" + element).addEventListener('click', () => {
             //Carico n commenti, con offset
             const localOffset = offsetAnswers[element];
-            const comments = fetch("tell-js-answer-comments.php?id_post=" + id_post + "&n=" + n + "&offset=" + localOffset + "&timestamp=" + timestamp + "&id_comment" + element).then((response) => {
+            const comments = fetch("tell-js-answer-comments.php?id_post=" + id_post + "&n=" + n + "&offset=" + localOffset + "&timestamp=" + timestamp + "&id_comment=" + element).then((response) => {
                 if (!response.ok) {
                     throw new Error("Something went wrong!");
                 }
