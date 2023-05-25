@@ -184,11 +184,9 @@ function attachLoadAnswersButton(id_post) {
                 //La prossima volta inizio a leggere i commenti da offset incrementato
                 offsetAnswers[element] = offsetAnswers[element] + data.length;
                 //Ho caricato n elementi? Se si->potrebbero esserci altri commenti
-                if (data.length == n) {
-                    //Ho caricato n elementi, potrebbero essercene altri
-                } else {
+                if (data.length != n) {
                     //Ho caricato meno elementi, cavo il bottone
-                    //Fai bottone spento
+                    $("#" + id_post + "-son-comment-" + element).addClass("d-none");
                 }
             });
         });
