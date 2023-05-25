@@ -16,8 +16,7 @@ let postFather = -1;
 const timestamp = generateDate();
 let offset = 0;
 const n = 5;
-let maxComments = 0;
-getNComments(id);
+loadComment(id);
 
 attachLike(id);
 attachSave(id);
@@ -28,7 +27,7 @@ const intersectionObserver = new IntersectionObserver(entries => {
     if (entries[0].intersectionRatio != 0) {
         //Per evitare multipli trigger
         $("#spinner-post-" + id).addClass("d-none");
-        getNComments(id);
+        loadComment(id);
     }
 })
 
@@ -220,21 +219,21 @@ function loadComment(id_post) {
         //data è composta da vettore commenti e vettore haRisposte
         comm = data[0];
         hasAnswers = data[1];
-
-        //La prossima volta inizio a leggere i commenti da offset incrementato
-        offset = offset + comm.length;
         comm.forEach((element, index) => {
             //aggiungo il commento alla pagina
             addComment(element, hasAnswers[index][element["id_commento"]]);
             answerButtonToAttach.push(element["id_commento"]);
         });
         attachAnswerButton(id);
-        if (offset == maxComments) {
+        //La prossima volta inizio a leggere i commenti da offset incrementato
+        offset = offset + comm.length;
+        //Ho caricato n elementi? Se si->potrebbero esserci altri commenti
+        if (n == comm.length) {
+            //Ci potrebbero essere altri commenti da mostrare
+            $("#spinner-post-" + id).removeClass("d-none");
+        } else {
             //Ho caricato gli ultimi commenti
             $("#spinner-post-" + id).addClass("d-none");
-        } else {
-            //Ci sono altri commenti da mostrare
-            $("#spinner-post-" + id).removeClass("d-none");
 
         }
     });
@@ -255,19 +254,6 @@ function addComment(comment, hasAnswers) {
     }
     $(".comment-container").append(text);
 }
-
-function getNComments(id_post) {
-    const comments = fetch("tell-js-n-comments.php?id_post=" + id_post + "&timestamp=" + timestamp).then((response) => {
-        if (!response.ok) {
-            throw new Error("Something went wrong!");
-        }
-        return response.json();
-    }).then((data) => {
-        maxComments = data[0];
-        loadComment(id_post);
-    });
-}
-
 
 function generateDate() {
     const d = new Date();
