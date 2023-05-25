@@ -102,7 +102,7 @@
                     ?>
                 </div>
                 <?php if (isset($templateParams["id"])) {
-                    echo html_entity_decode('<div class="d-flex justify-content-center align-items-center mt-4 spinner-post" id="spinner-post-' . $templateParams["id"] . '"> <div class="spinner-border text-primary spinner-border-sm"
+                    echo html_entity_decode('<div class="d-flex justify-content-center align-items-center mt-4 spinner-post d-none" id="spinner-post-' . $templateParams["id"] . '"> <div class="spinner-border text-primary spinner-border-sm"
                             role="status">
                             <span class="visually-hidden">Loading...</span>
                         </div>
