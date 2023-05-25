@@ -59,8 +59,8 @@ textarea {
 
 /* Profile Picture style settings */
 
-.proPic,
-.proPicBtn {
+.pro-pic,
+.pro-pic-btn {
     object-fit: cover;
     max-height: 180px !important;
     max-width: 180px !important;
@@ -91,8 +91,8 @@ textarea {
 
 @media (max-width: 1000px) {
 
-    .proPic,
-    .proPicBtn {
+    .pro-pic,
+    .pro-pic-btn {
         object-fit: cover;
         max-height: 120px !important;
         max-width: 120px !important;
@@ -269,8 +269,7 @@ li.select2-results__option {
     width: 100%;
 }
 
-/* TODO: Merge propic rules */
-.post-header .pro-pic{
+.post-header .post-pic{
     max-width: 50px;
     min-width: 50px;
     max-height: 50px;
