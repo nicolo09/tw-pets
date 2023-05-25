@@ -177,8 +177,8 @@ function attachLoadAnswersButton(id_post) {
                 return response.json();
             }).then((data) => {
                 //data è composta da vettore dei commenti
-                data.forEach((element, index) => {
-                    addAnswerComment(element, id_commento);
+                data.forEach((comment, index) => {
+                    addAnswerComment(comment);
                 });
 
                 //La prossima volta inizio a leggere i commenti da offset incrementato
