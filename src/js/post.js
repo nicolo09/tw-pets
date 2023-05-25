@@ -228,32 +228,27 @@ function loadComment(id_post) {
         offset=offset+comm.length;
 
         comm.forEach((element, index)=>{
-            if(timestamp==-1&&index==1){
+            if(timestamp==-1&&index==0){
                 //Se timestamp è -1, salvo il primo valore 
                 timestamp=element["timestamp"];
                 //Visto che solo la prima volta che faccio la query non ho settato la timestamp, carico anche quanti commenti carico max
-                const comments = fetch("tell-js-n-comments.php?id_post=" + id_post + "&timestamp=" + timestamp).then((response) => {
-                    if (!response.ok) {
-                        throw new Error("Something went wrong!");
-                    }
-                    return response.json();
-                }).then((data) => {
-                    maxComments=data[0];
-                    if(maxComments>=offset){
-                        //Non mostrare lo spinner
-                        $("#spinner-post-"+id).addClass("d-none");
-                    }else{
-                        //Spinner time
+                getNComments(id_post).then(response=>{
+                    //Ho ricevuto maxComments
+                    if(maxComments>offset){
+                        //Ci sono altri commenti da mostrare
                         $("#spinner-post-"+id).addClass("d-block");
+                    }else{
+                        //Non ci sono altri commenti da mostrare
+                        $("#spinner-post-"+id).addClass("d-none");
                     }
                 });
             }else{
-                if(maxComments>=offset){
-                    //Non mostrare lo spinner
-                    $("#spinner-post-"+id).addClass("d-none");
-                }else{
-                    //Spinner time
+                if(maxComments>offset){
+                    //Ci sono altri commenti da mostrare
                     $("#spinner-post-"+id).addClass("d-block");
+                }else{
+                    //Non ci sono altri commenti da mostrare
+                    $("#spinner-post-"+id).addClass("d-none");
                 }
             }
             //aggiungo il commento alla pagina
@@ -284,4 +279,15 @@ function addComment(comment, hasAnswers){
         text+='<button id="' + id + '-son-comment-' + comment["id_commento"] + '" class="rounded btn btn-outline-primary">Leggi le risposte</button>';
     }
     $(".comment-container").append(text);
+}
+
+function getNComments(id_post){
+    const comments = fetch("tell-js-n-comments.php?id_post=" + id_post + "&timestamp=" + timestamp).then((response) => {
+        if (!response.ok) {
+            throw new Error("Something went wrong!");
+        }
+        return response.json();
+    }).then((data) => {
+        maxComments=data[0];
+    });
 }
