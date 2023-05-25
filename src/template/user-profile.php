@@ -1,7 +1,7 @@
 <div class="card mx-auto col-12 col-lg-10 col-xl-8 border-0">
 <div class="container-fluid pb-2">
     <div class="row">
-        <img src="<?php echo $templateParams["img"];?>" alt="Foto profilo di <?php echo $templateParams["username"];?>" class="proPic col p-0 m-4 d-flex justify-content-end" />
+        <img src="<?php echo $templateParams["img"];?>" alt="Foto profilo di <?php echo $templateParams["username"];?>" class="pro-pic col p-0 m-4 d-flex justify-content-end" />
         <div class="col p-0 w-25">
             <h1><?php echo $templateParams["username"];?></h1>
             <h2><?php echo $templateParams["role"];?></h2>
@@ -59,12 +59,12 @@
             $counter=0;
             for($i=0; $i<$rows; $i++){
                 echo html_entity_decode($start);
-                $tmp='<a href="post.php?id='.$templateParams["id"][$counter].'" class="col w-50 p-0 border border-black"> <img src="'.$templateParams["postimg"][$counter].'" alt="'.$templateParams["alt"][$counter].'" class="w-100"/> </a>';
+                $tmp='<a href="view-post-profile.php?id='.$templateParams["id"][$counter].'" class="col w-50 p-0 border border-black"> <img src="'.$templateParams["postimg"][$counter].'" alt="'.$templateParams["alt"][$counter].'" class="w-100"/> </a>';
                 echo html_entity_decode($tmp);
                 $counter++;
                 if($counter<$n){
                     //Ci sono altre immagini da mostrare
-                    $tmp='<a href="post.php?id='.$templateParams["id"][$counter].'" class="col w-50 p-0 border border-black"> <img src="'.$templateParams["postimg"][$counter].'" alt="'.$templateParams["alt"][$counter].'" class="w-100" /> </a>';
+                    $tmp='<a href="view-post-profile.php?id='.$templateParams["id"][$counter].'" class="col w-50 p-0 border border-black"> <img src="'.$templateParams["postimg"][$counter].'" alt="'.$templateParams["alt"][$counter].'" class="w-100" /> </a>';
                     echo html_entity_decode($tmp);
                     $counter++;
                 }else{

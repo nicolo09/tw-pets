@@ -22,14 +22,15 @@ class DatabaseHelper
         }
     }
 
-    public function getMutualFollowers($username) {
+    public function getMutualFollowers($username)
+    {
         $query = "SELECT p.username, p.immagine
         FROM PERSONA p
         INNER JOIN SEGUE_PERSONA sp1 ON p.username = sp1.followed
         INNER JOIN SEGUE_PERSONA sp2 ON p.username = sp2.follower
         WHERE sp1.follower = ? AND sp2.followed = ? ORDER BY p.username ASC";
 
-        if($stmt = $this->db->prepare($query)){
+        if ($stmt = $this->db->prepare($query)) {
             $stmt->bind_param('ss', $username, $username);
             $stmt->execute();
             $result = $stmt->get_result();
@@ -37,11 +38,11 @@ class DatabaseHelper
         } else {
             return array();
         }
-
     }
 
-    public function getPersonsLike($username, $offset){
-        $value = "%".$username."%";
+    public function getPersonsLike($username, $offset)
+    {
+        $value = "%" . $username . "%";
 
         $query = "SELECT p.username, p.immagine
         FROM PERSONA p
@@ -51,7 +52,7 @@ class DatabaseHelper
         ORDER BY COUNT(sp.follower) DESC, p.username 
         LIMIT $offset, 10";
 
-        if($stmt = $this->db->prepare($query)) {
+        if ($stmt = $this->db->prepare($query)) {
             $stmt->bind_param('s', $value);
             $stmt->execute();
             $result = $stmt->get_result();
@@ -61,8 +62,9 @@ class DatabaseHelper
         }
     }
 
-    public function getAnimalsLike($username, $offset){
-        $value = "%".$username."%";
+    public function getAnimalsLike($username, $offset)
+    {
+        $value = "%" . $username . "%";
 
         $query = "SELECT a.username, a.immagine
         FROM ANIMALE a
@@ -72,7 +74,7 @@ class DatabaseHelper
         ORDER BY COUNT(sa.follower) DESC, a.username
         LIMIT $offset, 10";
 
-        if($stmt = $this->db->prepare($query)) {
+        if ($stmt = $this->db->prepare($query)) {
             $stmt->bind_param('s', $value);
             $stmt->execute();
             $result = $stmt->get_result();
@@ -82,7 +84,8 @@ class DatabaseHelper
         }
     }
 
-    public function getPersonFollowers($username, $offset){
+    public function getPersonFollowers($username, $offset)
+    {
 
         $query = "SELECT P.username, P.immagine
         FROM PERSONA P
@@ -97,7 +100,7 @@ class DatabaseHelper
         ORDER BY COUNT(SP.follower) DESC, P.username
         LIMIT $offset, 30";
 
-        if($stmt = $this->db->prepare($query)) {
+        if ($stmt = $this->db->prepare($query)) {
             $stmt->bind_param('s', $username);
             $stmt->execute();
             $result = $stmt->get_result();
@@ -107,7 +110,8 @@ class DatabaseHelper
         }
     }
 
-    public function getAnimalFollowers($username, $offset){
+    public function getAnimalFollowers($username, $offset)
+    {
 
         $query = "SELECT P.username, P.immagine
         FROM PERSONA P
@@ -123,7 +127,7 @@ class DatabaseHelper
         ORDER BY COUNT(SP.follower) DESC, P.username
         LIMIT $offset, 30";
 
-        if($stmt = $this->db->prepare($query)) {
+        if ($stmt = $this->db->prepare($query)) {
             $stmt->bind_param('ss', $username, $username);
             $stmt->execute();
             $result = $stmt->get_result();
@@ -133,7 +137,8 @@ class DatabaseHelper
         }
     }
 
-    public function addAnimal($username, $type, $img, $description) {
+    public function addAnimal($username, $type, $img, $description)
+    {
         if ($stmt = $this->db->prepare("INSERT INTO animale (username, tipo, immagine, descrizione) VALUES (?, ?, ?, ?)")) {
             $stmt->bind_param('ssss', $username, $type, $img, $description);
             return $stmt->execute();
@@ -142,8 +147,9 @@ class DatabaseHelper
         }
     }
 
-    public function updateAnimal($username, $type, $img, $description){
-        if($stmt = $this->db->prepare("UPDATE animale SET tipo = ?, immagine = ?, descrizione = ? WHERE username = ?")){
+    public function updateAnimal($username, $type, $img, $description)
+    {
+        if ($stmt = $this->db->prepare("UPDATE animale SET tipo = ?, immagine = ?, descrizione = ? WHERE username = ?")) {
             $stmt->bind_param("ssss", $type, $img, $description, $username);
             return $stmt->execute();
         } else {
@@ -169,9 +175,10 @@ class DatabaseHelper
         }
     }
 
-    public function registerOwnership($owner, $animal) {
-        if(count($this->getUserFromName($owner)) == 1) {
-            if($stmt = $this->db->prepare("INSERT INTO possiede (persona, animale) VALUES (?, ?)")) {
+    public function registerOwnership($owner, $animal)
+    {
+        if (count($this->getUserFromName($owner)) == 1) {
+            if ($stmt = $this->db->prepare("INSERT INTO possiede (persona, animale) VALUES (?, ?)")) {
                 $stmt->bind_param('ss', $owner, $animal);
                 return $stmt->execute();
             } else {
@@ -182,8 +189,9 @@ class DatabaseHelper
         }
     }
 
-    public function deleteOwnership($owner, $animal) {
-        if($stmt = $this->db->prepare("DELETE FROM possiede WHERE persona = ? AND animale = ?")) {
+    public function deleteOwnership($owner, $animal)
+    {
+        if ($stmt = $this->db->prepare("DELETE FROM possiede WHERE persona = ? AND animale = ?")) {
             $stmt->bind_param('ss', $owner, $animal);
             return $stmt->execute();
         } else {
@@ -191,7 +199,8 @@ class DatabaseHelper
         }
     }
 
-    public function getOwners($animal) {
+    public function getOwners($animal)
+    {
 
         $query = "SELECT P.username, P.immagine
         FROM PERSONA P
@@ -205,8 +214,8 @@ class DatabaseHelper
         GROUP BY P.username
         ORDER BY COUNT(SP.follower) DESC, P.username";
 
-        if($stmt = $this->db->prepare($query)) {
-            $stmt->bind_param('s',$animal);
+        if ($stmt = $this->db->prepare($query)) {
+            $stmt->bind_param('s', $animal);
             $stmt->execute();
             $result = $stmt->get_result();
             return $result->fetch_all(MYSQLI_ASSOC);
@@ -216,8 +225,9 @@ class DatabaseHelper
     }
 
     /* Returns true if the user owns the given animal */
-    public function checkOwnership($owner, $animal) {
-        if($stmt = $this->db->prepare("SELECT * FROM possiede WHERE persona = ? AND animale = ?")) {
+    public function checkOwnership($owner, $animal)
+    {
+        if ($stmt = $this->db->prepare("SELECT * FROM possiede WHERE persona = ? AND animale = ?")) {
             $stmt->bind_param('ss', $owner, $animal);
             $stmt->execute();
             $result = $stmt->get_result();
@@ -226,7 +236,7 @@ class DatabaseHelper
             return false;
         }
     }
-    
+
     public function getPassword($username)
     {
         // Usando statement sql 'prepared' non sarà possibile attuare un attacco di tipo SQL injection.
@@ -388,7 +398,8 @@ class DatabaseHelper
         }
     }
 
-    public function getAllFollowers($username){
+    public function getAllFollowers($username)
+    {
         if ($stmt = $this->db->prepare("SELECT followers FROM segue_persona WHERE followed=?")) {
             $stmt->bind_param('s', $username);
             $stmt->execute();
@@ -400,13 +411,14 @@ class DatabaseHelper
     }
 
     //Ritorna 0 se gli follower non segue followed
-    public function doesUserFollowMyAccount($followedUsername, $followerUsername){
+    public function doesUserFollowMyAccount($followedUsername, $followerUsername)
+    {
         if ($stmt = $this->db->prepare("SELECT * FROM segue_persona WHERE followed=? AND follower=?")) {
             $stmt->bind_param('ss', $followedUsername, $followerUsername);
             $stmt->execute();
             $result = $stmt->get_result();
-            $tmp=$result->fetch_all(MYSQLI_ASSOC);
-            if(count($tmp)==1){
+            $tmp = $result->fetch_all(MYSQLI_ASSOC);
+            if (count($tmp) == 1) {
                 return 1;
             }
             return 0;
@@ -451,7 +463,8 @@ class DatabaseHelper
         }
     }
 
-    public function doesUserFollowAnimal($username, $animal){
+    public function doesUserFollowAnimal($username, $animal)
+    {
         if ($stmt = $this->db->prepare("SELECT * FROM segue_animale WHERE follower=? AND followed=?")) {
             $stmt->bind_param('ss', $username, $animal);
             $stmt->execute();
@@ -462,7 +475,8 @@ class DatabaseHelper
         }
     }
 
-    public function addFollowPerson($followed, $follower){
+    public function addFollowPerson($followed, $follower)
+    {
         if ($stmt = $this->db->prepare("INSERT INTO segue_persona (followed, follower) VALUES (?,?)")) {
             $stmt->bind_param('ss', $followed, $follower);
             return $stmt->execute();
@@ -471,7 +485,8 @@ class DatabaseHelper
         }
     }
 
-    public function removeFollowPerson($followed, $follower){
+    public function removeFollowPerson($followed, $follower)
+    {
         if ($stmt = $this->db->prepare("DELETE FROM segue_persona WHERE followed=? AND follower=?")) {
             $stmt->bind_param('ss', $followed, $follower);
             return $stmt->execute();
@@ -480,7 +495,8 @@ class DatabaseHelper
         }
     }
 
-    public function isAnimalManagedByUser($username, $animale){
+    public function isAnimalManagedByUser($username, $animale)
+    {
         if ($stmt = $this->db->prepare("SELECT COUNT(*) FROM possiede WHERE persona=? AND animale=?")) {
             $stmt->bind_param('ss', $username, $animale);
             $stmt->execute();
@@ -491,7 +507,8 @@ class DatabaseHelper
         }
     }
 
-    public function addFollowAnimal($animal, $follower){
+    public function addFollowAnimal($animal, $follower)
+    {
         if ($stmt = $this->db->prepare("INSERT INTO segue_animale (followed, follower) VALUES (?,?)")) {
             $stmt->bind_param('ss', $animal, $follower);
             return $stmt->execute();
@@ -500,7 +517,8 @@ class DatabaseHelper
         }
     }
 
-    public function removeFollowAnimal($animal, $follower){
+    public function removeFollowAnimal($animal, $follower)
+    {
         if ($stmt = $this->db->prepare("DELETE FROM segue_animale WHERE followed=? AND follower=?")) {
             $stmt->bind_param('ss', $animal, $follower);
             return $stmt->execute();
@@ -508,7 +526,8 @@ class DatabaseHelper
             return false;
         }
     }
-    public function changePassword($username, $newPassword){
+    public function changePassword($username, $newPassword)
+    {
         if ($stmt = $this->db->prepare("UPDATE persona SET password = ? WHERE username = ?")) {
             $newPassword = password_hash($newPassword, PASSWORD_DEFAULT);
             $stmt->bind_param('ss', $newPassword, $username);
@@ -518,6 +537,153 @@ class DatabaseHelper
         }
     }
 
+    public function getPostInfo($id)
+    {
+        if ($stmt = $this->db->prepare("SELECT post.id_post, post.immagine, post.alt, post.testo, post.timestamp, persona.username, persona.immagine as immagineprofilo FROM post JOIN persona ON post.username=persona.username WHERE post.id_post=?")) {
+            $stmt->bind_param('i', $id);
+            $stmt->execute();
+            $result = $stmt->get_result();
+            return $result->fetch_all(MYSQLI_ASSOC);
+        } else {
+            return array();
+        }
+    }
+
+    public function getPostLikes($id)
+    {
+        if ($stmt = $this->db->prepare("SELECT COUNT(*) FROM likes WHERE id_post=?")) {
+            $stmt->bind_param('i', $id);
+            $stmt->execute();
+            $result = $stmt->get_result();
+            return $result->fetch_all(MYSQLI_ASSOC);
+        } else {
+            return array();
+        }
+    }
+
+    public function doesUserLikePost($id, $username)
+    {
+        if ($stmt = $this->db->prepare("SELECT COUNT(*) FROM `likes` WHERE username=? AND id_post=?")) {
+            $stmt->bind_param('si', $username, $id);
+            $stmt->execute();
+            $result = $stmt->get_result();
+            return $result->fetch_all(MYSQLI_ASSOC);
+        } else {
+            return array();
+        }
+    }
+
+    public function hasUserSavedPost($id, $username)
+    {
+        if ($stmt = $this->db->prepare("SELECT COUNT(*) FROM salvati WHERE username=? AND id_post=?")) {
+            $stmt->bind_param('si', $username, $id);
+            $stmt->execute();
+            $result = $stmt->get_result();
+            return $result->fetch_all(MYSQLI_ASSOC);
+        } else {
+            return array();
+        }
+    }
+
+    public function isIdPostCorrect($id)
+    {
+        if ($stmt = $this->db->prepare("SELECT COUNT(id_post) FROM post WHERE id_post=?")) {
+            $stmt->bind_param('i', $id);
+            $stmt->execute();
+            $result = $stmt->get_result();
+            return $result->fetch_all(MYSQLI_ASSOC);
+        } else {
+            return array();
+        }
+    }
+
+    public function addLikePost($id, $username)
+    {
+        if ($stmt = $this->db->prepare("INSERT INTO likes (id_post, username) VALUES (?,?)")) {
+            $stmt->bind_param('is', $id, $username);
+            return $stmt->execute();
+        } else {
+            return false;
+        }
+    }
+
+    public function removeLikePost($id, $username)
+    {
+        if ($stmt = $this->db->prepare("DELETE FROM likes WHERE id_post=? AND username=?")) {
+            $stmt->bind_param('is', $id, $username);
+            return $stmt->execute();
+        } else {
+            return false;
+        }
+    }
+
+    public function addSavePost($id, $username)
+    {
+        if ($stmt = $this->db->prepare("INSERT INTO salvati (id_post, username) VALUES (?,?)")) {
+            $stmt->bind_param('is', $id, $username);
+            return $stmt->execute();
+        } else {
+            return false;
+        }
+    }
+
+    public function removeSavePost($id, $username)
+    {
+        if ($stmt = $this->db->prepare("DELETE FROM salvati WHERE id_post=? AND username=?")) {
+            $stmt->bind_param('is', $id, $username);
+            return $stmt->execute();
+        } else {
+            return false;
+        }
+    }
+
+    public function getTaggedAnimals($post)
+    {
+        if ($stmt = $this->db->prepare("SELECT animale FROM riguarda WHERE id_post=?")) {
+            $stmt->bind_param('i', $post);
+            $stmt->execute();
+            $result = $stmt->get_result();
+            return $result->fetch_all(MYSQLI_ASSOC);
+        } else {
+            return array();
+        }
+    }
+
+    public function getMostRecentComments($id_post, $n)
+    {
+        if ($stmt = $this->db->prepare("SELECT * FROM `commento` WHERE id_padre IS NULL AND id_post=? ORDER BY timestamp DESC LIMIT ?")) {
+            $stmt->bind_param('ii', $id_post, $n);
+            $stmt->execute();
+            $result = $stmt->get_result();
+            return $result->fetch_all(MYSQLI_ASSOC);
+        } else {
+            return array();
+        }
+    }
+
+    public function getAllMostRecentComments($id_post)
+    {
+        if ($stmt = $this->db->prepare("SELECT * FROM `commento` WHERE id_padre IS NULL AND id_post=? ORDER BY timestamp DESC")) {
+            $stmt->bind_param('i', $id_post);
+            $stmt->execute();
+            $result = $stmt->get_result();
+            return $result->fetch_all(MYSQLI_ASSOC);
+        } else {
+            return array();
+        }
+    }
+
+    public function doesCommentHaveAnswers($id_comment)
+    {
+        if ($stmt = $this->db->prepare("SELECT COUNT(*) FROM `commento` WHERE id_padre=? ORDER BY timestamp DESC")) {
+            $stmt->bind_param('i', $id_comment);
+            $stmt->execute();
+            $result = $stmt->get_result();
+            return $result->fetch_all(MYSQLI_ASSOC);
+        } else {
+            return array();
+        }
+    }
     /**
      * Returns true if the user has more than X notifications
      * @param string $username
@@ -597,7 +763,8 @@ class DatabaseHelper
      * @param int $id
      * @return bool
      */
-    public function deleteNotification(int $id){
+    public function deleteNotification(int $id)
+    {
         if ($stmt = $this->db->prepare("DELETE FROM notifica WHERE id = ?")) {
             $stmt->bind_param('i', $id);
             return $stmt->execute();
@@ -610,7 +777,8 @@ class DatabaseHelper
      * @param string $username
      * @return bool
      */
-    public function deleteAllNotifications(string $username){
+    public function deleteAllNotifications(string $username)
+    {
         if ($stmt = $this->db->prepare("DELETE FROM notifica WHERE destinatario = ?")) {
             $stmt->bind_param('s', $username);
             return $stmt->execute();
@@ -634,4 +802,115 @@ class DatabaseHelper
         throw new Exception("Error Processing Request", 1);
     }
 
+    /**
+     * Returns the comment of the given id
+     * @param int $id of the comment
+     * @return array of results
+     */
+    public function getComment($id)
+    {
+        if ($stmt = $this->db->prepare("SELECT * FROM `commento` WHERE id_commento=?")) {
+            $stmt->bind_param('i', $id);
+            $stmt->execute();
+            $result = $stmt->get_result();
+            return $result->fetch_all(MYSQLI_ASSOC);
+        } else {
+            return array();
+        }
+    }
+
+    /**
+     * Inserisce un commento
+     * @param string $username l'utente che crea il commento
+     * @param string $text il testo del commento
+     * @param int $id_post il post a cui fa il commento
+     * @return se l'inserimento è andato a buon fine
+     */
+    public function addNewComment($username, $text, $id_post)
+    {
+        if ($stmt = $this->db->prepare("INSERT INTO commento (testo, id_post, username) VALUES (?, ?, ?)")) {
+            $stmt->bind_param('sis', $text, $id_post, $username);
+            return $stmt->execute();
+        } else {
+            return false;
+        }
+    }
+
+
+    /**
+     * Inserisce un commento
+     * @param string $username l'utente che crea il commento
+     * @param string $text il testo del commento
+     * @param int $id_post il post a cui fa il commento
+     * @param int $id_padre il commento a cui risponde
+     * @return se l'inserimento è andato a buon fine
+     */
+    public function addNewCommentToComment($username, $id_padre, $text, $id_post)
+    {
+        if ($stmt = $this->db->prepare("INSERT INTO commento (testo, id_padre, id_post, username) VALUES (?, ?, ?, ?)")) {
+            $stmt->bind_param('siis', $text, $id_padre, $id_post, $username);
+            return $stmt->execute();
+        } else {
+            return false;
+        }
+    }
+
+    /**
+     * Ritorna n commenti del post con offset più vecchi del timestamp fornito
+     * @param int $id del post
+     * @param int $n numero commenti da caricare
+     * @param int $offset l'offset dei commenti
+     * @param string $timestamp del commento più recente
+     * @return i commenti
+     */
+    public function getCommentOffset($id, $n, $offset, $timestamp)
+    {
+        if ($stmt = $this->db->prepare("SELECT * FROM `commento` WHERE id_post=? AND id_padre IS NULL AND timestamp <? ORDER BY timestamp DESC LIMIT ? OFFSET ?")) {
+            $stmt->bind_param('isii', $id, $timestamp, $n, $offset);
+            $stmt->execute();
+            $result = $stmt->get_result();
+            return $result->fetch_all(MYSQLI_ASSOC);
+        } else {
+            return array();
+        }
+    }
+
+    /**
+     * Returns the comment of the given id
+     * @param int $id of the comment
+     * @return array of results
+     */
+    public function getAllMostRecentCommentsAfter($id, $timestamp)
+    {
+        if ($stmt = $this->db->prepare("SELECT * FROM `commento` WHERE id_padre IS NULL AND id_post=? AND timestamp <? ORDER BY timestamp DESC")) {
+            $stmt->bind_param('is', $id, $timestamp);
+            $stmt->execute();
+            $result = $stmt->get_result();
+            return $result->fetch_all(MYSQLI_ASSOC);
+        } else {
+            return array();
+        }
+    }
+
+    /**
+     * Ritorna n commenti in risposta al post con offset più vecchi del timestamp fornito
+     * @param int $id del post
+     * @param int $id_comment del commento
+     * @param int $n numero commenti da caricare
+     * @param int $offset l'offset dei commenti
+     * @param string $timestamp del commento più recente
+     * @param DatabaseHelper $dbh il database in cui sono salvati i commenti
+     * @return i commenti
+     */
+    public function getCommentAnswerOffset($id, $id_comment, $n, $offset, $timestamp)
+    {
+        if ($stmt = $this->db->prepare("SELECT * FROM `commento` WHERE id_post=? AND id_padre=? AND timestamp <? ORDER BY timestamp DESC LIMIT ? OFFSET ?")) {
+            $stmt->bind_param('iisii', $id, $id_comment, $timestamp, $n, $offset);
+            $stmt->execute();
+            $result = $stmt->get_result();
+            return $result->fetch_all(MYSQLI_ASSOC);
+        } else {
+            return array();
+        }
+    }
 }

@@ -21,7 +21,7 @@
                                     <div class="card result-bar"> 
                                         <div class="card-body p-2">
                                             <div class="result-element"> <!-- img and label on same line to avoid empty space -->
-                                                <img class="miniature" src="<?php echo IMG_DIR.$templateParams["persons"][$x]["immagine"] ?>" alt="Immagine profilo di <?php echo $templateParams["persons"][$x]["username"] ?>"/><span class="fs-4 fw-bold miniatureLabel"><?php echo $templateParams["persons"][$x]["username"] ?></span>
+                                                <img class="miniature" src="<?php echo IMG_DIR.$templateParams["persons"][$x]["immagine"] ?>" alt="Immagine profilo di <?php echo $templateParams["persons"][$x]["username"] ?>"/><span class="fs-4 fw-bold miniature-text"><?php echo $templateParams["persons"][$x]["username"] ?></span>
                                             </div>
                                         </div>
                                     </div>
@@ -44,7 +44,7 @@
                                     <div class="card result-bar"> 
                                         <div class="card-body p-2">
                                             <div class="result-element"> <!-- img and label on same line to avoid empty space -->
-                                                <img class="miniature" src="<?php echo IMG_DIR.$templateParams["animals"][$x]["immagine"] ?>" alt="Immagine profilo di <?php echo $templateParams["animals"][$x]["username"] ?>"/><span class="fs-4 fw-bold miniatureLabel"><?php echo $templateParams["animals"][$x]["username"] ?></span>
+                                                <img class="miniature" src="<?php echo IMG_DIR.$templateParams["animals"][$x]["immagine"] ?>" alt="Immagine profilo di <?php echo $templateParams["animals"][$x]["username"] ?>"/><span class="fs-4 fw-bold miniature-text"><?php echo $templateParams["animals"][$x]["username"] ?></span>
                                             </div>
                                         </div>
                                     </div>
