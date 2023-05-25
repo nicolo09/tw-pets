@@ -13,10 +13,10 @@ getPostSaved(id);
 //ID dei commenti mostrati
 const answerButtonToAttach = [];
 let postFather = -1;
-let timestamp = -1;
+const timestamp = generateDate();
 let offset = 0;
 const n = 5;
-let maxComments=0;
+let maxComments = 0;
 
 loadComment(id);
 
@@ -26,13 +26,13 @@ attachNewComment(id);
 attachShowAllButton(id);
 
 const intersectionObserver = new IntersectionObserver(entries => {
-    if(entries[0].intersectionRatio != 0) {
+    if (entries[0].intersectionRatio != 0) {
         loadComment(id);
     }
 })
 
 //This observes the spinner
-intersectionObserver.observe(document.getElementById("spinner-post-"+id));
+intersectionObserver.observe(document.getElementById("spinner-post-" + id));
 
 function styleButtonLike(id) {
     const buttonL = document.getElementById("like-post-card-" + id);
@@ -172,7 +172,7 @@ function attachAnswerButton(id) {
     });
     //Così facendo, quando carico nuovi commenti attacco l'event listener solo a loro
     //e non attacco allo stesso pulsante molti event listener per lo stesso evento
-    answerButtonToAttach.length=0;
+    answerButtonToAttach.length = 0;
 }
 
 //Cambia la label id-label 
@@ -221,34 +221,34 @@ function loadComment(id_post) {
         return response.json();
     }).then((data) => {
         //data è composta da vettore commenti e vettore haRisposte
-        comm=data[0];
-        hasAnswers=data[1];
-        
-        //La prossima volta inizio a leggere i commenti da offset incrementato
-        offset=offset+comm.length;
+        comm = data[0];
+        hasAnswers = data[1];
 
-        comm.forEach((element, index)=>{
-            if(timestamp==-1&&index==0){
+        //La prossima volta inizio a leggere i commenti da offset incrementato
+        offset = offset + comm.length;
+
+        comm.forEach((element, index) => {
+            if (timestamp == -1 && index == 0) {
                 //Se timestamp è -1, salvo il primo valore 
-                timestamp=element["timestamp"];
+                timestamp = element["timestamp"];
                 //Visto che solo la prima volta che faccio la query non ho settato la timestamp, carico anche quanti commenti carico max
-                getNComments(id_post).then(response=>{
+                getNComments(id_post).done(response => {
                     //Ho ricevuto maxComments
-                    if(maxComments>offset){
+                    if (maxComments > offset) {
                         //Ci sono altri commenti da mostrare
-                        $("#spinner-post-"+id).addClass("d-block");
-                    }else{
+                        $("#spinner-post-" + id).addClass("d-block");
+                    } else {
                         //Non ci sono altri commenti da mostrare
-                        $("#spinner-post-"+id).addClass("d-none");
+                        $("#spinner-post-" + id).addClass("d-none");
                     }
                 });
-            }else{
-                if(maxComments>offset){
+            } else {
+                if (maxComments > offset) {
                     //Ci sono altri commenti da mostrare
-                    $("#spinner-post-"+id).addClass("d-block");
-                }else{
+                    $("#spinner-post-" + id).addClass("d-block");
+                } else {
                     //Non ci sono altri commenti da mostrare
-                    $("#spinner-post-"+id).addClass("d-none");
+                    $("#spinner-post-" + id).addClass("d-none");
                 }
             }
             //aggiungo il commento alla pagina
@@ -256,38 +256,63 @@ function loadComment(id_post) {
             answerButtonToAttach.push(element["id_commento"]);
         });
         attachAnswerButton(id);
-        if(offset==0){
-            $("#spinner-post-"+id).addClass("d-none");
+        if (offset == 0) {
+            $("#spinner-post-" + id).addClass("d-none");
         }
     });
 
 }
 
-function getUserProfileHref(username){
+function getUserProfileHref(username) {
     return "view-user-profile.php?username=" + username + "&type=person";
 }
 
-function addComment(comment, hasAnswers){
-    const date=new Date(comment["timestamp"]);
-    const h=date.getHours() < 10?'0'+date.getHours(): date.getHours();
-    const m=date.getMinutes() < 10?'0'+date.getMinutes(): date.getMinutes();
-    const correctDate=date.getDate()+"/"+date.getMonth()+1+"/"+date.getFullYear()+" "+h+":"+m;
-    text='<p><a href="' + getUserProfileHref(comment["username"]) + '">' + comment["username"] + '</a>' + ': ' + comment["testo"] + '</p>';
-    text+='<p class="text-muted">'+ correctDate + '</p>';
-    text+='<button id="' + id + '-comment-' + comment["id_commento"] + '" class="comment-answer rounded btn btn-outline-primary">Rispondi</button>';
-    if(hasAnswers==true){
-        text+='<button id="' + id + '-son-comment-' + comment["id_commento"] + '" class="rounded btn btn-outline-primary">Leggi le risposte</button>';
+function addComment(comment, hasAnswers) {
+    const correctDate = convertDateToHTML(new Date(comment["timestamp"]));
+    text = '<p><a href="' + getUserProfileHref(comment["username"]) + '">' + comment["username"] + '</a>' + ': ' + comment["testo"] + '</p>';
+    text += '<p class="text-muted">' + correctDate + '</p>';
+    text += '<button id="' + id + '-comment-' + comment["id_commento"] + '" class="comment-answer rounded btn btn-outline-primary">Rispondi</button>';
+    if (hasAnswers == true) {
+        text += '<button id="' + id + '-son-comment-' + comment["id_commento"] + '" class="rounded btn btn-outline-primary">Leggi le risposte</button>';
     }
     $(".comment-container").append(text);
 }
 
-function getNComments(id_post){
+function getNComments(id_post) {
     const comments = fetch("tell-js-n-comments.php?id_post=" + id_post + "&timestamp=" + timestamp).then((response) => {
         if (!response.ok) {
             throw new Error("Something went wrong!");
         }
         return response.json();
     }).then((data) => {
-        maxComments=data[0];
+        maxComments = data[0];
     });
+}
+
+
+function generateDate() {
+    const d = new Date();
+    return convertDateToSQL(d);
+}
+
+/*Prende in input una Date e la formatta nel formato corretto per metterlo in html*/
+function convertDateToHTML(date) {
+    const h = date.getHours() < 10 ? '0' + date.getHours() : date.getHours();
+    const m = date.getMinutes() < 10 ? '0' + date.getMinutes() : date.getMinutes();
+    const day = date.getDate() < 10 ? '0' + date.getDate() : date.getDate();
+    const month = date.getMonth() + 1 < 10 ? '0' + (date.getMonth() + 1) : (date.getMonth() + 1);
+    const correctDate = day + "/" + month + "/" + date.getFullYear() + " " + h + ":" + m;
+    return correctDate;
+}
+
+/*Prende in input una Date e la formatta nel formato corretto per metterlo in sql*/
+function convertDateToSQL(d) {
+    const h = d.getHours() < 10 ? '0' + d.getHours() : d.getHours();
+    const m = d.getMinutes() < 10 ? '0' + d.getMinutes() : d.getMinutes();
+    const s = d.getSeconds() < 10 ? '0' + d.getSeconds() : d.getSeconds();
+    const day = d.getDate() < 10 ? '0' + d.getDate() : d.getDate();
+    const month = d.getMonth() + 1 < 10 ? '0' + (d.getMonth() + 1) : (d.getMonth() + 1);
+    const correctDate = d.getFullYear() + "-" + month + "-" + day + " " + h + ":" + m + ":" + s;
+    console.log(correctDate);
+    return correctDate;
 }
