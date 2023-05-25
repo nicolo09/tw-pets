@@ -326,3 +326,7 @@ li.select2-results__option {
     overflow-y: scroll;
     max-height: 200px;
 }
+
+.a-indent{
+    text-indent: 10%;
+}
