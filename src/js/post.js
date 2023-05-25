@@ -17,8 +17,7 @@ const timestamp = generateDate();
 let offset = 0;
 const n = 5;
 let maxComments = 0;
-
-loadComment(id);
+getNComments(id);
 
 attachLike(id);
 attachSave(id);
@@ -27,6 +26,8 @@ attachShowAllButton(id);
 
 const intersectionObserver = new IntersectionObserver(entries => {
     if (entries[0].intersectionRatio != 0) {
+        //Per evitare multipli trigger
+        $("#spinner-post-" + id).addClass("d-none");
         loadComment(id);
     }
 })
@@ -200,10 +201,6 @@ function changeLabel(post_id, comment_id) {
 
 }
 
-function loadMorePosts(id, n) {
-    console.log("TODO");
-}
-
 function popUp(text) {
     $(".comments").prepend($('<div class="alert alert-danger alert-dismissible fade show" role="alert"> <label class="top-page-popup">' + text + '</label> <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button></div>'));
 }
@@ -226,38 +223,19 @@ function loadComment(id_post) {
 
         //La prossima volta inizio a leggere i commenti da offset incrementato
         offset = offset + comm.length;
-
         comm.forEach((element, index) => {
-            if (timestamp == -1 && index == 0) {
-                //Se timestamp è -1, salvo il primo valore 
-                timestamp = element["timestamp"];
-                //Visto che solo la prima volta che faccio la query non ho settato la timestamp, carico anche quanti commenti carico max
-                getNComments(id_post).done(response => {
-                    //Ho ricevuto maxComments
-                    if (maxComments > offset) {
-                        //Ci sono altri commenti da mostrare
-                        $("#spinner-post-" + id).addClass("d-block");
-                    } else {
-                        //Non ci sono altri commenti da mostrare
-                        $("#spinner-post-" + id).addClass("d-none");
-                    }
-                });
-            } else {
-                if (maxComments > offset) {
-                    //Ci sono altri commenti da mostrare
-                    $("#spinner-post-" + id).addClass("d-block");
-                } else {
-                    //Non ci sono altri commenti da mostrare
-                    $("#spinner-post-" + id).addClass("d-none");
-                }
-            }
             //aggiungo il commento alla pagina
             addComment(element, hasAnswers[index][element["id_commento"]]);
             answerButtonToAttach.push(element["id_commento"]);
         });
         attachAnswerButton(id);
-        if (offset == 0) {
+        if (offset == maxComments) {
+            //Ho caricato gli ultimi commenti
             $("#spinner-post-" + id).addClass("d-none");
+        } else {
+            //Ci sono altri commenti da mostrare
+            $("#spinner-post-" + id).addClass("d-block");
+
         }
     });
 
@@ -286,6 +264,7 @@ function getNComments(id_post) {
         return response.json();
     }).then((data) => {
         maxComments = data[0];
+        loadComment(id_post);
     });
 }
 
@@ -313,6 +292,5 @@ function convertDateToSQL(d) {
     const day = d.getDate() < 10 ? '0' + d.getDate() : d.getDate();
     const month = d.getMonth() + 1 < 10 ? '0' + (d.getMonth() + 1) : (d.getMonth() + 1);
     const correctDate = d.getFullYear() + "-" + month + "-" + day + " " + h + ":" + m + ":" + s;
-    console.log(correctDate);
     return correctDate;
 }
