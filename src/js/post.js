@@ -11,11 +11,13 @@ getPostLiked(id);
 let savedID = false;
 getPostSaved(id);
 //ID dei commenti mostrati
-const answerButtonToAttach = [];
 let postFather = -1;
 const timestamp = generateDate();
 let offset = 0;
 const n = 5;
+const answerButtonToAttach = [];
+const loadAnswersToAttach = [];
+const offsetAnswers = {};
 loadComment(id);
 
 attachLike(id);
@@ -162,6 +164,41 @@ function attachAnswerButton(id) {
     answerButtonToAttach.length = 0;
 }
 
+//Attacca gli event listener a tutti i bottoni "rispondi" in answerButtonToAttach del post_id dato
+function attachLoadAnswersButton(id_post) {
+    loadAnswersToAttach.forEach(element => {
+        document.getElementById(id_post + "-son-comment-" + element).addEventListener('click', () => {
+            //Carico n commenti, con offset
+            const localOffset = offsetAnswers[element];
+            const comments = fetch("tell-js-answer-comments.php?id_post=" + id_post + "&n=" + n + "&offset=" + localOffset + "&timestamp=" + timestamp + "&id_comment" + element).then((response) => {
+                if (!response.ok) {
+                    throw new Error("Something went wrong!");
+                }
+                return response.json();
+            }).then((data) => {
+                //data è composta da vettore dei commenti
+                data.forEach((element, index) => {
+                    addAnswerComment(element, id_commento);
+                });
+
+                //La prossima volta inizio a leggere i commenti da offset incrementato
+                offsetAnswers[element] = offsetAnswers[element] + data.length;
+                //Ho caricato n elementi? Se si->potrebbero esserci altri commenti
+                if (data.length == n) {
+                    //Ho caricato n elementi, potrebbero essercene altri
+                } else {
+                    //Ho caricato meno elementi, cavo il bottone
+                    //Fai bottone spento
+                }
+            });
+        });
+
+    });
+    //Così facendo, quando carico nuovi commenti attacco l'event listener solo a loro
+    //e non attacco allo stesso pulsante molti event listener per lo stesso evento
+    loadAnswersToAttach.length = 0;
+}
+
 //Cambia la label id-label 
 function changeLabel(post_id, comment_id) {
     const label = document.getElementById(post_id + "-label");
@@ -210,8 +247,13 @@ function loadComment(id_post) {
             //aggiungo il commento alla pagina
             addComment(element, hasAnswers[index][element["id_commento"]]);
             answerButtonToAttach.push(element["id_commento"]);
+            if (hasAnswers[index][element["id_commento"]] == true) {
+                loadAnswersToAttach.push(element["id_commento"]);
+                offsetAnswers[element["id_commento"]] = 0;
+            }
         });
         attachAnswerButton(id);
+        attachLoadAnswersButton(id);
         //La prossima volta inizio a leggere i commenti da offset incrementato
         offset = offset + comm.length;
         //Ho caricato n elementi? Se si->potrebbero esserci altri commenti
@@ -266,4 +308,14 @@ function convertDateToSQL(d) {
     const month = d.getMonth() + 1 < 10 ? '0' + (d.getMonth() + 1) : (d.getMonth() + 1);
     const correctDate = d.getFullYear() + "-" + month + "-" + day + " " + h + ":" + m + ":" + s;
     return correctDate;
+}
+
+function addAnswerComment(comment) {
+    const id_padre = comment["id_padre"];
+    const id_post = comment["id_post"];
+    const correctDate = convertDateToHTML(new Date(comment["timestamp"]));
+    text = '<p class="a-indent"><a href="' + getUserProfileHref(comment["username"]) + '">' + comment["username"] + '</a>' + ': ' + comment["testo"] + '</p>';
+    text += '<p class="a-indent text-muted">' + correctDate + '</p>';
+
+    $(text).insertBefore("#" + id_post + "-son-comment-" + id_padre);
 }
