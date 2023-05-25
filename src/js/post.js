@@ -28,7 +28,7 @@ const intersectionObserver = new IntersectionObserver(entries => {
     if (entries[0].intersectionRatio != 0) {
         //Per evitare multipli trigger
         $("#spinner-post-" + id).addClass("d-none");
-        loadComment(id);
+        getNComments(id);
     }
 })
 
@@ -234,7 +234,7 @@ function loadComment(id_post) {
             $("#spinner-post-" + id).addClass("d-none");
         } else {
             //Ci sono altri commenti da mostrare
-            $("#spinner-post-" + id).addClass("d-block");
+            $("#spinner-post-" + id).removeClass("d-none");
 
         }
     });
