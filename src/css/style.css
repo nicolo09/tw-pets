@@ -11,7 +11,7 @@ textarea {
     display: none;
 }
 
-.desktop-view{
+.desktop-view {
     display: block;
 }
 
@@ -19,18 +19,18 @@ textarea {
     .mobile-view {
         display: block;
     }
-    
-    .desktop-view{
+
+    .desktop-view {
         display: none;
     }
 }
 
 
 /* otherwise sometimes chrome doesn't center elements*/
-.center-align{
-    text-align:center !important;
+.center-align {
+    text-align: center !important;
     width: 100% !important;
-    text-align-last:center !important;
+    text-align-last: center !important;
 }
 
 /* navbar */
@@ -38,37 +38,38 @@ textarea {
     display: block;
     padding: .5rem 1rem;
     text-decoration: none;
-    transition: color .15s ease-in-out,background-color .15s ease-in-out,border-color .15s ease-in-out;
+    transition: color .15s ease-in-out, background-color .15s ease-in-out, border-color .15s ease-in-out;
     color: #000000;
     text-transform: uppercase;
     font-weight: 200 !important;
     font-size: 14px;
 }
 
-.nav-link:hover{
+.nav-link:hover {
     background: #e1e1e1
 }
 
-.navbar-nav .active{
-	border-bottom: 4px solid #000000;
+.navbar-nav .active {
+    border-bottom: 4px solid #000000;
 }
 
-.navbar-nav{
+.navbar-nav {
     width: 100%;
 }
 
 /* Profile Picture style settings */
 
-.pro-pic, .pro-pic-btn {
+.proPic,
+.proPicBtn {
     object-fit: cover;
     max-height: 180px !important;
     max-width: 180px !important;
     min-height: 180px !important;
     min-width: 180px !important;
     border-radius: 50%;
-    
+
     background: linear-gradient(white, white) padding-box,
-              linear-gradient(to right, darkblue, darkorchid) border-box;
+        linear-gradient(to right, darkblue, darkorchid) border-box;
     border: 4px solid transparent;
     box-shadow: 0 2px 8px rgba(0, 0, 0, 0.75);
 }
@@ -89,7 +90,10 @@ textarea {
 }
 
 @media (max-width: 1000px) {
-    .pro-pic, .pro-pic-btn {
+
+    .proPic,
+    .proPicBtn {
+        object-fit: cover;
         max-height: 120px !important;
         max-width: 120px !important;
         min-height: 120px !important;
@@ -109,7 +113,7 @@ textarea {
     border-radius: 50%;
     vertical-align: middle;
     background: linear-gradient(white, white) padding-box,
-              linear-gradient(to right, darkblue, darkorchid) border-box;
+        linear-gradient(to right, darkblue, darkorchid) border-box;
     border: 2px solid transparent;
     padding: 1px;
     margin: 1%;
@@ -121,7 +125,8 @@ textarea {
     overflow: hidden;
     text-overflow: ellipsis;
     white-space: nowrap;
-    max-width: 80%; /* adjust this value as needed */
+    max-width: 80%;
+    /* adjust this value as needed */
     vertical-align: middle;
     margin-left: 3px;
 }
@@ -144,17 +149,17 @@ textarea {
     background-position: right center;
 }
 
-button > img{
+button>img {
     height: 70%;
 }
 
-.d-grid > button{
+.d-grid>button {
     margin: 0 6.2%;
 }
 
 /* Other */
 
-.form-outline{
+.form-outline {
     padding-bottom: 3%;
 }
 
@@ -165,8 +170,9 @@ button > img{
 
 /* Search */
 
-.search-bar, .result-bar {
-    border-radius: 10em !important; 
+.search-bar,
+.result-bar {
+    border-radius: 10em !important;
     /*background: linear-gradient(to right, darkblue, darkorchid);*/
     background: white;
     border-width: 3px !important;
@@ -191,7 +197,7 @@ button > img{
 }
 
 .search-button:hover {
-    animation: rotation 0.4s alternate; 
+    animation: rotation 0.4s alternate;
     animation-iteration-count: 2;
     animation-fill-mode: both;
 }
@@ -200,6 +206,7 @@ button > img{
     from {
         transform: rotate(0deg);
     }
+
     to {
         transform: rotate(-30deg);
     }
@@ -221,7 +228,8 @@ button > img{
     color: #000000 !important;
 }
 
-.input-group>.form-control, .input-group>.form-control:focus {
+.input-group>.form-control,
+.input-group>.form-control:focus {
     color: black;
     border-color: transparent;
     box-shadow: inset 0 0 0 5px transparent;
@@ -246,14 +254,80 @@ li.select2-results__option {
     padding: 4% 0 0 0;
 }
 
-.btn.settings-item{
+.btn.settings-item {
     width: 100%;
 }
 
-.top-page-popup{
+.top-page-popup {
     font-size: larger;
 }
 
-.post-image{
-    max-width: 600px;
+.post-header {
+    padding: 0.5%;
+    border: 0;
+    margin: 0;
+    width: 100%;
+}
+
+/* TODO: Merge propic rules */
+.post-header .pro-pic{
+    max-width: 50px;
+    min-width: 50px;
+    max-height: 50px;
+    min-height: 50px;
+    /*max-width: 11%;*/
+    border-radius: 50%;
+    padding: 0;
+    background: linear-gradient(white, white) padding-box,
+        linear-gradient(to right, darkblue, darkorchid) border-box;
+    border: 2px solid transparent;
+}
+
+.post .button-post{
+    padding: 0;
+
+}
+
+.post .div-button-post{
+    max-height: 3rem;
+    padding: 0;
+}
+
+.div-button-post .btn{
+    max-height: 100%;
+    height: 100%;
+    margin:1%;
+    width:98%;
+}
+
+.comments p{
+    margin:0;
+}
+
+.comments .new-comment{
+    background: linear-gradient(white, white) padding-box,
+        linear-gradient(to right, darkblue, darkorchid) border-box;
+    border: 4px solid transparent;
+    padding-left: 0;
+    padding-right: 0;
+    margin:0 0 0 1%;
+}
+
+.comments .new-comment:hover{
+    background: linear-gradient(to right, darkblue, darkorchid) border-box;
+    color:white;
+}
+
+.comments button{
+    padding: 0 2% 0 2%;
+    margin:1%;
+}
+
+.comment-slider{
+    overflow-y: scroll;
+    max-height: 200px;
+}
+
+.a-indent{
+    text-indent: 10%;
 }

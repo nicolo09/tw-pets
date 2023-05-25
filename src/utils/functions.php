@@ -558,6 +558,77 @@ function changePassword(string $oldPassword, string $newPassword, string $confir
     return array($result, $errors);
 }
 
+function getPost(int $id, DatabaseHelper $dbh){
+    $result=$dbh->getPostInfo($id);
+    if(empty($result)==false){
+        //Visto che l'id è univoco per post, è inutile avere un array di un array di un singolo risultato
+        return $result[0];
+    }else{
+        return $result;
+    }
+}
+
+function getLikes(int $id, DatabaseHelper $dbh){
+    $result=$dbh->getPostLikes($id);
+    if(empty($result)){
+        return 0;
+    }else{
+        return $result[0]["COUNT(*)"];
+    }
+}
+
+function isPostLikedBy(int $id, string $username, DatabaseHelper $dbh){
+    $result=$dbh->doesUserLikePost($id, $username);
+    if(empty($result)){
+        return false;
+    }else{
+        return $result[0]["COUNT(*)"]==1;
+    }
+}
+
+function isPostSavedBy(int $id, string $username, DatabaseHelper $dbh){
+    $result=$dbh->hasUserSavedPost($id, $username);
+    if(empty($result)){
+        return false;
+    }else{
+        return $result[0]["COUNT(*)"]==1;
+    }
+}
+
+function isIdPostValid(int $id, DatabaseHelper $dbh){
+    $result=$dbh->isIdPostCorrect($id);
+    if(empty($result)){
+        return false;
+    }else{
+        return $result[0]["COUNT(id_post)"]==1;
+    }
+}
+
+function likePost(int $id, string $username, DatabaseHelper $dbh){
+    return $dbh->addLikePost($id, $username);
+}
+
+function unLikePost(int $id, string $username, DatabaseHelper $dbh){
+    return $dbh->removeLikePost($id, $username);
+}
+
+function savePost(int $id, string $username, DatabaseHelper $dbh){
+    return $dbh->addSavePost($id, $username);
+}
+
+function unSavePost(int $id, string $username, DatabaseHelper $dbh){
+    return $dbh->removeSavePost($id, $username);
+}
+
+function getAnimalsInPost(int $id, DatabaseHelper $dbh){
+    $final=array();
+    $result=$dbh->getTaggedAnimals($id);
+    foreach($result as $animal){
+        $final[]=$animal["animale"];
+    }
+    return $final;
+}
+
 /**
  * Ritorna l'href per la pagina di un profilo utente di una persona
  * @param string $username username della persona
@@ -612,3 +683,122 @@ function getUserProfilePic(string $user, DatabaseHelper $dbh)
         return "img/" . $result[0]["immagine"];
     }
 }
+
+/**
+ * Ritorna i n commenti più recenti lasciati sul post
+ * @param int $id_post post di cui si vogliono caricare i commenti
+ * @param int $n numero commenti da caricare
+ * @param DatabaseHelper $dbh il database in cui sono salvati i commenti
+ * @return array vettore di commenti
+ */
+function loadMostRecentComments(int $id_post,int $n, DatabaseHelper $dbh){
+    return $dbh->getMostRecentComments($id_post, $n);
+
+}
+
+/**
+ * Ritorna tutti commenti in ordine dai più recenti lasciati sul post
+ * @param int $id_post post di cui si vogliono caricare i commenti
+ * @param DatabaseHelper $dbh il database in cui sono salvati i commenti
+ * @return array vettore di commenti
+ */
+function allLoadMostRecentComments(int $id_post, DatabaseHelper $dbh){
+    return $dbh->getAllMostRecentComments($id_post);
+}
+
+/**
+ * Ritorna se il commento ha "commenti figli"
+ * @param int $id_comment l'identificatore del commento padre
+ * @param DatabaseHelper $dbh il database in cui sono salvati i commenti
+ * @return true se il commento ha "commenti figli"
+ */
+function doesCommentHaveComments(int $id_comment, DatabaseHelper $dbh){
+    $result=$dbh->doesCommentHaveAnswers($id_comment);
+    if(empty($result)){
+        return false;
+    }else{
+        return $result[0]["COUNT(*)"]>0;
+    }
+
+}
+
+
+/**
+ * Ritorna i dati del commento
+ * @param int $id l'identificatore del commento
+ * @param DatabaseHelper $dbh il database in cui sono salvati i commenti
+ * @return array di dati del commento preso in input
+ */
+function getCommentInfo(int $id, DatabaseHelper $dbh){
+    $result=$dbh->getComment($id);
+    if(empty($result)){
+        return array();
+    }else{
+        return $result[0];
+    }
+
+}
+
+/**
+ * Inserisce un commento
+ * @param string $username l'utente che crea il commento
+ * @param string $text il testo del commento
+ * @param int $id_post il post a cui fa il commento
+ * @param DatabaseHelper $dbh il database in cui sono salvati i commenti
+ * @return se l'inserimento è andato a buon fine
+ */
+function newComment(string $username, string $text, int $id_post, DatabaseHelper $dbh){
+    return $dbh->addNewComment($username, $text, $id_post);
+}
+
+/**
+ * Inserisce un commento
+ * @param string $username l'utente che crea il commento
+ * @param string $text il testo del commento
+ * @param int $id_post il post a cui fa il commento
+ * @param int $id_padre il commento a cui risponde
+ * @param DatabaseHelper $dbh il database in cui sono salvati i commenti
+ * @return se l'inserimento è andato a buon fine
+ */
+function newCommentAnswer(string $username, int $id_padre, string $text, int $id_post, DatabaseHelper $dbh){
+    return $dbh->addNewCommentToComment($username, $id_padre, $text, $id_post);
+}
+
+/**
+ * Ritorna n commenti del post con offset più vecchi del timestamp fornito
+ * @param int $id del post
+ * @param int $n numero commenti da caricare
+ * @param int $offset l'offset dei commenti
+ * @param string $timestamp del commento più recente
+ * @param DatabaseHelper $dbh il database in cui sono salvati i commenti
+ * @return i commenti
+ */
+function getRecentComments(int $id, int $n, int $offset,string $timestamp, DatabaseHelper $dbh){
+    return $dbh->getCommentOffset($id, $n, $offset, $timestamp);
+}
+
+/**
+ * Ritorna tutti commenti in ordine dai più recenti lasciati sul post
+ * @param int $id_post post di cui si vogliono caricare i commenti
+ * @param string $timestamp del commento più recente
+ * @param DatabaseHelper $dbh il database in cui sono salvati i commenti
+ * @return array vettore di commenti
+ */
+function allLoadMostRecentCommentsAfter(int $id_post, string $timestamp, DatabaseHelper $dbh){
+    return $dbh->getAllMostRecentCommentsAfter($id_post, $timestamp);
+}
+
+/**
+ * Ritorna n commenti in risposta al post con offset più vecchi del timestamp fornito
+ * @param int $id del post
+ * @param int $id_comment del commento
+ * @param int $n numero commenti da caricare
+ * @param int $offset l'offset dei commenti
+ * @param string $timestamp del commento più recente
+ * @param DatabaseHelper $dbh il database in cui sono salvati i commenti
+ * @return i commenti
+ */
+function getRecentCommentsAnswers(int $id,int $id_comment, int $n, int $offset,string $timestamp, DatabaseHelper $dbh){
+    return $dbh->getCommentAnswerOffset($id, $id_comment, $n, $offset, $timestamp);
+}
+

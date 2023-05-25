@@ -49,9 +49,9 @@
         <div class="animal-display">
         </div>
 
-        <!--Guarda post in anteprima-->
-        <!--TODO: Da implementare-->
-        <button class="btn btn-outline-primary col w-40 mt-4"><img src="img/preview.svg" alt="">Guarda post in anteprima</button>
+    <!--Guarda post in anteprima-->
+    <!--TODO: Da implementare-->
+    <button class="btn btn-outline-primary col w-40 mt-4" id="preview" type="button"><img src="img/preview.svg" alt="">Guarda post in anteprima</button>
 
         <!--Invia-->
         <div class="col text-center w-80 mt-5 p-10">
