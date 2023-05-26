@@ -81,7 +81,7 @@ textarea {
     cursor: pointer;
 }
 
-@media (max-width: 1000px) {
+@media (max-width: 700px) {
 
     .pro-pic,
     .pro-pic-btn {
@@ -119,7 +119,6 @@ textarea {
     text-overflow: ellipsis;
     white-space: nowrap;
     max-width: 70% !important;
-    /* adjust this value as needed */
     vertical-align: middle;
     margin-left: 3px;
     font-weight: 700 !important;
