@@ -11,6 +11,7 @@ if(!empty($_SESSION["error"])) {
     unset($_SESSION["error"]);
 }
 
+$templateParams["user"] = getUserName($dbh);
 $templateParams["page"] = "my-profile.php";
 require_once("template/base.php");
 

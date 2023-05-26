@@ -149,7 +149,8 @@ button>img {
 }
 
 .d-grid>button {
-    margin: 0 6.2%;
+    margin: auto;
+    width: 87.6%; /* TODO is there a better way?*/
 }
 
 /* Search */
@@ -157,7 +158,6 @@ button>img {
 .search-bar,
 .result-bar {
     border-radius: 10em !important;
-    /*background: linear-gradient(to right, darkblue, darkorchid);*/
     background: white;
     border-width: 3px !important;
     border-color: #333 !important;
@@ -272,6 +272,17 @@ li.select2-results__option {
 .profile-row {
     min-height: 150px;
 }
+
+.short-text {
+    display: inline-block;
+    cursor: pointer;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+    max-width: 40% !important;
+    vertical-align: middle;
+}
+
 /* Post style */
 
 .post-header {

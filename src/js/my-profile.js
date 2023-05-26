@@ -18,6 +18,10 @@ $("#notifications-button").on("click", function () {
     window.location.href = 'profile-notifications.php';
 });
 
+$("#modify-account-button").on('click', function() {
+    window.location.href = 'edit-profile.php';
+});
+
 document.querySelector('#logout-button').addEventListener('click', () => {
     // Ask for confirmation
     $('#buttons-div').empty();
