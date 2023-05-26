@@ -122,6 +122,7 @@ textarea {
     /* adjust this value as needed */
     vertical-align: middle;
     margin-left: 3px;
+    font-weight: 700 !important;
 }
 
 /* button style */
@@ -241,6 +242,10 @@ button>img {
 .spinner-border-sm {
     --bs-spinner-width: 100px !important;
     --bs-spinner-height: 100px !important;
+}
+
+.select2-results__option {
+    padding: 6px !important;
 }
 
 li.select2-results__option {
