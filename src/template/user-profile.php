@@ -59,12 +59,12 @@
             $counter=0;
             for($i=0; $i<$rows; $i++){
                 echo html_entity_decode($start);
-                $tmp='<a href="view-post-profile.php?id='.$templateParams["id"][$counter].'" class="col w-50 p-0 border border-black"> <img src="'.$templateParams["postimg"][$counter].'" alt="'.$templateParams["alt"][$counter].'" class="w-100"/> </a>';
+                $tmp='<a href="view-post-profile.php?id='.$templateParams["id"][$counter].'" class="col w-50 p-0 border border-black"> <img src="'.$templateParams["postimg"][$counter].'" alt="'.$templateParams["alt"][$counter].'" class="w-100 post-preview"/> </a>';
                 echo html_entity_decode($tmp);
                 $counter++;
                 if($counter<$n){
                     //Ci sono altre immagini da mostrare
-                    $tmp='<a href="view-post-profile.php?id='.$templateParams["id"][$counter].'" class="col w-50 p-0 border border-black"> <img src="'.$templateParams["postimg"][$counter].'" alt="'.$templateParams["alt"][$counter].'" class="w-100" /> </a>';
+                    $tmp='<a href="view-post-profile.php?id='.$templateParams["id"][$counter].'" class="col w-50 p-0 border border-black"> <img src="'.$templateParams["postimg"][$counter].'" alt="'.$templateParams["alt"][$counter].'" class="w-100 post-preview"/> </a>';
                     echo html_entity_decode($tmp);
                     $counter++;
                 }else{

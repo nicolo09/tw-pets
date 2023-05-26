@@ -291,6 +291,11 @@ li.select2-results__option {
     width: 100%;
 }
 
+.post-preview {
+    object-fit: cover;
+    aspect-ratio: 1/1; /* TODO relatively low compatibility */
+}
+
 .post-header .post-pic{
     object-fit: cover;
     max-width: 50px;
