@@ -25,14 +25,6 @@ textarea {
     }
 }
 
-
-/* otherwise sometimes chrome doesn't center elements*/
-.center-align {
-    text-align: center !important;
-    width: 100% !important;
-    text-align-last: center !important;
-}
-
 /* navbar */
 .nav-link {
     display: block;
@@ -59,8 +51,8 @@ textarea {
 
 /* Profile Picture style settings */
 
-.proPic,
-.proPicBtn {
+.pro-pic,
+.pro-pic-btn {
     object-fit: cover;
     max-height: 180px !important;
     max-width: 180px !important;
@@ -91,8 +83,8 @@ textarea {
 
 @media (max-width: 1000px) {
 
-    .proPic,
-    .proPicBtn {
+    .pro-pic,
+    .pro-pic-btn {
         object-fit: cover;
         max-height: 120px !important;
         max-width: 120px !important;
@@ -121,14 +113,16 @@ textarea {
 }
 
 .miniature-text {
+    display: inline-block;
     cursor: pointer;
     overflow: hidden;
     text-overflow: ellipsis;
     white-space: nowrap;
-    max-width: 80%;
+    max-width: 70% !important;
     /* adjust this value as needed */
     vertical-align: middle;
     margin-left: 3px;
+    font-weight: 700 !important;
 }
 
 /* button style */
@@ -137,6 +131,7 @@ textarea {
     height: 100%;
     width: 75%;
     max-height: 150px;
+    padding: 0 !important;
 }
 
 .manage-button {
@@ -155,17 +150,6 @@ button>img {
 
 .d-grid>button {
     margin: 0 6.2%;
-}
-
-/* Other */
-
-.form-outline {
-    padding-bottom: 3%;
-}
-
-.spinner-border-sm {
-    --bs-spinner-width: 100px !important;
-    --bs-spinner-height: 100px !important;
 }
 
 /* Search */
@@ -241,6 +225,29 @@ button>img {
 
 /* Other */
 
+.input-group > .form-control::placeholder {
+    font-size: 1.25rem;
+}
+
+@media (max-width: 400px) {
+    .input-group > .form-control::placeholder {
+        font-size: 1.00rem;
+    }
+}
+
+.form-outline {
+    padding-bottom: 3%;
+}
+
+.spinner-border-sm {
+    --bs-spinner-width: 100px !important;
+    --bs-spinner-height: 100px !important;
+}
+
+.select2-results__option {
+    padding: 6px !important;
+}
+
 li.select2-results__option {
     border-bottom: 1px solid #ccc;
 }
@@ -262,6 +269,11 @@ li.select2-results__option {
     font-size: larger;
 }
 
+.profile-row {
+    min-height: 150px;
+}
+/* Post style */
+
 .post-header {
     padding: 0.5%;
     border: 0;
@@ -269,8 +281,7 @@ li.select2-results__option {
     width: 100%;
 }
 
-/* TODO: Merge propic rules */
-.post-header .pro-pic{
+.post-header .post-pic{
     max-width: 50px;
     min-width: 50px;
     max-height: 50px;

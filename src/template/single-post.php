@@ -4,7 +4,7 @@
     <div class="card-header row border-bottom border-black post-header p-1">
         <!--Utente che ha postato-->
         <div class="col p-0">
-            <img class="pro-pic text-center img-fluid" src=<?php if (isset($templateParams["immagineprofilo"])) {
+            <img class="post-pic text-center img-fluid" src=<?php if (isset($templateParams["immagineprofilo"])) {
                                                                 echo $templateParams["immagineprofilo"];
                                                             } ?> alt="<?php if (isset($templateParams["username"])) {
                                                                             echo "Foto profilo di " . $templateParams["username"];

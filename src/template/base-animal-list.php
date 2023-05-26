@@ -1,6 +1,6 @@
-<div class="container">
+<div class="container-fluid">
     <h1 class="text-center">Animali di <?php echo $templateParams["user"]?></h1>
-    <div class="d-grid gap-3">
+    <div class="d-grid gap-3 mt-3">
         <div class="mobile-view">
         <?php for($x = 0; $x < count($templateParams["animals"]); $x+=2): ?>
             <div class="row pro-pic-container">
@@ -22,7 +22,7 @@
         </div>
         <div class="desktop-view">
         <?php for($x = 0; $x < count($templateParams["animals"]); $x+=4): ?>
-            <div class="row pro-pic-container">
+            <div class="row pro-pic-container px-5">
                 <?php for($y = 0; $y < 4; $y++):?>
                     <div class="col w-25 text-center">
                         <?php if(isset($templateParams["animals"][$x + $y])): ?>
