@@ -121,11 +121,12 @@ textarea {
 }
 
 .miniature-text {
+    display: inline-block;
     cursor: pointer;
     overflow: hidden;
     text-overflow: ellipsis;
     white-space: nowrap;
-    max-width: 80%;
+    max-width: 70% !important;
     /* adjust this value as needed */
     vertical-align: middle;
     margin-left: 3px;
