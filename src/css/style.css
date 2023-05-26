@@ -292,6 +292,7 @@ li.select2-results__option {
 }
 
 .post-header .post-pic{
+    object-fit: cover;
     max-width: 50px;
     min-width: 50px;
     max-height: 50px;
