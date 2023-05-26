@@ -243,6 +243,17 @@ button>img {
 
 /* Other */
 
+.input-group > .form-control::placeholder {
+    font-size: 1.25rem;
+}
+
+@media (max-width: 400px) {
+    .input-group > .form-control::placeholder {
+        font-size: 1.00rem;
+    }
+}
+
+
 li.select2-results__option {
     border-bottom: 1px solid #ccc;
 }

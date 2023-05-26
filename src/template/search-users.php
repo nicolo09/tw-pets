@@ -4,8 +4,8 @@
             <div class="col-12 col-lg-10 col-xl-8 mx-auto">
                 <div class="card search-bar">
                     <div class="card-body p-2">
-                        <div class="input-group input-group-lg">
-                            <input type="text" class="form-control form-control-lg bg-transparent" <?php if(isset($templateParams["search"])) { echo " value=".$templateParams["search"] ;} ?> placeholder="Cerca persone e animali.." name="username"/>
+                        <div class="input-group">
+                            <input type="text" class="form-control bg-transparent" <?php if(isset($templateParams["search"])) { echo " value=".$templateParams["search"] ;} ?> placeholder="Cerca persone e animali..." name="username"/>
                             <div id="search-button" class="search-button">
                                 <img src="img/search.svg" alt="Search icon"/>
                             </div>
