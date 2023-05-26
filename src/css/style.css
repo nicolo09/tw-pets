@@ -138,6 +138,7 @@ textarea {
     height: 100%;
     width: 75%;
     max-height: 150px;
+    padding: 0 !important;
 }
 
 .manage-button {
