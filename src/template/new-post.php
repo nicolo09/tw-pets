@@ -1,9 +1,9 @@
-<div class="card mx-auto col-12 col-lg-10 col-xl-8 g-0 text-center d-flex justify-content-center border-0">
+<div class="card mx-auto col-12 col-sm-8 col-md-6 col-lg-5 col-xl-4 g-0 text-center d-flex justify-content-center border-0">
     <h1>Crea nuovo post</h1>
     <form action="#" method="POST" class="" enctype="multipart/form-data">
         <!--Immagine mostrata qui-->
         <div>
-            <img id="imgPreview" src="#" alt="Immagine inserita da utente" class=" w-100 post-image">
+            <img id="imgPreview" src="#" alt="Immagine inserita da utente" class=" w-100">
         </div>
         <!--Immagine da inserire-->
         <div class="row mt-2 g-0 d-flex justify-content-center">
