@@ -25,14 +25,6 @@ textarea {
     }
 }
 
-
-/* otherwise sometimes chrome doesn't center elements*/
-.center-align {
-    text-align: center !important;
-    width: 100% !important;
-    text-align-last: center !important;
-}
-
 /* navbar */
 .nav-link {
     display: block;
@@ -159,17 +151,6 @@ button>img {
     margin: 0 6.2%;
 }
 
-/* Other */
-
-.form-outline {
-    padding-bottom: 3%;
-}
-
-.spinner-border-sm {
-    --bs-spinner-width: 100px !important;
-    --bs-spinner-height: 100px !important;
-}
-
 /* Search */
 
 .search-bar,
@@ -253,6 +234,14 @@ button>img {
     }
 }
 
+.form-outline {
+    padding-bottom: 3%;
+}
+
+.spinner-border-sm {
+    --bs-spinner-width: 100px !important;
+    --bs-spinner-height: 100px !important;
+}
 
 li.select2-results__option {
     border-bottom: 1px solid #ccc;
@@ -274,6 +263,11 @@ li.select2-results__option {
 .top-page-popup {
     font-size: larger;
 }
+
+.profile-row {
+    min-height: 150px;
+}
+/* Post style */
 
 .post-header {
     padding: 0.5%;
