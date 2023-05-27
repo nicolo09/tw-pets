@@ -408,9 +408,10 @@ function newPost($user, $img, $alt, $txt, $pets, DatabaseHelper $dbh)
     //Se mette errori stampa, non continuare con query
     if ($uploadErrors[0] == 1) {
         //Non ci sono stati errori di upload, continua con query
+        $imgUp=$uploadErrors[1]; //Se il file è stato rinominato, devo caricare il file corretto con nome rinominato
         $result = -1; //Not yet set
         if (strlen($alt) <= 50 && strlen($txt) <= 200) {
-            $index = $dbh->addPost(basename($img["name"]), $alt, $txt, $user);
+            $index = $dbh->addPost($imgUp, $alt, $txt, $user);
             if ($index != -1) {
                 //Aggiunta andata a buon fine
                 if (!empty($pets)) {
