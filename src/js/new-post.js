@@ -20,6 +20,40 @@ file.addEventListener('change', () => {
     imagePreviewShow(file);
 });
 
+const preview = document.getElementById("preview");
+preview.addEventListener('click', () => {
+    const img = document.getElementById("imgpostinput").files[0];
+    const reader = new FileReader();
+    if (img != null) {
+        //L'immagine esiste e la carico
+        reader.readAsDataURL(img);
+        reader.addEventListener("load", () => {
+            //Ho caricato l'immagine in session storage
+            sessionStorage.setItem("img-loaded", reader.result);
+            const alt = document.getElementById("imgalt").value;
+            const animalsList = $('#selectAnimals').select2('data');
+            const txt = document.getElementById("txtpost").value;
+            //Formatto gli animali
+            const animals = [];
+            animalsList.forEach(element => {
+                animals.push(element.id);
+            });
+
+            if (alt != "" & txt != "") {
+                //Posso mandarti alla preview
+                if (animals.length == 0) {
+                    //Senza animali
+                    window.open('preview-post-profile.php?txt=' + txt + "&alt=" + alt, '_blank');
+                } else {
+                    //Con animali
+                    window.open('preview-post-profile.php?txt=' + txt + "&alt=" + alt + "&anim=" + JSON.stringify(animals), '_blank');
+                }
+            }
+        });
+    }
+});
+
+
 /* When selecting an image this shows its preview on 
  * an img tag with id=#imgPreview */
 function imagePreviewShow(input) {
@@ -86,7 +120,7 @@ function createAnimalDisplay(selectedAnimals) {
 //When chosen animal changes, this triggers
 $('#selectAnimals').on('change.select2', function (e) {
     const sel = $('#selectAnimals').select2('data');
-    let selectedAnimals=[];
+    let selectedAnimals = [];
     if (sel.length >= 0) {
         for (i = 0; i < sel.length; i++) {
             selectedAnimals.push(sel[i]["id"]);
