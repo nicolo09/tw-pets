@@ -410,7 +410,7 @@ function newPost($user, $img, $alt, $txt, $pets, DatabaseHelper $dbh)
         //Non ci sono stati errori di upload, continua con query
         $result = -1; //Not yet set
         if (strlen($alt) <= 50 && strlen($txt) <= 200) {
-            $index = $dbh->addPost(basename($img["name"]), $alt, $alt, $user);
+            $index = $dbh->addPost(basename($img["name"]), $alt, $txt, $user);
             if ($index != -1) {
                 //Aggiunta andata a buon fine
                 if (!empty($pets)) {
