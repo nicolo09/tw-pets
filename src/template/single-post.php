@@ -27,6 +27,8 @@
                                             echo $templateParams["alt"];
                                         } else {
                                             echo "Alt non presente";
+                                        } ?>" id="post-img-<?php if (isset($templateParams["id"])) {
+                                            echo $templateParams["id"];
                                         } ?>">
     <div class="card-footer w-100 p-0 m-0">
         <div class="w-100 m-0 d-flex justify-content-center row">
