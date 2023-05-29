@@ -572,24 +572,6 @@ class DatabaseHelper
     }
 
     /**
-     * Returns if a user manages an animal
-     * @param string $username the username of the person
-     * @param string $animale the username of the animal
-     * @return array empty if animal isn't managed by user
-     */
-    public function isAnimalManagedByUser(string $username, string $animale)
-    {
-        if ($stmt = $this->db->prepare("SELECT COUNT(*) FROM possiede WHERE persona=? AND animale=?")) {
-            $stmt->bind_param('ss', $username, $animale);
-            $stmt->execute();
-            $result = $stmt->get_result();
-            return $result->fetch_all(MYSQLI_ASSOC);
-        } else {
-            return array();
-        }
-    }
-
-    /**
      * Makes a person follow an animal
      * @param string $animal the username of animal
      * @param string $follower the username of the follower
