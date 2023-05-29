@@ -24,14 +24,6 @@ if(empty($result)==false){
     $templateParams["username"]=$result["username"];
     $templateParams["immagineprofilo"]=IMG_DIR.$result["immagineprofilo"];
     $templateParams["title"]="Post di ".$templateParams["username"];
-    if($result["username"]==getUserName($dbh)){
-        //E' un tuo post, disabilito i bottoni
-        $templateParams["disableLike"]=true;
-        $templateParams["disableSave"]=true;
-    }else{
-        $templateParams["disableLike"]=false;
-        $templateParams["disableSave"]=false;
-    }
     $templateParams["animals"]=getAnimalsInPost($id, $dbh);
     //I commenti vengono caricati da Javascript
 }else{

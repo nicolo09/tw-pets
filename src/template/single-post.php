@@ -35,19 +35,15 @@
             <!--Tasti-->
             <div class="col div-button-post">
                 <button class="btn btn-outline btn-outline-primary button-post align-middle" id="like-post-card-<?php if (isset($templateParams["id"])) {
-                                                                                                                    echo $templateParams["id"];
-                                                                                                                } ?>" <?php if (isset($templateParams["disableLike"]) && $templateParams["disableLike"] == true) {
-                                                                                                                            echo "disabled";
-                                                                                                                        } ?>>
+                                                                                                                    echo $templateParams["id"]; 
+                                                                                                                } ?>">
                 </button>
 
             </div>
             <div class="col div-button-post">
                 <button class="btn btn-outline btn-outline-primary button-post align-middle" id="save-post-card-<?php if (isset($templateParams["id"])) {
-                                                                                                                    echo $templateParams["id"];
-                                                                                                                } ?>" <?php if (isset($templateParams["disableSave"]) && $templateParams["disableSave"] == true) {
-                                                                                                                            echo "disabled";
-                                                                                                                        } ?>>
+                                                                                                                    echo $templateParams["id"]; 
+                                                                                                                } ?>">
                 </button>
 
             </div>
