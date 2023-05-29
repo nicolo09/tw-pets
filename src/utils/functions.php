@@ -391,8 +391,12 @@ function editUserProfile(string $user, string $employment, array $file, string $
     return array($result, $errors);
 }
 
-//Returns the username of the user logged in
-function getUserName($dbh)
+/**
+ * Returns the username of the user
+ * @param DatabaseHelper $dbh the database where the info is saved
+ * @return string of the username or "" if no user is logged in
+ */
+function getUserName(DatabaseHelper $dbh)
 {
     if (isUserLoggedIn($dbh)) {
         return $_SESSION['username'];
@@ -401,7 +405,17 @@ function getUserName($dbh)
     }
 }
 
-function newPost($user, $img, $alt, $txt, $pets, DatabaseHelper $dbh)
+/**
+ * Creates a new post
+ * @param string $user the username of the user creating the post
+ * @param array $img the file of the image of the new post
+ * @param string $alt the description of the image
+ * @param string $txt the description of the new post
+ * @param array $pets the pets to include in the new post
+ * @param DatabaseHelper $dbh the database where the info is saved
+ * @return array where result is 1 if creation worked and error is error messages
+ */
+function newPost(string $user,array $img, string $alt, string $txt, array $pets, DatabaseHelper $dbh)
 {
     $errors = [];
     $uploadErrors = uploadImage(IMG_DIR, $img);
@@ -447,11 +461,23 @@ function newPost($user, $img, $alt, $txt, $pets, DatabaseHelper $dbh)
     return array($result, $errors);
 }
 
+/**
+ * Returns the managed animals of a user
+ * @param string $user the username of the user
+ * @param DatabaseHelper $dbh the database where the info is saved
+ * @return array of managed animals
+ */
 function getManagedAnimals(string $user, DatabaseHelper $dbh)
 {
     return $dbh->getOwnedAnimals($user);
 }
 
+/**
+ * Returns user information
+ * @param string $user the username of the user
+ * @param DatabaseHelper $dbh the database where the info is saved
+ * @return array of user information
+ */
 function getUserData(string $user, DatabaseHelper $dbh)
 {
     $tmp = $dbh->getUserInfo($user);
@@ -463,12 +489,23 @@ function getUserData(string $user, DatabaseHelper $dbh)
     }
 }
 
+/**
+ * Returns all posts made by a user
+ * @param string $user the username of the user
+ * @param DatabaseHelper $dbh the database where the info is saved
+ * @return array of posts
+ */
 function getUserCreatedPosts(string $user, DatabaseHelper $dbh)
 {
     return $dbh->getUserPosts($user);
 }
 
-//Return true if username exists, otherwise false
+/**
+ * Checks if a person username exists
+ * @param string $username the username of the person
+ * @param DatabaseHelper $dbh the database where the info is saved
+ * @return bool true if username exists
+ */
 function doesPersonUsernameExist(string $username, DatabaseHelper $dbh)
 {
     $users = $dbh->doesUserExist($username);
@@ -482,7 +519,12 @@ function doesPersonUsernameExist(string $username, DatabaseHelper $dbh)
     return false;
 }
 
-//Returns true if user owns any animals
+/**
+ * Checks if a person owns any animals
+ * @param string $user the username of the person
+ * @param DatabaseHelper $dbh the database where the info is saved
+ * @return bool true if user owns any animals
+ */
 function doesUserOwnAnimals(string $username, DatabaseHelper $dbh)
 {
     $animals = $dbh->getOwnedAnimals($username);
@@ -492,7 +534,12 @@ function doesUserOwnAnimals(string $username, DatabaseHelper $dbh)
         return true;
     }
 }
-
+/**
+ * Returns all the followers of a given user
+ * @param string $username the username of the person
+ * @param DatabaseHelper $dbh the database where the info is saved
+ * @return array of followers
+ */
 function allFollowers(string $username, DatabaseHelper $dbh)
 {
     $followers = $dbh->getAllFollowers($username);
@@ -505,6 +552,13 @@ function allFollowers(string $username, DatabaseHelper $dbh)
     return $result;
 }
 
+/**
+ * Checks if a user follows another
+ * @param string $self the username of followed
+ * @param string $follower the username of the follower
+ * @param DatabaseHelper $dbh the database where the info is saved
+ * @return bool true if follower follows followed
+ */
 function doesUserFollowMe(string $self, string $follower, DatabaseHelper $dbh)
 {
     $result = $dbh->doesUserFollowMyAccount($self, $follower);
@@ -514,7 +568,12 @@ function doesUserFollowMe(string $self, string $follower, DatabaseHelper $dbh)
     return false;
 }
 
-//Return 1 if username exists, otherwise 0
+/**
+ * Checks if a animal username exists
+ * @param string $username the username of the animal
+ * @param DatabaseHelper $dbh the database where the info is saved
+ * @return bool true if username exists
+ */
 function doesAnimalUsernameExist(string $username, DatabaseHelper $dbh)
 {
     $users = $dbh->doesAnimalExist($username);
@@ -528,6 +587,12 @@ function doesAnimalUsernameExist(string $username, DatabaseHelper $dbh)
     return false;
 }
 
+/**
+ * Returns animal information
+ * @param string $user the username of the animal
+ * @param DatabaseHelper $dbh the database where the info is saved
+ * @return array of animal information
+ */
 function getAnimalData(string $user, DatabaseHelper $dbh)
 {
     $tmp = $dbh->getAnimalInfo($user);
@@ -539,12 +604,24 @@ function getAnimalData(string $user, DatabaseHelper $dbh)
     }
 }
 
+/**
+ * Returns all posts of an animal
+ * @param string $username the username of the animal
+ * @param DatabaseHelper $dbh the database where the info is saved
+ * @return array of posts
+ */
 function getAnimalRelatedPosts(string $username, DatabaseHelper $dbh)
 {
     return $dbh->getAnimalPosts($username);
 }
 
-//Ritorna vero se l'utente segue l'animale dato
+/**
+ * Checks if a user follows an animal
+ * @param string $username the username of user
+ * @param string $animal the username of the animal being followed
+ * @param DatabaseHelper $dbh the database where the info is saved
+ * @return bool true if user follows animal
+ */
 function doIFollowAnimal(string $username, string $animal, DatabaseHelper $dbh)
 {
     $result = $dbh->doesUserFollowAnimal($username, $animal);
@@ -555,26 +632,54 @@ function doIFollowAnimal(string $username, string $animal, DatabaseHelper $dbh)
     }
 }
 
+/**
+ * Makes a person follow another
+ * @param string $followed the username of followed
+ * @param string $follower the username of the follower
+ * @param DatabaseHelper $dbh the database where the info is saved
+ * @return bool false if something went wrong
+ */
 function followPerson(string $followed, string $follower, DatabaseHelper $dbh)
 {
     return $dbh->addFollowPerson($followed, $follower);
 }
 
+/**
+ * Makes a person unfollow another
+ * @param string $followed the username of followed
+ * @param string $follower the username of the follower
+ * @param DatabaseHelper $dbh the database where the info is saved
+ * @return bool false if something went wrong
+ */
 function unfollowPerson(string $followed, string $follower, DatabaseHelper $dbh)
 {
     return $dbh->removeFollowPerson($followed, $follower);
 }
 
-
+/**
+ * Makes a person follow an animal
+ * @param string $animal the username of animal
+ * @param string $follower the username of the follower
+ * @param DatabaseHelper $dbh the database where the info is saved
+ * @return bool false if something went wrong
+ */
 function followAnimal(string $animal, string $follower, DatabaseHelper $dbh)
 {
     return $dbh->addFollowAnimal($animal, $follower);
 }
 
+/**
+ * Makes a person unfollow an animal
+ * @param string $animal the username of animal
+ * @param string $follower the username of the follower
+ * @param DatabaseHelper $dbh the database where the info is saved
+ * @return bool false if something went wrong
+ */
 function unfollowAnimal(string $animal, string $follower, DatabaseHelper $dbh)
 {
     return $dbh->removeFollowAnimal($animal, $follower);
 }
+
 function changePassword(string $oldPassword, string $newPassword, string $confirmPassword, DatabaseHelper $dbh)
 {
     $errors = [];
@@ -598,6 +703,12 @@ function changePassword(string $oldPassword, string $newPassword, string $confir
     return array($result, $errors);
 }
 
+/**
+ * Returns all info about a post
+ * @param int $id the post id
+ * @param DatabaseHelper $dbh the database where the info is saved
+ * @return array of post info
+ */
 function getPost(int $id, DatabaseHelper $dbh){
     $result=$dbh->getPostInfo($id);
     if(empty($result)==false){
@@ -608,6 +719,12 @@ function getPost(int $id, DatabaseHelper $dbh){
     }
 }
 
+/**
+ * Returns number of likes of a post
+ * @param int $id the post id
+ * @param DatabaseHelper $dbh the database where the info is saved
+ * @return int number of likes
+ */
 function getLikes(int $id, DatabaseHelper $dbh){
     $result=$dbh->getPostLikes($id);
     if(empty($result)){
@@ -617,6 +734,13 @@ function getLikes(int $id, DatabaseHelper $dbh){
     }
 }
 
+/**
+ * Returns if a user has liked a post
+ * @param int $id the post id
+ * @param string $username the user
+ * @param DatabaseHelper $dbh the database where the info is saved
+ * @return bool true if user has liked the post
+ */
 function isPostLikedBy(int $id, string $username, DatabaseHelper $dbh){
     $result=$dbh->doesUserLikePost($id, $username);
     if(empty($result)){
@@ -626,6 +750,13 @@ function isPostLikedBy(int $id, string $username, DatabaseHelper $dbh){
     }
 }
 
+/**
+ * Returns if a user has saved a post
+ * @param int $id the post id
+ * @param string $username the user
+ * @param DatabaseHelper $dbh the database where the info is saved
+ * @return bool true if user has saved the post
+ */
 function isPostSavedBy(int $id, string $username, DatabaseHelper $dbh){
     $result=$dbh->hasUserSavedPost($id, $username);
     if(empty($result)){
@@ -635,6 +766,12 @@ function isPostSavedBy(int $id, string $username, DatabaseHelper $dbh){
     }
 }
 
+/**
+ * Returns if a post id exists
+ * @param int $id the post id
+ * @param DatabaseHelper $dbh the database where the info is saved
+ * @return bool true if post exist
+ */
 function isIdPostValid(int $id, DatabaseHelper $dbh){
     $result=$dbh->isIdPostCorrect($id);
     if(empty($result)){
@@ -644,22 +781,56 @@ function isIdPostValid(int $id, DatabaseHelper $dbh){
     }
 }
 
+/**
+ * Makes a person like a post
+ * @param int $id the post id
+ * @param string $username the username of the user
+ * @param DatabaseHelper $dbh the database where the info is saved
+ * @return bool false if something went wrong
+ */
 function likePost(int $id, string $username, DatabaseHelper $dbh){
     return $dbh->addLikePost($id, $username);
 }
 
+/**
+ * Makes a person unlike a post
+ * @param int $id the post id
+ * @param string $username the username of the user
+ * @param DatabaseHelper $dbh the database where the info is saved
+ * @return bool false if something went wrong
+ */
 function unLikePost(int $id, string $username, DatabaseHelper $dbh){
     return $dbh->removeLikePost($id, $username);
 }
 
+/**
+ * Makes a person save a post
+ * @param int $id the post id
+ * @param string $username the username of the user
+ * @param DatabaseHelper $dbh the database where the info is saved
+ * @return bool false if something went wrong
+ */
 function savePost(int $id, string $username, DatabaseHelper $dbh){
     return $dbh->addSavePost($id, $username);
 }
 
+/**
+ * Makes a person unsave a post
+ * @param int $id the post id
+ * @param string $username the username of the user
+ * @param DatabaseHelper $dbh the database where the info is saved
+ * @return bool false if something went wrong
+ */
 function unSavePost(int $id, string $username, DatabaseHelper $dbh){
     return $dbh->removeSavePost($id, $username);
 }
 
+/**
+ * Returns all animals in a post
+ * @param int $id the post id
+ * @param DatabaseHelper $dbh the database where the info is saved
+ * @return array of animals
+ */
 function getAnimalsInPost(int $id, DatabaseHelper $dbh){
     $final=array();
     $result=$dbh->getTaggedAnimals($id);
