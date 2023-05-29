@@ -38,7 +38,7 @@ foreach($animalList as $singleAnimal){
     $templateParams["animalsImg"][]=IMG_DIR.$singleAnimal["immagine"];
 }
 
-if(empty($_POST)==false&&isset($templateParams["error"])==true&&strlen($templateParams["error"][0])==0){
+if(empty($_POST)==false&&isset($templateParams["error"])==false){
     //Andato a buon fine l'inserimento di un post
     $templateParams["success"]="Hai creato un post!";
 }
