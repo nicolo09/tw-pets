@@ -10,7 +10,7 @@ if (isset($_POST["username"]) && isset($_POST["email"]) && isset($_POST["passwor
     $result = register($_POST["username"], $_POST["email"], $_POST["password"], $_POST["confirm_password"], $dbh);
     if ($result[0] == 1) {
         loginUser($_POST["username"], $_POST["password"], $dbh);
-        header("Location: register-successful.php");
+        header("Location: home.php");
         exit;
     } else {
         $templateParams["errors"] = $result[1];
@@ -19,5 +19,3 @@ if (isset($_POST["username"]) && isset($_POST["email"]) && isset($_POST["passwor
 
 $templateParams["page"] = "register-form.php";
 require_once("template/base-outside.php");
-
-?>

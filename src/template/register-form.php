@@ -32,14 +32,6 @@
                         <!-- Submit button -->
                         <button type="submit" class="btn btn-primary btn-block mb-4">Registrati</button>
 
-                        <?php
-                        if (isset($templateParams["errors"])) {
-                            foreach ($templateParams["errors"] as $error) {
-                                echo "<p class='text-danger'>" . $error . "</p>";
-                            }
-                        }
-                        ?>
-
                         <!-- Go to login form -->
                         <div>
                             <label>Hai già un account? - </label>
