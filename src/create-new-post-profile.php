@@ -12,7 +12,6 @@ if (isUserLoggedIn($dbh)==false) {
 if (empty($_POST)) {
     //Non è stato inviato nulla per post, probabilmente viene fatto accesso alla pagina direttamente
 } else {
-    $templateParams["error"][]="";
     $animals=array();
     if(isset($_POST["selectAnimals"])){
         $animals=$_POST["selectAnimals"];
@@ -41,9 +40,7 @@ foreach($animalList as $singleAnimal){
 
 if(empty($_POST)==false&&isset($templateParams["error"])==true&&strlen($templateParams["error"][0])==0){
     //Andato a buon fine l'inserimento di un post
-    //Magari redirect a tuo profilo, con nuovo post?
-    header("Location: home.php");
-    exit;
+    $templateParams["success"]="Hai creato un post!";
 }
 
 $templateParams["page"] = "new-post.php";

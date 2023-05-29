@@ -41,7 +41,11 @@
         <?php
         if (isset($templateParams["error"])) {
             foreach ($templateParams["error"] as $error) {
-                echo "<p class='text-danger'>" . $error . "</p>";
+                echo '<div class="alert alert-danger alert-dismissible fade show" role="alert"> <label class="top-page-popup">' . $error . '</label> <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button></div>';
+            }
+        } else {
+            if (isset($templateParams["success"])) {
+                echo '<div class="alert alert-success alert-dismissible fade show" role="alert"> <label class="top-page-popup">' . $templateParams["success"] . '</label> <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button></div>';
             }
         }
         ?>
@@ -49,9 +53,8 @@
         <div class="animal-display">
         </div>
 
-    <!--Guarda post in anteprima-->
-    <!--TODO: Da implementare-->
-    <button class="btn btn-outline-primary col w-40 mt-4" id="preview" type="button"><img src="img/preview.svg" alt="">Guarda post in anteprima</button>
+        <!--Guarda post in anteprima-->
+        <button class="btn btn-outline-primary col w-40 mt-4" id="preview" type="button"><img src="img/preview.svg" alt="">Guarda post in anteprima</button>
 
         <!--Invia-->
         <div class="col text-center w-80 mt-5 p-10">
