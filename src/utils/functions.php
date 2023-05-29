@@ -318,6 +318,15 @@ function isPasswordStrong($password)
     return array($result, $errors);
 }
 
+function isUserID($username)
+{
+    if (preg_match('/^[a-z\d_]{2,20}$/i', $username)) {
+        return true;
+    } else {
+        return false;
+    }
+}
+
 function register(string $user, string $email, string $password, string $confirm_password, DatabaseHelper $dbh)
 {
     $errors = array();
@@ -333,6 +342,9 @@ function register(string $user, string $email, string $password, string $confirm
     }
     if (!filter_var($email, FILTER_VALIDATE_EMAIL)) {
         $errors[] = "Email non valida.";
+    }
+    if (isUserID($user) == false) {
+        $errors[] = "Lo username può contenere solo lettere, numeri e _";
     }
     if ($password != $confirm_password) {
         $errors[] = "Le password non coincidono.";
