@@ -28,7 +28,11 @@ if (isIdPostValid($id_post, $dbh)&&$text!="") {
     $padre_comment=getCommentInfo($id_padre, $dbh);
     if(empty($padre_comment)){
         //Commento al post 
-        newComment(getUserName($dbh), $text, $id_post, $dbh);
+        $result=newComment(getUserName($dbh), $text, $id_post, $dbh);
+        if($result){
+            //Mando notifica per nuovo commento
+            addCommentNotification(getUserName($dbh), $id_post, $dbh);
+        }
     }else{
         //Commento al commento padre
         if($padre_comment["id_post"]==$id_post){
