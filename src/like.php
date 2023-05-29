@@ -21,6 +21,12 @@ if (isIdPostValid($id, $dbh)) {
         $out = likePost($id, getUserName($dbh), $dbh);
         if ($out == false) {
             $success = 0;
+        }else{
+            //Mando una notifica
+            $post=getPost($id, $dbh);
+            if(empty($post)==false){
+                addLikeNotification(getUserName($dbh),$id, $dbh);
+            }
         }
     } else {
         //All'utente non piace il post
