@@ -55,11 +55,11 @@ create table NOTIFICA (
 
 create table PERSONA (
      username varchar(25) not null,
-     descrizione varchar(100),
+     descrizione varchar(200),
      immagine varchar(200) not null default "default.jpg",
      email varchar(30) not null,
      password char(255) not null,
-     impiego varchar(20),
+     impiego varchar(50),
      constraint IDPERSONA_ID primary key (username));
 
 create table POSSIEDE (

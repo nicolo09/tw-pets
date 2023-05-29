@@ -1,9 +1,9 @@
-<div class="card mx-auto col-12 col-lg-10 col-xl-8 g-0 text-center d-flex justify-content-center border-0">
+<div class="card mx-auto col-12 col-sm-8 col-md-6 col-lg-5 col-xl-4 g-0 text-center d-flex justify-content-center border-0">
     <h1>Crea nuovo post</h1>
     <form action="#" method="POST" class="" enctype="multipart/form-data">
         <!--Immagine mostrata qui-->
         <div>
-            <img id="imgPreview" src="#" alt="Immagine inserita da utente" class=" w-100 post-image">
+            <img id="imgPreview" src="#" alt="Immagine inserita da utente" class=" w-100">
         </div>
         <!--Immagine da inserire-->
         <div class="row mt-2 g-0 d-flex justify-content-center">
@@ -41,7 +41,11 @@
         <?php
         if (isset($templateParams["error"])) {
             foreach ($templateParams["error"] as $error) {
-                echo "<p class='text-danger'>" . $error . "</p>";
+                echo '<div class="alert alert-danger alert-dismissible fade show" role="alert"> <label class="top-page-popup">' . $error . '</label> <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button></div>';
+            }
+        } else {
+            if (isset($templateParams["success"])) {
+                echo '<div class="alert alert-success alert-dismissible fade show" role="alert"> <label class="top-page-popup">' . $templateParams["success"] . '</label> <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button></div>';
             }
         }
         ?>
@@ -50,8 +54,7 @@
         </div>
 
         <!--Guarda post in anteprima-->
-        <!--TODO: Da implementare-->
-        <button class="btn btn-outline-primary col w-40 mt-4"><img src="img/preview.svg" alt="">Guarda post in anteprima</button>
+        <button class="btn btn-outline-primary col w-40 mt-4" id="preview" type="button"><img src="img/preview.svg" alt="">Guarda post in anteprima</button>
 
         <!--Invia-->
         <div class="col text-center w-80 mt-5 p-10">

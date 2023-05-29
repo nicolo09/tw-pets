@@ -8,7 +8,7 @@
                         <!-- Username input -->
                         <div class="form-outline">
                             <label class="form-label">Nome Utente</label>
-                            <input type="text" placeholder="username" class="form-control" name="username" autocomplete="username" />
+                            <input type="text" placeholder="username" class="form-control" name="username" autocomplete="username" maxlength="25"/>
                         </div>
 
                         <!-- Email input -->

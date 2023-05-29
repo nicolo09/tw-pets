@@ -2,6 +2,8 @@
 /* Path to image dir, to be used when uploading images */
 define("BASE_FOLDER", __DIR__ . "/");
 define("IMG_DIR", "img/");
+define("DEFAULT_PET_IMG", "default_pet_image.png");
+define("DEFAULT_USER_IMG", "default.jpg");
 define("MAX_NOTIFICATIONS", 99);
 
 

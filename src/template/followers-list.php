@@ -12,7 +12,7 @@
                             <div class="card result-bar"> 
                                 <div class="card-body p-2">
                                     <div class="result-element"> <!-- img and label on same line to avoid empty space -->
-                                        <img class="miniature" src="<?php echo IMG_DIR.$templateParams["owners"][$x]["immagine"] ?>" alt="Immagine profilo di <?php echo $templateParams["owners"][$x]["username"] ?>"/><span class="fs-4 fw-bold miniature-text"><?php echo $templateParams["owners"][$x]["username"] ?></span>
+                                        <img class="miniature" src="<?php echo IMG_DIR.$templateParams["owners"][$x]["immagine"] ?>" alt="Immagine profilo di <?php echo $templateParams["owners"][$x]["username"] ?>"/><span class="fs-4 miniature-text"><?php echo $templateParams["owners"][$x]["username"] ?></span>
                                     </div>
                                 </div>
                             </div>
@@ -30,7 +30,7 @@
                             <div class="card result-bar"> 
                                 <div class="card-body p-2">
                                     <div class="result-element"> <!-- img and label on same line to avoid empty space -->
-                                        <img class="miniature" src="<?php echo IMG_DIR.$templateParams["results"][$x]["immagine"] ?>" alt="Immagine profilo di <?php echo $templateParams["results"][$x]["username"] ?>"/><span class="fs-4 fw-bold miniature-text"><?php echo $templateParams["results"][$x]["username"] ?></span>
+                                        <img class="miniature" src="<?php echo IMG_DIR.$templateParams["results"][$x]["immagine"] ?>" alt="Immagine profilo di <?php echo $templateParams["results"][$x]["username"] ?>"/><span class="fs-4 miniature-text"><?php echo $templateParams["results"][$x]["username"] ?></span>
                                     </div>
                                 </div>
                             </div>

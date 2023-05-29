@@ -27,9 +27,17 @@ if(username != null){
     //Puoi seguire un utente solo se non è il tuo account
     //Se non segui->inizi a seguire
     //Se lo segui->smetti di seguire
-    document.getElementById("follow").addEventListener('click', ()=>{
-        window.location.href = 'follow.php?username='+username+"&type="+type;
-    });
+    let followButton = document.getElementById("follow");
+    if(followButton != null){
+        followButton.addEventListener('click', ()=>{
+            window.location.href = 'follow.php?username='+username+"&type="+type;
+        });
+    } else {
+        let page = type == PERSON ? "edit-profile.php" : "profile-manage-animal.php?animal=" + username;
+        document.getElementById("modify").addEventListener('click', () => {
+            window.location.href = page;
+        })
+    }
 }
 
 if(username==null){

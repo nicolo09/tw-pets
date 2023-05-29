@@ -1,5 +1,6 @@
 <?php
 require_once("bootstrap.php");
+require_once("utils/notification-utils.php");
 
 //Possibili costanti del parametro type
 define("PERSON", "person");

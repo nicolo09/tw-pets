@@ -35,7 +35,7 @@ $(function() {
             }
             var $result = $('<span class="select2-results__option">');
             var $img = $('<img class="miniature">').attr('src', data.element.getAttribute("data-img"));
-            var $text = $('<span>').text(data.text);
+            var $text = $('<span class="ms-1 miniature-text">').text(data.text);
 
             $result.append($img).append($text);
             return $result;
