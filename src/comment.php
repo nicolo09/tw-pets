@@ -1,5 +1,6 @@
 <?php
 require_once("bootstrap.php");
+require_once("utils/notification-utils.php");
 
 if (isUserLoggedIn($dbh) == false) {
     header("Location: login.php");
