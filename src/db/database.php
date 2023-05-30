@@ -157,8 +157,9 @@ class DatabaseHelper
         }
     }
 
-    public function updateUserProfile($username, $employment, $img, $description){
-        if($stmt = $this->db->prepare("UPDATE persona SET impiego = ?, immagine = ?, descrizione = ? WHERE username = ?")){
+    public function updateUserProfile($username, $employment, $img, $description)
+    {
+        if ($stmt = $this->db->prepare("UPDATE persona SET impiego = ?, immagine = ?, descrizione = ? WHERE username = ?")) {
             $stmt->bind_param("ssss", $employment, $img, $description, $username);
             return $stmt->execute();
         } else {
@@ -166,8 +167,9 @@ class DatabaseHelper
         }
     }
 
-    public function getAnimals($animal){
-        if($stmt = $this->db->prepare("SELECT * FROM animale WHERE username = ?")){
+    public function getAnimals($animal)
+    {
+        if ($stmt = $this->db->prepare("SELECT * FROM animale WHERE username = ?")) {
             $stmt->bind_param('s', $animal);
             $stmt->execute();
             $result = $stmt->get_result();
@@ -972,7 +974,7 @@ class DatabaseHelper
      * @param int $id_post il post a cui fa il commento
      * @return bool true se l'inserimento è andato a buon fine
      */
-    public function addNewComment(string $username,string $text,int $id_post)
+    public function addNewComment(string $username, string $text, int $id_post)
     {
         if ($stmt = $this->db->prepare("INSERT INTO commento (testo, id_post, username) VALUES (?, ?, ?)")) {
             $stmt->bind_param('sis', $text, $id_post, $username);
@@ -991,7 +993,7 @@ class DatabaseHelper
      * @param int $id_padre il commento a cui risponde
      * @return bool true se l'inserimento è andato a buon fine
      */
-    public function addNewCommentToComment(string $username,int $id_padre,string $text,int $id_post)
+    public function addNewCommentToComment(string $username, int $id_padre, string $text, int $id_post)
     {
         if ($stmt = $this->db->prepare("INSERT INTO commento (testo, id_padre, id_post, username) VALUES (?, ?, ?, ?)")) {
             $stmt->bind_param('siis', $text, $id_padre, $id_post, $username);
@@ -1009,7 +1011,7 @@ class DatabaseHelper
      * @param string $timestamp del commento più recente
      * @return array dei commenti
      */
-    public function getCommentOffset(int $id,int $n,int $offset,string $timestamp)
+    public function getCommentOffset(int $id, int $n, int $offset, string $timestamp)
     {
         if ($stmt = $this->db->prepare("SELECT * FROM `commento` WHERE id_post=? AND id_padre IS NULL AND timestamp <? ORDER BY timestamp DESC LIMIT ? OFFSET ?")) {
             $stmt->bind_param('isii', $id, $timestamp, $n, $offset);
@@ -1026,7 +1028,7 @@ class DatabaseHelper
      * @param int $id of the comment
      * @return array of results
      */
-    public function getAllMostRecentCommentsAfter(int $id,string $timestamp)
+    public function getAllMostRecentCommentsAfter(int $id, string $timestamp)
     {
         if ($stmt = $this->db->prepare("SELECT * FROM `commento` WHERE id_padre IS NULL AND id_post=? AND timestamp <? ORDER BY timestamp DESC")) {
             $stmt->bind_param('is', $id, $timestamp);
@@ -1047,7 +1049,7 @@ class DatabaseHelper
      * @param string $timestamp del commento più recente
      *@return array dei commenti
      */
-    public function getCommentAnswerOffset(int $id,int $id_comment,int $n,int $offset,string $timestamp)
+    public function getCommentAnswerOffset(int $id, int $id_comment, int $n, int $offset, string $timestamp)
     {
         if ($stmt = $this->db->prepare("SELECT * FROM `commento` WHERE id_post=? AND id_padre=? AND timestamp <? ORDER BY timestamp DESC LIMIT ? OFFSET ?")) {
             $stmt->bind_param('iisii', $id, $id_comment, $timestamp, $n, $offset);
@@ -1057,5 +1059,23 @@ class DatabaseHelper
         } else {
             return array();
         }
+    }
+
+    /**
+     * Ritorna n post salvati dall'utente con offset 
+     * @param string $username dell'utente
+     * @param int $n numero post da caricare
+     * @param int $offset l'offset dei post
+     * @return array dei post
+     */
+    public function getSavedPosts(string $username, int $n, int $offset)
+    {
+        if ($stmt = $this->db->prepare("SELECT * FROM post JOIN salvati ON post.id_post=salvati.id_post WHERE salvati.username=? ORDER BY post.timestamp DESC LIMIT ? OFFSET ?")) {
+            $stmt->bind_param('sii', $username, $n, $offset);
+            $stmt->execute();
+            $result = $stmt->get_result();
+            return $result->fetch_all(MYSQLI_ASSOC);
+        }
+        throw new Exception("Error Processing Request", 1);
     }
 }
