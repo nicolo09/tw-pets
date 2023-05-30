@@ -10,9 +10,9 @@
                                                                             echo "Foto profilo di " . $templateParams["username"];
                                                                         } ?>">
             <a class="align-items-center" <?php if (isset($templateParams["username"])) {
-                                                echo html_entity_decode('href="' . getUserProfileHref($templateParams["username"]) . '"');
+                                                echo 'href="' . getUserProfileHref($templateParams["username"]) . '"';
                                             } else {
-                                                echo html_entity_decode('href=#');
+                                                echo 'href=#';
                                             } ?>><?php if (isset($templateParams["username"])) {
                                                         echo $templateParams["username"];
                                                     } ?></a>
@@ -52,7 +52,7 @@
             <?php
             if (isset($templateParams["descrizione"]) && isset($templateParams["username"])) {
                 //Descrizione
-                echo html_entity_decode('<p><a href="' . getUserProfileHref($templateParams["username"]) . '">' . $templateParams["username"] . '</a>' . ': ' . $templateParams["descrizione"] . '</p>');
+                echo '<p><a href="' . getUserProfileHref($templateParams["username"]) . '">' . $templateParams["username"] . '</a>' . ': ' . $templateParams["descrizione"] . '</p>';
             }
             if (isset($templateParams["animals"]) && count($templateParams["animals"]) > 0) {
                 $row = '<p>';
@@ -73,10 +73,10 @@
                     }
                 }
                 $row = $row . '</p>';
-                echo html_entity_decode($row);
+                echo $row;
             }
             if (isset($templateParams["timestamp"]) && isset($templateParams["username"])) {
-                echo html_entity_decode('<p>' . 'Post creato alle ' . $templateParams["timestamp"] . '</p>');
+                echo '<p>' . 'Post creato alle ' . $templateParams["timestamp"] . '</p>';
             } ?>
             <div class="comment-slider">
                 <div class="comment-container">
@@ -84,27 +84,27 @@
                     if (isset($templateParams["comments"]) && count($templateParams["comments"]) > 0 && isset($templateParams["id"])) {
                         $id = $templateParams["id"];
                         foreach ($templateParams["comments"] as $comment) {
-                            echo html_entity_decode('<p><a href="' . getUserProfileHref($comment["username"]) . '">' . $comment["username"] . '</a>' . ': ' . $comment["testo"] . '</p>');
-                            echo html_entity_decode('<p class="text-muted">' . date("d/m/Y H:i", strtotime($comment["timestamp"])) . '</p>');
-                            echo html_entity_decode('<button id="' . $id . '-comment-' . $comment["id_commento"] . '" class="comment-answer rounded btn btn-outline-primary">Rispondi</button>');
+                            echo '<p><a href="' . getUserProfileHref($comment["username"]) . '">' . $comment["username"] . '</a>' . ': ' . $comment["testo"] . '</p>';
+                            echo '<p class="text-muted">' . date("d/m/Y H:i", strtotime($comment["timestamp"])) . '</p>';
+                            echo '<button id="' . $id . '-comment-' . $comment["id_commento"] . '" class="comment-answer rounded btn btn-outline-primary">Rispondi</button>';
                             if (isset($templateParams["son-comments-" . $comment["id_commento"]]) && $templateParams["son-comments-" . $comment["id_commento"]] == true) {
                                 //Ci sono commenti di risposta
-                                echo html_entity_decode('<button id="' . $id . '-son-comment-' . $comment["id_commento"] . '" class="rounded btn btn-outline-primary">Leggi le risposte</button>');
+                                echo '<button id="' . $id . '-son-comment-' . $comment["id_commento"] . '" class="rounded btn btn-outline-primary">Leggi le risposte</button>';
                             }
                         }
                     }
                     if (isset($templateParams["more-comments"]) && $templateParams["more-comments"] == true && isset($templateParams["id"])) {
                         $id = $templateParams["id"];
-                        echo html_entity_decode('<a href="view-post-profile.php?id='.$id.'">Leggi i commenti</a>');
+                        echo '<a href="view-post-profile.php?id='.$id.'">Leggi i commenti</a>';
                     }
                     ?>
                 </div>
                 <?php if (isset($templateParams["id"])) {
-                    echo html_entity_decode('<div class="d-flex justify-content-center align-items-center mt-4 spinner-post d-none" id="spinner-post-' . $templateParams["id"] . '"> <div class="spinner-border text-primary spinner-border-sm"
+                    echo '<div class="d-flex justify-content-center align-items-center mt-4 spinner-post d-none" id="spinner-post-' . $templateParams["id"] . '"> <div class="spinner-border text-primary spinner-border-sm"
                             role="status">
                             <span class="visually-hidden">Loading...</span>
                         </div>
-                    </div>');
+                    </div>';
                 } ?>
             </div>
             <!--New comment-->
