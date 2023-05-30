@@ -19,5 +19,6 @@ foreach ($result as $post) {
     echo '</div>';
 }
 ?>
-<!-- TODO create own -->
-<script src="js/post.js"></script>
+
+<script src="js/post-utils.js"></script>
+<script src="js/home.js"></script>
