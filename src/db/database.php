@@ -1100,4 +1100,64 @@ class DatabaseHelper
         }
         throw new Exception("Error Processing Request", 1);
     }
+
+    
+    /**
+     * @param string $username the user for whomst load the post.
+     * @param int $offset posts offset.
+     * @return array an array of 10 or less posts of people/animals that the user follows.
+     */
+    public function getPostsForUser(string $username, int $offset)
+    {
+        $query = "SELECT DISTINCT p.*
+        FROM POST p
+        LEFT JOIN RIGUARDA r ON p.id_post = r.id_post
+        LEFT JOIN SEGUE_ANIMALE sa ON r.animale = sa.followed
+        LEFT JOIN SEGUE_PERSONA sp ON p.username = sp.followed
+        WHERE (sp.follower = ? OR sa.follower = ?)
+          AND p.username != ?
+          AND p.timestamp >= NOW() - INTERVAL 2 DAY
+        ORDER BY p.timestamp DESC
+        LIMIT $offset, 10";
+
+        if($stmt = $this->db->prepare($query)) {
+            $stmt->bind_param('sss', $username, $username, $username);
+            $stmt->execute();
+            $result = $stmt->get_result();
+            return $result->fetch_all(MYSQLI_ASSOC);
+        } else {
+            return array();
+        }
+    }
+
+    /**
+     * @param string $username the user for whomst load the post.
+     * @param int $offset posts offset.
+     * @return array an array of 10 or less posts of people/animals that the user does not follow. 
+     */
+    public function getRecentPostsForUser(string $username, int $offset) 
+    {
+        $query = "SELECT p.*
+        FROM POST p
+        LEFT JOIN RIGUARDA r ON p.id_post = r.id_post
+        LEFT JOIN LIKES l ON p.id_post = l.id_post
+        LEFT JOIN SEGUE_PERSONA sp ON p.username = sp.followed AND sp.follower = ?
+        LEFT JOIN SEGUE_ANIMALE sa ON r.animale = sa.followed AND sa.follower = ?
+        WHERE sp.follower IS NULL AND sa.follower IS NULL
+          AND p.username != ?
+          AND p.timestamp >= NOW() - INTERVAL 2 DAY
+        GROUP BY p.id_post
+        ORDER BY COUNT(l.id_post) DESC, p.timestamp DESC
+        LIMIT $offset, 10";
+
+        if($stmt = $this->db->prepare($query)) {
+            $stmt->bind_param('sss', $username, $username, $username);
+            $stmt->execute();
+            $result = $stmt->get_result();
+            return $result->fetch_all(MYSQLI_ASSOC);
+        } else {
+            return array();
+        }
+    }
+
 }
