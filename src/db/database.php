@@ -632,7 +632,7 @@ class DatabaseHelper
     /**
      * Returns number of likes of a post
      * @param int $id the post id
-     * @return int number of likes
+     * @return array with number of likes
      */
     public function getPostLikes($id)
     {
