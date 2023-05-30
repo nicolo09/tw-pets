@@ -1104,10 +1104,11 @@ class DatabaseHelper
     
     /**
      * @param string $username the user for whomst load the post.
+     * @param int $n number of posts to get.
      * @param int $offset posts offset.
-     * @return array an array of 10 or less posts of people/animals that the user follows.
+     * @return array an array of $n or less posts of people/animals that the user follows.
      */
-    public function getPostsForUser(string $username, int $offset)
+    public function getPostsForUser(string $username, int $n, int $offset)
     {
         $query = "SELECT DISTINCT p.*
         FROM POST p
@@ -1118,10 +1119,10 @@ class DatabaseHelper
           AND p.username != ?
           AND p.timestamp >= NOW() - INTERVAL 2 DAY
         ORDER BY p.timestamp DESC
-        LIMIT $offset, 10";
+        LIMIT ?, ?";
 
         if($stmt = $this->db->prepare($query)) {
-            $stmt->bind_param('sss', $username, $username, $username);
+            $stmt->bind_param('sssii', $username, $username, $username, $offset, $n);
             $stmt->execute();
             $result = $stmt->get_result();
             return $result->fetch_all(MYSQLI_ASSOC);
@@ -1132,10 +1133,11 @@ class DatabaseHelper
 
     /**
      * @param string $username the user for whomst load the post.
+     * @param int $n number of posts to get.
      * @param int $offset posts offset.
-     * @return array an array of 10 or less posts of people/animals that the user does not follow. 
+     * @return array an array of $n or less posts of people/animals that the user does not follow. 
      */
-    public function getRecentPostsForUser(string $username, int $offset) 
+    public function getRecentPostsForUser(string $username, int $n, int $offset) 
     {
         $query = "SELECT p.*
         FROM POST p
@@ -1148,10 +1150,10 @@ class DatabaseHelper
           AND p.timestamp >= NOW() - INTERVAL 2 DAY
         GROUP BY p.id_post
         ORDER BY COUNT(l.id_post) DESC, p.timestamp DESC
-        LIMIT $offset, 10";
+        LIMIT ?, ?";
 
         if($stmt = $this->db->prepare($query)) {
-            $stmt->bind_param('sss', $username, $username, $username);
+            $stmt->bind_param('sssii', $username, $username, $username, $offset, $n);
             $stmt->execute();
             $result = $stmt->get_result();
             return $result->fetch_all(MYSQLI_ASSOC);
