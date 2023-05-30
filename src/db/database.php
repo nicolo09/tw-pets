@@ -749,26 +749,6 @@ class DatabaseHelper
     }
 
     /**
-
-     * Recupera i post degli utenti e degli animali seguiti dall'utente
-     * @param string $username username dell'utente di cui si vuole ottenere il feed
-     * @param int $from timestamp di inizio del periodo di cui si vuole ottenere il feed
-     * @param int $offset offset del feed
-     * @param int $n numero di post da ottenere
-     * @return array array associativo contenente i post dell'utente
-     */
-    public function getFeedPosts(string $username, int $from, int $offset, int $n)
-    {
-        if ($stmt = $this->db->prepare("SELECT * FROM segue_persona JOIN post ON segue_persona.followed=post.username WHERE segue_persona.follower=? AND post.timestamp>? UNION SELECT * FROM segue_animale JOIN post ON segue_animale.followed=post.username WHERE segue_animale.follower=? AND post.timestamp>? ORDER BY timestamp DESC LIMIT ?,?")) {
-            $stmt->bind_param('ssiii', $username, $from, $username, $offset, $n);
-            $stmt->execute();
-            $result = $stmt->get_result();
-            return $result->fetch_all(MYSQLI_ASSOC);
-        }
-        throw new Exception("Errore nella query");
-    }
-
-    /**
      * Makes a person unsave a post
      * @param int $id the post id
      * @param string $username the username of the user
