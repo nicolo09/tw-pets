@@ -10,7 +10,7 @@
             <div class="col text-center"><button class="btn btn-secondary user-button" id="animals-button"><img src="img/pets.svg" class="w-100">Animali</button></div>
         </div>
         <div class="row profile-row">
-            <div class="col text-center"><button class="btn btn-secondary user-button"><img src="img/saved_posts.svg" class="w-100">Post salvati</button></div>
+            <div class="col text-center"><button class="btn btn-secondary user-button" id="saved-posts-button"><img src="img/saved_posts.svg" class="w-100">Post salvati</button></div>
         <div class="col text-center"><button class="btn btn-secondary user-button" id="settings-button"><img src="img/settings.svg" class="w-100">Impostazioni</button></div>
     </div>
     <button class="btn btn-danger" id="logout-button"><img src="img/logout.svg">Logout</button>

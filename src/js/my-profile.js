@@ -22,6 +22,10 @@ $("#modify-account-button").on('click', function() {
     window.location.href = 'edit-profile.php';
 });
 
+$("#saved-posts-button").on('click', function() {
+    window.location.href = 'profile-saved.php';
+});
+
 document.querySelector('#logout-button').addEventListener('click', () => {
     // Ask for confirmation
     $('#buttons-div').empty();
