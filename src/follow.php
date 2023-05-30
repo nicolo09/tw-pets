@@ -1,5 +1,6 @@
 <?php
 require_once("bootstrap.php");
+require_once("utils/notification-utils.php");
 
 //Possibili costanti del parametro type
 define("PERSON", "person");
@@ -32,6 +33,9 @@ if (isset($_GET["username"])) {
                 $out = followPerson($username, getUserName($dbh), $dbh);
                 if($out==false){
                     $success=0;
+                }else{
+                    //Follow andato a buon fine
+                    addFollowNotification(getUserName($dbh), $username, $dbh);
                 }
             }
             //E' un account che esiste e non è il mio
@@ -55,6 +59,9 @@ if (isset($_GET["username"])) {
                 $out = followAnimal($username, getUserName($dbh), $dbh);
                 if($out==false){
                     $success=0;
+                }else{
+                    //Follow andato a buon fine
+                    addFollowNotification(getUserName($dbh), $username, $dbh);
                 }
             }
             //E' un account che esiste

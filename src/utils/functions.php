@@ -128,11 +128,12 @@ function checkBrute($username, $dbh)
     }
 }
 
-function registerAnimal($animal, $type, $file, $description, $owners, $dbh){
+function registerAnimal($animal, $type, $file, $description, $owners, $dbh)
+{
     $result = 0;
     $errors = array();
-    
-    if(strlen($animal) < 3) {
+
+    if (strlen($animal) < 3) {
         $errors[] = "Lo username deve essere lungo almeno 3 caratteri.";
     }
 
@@ -140,61 +141,61 @@ function registerAnimal($animal, $type, $file, $description, $owners, $dbh){
         $errors[] = "Il tipo deve essere lungo almeno 3 caratteri.";
     }
 
-    if(count($dbh->getAnimals($animal)) > 0) {
+    if (count($dbh->getAnimals($animal)) > 0) {
         $errors[] = "Lo username " . $animal . " è già in uso.";
     }
 
     /* If there are already errors it's useless to upload the image */
-    if(count($errors) == 0){
-        if(!empty($file["imgprofile"]["name"])) {
+    if (count($errors) == 0) {
+        if (!empty($file["imgprofile"]["name"])) {
             list($imgresult, $msg) = uploadImage(IMG_DIR, $file["imgprofile"]);
-            if($imgresult != 0) {
+            if ($imgresult != 0) {
                 $img = $msg;
             } else {
                 $errors[] = $msg;
             }
         } else {
-            $img = DEFAULT_IMG;
+            $img = DEFAULT_PET_IMG;
         }
 
-        if(count($errors) == 0) {
-            if($dbh->addAnimal($animal, $type, $img, $description)) {
+        if (count($errors) == 0) {
+            if ($dbh->addAnimal($animal, $type, $img, $description)) {
                 foreach ($owners as $owner) {
-                    if(!$dbh->registerOwnership($owner, $animal)){
+                    if (!$dbh->registerOwnership($owner, $animal)) {
                         $errors[] = "Impossibile assegnare l'animale a " . $owner . ".";
                     }
-                    if(!$dbh->addFollowAnimal($animal, $owner)){ 
+                    if (!$dbh->addFollowAnimal($animal, $owner)) {
                         $errors[] = "Non è stato possibile rendere " . $owner . " follower di " . $animal;
                     }
                 }
-                if(count($errors) == 0){
+                if (count($errors) == 0) {
                     $result = 1;
-                } 
+                }
             } else {
                 $errors[] = "Si è verificato un problema nell'aggiunta dell'account, riprovare più tardi";
             }
         }
     }
-        
+
     return array($result, $errors);
-    
 }
 
-function editAnimal($animal, $type, $file, $description, $owners, $dbh){
+function editAnimal($animal, $type, $file, $description, $owners, $dbh)
+{
 
     $result = 0;
     $errors = array();
-       
-    if(strlen($type) < 3){
+
+    if (strlen($type) < 3) {
         $errors[] = "Il tipo deve contenere almeno 3 caratteri";
     }
 
     /* If there are already errors it's useless to upload the image */
-    if(count($errors) == 0) {
+    if (count($errors) == 0) {
 
-        if(!empty($file["imgprofile"]["name"])) {
+        if (!empty($file["imgprofile"]["name"])) {
             list($imgresult, $msg) = uploadImage(IMG_DIR, $_FILES["imgprofile"]);
-            if($imgresult != 0) {
+            if ($imgresult != 0) {
                 $img = $msg;
             } else {
                 $errors[] = $msg;
@@ -203,9 +204,9 @@ function editAnimal($animal, $type, $file, $description, $owners, $dbh){
             $img = $animal["immagine"];
         }
 
-        if(count($errors) == 0){
-            if($dbh->updateAnimal($animal["username"], $type, $img, $description)) { 
-                if($img != $animal["immagine"] && $animal["immagine"] != DEFAULT_IMG) {
+        if (count($errors) == 0) {
+            if ($dbh->updateAnimal($animal["username"], $type, $img, $description)) {
+                if ($img != $animal["immagine"] && $animal["immagine"] != DEFAULT_PET_IMG) {
                     unlink(IMG_DIR . $animal["immagine"]);
                 }
                 list($result, $errors) = editOwnerships($owners, $animal["username"], $dbh);
@@ -214,24 +215,27 @@ function editAnimal($animal, $type, $file, $description, $owners, $dbh){
             }
         }
     }
-        
-    
+
+
     return array($result, $errors);
 }
 
-function editOwnerships($owners, $animal, $dbh) {
+function editOwnerships($owners, $animal, $dbh)
+{
     $errors = array();
-    $oldOwners = $dbh->getOwners($animal);
-    foreach(array_diff($owners, $oldOwners) as $newOwner){
-        if(!$dbh->registerOwnership($newOwner, $animal)){
+    $oldOwners = array_column($dbh->getOwners($animal), "username");
+    foreach (array_diff($owners, $oldOwners) as $newOwner) {
+        if(!doIFollowAnimal($newOwner, $animal, $dbh)) {
+            if (!$dbh->addFollowAnimal($animal, $newOwner)) {
+                $errors[] = "Non è stato possibile rendere " . $newOwner . " follower di " . $animal;
+            }
+        }
+        if (!$dbh->registerOwnership($newOwner, $animal)) {
             $errors[] = "Impossibile assegnare l'animale a " . $newOwner . ".";
         }
-        if(!$dbh->addFollowAnimal($animal, $newOwner)){ 
-            $errors[] = "Non è stato possibile rendere " . $newOwner . " follower di " . $animal;
-        }
     }
-    foreach(array_diff($oldOwners, $owners) as $deleteOwner){
-        if(!$dbh->deleteOwnership($deleteOwner, $animal)){
+    foreach (array_diff($oldOwners, $owners) as $deleteOwner) {
+        if (!$dbh->deleteOwnership($deleteOwner, $animal)) {
             $errors[] = "Impossibile rimuovere l'appartenenza di " . $animal . " a " . $deleteOwner . ".";
         }
     }
@@ -314,6 +318,15 @@ function isPasswordStrong($password)
     return array($result, $errors);
 }
 
+function isUserID($username)
+{
+    if (preg_match('/^[a-z\d_]{2,20}$/i', $username)) {
+        return true;
+    } else {
+        return false;
+    }
+}
+
 function register(string $user, string $email, string $password, string $confirm_password, DatabaseHelper $dbh)
 {
     $errors = array();
@@ -329,6 +342,9 @@ function register(string $user, string $email, string $password, string $confirm
     }
     if (!filter_var($email, FILTER_VALIDATE_EMAIL)) {
         $errors[] = "Email non valida.";
+    }
+    if (isUserID($user) == false) {
+        $errors[] = "Lo username può contenere solo lettere, numeri e _";
     }
     if ($password != $confirm_password) {
         $errors[] = "Le password non coincidono.";
@@ -348,8 +364,51 @@ function register(string $user, string $email, string $password, string $confirm
     return array($result, $errors);
 }
 
-//Returns the username of the user logged in
-function getUserName($dbh)
+function editUserProfile(string $user, string $employment, array $file, string $description, DatabaseHelper $dbh){
+    $errors = array();
+    $result = 0;
+    $oldImage = $dbh->getUserFromName($user)[0]["immagine"];
+
+    if(!doesPersonUsernameExist($user, $dbh)) {
+        $errors[] = "Non è possibile modificare un account inesistente";
+    }
+    if(!empty($employment) && strlen($employment) < 3) {
+        $errors[] = "L'impiego deve essere lungo almeno 3 caratteri";
+    }
+
+    if(count($errors) == 0) {
+        if (!empty($file["imgprofile"]["name"])) {
+            list($imgresult, $msg) = uploadImage(IMG_DIR, $_FILES["imgprofile"]);
+            if ($imgresult != 0) {
+                $img = $msg;
+            } else {
+                $errors[] = $msg;
+            }
+        } else {
+            $img = $oldImage;
+        }
+
+        if(count($errors) == 0) {
+            if($dbh->updateUserProfile($user, $employment, $img, $description)) {
+                if($img != $oldImage && $oldImage != DEFAULT_USER_IMG) {
+                    unlink(IMG_DIR . $oldImage);
+                }
+                $result = 1;
+            } else {
+                $errors[] = "Si è verificato un errore, riprovare più tardi";
+            }
+        }
+    }
+
+    return array($result, $errors);
+}
+
+/**
+ * Returns the username of the user
+ * @param DatabaseHelper $dbh the database where the info is saved
+ * @return string of the username or "" if no user is logged in
+ */
+function getUserName(DatabaseHelper $dbh)
 {
     if (isUserLoggedIn($dbh)) {
         return $_SESSION['username'];
@@ -358,16 +417,27 @@ function getUserName($dbh)
     }
 }
 
-function newPost($user, $img, $alt, $txt, $pets, DatabaseHelper $dbh)
+/**
+ * Creates a new post
+ * @param string $user the username of the user creating the post
+ * @param array $img the file of the image of the new post
+ * @param string $alt the description of the image
+ * @param string $txt the description of the new post
+ * @param array $pets the pets to include in the new post
+ * @param DatabaseHelper $dbh the database where the info is saved
+ * @return array where result is 1 if creation worked and error is error messages
+ */
+function newPost(string $user,array $img, string $alt, string $txt, array $pets, DatabaseHelper $dbh)
 {
     $errors = [];
     $uploadErrors = uploadImage(IMG_DIR, $img);
     //Se mette errori stampa, non continuare con query
     if ($uploadErrors[0] == 1) {
         //Non ci sono stati errori di upload, continua con query
+        $imgUp=$uploadErrors[1]; //Se il file è stato rinominato, devo caricare il file corretto con nome rinominato
         $result = -1; //Not yet set
         if (strlen($alt) <= 50 && strlen($txt) <= 200) {
-            $index = $dbh->addPost(basename($img["name"]), $alt, $alt, $user);
+            $index = $dbh->addPost($imgUp, $alt, $txt, $user);
             if ($index != -1) {
                 //Aggiunta andata a buon fine
                 if (!empty($pets)) {
@@ -403,128 +473,225 @@ function newPost($user, $img, $alt, $txt, $pets, DatabaseHelper $dbh)
     return array($result, $errors);
 }
 
+/**
+ * Returns the managed animals of a user
+ * @param string $user the username of the user
+ * @param DatabaseHelper $dbh the database where the info is saved
+ * @return array of managed animals
+ */
 function getManagedAnimals(string $user, DatabaseHelper $dbh)
 {
     return $dbh->getOwnedAnimals($user);
 }
 
+/**
+ * Returns user information
+ * @param string $user the username of the user
+ * @param DatabaseHelper $dbh the database where the info is saved
+ * @return array of user information
+ */
 function getUserData(string $user, DatabaseHelper $dbh)
 {
-    $tmp=$dbh->getUserInfo($user);
-    if(empty($tmp)){
+    $tmp = $dbh->getUserInfo($user);
+    if (empty($tmp)) {
         return array();
-    }else{
+    } else {
         #Dato che l'username è univoco, rendo l'array con i dati direttamente accessibile
         return $tmp[0];
     }
 }
 
+/**
+ * Returns all posts made by a user
+ * @param string $user the username of the user
+ * @param DatabaseHelper $dbh the database where the info is saved
+ * @return array of posts
+ */
 function getUserCreatedPosts(string $user, DatabaseHelper $dbh)
 {
     return $dbh->getUserPosts($user);
 }
 
-//Return true if username exists, otherwise false
-function doesPersonUsernameExist(string $username, DatabaseHelper $dbh){
-    $users=$dbh->doesUserExist($username);
-    if(empty($users)){
+/**
+ * Checks if a person username exists
+ * @param string $username the username of the person
+ * @param DatabaseHelper $dbh the database where the info is saved
+ * @return bool true if username exists
+ */
+function doesPersonUsernameExist(string $username, DatabaseHelper $dbh)
+{
+    $users = $dbh->doesUserExist($username);
+    if (empty($users)) {
         return false;
-    }else{
-        if($users[0]["COUNT(username)"]==1){
+    } else {
+        if ($users[0]["COUNT(username)"] == 1) {
             return true;
         }
     }
     return false;
-    
 }
 
-//Returns true if user owns any animals
-function doesUserOwnAnimals(string $username, DatabaseHelper $dbh){
-    $animals=$dbh->getOwnedAnimals($username);
-    if(count($animals)==0){
+/**
+ * Checks if a person owns any animals
+ * @param string $user the username of the person
+ * @param DatabaseHelper $dbh the database where the info is saved
+ * @return bool true if user owns any animals
+ */
+function doesUserOwnAnimals(string $username, DatabaseHelper $dbh)
+{
+    $animals = $dbh->getOwnedAnimals($username);
+    if (count($animals) == 0) {
         return false;
-    }else{
+    } else {
         return true;
     }
-    
 }
-
-function allFollowers(string $username, DatabaseHelper $dbh){
-    $followers=$dbh->getAllFollowers($username);
-    $result=array();
-    if(empty($followers)==false){
-        foreach($followers as $single){
-            $result.array_push($single["follower"]);
+/**
+ * Returns all the followers of a given user
+ * @param string $username the username of the person
+ * @param DatabaseHelper $dbh the database where the info is saved
+ * @return array of followers
+ */
+function allFollowers(string $username, DatabaseHelper $dbh)
+{
+    $followers = $dbh->getAllFollowers($username);
+    $result = array();
+    if (empty($followers) == false) {
+        foreach ($followers as $single) {
+            $result . array_push($single["follower"]);
         }
     }
     return $result;
 }
 
-function doesUserFollowMe(string $self, string $follower, DatabaseHelper $dbh){
-    $result=$dbh->doesUserFollowMyAccount($self, $follower);
-    if($result==1){
+/**
+ * Checks if a user follows another
+ * @param string $self the username of followed
+ * @param string $follower the username of the follower
+ * @param DatabaseHelper $dbh the database where the info is saved
+ * @return bool true if follower follows followed
+ */
+function doesUserFollowMe(string $self, string $follower, DatabaseHelper $dbh)
+{
+    $result = $dbh->doesUserFollowMyAccount($self, $follower);
+    if ($result == 1) {
         return true;
     }
     return false;
 }
 
-//Return 1 if username exists, otherwise 0
-function doesAnimalUsernameExist(string $username, DatabaseHelper $dbh){
-    $users=$dbh->doesAnimalExist($username);
-    if(empty($users)){
+/**
+ * Checks if a animal username exists
+ * @param string $username the username of the animal
+ * @param DatabaseHelper $dbh the database where the info is saved
+ * @return bool true if username exists
+ */
+function doesAnimalUsernameExist(string $username, DatabaseHelper $dbh)
+{
+    $users = $dbh->doesAnimalExist($username);
+    if (empty($users)) {
         return false;
-    }else{
-        if($users[0]["COUNT(username)"]==1){
+    } else {
+        if ($users[0]["COUNT(username)"] == 1) {
             return true;
         }
     }
     return false;
-    
 }
 
+/**
+ * Returns animal information
+ * @param string $user the username of the animal
+ * @param DatabaseHelper $dbh the database where the info is saved
+ * @return array of animal information
+ */
 function getAnimalData(string $user, DatabaseHelper $dbh)
 {
-    $tmp=$dbh->getAnimalInfo($user);
-    if(empty($tmp)){
+    $tmp = $dbh->getAnimalInfo($user);
+    if (empty($tmp)) {
         return array();
-    }else{
+    } else {
         #Dato che l'username è univoco, rendo l'array con i dati direttamente accessibile
         return $tmp[0];
     }
 }
 
+/**
+ * Returns all posts of an animal
+ * @param string $username the username of the animal
+ * @param DatabaseHelper $dbh the database where the info is saved
+ * @return array of posts
+ */
 function getAnimalRelatedPosts(string $username, DatabaseHelper $dbh)
 {
     return $dbh->getAnimalPosts($username);
 }
 
-//Ritorna vero se l'utente segue l'animale dato
-function doIFollowAnimal(string $username, string $animal, DatabaseHelper $dbh){
-    $result=$dbh->doesUserFollowAnimal($username, $animal);
-    if(empty($result)){
+/**
+ * Checks if a user follows an animal
+ * @param string $username the username of user
+ * @param string $animal the username of the animal being followed
+ * @param DatabaseHelper $dbh the database where the info is saved
+ * @return bool true if user follows animal
+ */
+function doIFollowAnimal(string $username, string $animal, DatabaseHelper $dbh)
+{
+    $result = $dbh->doesUserFollowAnimal($username, $animal);
+    if (empty($result)) {
         return false;
-    }else{
+    } else {
         return true;
     }
-
 }
 
-function followPerson(string $followed, string $follower, DatabaseHelper $dbh){
+/**
+ * Makes a person follow another
+ * @param string $followed the username of followed
+ * @param string $follower the username of the follower
+ * @param DatabaseHelper $dbh the database where the info is saved
+ * @return bool false if something went wrong
+ */
+function followPerson(string $followed, string $follower, DatabaseHelper $dbh)
+{
     return $dbh->addFollowPerson($followed, $follower);
 }
 
-function unfollowPerson(string $followed, string $follower, DatabaseHelper $dbh){
+/**
+ * Makes a person unfollow another
+ * @param string $followed the username of followed
+ * @param string $follower the username of the follower
+ * @param DatabaseHelper $dbh the database where the info is saved
+ * @return bool false if something went wrong
+ */
+function unfollowPerson(string $followed, string $follower, DatabaseHelper $dbh)
+{
     return $dbh->removeFollowPerson($followed, $follower);
 }
 
-
-function followAnimal(string $animal, string $follower, DatabaseHelper $dbh){
+/**
+ * Makes a person follow an animal
+ * @param string $animal the username of animal
+ * @param string $follower the username of the follower
+ * @param DatabaseHelper $dbh the database where the info is saved
+ * @return bool false if something went wrong
+ */
+function followAnimal(string $animal, string $follower, DatabaseHelper $dbh)
+{
     return $dbh->addFollowAnimal($animal, $follower);
 }
 
-function unfollowAnimal(string $animal, string $follower, DatabaseHelper $dbh){
+/**
+ * Makes a person unfollow an animal
+ * @param string $animal the username of animal
+ * @param string $follower the username of the follower
+ * @param DatabaseHelper $dbh the database where the info is saved
+ * @return bool false if something went wrong
+ */
+function unfollowAnimal(string $animal, string $follower, DatabaseHelper $dbh)
+{
     return $dbh->removeFollowAnimal($animal, $follower);
 }
+
 function changePassword(string $oldPassword, string $newPassword, string $confirmPassword, DatabaseHelper $dbh)
 {
     $errors = [];
@@ -547,3 +714,314 @@ function changePassword(string $oldPassword, string $newPassword, string $confir
     }
     return array($result, $errors);
 }
+
+/**
+ * Returns all info about a post
+ * @param int $id the post id
+ * @param DatabaseHelper $dbh the database where the info is saved
+ * @return array of post info
+ */
+function getPost(int $id, DatabaseHelper $dbh){
+    $result=$dbh->getPostInfo($id);
+    if(empty($result)==false){
+        //Visto che l'id è univoco per post, è inutile avere un array di un array di un singolo risultato
+        return $result[0];
+    }else{
+        return $result;
+    }
+}
+
+/**
+ * Returns number of likes of a post
+ * @param int $id the post id
+ * @param DatabaseHelper $dbh the database where the info is saved
+ * @return int number of likes
+ */
+function getLikes(int $id, DatabaseHelper $dbh){
+    $result=$dbh->getPostLikes($id);
+    if(empty($result)){
+        return 0;
+    }else{
+        return $result[0]["COUNT(*)"];
+    }
+}
+
+/**
+ * Returns if a user has liked a post
+ * @param int $id the post id
+ * @param string $username the user
+ * @param DatabaseHelper $dbh the database where the info is saved
+ * @return bool true if user has liked the post
+ */
+function isPostLikedBy(int $id, string $username, DatabaseHelper $dbh){
+    $result=$dbh->doesUserLikePost($id, $username);
+    if(empty($result)){
+        return false;
+    }else{
+        return $result[0]["COUNT(*)"]==1;
+    }
+}
+
+/**
+ * Returns if a user has saved a post
+ * @param int $id the post id
+ * @param string $username the user
+ * @param DatabaseHelper $dbh the database where the info is saved
+ * @return bool true if user has saved the post
+ */
+function isPostSavedBy(int $id, string $username, DatabaseHelper $dbh){
+    $result=$dbh->hasUserSavedPost($id, $username);
+    if(empty($result)){
+        return false;
+    }else{
+        return $result[0]["COUNT(*)"]==1;
+    }
+}
+
+/**
+ * Returns if a post id exists
+ * @param int $id the post id
+ * @param DatabaseHelper $dbh the database where the info is saved
+ * @return bool true if post exist
+ */
+function isIdPostValid(int $id, DatabaseHelper $dbh){
+    $result=$dbh->isIdPostCorrect($id);
+    if(empty($result)){
+        return false;
+    }else{
+        return $result[0]["COUNT(id_post)"]==1;
+    }
+}
+
+/**
+ * Makes a person like a post
+ * @param int $id the post id
+ * @param string $username the username of the user
+ * @param DatabaseHelper $dbh the database where the info is saved
+ * @return bool false if something went wrong
+ */
+function likePost(int $id, string $username, DatabaseHelper $dbh){
+    return $dbh->addLikePost($id, $username);
+}
+
+/**
+ * Makes a person unlike a post
+ * @param int $id the post id
+ * @param string $username the username of the user
+ * @param DatabaseHelper $dbh the database where the info is saved
+ * @return bool false if something went wrong
+ */
+function unLikePost(int $id, string $username, DatabaseHelper $dbh){
+    return $dbh->removeLikePost($id, $username);
+}
+
+/**
+ * Makes a person save a post
+ * @param int $id the post id
+ * @param string $username the username of the user
+ * @param DatabaseHelper $dbh the database where the info is saved
+ * @return bool false if something went wrong
+ */
+function savePost(int $id, string $username, DatabaseHelper $dbh){
+    return $dbh->addSavePost($id, $username);
+}
+
+/**
+ * Makes a person unsave a post
+ * @param int $id the post id
+ * @param string $username the username of the user
+ * @param DatabaseHelper $dbh the database where the info is saved
+ * @return bool false if something went wrong
+ */
+function unSavePost(int $id, string $username, DatabaseHelper $dbh){
+    return $dbh->removeSavePost($id, $username);
+}
+
+/**
+ * Returns all animals in a post
+ * @param int $id the post id
+ * @param DatabaseHelper $dbh the database where the info is saved
+ * @return array of animals
+ */
+function getAnimalsInPost(int $id, DatabaseHelper $dbh){
+    $final=array();
+    $result=$dbh->getTaggedAnimals($id);
+    foreach($result as $animal){
+        $final[]=$animal["animale"];
+    }
+    return $final;
+}
+
+/**
+ * Ritorna l'href per la pagina di un profilo utente di una persona
+ * @param string $username username della persona
+ * @return string href
+ */
+function getUserProfileHref(string $username)
+{
+    return "view-user-profile.php?username=" . $username . "&type=person";
+}
+
+/**
+ * Ritorna l'href per la pagina di un profilo utente di un animale
+ * @param string $username username della persona
+ * @return string href
+ */
+function getAnimalProfileHref(string $username)
+{
+    return "view-user-profile.php?username=" . $username . "&type=animal";
+}
+
+/**
+ * Returns user profile href reference 
+ * @param string $username the user's username
+ * @param string $type defines if the user is an animal or a person
+ * @return string href
+ */
+function getProfileHref(string $username, string $type)
+{
+    return "view-user-profile.php?username=" . $username . "&type=" . $type;
+}
+
+/**
+ * Ritorna l'href per la pagina di visualizzazione di un post
+ * @param int $id id del post
+ * @return string href
+ */
+function getPostHref(int $id)
+{
+    return "view-post-profile.php?id=" . $id;
+}
+/**
+ * Ritorna l'src dell'immagine di profilo di un utente
+ * @param string $user username dell'utente
+ * @return string src
+ */
+function getUserProfilePic(string $user, DatabaseHelper $dbh)
+{
+    $result = $dbh->getUserFromName($user);
+    if (empty($result)) {
+        return "img/default.jpg";
+    } else {
+        return "img/" . $result[0]["immagine"];
+    }
+}
+
+/**
+ * Ritorna i n commenti più recenti lasciati sul post
+ * @param int $id_post post di cui si vogliono caricare i commenti
+ * @param int $n numero commenti da caricare
+ * @param DatabaseHelper $dbh il database in cui sono salvati i commenti
+ * @return array vettore di commenti
+ */
+function loadMostRecentComments(int $id_post,int $n, DatabaseHelper $dbh){
+    return $dbh->getMostRecentComments($id_post, $n);
+
+}
+
+/**
+ * Ritorna tutti commenti in ordine dai più recenti lasciati sul post
+ * @param int $id_post post di cui si vogliono caricare i commenti
+ * @param DatabaseHelper $dbh il database in cui sono salvati i commenti
+ * @return array vettore di commenti
+ */
+function allLoadMostRecentComments(int $id_post, DatabaseHelper $dbh){
+    return $dbh->getAllMostRecentComments($id_post);
+}
+
+/**
+ * Ritorna se il commento ha "commenti figli"
+ * @param int $id_comment l'identificatore del commento padre
+ * @param DatabaseHelper $dbh il database in cui sono salvati i commenti
+ * @return true se il commento ha "commenti figli"
+ */
+function doesCommentHaveComments(int $id_comment, DatabaseHelper $dbh){
+    $result=$dbh->doesCommentHaveAnswers($id_comment);
+    if(empty($result)){
+        return false;
+    }else{
+        return $result[0]["COUNT(*)"]>0;
+    }
+
+}
+
+
+/**
+ * Ritorna i dati del commento
+ * @param int $id l'identificatore del commento
+ * @param DatabaseHelper $dbh il database in cui sono salvati i commenti
+ * @return array di dati del commento preso in input
+ */
+function getCommentInfo(int $id, DatabaseHelper $dbh){
+    $result=$dbh->getComment($id);
+    if(empty($result)){
+        return array();
+    }else{
+        return $result[0];
+    }
+
+}
+
+/**
+ * Inserisce un commento
+ * @param string $username l'utente che crea il commento
+ * @param string $text il testo del commento
+ * @param int $id_post il post a cui fa il commento
+ * @param DatabaseHelper $dbh il database in cui sono salvati i commenti
+ * @return se l'inserimento è andato a buon fine
+ */
+function newComment(string $username, string $text, int $id_post, DatabaseHelper $dbh){
+    return $dbh->addNewComment($username, $text, $id_post);
+}
+
+/**
+ * Inserisce un commento
+ * @param string $username l'utente che crea il commento
+ * @param string $text il testo del commento
+ * @param int $id_post il post a cui fa il commento
+ * @param int $id_padre il commento a cui risponde
+ * @param DatabaseHelper $dbh il database in cui sono salvati i commenti
+ * @return se l'inserimento è andato a buon fine
+ */
+function newCommentAnswer(string $username, int $id_padre, string $text, int $id_post, DatabaseHelper $dbh){
+    return $dbh->addNewCommentToComment($username, $id_padre, $text, $id_post);
+}
+
+/**
+ * Ritorna n commenti del post con offset più vecchi del timestamp fornito
+ * @param int $id del post
+ * @param int $n numero commenti da caricare
+ * @param int $offset l'offset dei commenti
+ * @param string $timestamp del commento più recente
+ * @param DatabaseHelper $dbh il database in cui sono salvati i commenti
+ * @return i commenti
+ */
+function getRecentComments(int $id, int $n, int $offset,string $timestamp, DatabaseHelper $dbh){
+    return $dbh->getCommentOffset($id, $n, $offset, $timestamp);
+}
+
+/**
+ * Ritorna tutti commenti in ordine dai più recenti lasciati sul post
+ * @param int $id_post post di cui si vogliono caricare i commenti
+ * @param string $timestamp del commento più recente
+ * @param DatabaseHelper $dbh il database in cui sono salvati i commenti
+ * @return array vettore di commenti
+ */
+function allLoadMostRecentCommentsAfter(int $id_post, string $timestamp, DatabaseHelper $dbh){
+    return $dbh->getAllMostRecentCommentsAfter($id_post, $timestamp);
+}
+
+/**
+ * Ritorna n commenti in risposta al post con offset più vecchi del timestamp fornito
+ * @param int $id del post
+ * @param int $id_comment del commento
+ * @param int $n numero commenti da caricare
+ * @param int $offset l'offset dei commenti
+ * @param string $timestamp del commento più recente
+ * @param DatabaseHelper $dbh il database in cui sono salvati i commenti
+ * @return i commenti
+ */
+function getRecentCommentsAnswers(int $id,int $id_comment, int $n, int $offset,string $timestamp, DatabaseHelper $dbh){
+    return $dbh->getCommentAnswerOffset($id, $id_comment, $n, $offset, $timestamp);
+}
+

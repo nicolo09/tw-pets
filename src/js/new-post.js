@@ -20,6 +20,40 @@ file.addEventListener('change', () => {
     imagePreviewShow(file);
 });
 
+const preview = document.getElementById("preview");
+preview.addEventListener('click', () => {
+    const img = document.getElementById("imgpostinput").files[0];
+    const reader = new FileReader();
+    if (img != null) {
+        //L'immagine esiste e la carico
+        reader.readAsDataURL(img);
+        reader.addEventListener("load", () => {
+            //Ho caricato l'immagine in session storage
+            sessionStorage.setItem("img-loaded", reader.result);
+            const alt = document.getElementById("imgalt").value;
+            const animalsList = $('#selectAnimals').select2('data');
+            const txt = document.getElementById("txtpost").value;
+            //Formatto gli animali
+            const animals = [];
+            animalsList.forEach(element => {
+                animals.push(element.id);
+            });
+
+            if (alt != "" & txt != "") {
+                //Posso mandarti alla preview
+                if (animals.length == 0) {
+                    //Senza animali
+                    window.open('preview-post-profile.php?txt=' + txt + "&alt=" + alt, '_blank');
+                } else {
+                    //Con animali
+                    window.open('preview-post-profile.php?txt=' + txt + "&alt=" + alt + "&anim=" + JSON.stringify(animals), '_blank');
+                }
+            }
+        });
+    }
+});
+
+
 /* When selecting an image this shows its preview on 
  * an img tag with id=#imgPreview */
 function imagePreviewShow(input) {
@@ -61,7 +95,7 @@ function createAnimalDisplay(selectedAnimals) {
             html += `
         <div class="row mt-5">`;
             html += `<div class="text-center col">
-                <img id="animalPreview" src="${IMG_DIR}${anim["immagine"]}" alt="Immagine profilo di ${anim["username"]}" class="rounded-circle proPic">
+                <img id="animalPreview" src="${IMG_DIR}${anim["immagine"]}" alt="Immagine profilo di ${anim["username"]}" class="rounded-circle pro-pic">
                 <p>${anim["username"]}</p>
                 </div>`;
             counter++;
@@ -70,7 +104,7 @@ function createAnimalDisplay(selectedAnimals) {
                 const index = getAnimalIndex(selectedAnimals[counter], finalAnimals);
                 const anim = finalAnimals[index];
                 html += `<div class="text-center col">
-                <img id="animalPreview" src="${IMG_DIR}${anim["immagine"]}" alt="Immagine profilo di ${anim["username"]}" class="rounded-circle proPic">
+                <img id="animalPreview" src="${IMG_DIR}${anim["immagine"]}" alt="Immagine profilo di ${anim["username"]}" class="rounded-circle pro-pic">
                 <p>${anim["username"]}</p>
                 </div>`;
                 counter++;
@@ -86,7 +120,7 @@ function createAnimalDisplay(selectedAnimals) {
 //When chosen animal changes, this triggers
 $('#selectAnimals').on('change.select2', function (e) {
     const sel = $('#selectAnimals').select2('data');
-    let selectedAnimals=[];
+    let selectedAnimals = [];
     if (sel.length >= 0) {
         for (i = 0; i < sel.length; i++) {
             selectedAnimals.push(sel[i]["id"]);
@@ -97,7 +131,7 @@ $('#selectAnimals').on('change.select2', function (e) {
 
 
 //Select2, displays both text and image of possible animals
-$(document).ready(function () {
+jQuery(function () {
     $('#selectAnimals').select2({
         placeholder: "Scegli quali animali sono presenti nel tuo post (opzionale)",
         closeOnSelect: false,

@@ -8,7 +8,7 @@
                         <!-- Username input -->
                         <div class="form-outline">
                             <label class="form-label">Nome Utente</label>
-                            <input type="text" placeholder="username" class="form-control" name="username" autocomplete="username" />
+                            <input type="text" placeholder="username" class="form-control" name="username" autocomplete="username" maxlength="25"/>
                         </div>
 
                         <!-- Email input -->
@@ -31,14 +31,6 @@
 
                         <!-- Submit button -->
                         <button type="submit" class="btn btn-primary btn-block mb-4">Registrati</button>
-
-                        <?php
-                        if (isset($templateParams["errors"])) {
-                            foreach ($templateParams["errors"] as $error) {
-                                echo "<p class='text-danger'>" . $error . "</p>";
-                            }
-                        }
-                        ?>
 
                         <!-- Go to login form -->
                         <div>

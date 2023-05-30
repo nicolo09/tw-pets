@@ -1,6 +1,5 @@
 <?php
 require_once("bootstrap.php");
-define("DEFAULT_IMG", "default_pet_image.png");
 
 if(!login_check($dbh)){
     header("Location: login.php");
@@ -21,6 +20,7 @@ if(isset($_POST["username"], $_POST["type"])){
         list($result, $error) = registerAnimal($animal, $type, $_FILES, $description, $owners, $dbh);
         if($result == 1){
             // New animal added
+            $_SESSION["message"] = "Aggiunto " . $animal . " con successo";
             header("Location: profile-animals.php");
             exit;
         } else {
@@ -41,6 +41,7 @@ if(isset($_POST["username"], $_POST["type"])){
     list($result, $error) = editAnimal($animal[0], $type, $_FILES, $description, $owners, $dbh);
     if($result == 1){
         // Animal profile edited
+        $_SESSION["message"] = "Modificato " . $animal[0]["username"] . " con successo";
         header("Location: profile-animals.php");
         exit;
     } else {
@@ -59,7 +60,8 @@ if(isset($_GET["animal"])){
     }
 
     if(!empty($msg)){
-        header("Location: profile-animals.php?error=" . $msg);
+        $_SESSION["error"] = $msg;
+        header("Location: profile-animals.php");
         exit;
     }
 
@@ -69,7 +71,7 @@ if(isset($_GET["animal"])){
     $templateParams["description"] = $animal[0]["descrizione"];
     $templateParams["title"] = "Modifica - " . $animal[0]["username"];
     $templateParams["subtitle"] = $templateParams["title"];
-    $templateParams["owners"] = $dbh->getOwners($animal[0]["username"]);
+    $templateParams["owners"] = array_column($dbh->getOwners($animal[0]["username"]), "username");
 
 } else {
     $templateParams["img"] = "img/default_pet_image.png";

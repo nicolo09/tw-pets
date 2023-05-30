@@ -24,7 +24,7 @@
 </head>
 
 <body>
-    <nav class="navbar navbar-expand bg-light fixed-top">
+    <nav class="navbar navbar-expand bg-light fixed-top p-0">
         <div class="container-fluid">
             <div class="collapse navbar-collapse">
                 <div class="navbar-nav nav-fill row-cols-3">

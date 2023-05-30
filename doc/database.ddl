@@ -17,7 +17,7 @@ create table ANIMALE (
 
 create table COMMENTO (
      id_commento int not null auto_increment,
-     testo varchar(100) not null,
+     testo varchar(200) not null,
      timestamp timestamp not null,
      id_post int not null,
      id_padre int,
@@ -47,17 +47,19 @@ create table LIKES (
 create table NOTIFICA (
      letta boolean not null,
      timestamp timestamp not null,
-     id int not null,
+     id int not null auto_increment,
      destinatario varchar(25) not null,
+     tipo varchar(25) not null,
+     origine JSON not null,
      constraint IDNOTIFICA primary key (id));
 
 create table PERSONA (
      username varchar(25) not null,
-     descrizione varchar(100),
+     descrizione varchar(200),
      immagine varchar(200) not null default "default.jpg",
      email varchar(30) not null,
      password char(255) not null,
-     impiego varchar(20),
+     impiego varchar(50),
      constraint IDPERSONA_ID primary key (username));
 
 create table POSSIEDE (
