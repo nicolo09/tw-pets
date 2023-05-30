@@ -48,7 +48,7 @@
 
             </div>
         </div>
-        <div class="comments text-left m-1">
+        <div class="comments text-left m-1" id="comments-<?php echo $templateParams["id"] ?>">
             <?php
             if (isset($templateParams["descrizione"]) && isset($templateParams["username"])) {
                 //Descrizione
