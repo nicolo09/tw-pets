@@ -19,7 +19,7 @@
         </div>
     </div>
     <!--Immagine-->
-    <img class="w-100" src=<?php if (isset($templateParams["immagine"])) {
+    <img class="w-100 <?php if (isset($templateParams["home"])) echo "home-post"?>" src=<?php if (isset($templateParams["immagine"])) {
                                 echo $templateParams["immagine"];
                             } else {
                                 echo "#";
