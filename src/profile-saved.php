@@ -6,6 +6,12 @@ if(!login_check($dbh)){
     exit;
 }
 
+if(isset($_GET["offset"]) && isset($_GET["number"])){
+    $posts = $dbh->getSavedPosts($_SESSION["username"], $_GET["number"], $_GET["offset"]);
+    require("template\post-list.php");
+    exit;
+}
+
 $templateParams["title"] = "Post salvati";
 $templateParams["page"] = "saved-posts.php";
 
