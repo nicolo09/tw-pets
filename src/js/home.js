@@ -19,6 +19,9 @@ const intersectionObserver = new IntersectionObserver(entries => {
             },
             dataType: 'json',
             success: function(data) {
+                if($("#error").length > 0) {
+                    $("#error").remove()
+                }
                 if(data["html"] != "") {
                     $('#post-list').append(data["html"])
                     data["postIDs"].forEach(id => attachStyleAndEventListeners(id))
@@ -32,7 +35,9 @@ const intersectionObserver = new IntersectionObserver(entries => {
                 }
             },
             error: function () {
-                // TODO
+                $("#spinner").addClass("d-none")
+                let error = $("<p></p>").addClass("text-danger text-center text-decoration-underline").attr('id', "error").text("Impossibile caricare altri risultati, riprovare pù tardi")
+                $("#post-list").append(error)
             }
         })
     }
