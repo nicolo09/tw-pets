@@ -1,10 +1,4 @@
-<?php
-$result = $dbh->getPostsForUser(getUserName($dbh), 10, 0);
-echo '<div id="post-list">';
-require("post-list.php");
-echo '</div>'
-?>
-
+<div id="post-list"></div>
 <div class="d-flex justify-content-center align-items-center mt-4" id="spinner">
     <div class="spinner-border text-primary spinner-border-sm" role="status">
         <span class="visually-hidden">Loading...</span>
