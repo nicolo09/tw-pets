@@ -17,9 +17,9 @@
                 <button class="btn btn-outline-primary col profile-button" id="follow">
                 <?php if($templateParams["userFollows"] == true){
                 //Utente segue
-                    echo html_entity_decode('<img src="img/remove-user.svg" alt="" class="w-25" />Smetti di seguire');
+                    echo '<img src="img/remove-user.svg" alt="" class="w-25" />Smetti di seguire';
                 } else {
-                    echo html_entity_decode('<img src="img/add-user.svg" alt="" class="w-25" />Segui');
+                    echo '<img src="img/add-user.svg" alt="" class="w-25" />Segui';
                 }
                 ?>
                 </button>
@@ -54,20 +54,20 @@
             //Ogni immagine deve avere un alt
             $n=count($templateParams["postimg"]);//Hai n elementi, tra 0 e n-1
             for($i = 0; $i < $n; $i += 3){
-                echo html_entity_decode('<div class="row g-0">');
+                echo '<div class="row g-0">';
                 for($j = 0; $j < 3 && $j + $i < $n; $j++){
-                    echo html_entity_decode('<a href="view-post-profile.php?id='.$templateParams["id"][$i + $j].'" class="col post-preview-container">
-                    <img src="'.$templateParams["postimg"][$i + $j].'" alt="'.$templateParams["alt"][$i + $j].'" class="post-preview"/></a>');
+                    echo '<a href="view-post-profile.php?id='.$templateParams["id"][$i + $j].'" class="col post-preview-container">
+                    <img src="'.$templateParams["postimg"][$i + $j].'" alt="'.$templateParams["alt"][$i + $j].'" class="post-preview"/></a>';
                 }
-                echo html_entity_decode('</div>');
+                echo '</div>';
             }
         }else{
             //Se hai un numero immagini diverso dal numero di alt-> non mostro nessuna immagine
-            echo html_entity_decode('<h3 class="text-center">Nessun post</h3>');
+            echo '<h3 class="text-center">Nessun post</h3>';
         }
     }else{
         //Se non hai settato le immagini
-        echo html_entity_decode('<h3 class="text-center">Nessun post</h3>');
+        echo '<h3 class="text-center">Nessun post</h3>';
     }
     
     ?>

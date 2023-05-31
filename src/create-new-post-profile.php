@@ -19,15 +19,15 @@ if (empty($_POST)) {
 
     if (isset($_POST["imgalt"]) && isset($_FILES) && isset($_POST["txtpost"])) {
         $img = $_FILES["imgpost"];
-        $alt = $_POST["imgalt"];
-        $text = $_POST["txtpost"];
+        $alt = htmlspecialchars($_POST["imgalt"]);
+        $text = htmlspecialchars($_POST["txtpost"]);
         $postErrors=newPost(getUserName($dbh), $img, $alt, $text, $animals, $dbh);
         if($postErrors[0]!=1){
             //Ci sono stati errori
-            $templateParams["error"][]=$postErrors[1];
+            $templateParams["errors"][]=$postErrors[1];
         }
     } else {
-        $templateParams["error"][]="Compila tutti i campi e metti un'immagine con estensione jpg, jpeg, png o gif";
+        $templateParams["errors"][]="Compila tutti i campi e metti un'immagine con estensione jpg, jpeg, png o gif";
     }
 }
 
@@ -38,9 +38,11 @@ foreach($animalList as $singleAnimal){
     $templateParams["animalsImg"][]=IMG_DIR.$singleAnimal["immagine"];
 }
 
-if(empty($_POST)==false&&isset($templateParams["error"])==false){
+if(empty($_POST)==false&&isset($templateParams["errors"])==false){
     //Andato a buon fine l'inserimento di un post
-    $templateParams["success"]="Hai creato un post!";
+    $_SESSION["message"] = "Hai creato un post!";
+    header("Location: ".getUserProfileHref(getUserName($dbh)));
+    exit;
 }
 
 $templateParams["page"] = "new-post.php";
