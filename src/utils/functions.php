@@ -137,6 +137,10 @@ function registerAnimal($animal, $type, $file, $description, $owners, $dbh)
         $errors[] = "Lo username deve essere lungo almeno 3 caratteri.";
     }
 
+    if (!isUserID($animal)) {
+        $errors[] = "Lo username può contenere solo lettere, numeri e _";
+    }
+
     if (strlen($type) < 3) {
         $errors[] = "Il tipo deve essere lungo almeno 3 caratteri.";
     }

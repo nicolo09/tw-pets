@@ -19,8 +19,8 @@ if (empty($_POST)) {
 
     if (isset($_POST["imgalt"]) && isset($_FILES) && isset($_POST["txtpost"])) {
         $img = $_FILES["imgpost"];
-        $alt = $_POST["imgalt"];
-        $text = $_POST["txtpost"];
+        $alt = htmlspecialchars($_POST["imgalt"]);
+        $text = htmlspecialchars($_POST["txtpost"]);
         $postErrors=newPost(getUserName($dbh), $img, $alt, $text, $animals, $dbh);
         if($postErrors[0]!=1){
             //Ci sono stati errori
