@@ -12,7 +12,7 @@ if(isset($_GET["offset"]) && isset($_GET["finished"])) {
         $result = $dbh->getPostsForUser($user, 10, $_GET["offset"]);
         if(count($result) < 10) {
             $result = array_merge($result, $dbh->getRecentPostsForUser($user, 10, 0));
-            $finished = true;
+            $finished = 1;
         }
     } else {
         $result = $dbh->getRecentPostsForUser($user, 10, $_GET["offset"]);
