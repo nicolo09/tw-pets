@@ -15,12 +15,22 @@
     <link href="https://cdnjs.cloudflare.com/ajax/libs/select2/4.1.0-rc.0/css/select2.css" rel="stylesheet" />
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/select2-bootstrap-5-theme@1.3.0/dist/select2-bootstrap-5-theme.min.css" />
     <script src="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/js/select2.min.js"></script>
-    
+
     <title><?php
             if (isset($templateParams["title"])) {
                 echo ($templateParams["title"]);
             }
             ?></title>
+
+    <?php
+    /*
+    $files = glob($dir . '/*.*');
+    $file = array_rand($files);
+    $icon = $files[$file];
+    */
+    ?>
+    
+    <link rel="icon" href="<?php echo $icon ?>" type="image/x-icon" />
 </head>
 
 <body>
@@ -36,6 +46,9 @@
         </div>
     </nav>
     <?php
+    if (!isset($_COOKIE["cookie-law-accepted"]) || !$_COOKIE["cookie-law-accepted"]==true) {
+        echo "<div class=\"justify-content-center d-flex\"><div class=\"alert alert-primary alert-dismissible fade show m-1\" role=\"alert\"> " . COOKIE_MESSAGE . " <a href=cookie.php>Scopri di più</a> <button type=\"button\" class=\"btn-close\" data-bs-dismiss=\"alert\" aria-label=\"Close\" id=\"cookie-dismiss-btn\"></button></div></div>";
+    }
     if (isset($templateParams["messages"])) {
         foreach ($templateParams["messages"] as $message) {
             echo "<div class=\"desktop-view\"><div class=\"justify-content-center d-flex\"><div class=\"alert alert-success alert-dismissible fade show col-6\" role=\"alert\"> <label class=\"top-page-popup\">" . $message . "</label> <button type=\"button\" class=\"btn-close\" data-bs-dismiss=\"alert\" aria-label=\"Close\"></button></div></div></div>";

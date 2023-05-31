@@ -43,3 +43,8 @@ const refreshBadgeInterval = setInterval(function () {
 jQuery(function () {
     updateNotificationBadge();
 });
+
+//Set cookie on banner dismiss
+$("#cookie-dismiss-btn").on("click", function () {
+    document.cookie = "cookie-law-accepted=true; Max-Age=1707109200";
+});
