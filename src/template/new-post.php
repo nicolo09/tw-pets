@@ -37,18 +37,6 @@
                 ?>
             </select>
         </div>
-        <!--Gli errori, se presenti-->
-        <?php
-        if (isset($templateParams["error"])) {
-            foreach ($templateParams["error"] as $error) {
-                echo '<div class="alert alert-danger alert-dismissible fade show" role="alert"> <label class="top-page-popup">' . $error . '</label> <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button></div>';
-            }
-        } else {
-            if (isset($templateParams["success"])) {
-                echo '<div class="alert alert-success alert-dismissible fade show" role="alert"> <label class="top-page-popup">' . $templateParams["success"] . '</label> <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button></div>';
-            }
-        }
-        ?>
         <!--Mostro gli animali, dinamicamente con js-->
         <div class="animal-display">
         </div>
