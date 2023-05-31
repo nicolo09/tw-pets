@@ -124,3 +124,11 @@ function generateDate() {
     const d = new Date()
     return d.toISOString().split('T')[0] + ' ' + d.toTimeString().split(' ')[0]
 }
+
+function attachStyleAndEventListeners(id){
+    getPostLiked(id)
+    getPostSaved(id)
+    attachLike(id)
+    attachSave(id)
+    attachNewComment(id)
+}
