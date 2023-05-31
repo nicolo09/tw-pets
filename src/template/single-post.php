@@ -48,13 +48,12 @@
                 $row = $row . '</p>';
                 echo $row;
             }
-            if (isset($templateParams["timestamp"]) && isset($templateParams["username"])) {
-                echo '<p>' . 'Post creato alle ' . $templateParams["timestamp"] . '</p>';
-            } ?>
+            echo '<p>' . 'Post creato alle ' . $templateParams["timestamp"] . '</p>';
+            ?>
             <div class="comment-slider">
                 <div class="comment-container">
                     <?php
-                    if (isset($templateParams["comments"]) && count($templateParams["comments"]) > 0 && isset($templateParams["id"])) {
+                    if (isset($templateParams["comments"]) && count($templateParams["comments"]) > 0) {
                         $id = $templateParams["id"];
                         foreach ($templateParams["comments"] as $comment) {
                             echo '<p><a href="' . getUserProfileHref($comment["username"]) . '">' . $comment["username"] . '</a>' . ': ' . $comment["testo"] . '</p>';
@@ -66,33 +65,25 @@
                             }
                         }
                     }
-                    if (isset($templateParams["more-comments"]) && $templateParams["more-comments"] == true && isset($templateParams["id"])) {
+                    if (isset($templateParams["more-comments"]) && $templateParams["more-comments"] == true) {
                         $id = $templateParams["id"];
                         echo '<a href="view-post-profile.php?id='.$id.'">Leggi i commenti</a>';
                     }
                     ?>
                 </div>
-                <?php if (isset($templateParams["id"])) {
+                <?php 
                     echo '<div class="d-flex justify-content-center align-items-center mt-4 spinner-post d-none" id="spinner-post-' . $templateParams["id"] . '"> <div class="spinner-border text-primary spinner-border-sm"
                             role="status">
                             <span class="visually-hidden">Loading...</span>
                         </div>
                     </div>';
-                } ?>
+                ?>
             </div>
             <!--New comment-->
             <div class="row g-0">
-                <label for="<?php if (isset($templateParams["id"])) {
-                                echo $templateParams["id"];
-                            } ?>-commentTextArea" id="<?php if (isset($templateParams["id"])) {
-                                                            echo $templateParams["id"];
-                                                        } ?>-label"> Aggiungi un commento a questo post:</label>
-                <textarea class="rounded col form-control" placeholder="Massimo 200 caratteri" maxlength="200" id="<?php if (isset($templateParams["id"])) {
-                                                                                                                        echo $templateParams["id"];
-                                                                                                                    } ?>-commentTextArea" name="new-comment"></textarea>
-                <button class="rounded col-3 new-comment btn" id="<?php if (isset($templateParams["id"])) {
-                                                                        echo $templateParams["id"];
-                                                                    } ?>-new-comment">Commenta</button>
+                <label for="<?php echo $templateParams["id"];?>-commentTextArea" id="<?php echo $templateParams["id"];?>-label"> Aggiungi un commento a questo post:</label>
+                <textarea class="rounded col form-control" placeholder="Massimo 200 caratteri" maxlength="200" id="<?php echo $templateParams["id"];?>-commentTextArea" name="new-comment"></textarea>
+                <button class="rounded col-3 new-comment btn" id="<?php echo $templateParams["id"];?>-new-comment">Commenta</button>
             </div>
         </div>
     </div>
