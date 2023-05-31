@@ -2,9 +2,9 @@
     <div class="card-header row border-bottom border-black post-header p-1">
         <!--Utente che ha postato-->
         <div class="col p-0">
-            <img class="post-pic text-center img-fluid" src=<?php echo $templateParams["immagineprofilo"];?> alt="<?php echo "Foto profilo di " . $templateParams["username"];?>">
-            <a class="align-items-center" <?php echo 'href="' . getUserProfileHref($templateParams["username"] . '"');
-                                             ?>><?php echo $templateParams["username"]; ?></a>
+            <a class="align-items-center" href= <?php echo getUserProfileHref($templateParams["username"]);?>>
+                <img class="post-pic text-center img-fluid me-2" src=<?php echo $templateParams["immagineprofilo"];?> alt="<?php echo "Foto profilo di " . $templateParams["username"];?>"><?php echo $templateParams["username"]; ?>
+            </a>
         </div>
     </div>
     <!--Immagine-->
