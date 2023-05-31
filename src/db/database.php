@@ -1101,14 +1101,14 @@ class DatabaseHelper
         throw new Exception("Error Processing Request", 1);
     }
 
-    
     /**
      * @param string $username the user for whomst load the post.
      * @param int $n number of posts to get.
      * @param int $offset posts offset.
+     * @param string $startTime a string that represents a timestamp.
      * @return array an array of $n or less posts of people/animals that the user follows.
      */
-    public function getPostsForUser(string $username, int $n, int $offset)
+    public function getPostsForUser(string $username, int $n, int $offset, $startTime)
     {
         $query = "SELECT DISTINCT p.*
         FROM POST p
@@ -1117,12 +1117,12 @@ class DatabaseHelper
         LEFT JOIN SEGUE_PERSONA sp ON p.username = sp.followed
         WHERE (sp.follower = ? OR sa.follower = ?)
           AND p.username != ?
-          AND p.timestamp >= NOW() - INTERVAL 2 DAY
+          AND p.timestamp >= ? - INTERVAL 2 DAY
         ORDER BY p.timestamp DESC
         LIMIT ?, ?";
 
         if($stmt = $this->db->prepare($query)) {
-            $stmt->bind_param('sssii', $username, $username, $username, $offset, $n);
+            $stmt->bind_param('ssssii', $username, $username, $username, $startTime, $offset, $n);
             $stmt->execute();
             $result = $stmt->get_result();
             return $result->fetch_all(MYSQLI_ASSOC);
@@ -1135,9 +1135,10 @@ class DatabaseHelper
      * @param string $username the user for whomst load the post.
      * @param int $n number of posts to get.
      * @param int $offset posts offset.
+     * @param string $startTime a string that represents a timestamp.
      * @return array an array of $n or less posts of people/animals that the user does not follow. 
      */
-    public function getRecentPostsForUser(string $username, int $n, int $offset) 
+    public function getRecentPostsForUser(string $username, int $n, int $offset, $startTime) 
     {
         $query = "SELECT p.*
         FROM POST p
@@ -1147,13 +1148,33 @@ class DatabaseHelper
         LEFT JOIN SEGUE_ANIMALE sa ON r.animale = sa.followed AND sa.follower = ?
         WHERE sp.follower IS NULL AND sa.follower IS NULL
           AND p.username != ?
-          AND p.timestamp >= NOW() - INTERVAL 2 DAY
+          AND p.timestamp >= ? - INTERVAL 2 DAY
         GROUP BY p.id_post
         ORDER BY COUNT(l.id_post) DESC, p.timestamp DESC
         LIMIT ?, ?";
 
         if($stmt = $this->db->prepare($query)) {
-            $stmt->bind_param('sssii', $username, $username, $username, $offset, $n);
+            $stmt->bind_param('ssssii', $username, $username, $username, $startTime, $offset, $n);
+            $stmt->execute();
+            $result = $stmt->get_result();
+            return $result->fetch_all(MYSQLI_ASSOC);
+        } else {
+            return array();
+        }
+    }
+
+    /**
+     * @param string $username the user for whomst load the post.
+     * @param int $n number of posts to get.
+     * @param int $offset posts offset.
+     * @param int $seed used to set the sql RAND seed
+     * @param string $startTime a string that represents a timestamp.
+     * @return array an array of $n or less random posts of people/animals.
+     */
+    public function getOlderRandomPosts(string $username, int $n, int $offset, int $seed, $startTime) 
+    {
+        if($stmt = $this->db->prepare("SELECT * FROM POST WHERE timestamp < ? - INTERVAL 2 DAY AND username != ? ORDER BY RAND(?) LIMIT ?, ?")) {
+            $stmt->bind_param('ssiii', $startTime, $username, $seed, $offset, $n);
             $stmt->execute();
             $result = $stmt->get_result();
             return $result->fetch_all(MYSQLI_ASSOC);
