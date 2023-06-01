@@ -972,7 +972,7 @@ function getCommentInfo(int $id, DatabaseHelper $dbh){
  * @param string $text il testo del commento
  * @param int $id_post il post a cui fa il commento
  * @param DatabaseHelper $dbh il database in cui sono salvati i commenti
- * @return se l'inserimento è andato a buon fine
+ * @return bool true se l'inserimento è andato a buon fine
  */
 function newComment(string $username, string $text, int $id_post, DatabaseHelper $dbh){
     return $dbh->addNewComment($username, $text, $id_post);
@@ -985,7 +985,7 @@ function newComment(string $username, string $text, int $id_post, DatabaseHelper
  * @param int $id_post il post a cui fa il commento
  * @param int $id_padre il commento a cui risponde
  * @param DatabaseHelper $dbh il database in cui sono salvati i commenti
- * @return se l'inserimento è andato a buon fine
+ * @return bool true se l'inserimento è andato a buon fine
  */
 function newCommentAnswer(string $username, int $id_padre, string $text, int $id_post, DatabaseHelper $dbh){
     return $dbh->addNewCommentToComment($username, $id_padre, $text, $id_post);
@@ -998,7 +998,7 @@ function newCommentAnswer(string $username, int $id_padre, string $text, int $id
  * @param int $offset l'offset dei commenti
  * @param string $timestamp del commento più recente
  * @param DatabaseHelper $dbh il database in cui sono salvati i commenti
- * @return i commenti
+ * @return array i commenti
  */
 function getRecentComments(int $id, int $n, int $offset,string $timestamp, DatabaseHelper $dbh){
     return $dbh->getCommentOffset($id, $n, $offset, $timestamp);
@@ -1023,7 +1023,7 @@ function allLoadMostRecentCommentsAfter(int $id_post, string $timestamp, Databas
  * @param int $offset l'offset dei commenti
  * @param string $timestamp del commento più recente
  * @param DatabaseHelper $dbh il database in cui sono salvati i commenti
- * @return i commenti
+ * @return array i commenti
  */
 function getRecentCommentsAnswers(int $id,int $id_comment, int $n, int $offset,string $timestamp, DatabaseHelper $dbh){
     return $dbh->getCommentAnswerOffset($id, $id_comment, $n, $offset, $timestamp);
