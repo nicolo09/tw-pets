@@ -10,6 +10,7 @@
  */
  enum NotificationType {
     case FOLLOW; //Sent to the followed user when someone starts following him
+    case FOLLOW_ANIMAL; //Sent to the animal's owner when someone starts following one of his animals
     case LIKE; //Sent to the post owner when someone likes his post
     case COMMENT; //Sent to the post owner when someone comments his post
     case POST; //Sent to the followers of a user when he posts something
@@ -28,6 +29,7 @@ function getNotificationThumbnail($notification, DatabaseHelper $dbh)
         NotificationType::FOLLOW => array("src" => getUserProfilePic(getNotificationParameter($notification, "follower"), $dbh), "alt" => "Foto profilo di " . getNotificationParameter($notification, "follower")),
         NotificationType::LIKE => array("src" => getUserProfilePic(getNotificationParameter($notification, "user"), $dbh), "alt" => "Foto profilo di " . getNotificationParameter($notification, "user")),
         NotificationType::COMMENT => array("src" => getUserProfilePic(getNotificationParameter($notification, "user"), $dbh), "alt" => "Foto profilo di " . getNotificationParameter($notification, "user")),
+        NotificationType::FOLLOW_ANIMAL => array("src" => getUserProfilePic(getNotificationParameter($notification, "follower"), $dbh), "alt" => "Foto profilo di " . getNotificationParameter($notification, "follower")),
         default => array("src" => "", "alt" => "")
     };
 }
@@ -43,6 +45,7 @@ function getNotificationMessage($notification)
         NotificationType::FOLLOW => getNotificationParameter($notification, "follower") . " ha iniziato a seguirti",
         NotificationType::LIKE => getNotificationParameter($notification, "user") . " ha messo mi piace al tuo post",
         NotificationType::COMMENT => getNotificationParameter($notification, "user") . " ha commentato il tuo post",
+        NotificationType::FOLLOW_ANIMAL => getNotificationParameter($notification, "follower") . " ha iniziato a seguire " . getNotificationParameter($notification, "animal"),
         default => ""
     };
 }
@@ -58,6 +61,7 @@ function getNotificationRef($notification)
         NotificationType::FOLLOW => getUserProfileHref(getNotificationParameter($notification, "follower")),
         NotificationType::LIKE => getPostHref(getNotificationParameter($notification, "post")),
         NotificationType::COMMENT => getPostHref(getNotificationParameter($notification, "post")),
+        NotificationType::FOLLOW_ANIMAL => getAnimalProfileHref(getNotificationParameter($notification, "animal")),
         default => "#"
     };
 }
@@ -89,7 +93,8 @@ function getNotificationType($notification)
         "LIKE" => NotificationType::LIKE,
         "COMMENT" => NotificationType::COMMENT,
         "POST" => NotificationType::POST,
-        "MESSAGE" => NotificationType::MESSAGE
+        "MESSAGE" => NotificationType::MESSAGE,
+        "FOLLOW_ANIMAL" => NotificationType::FOLLOW_ANIMAL
     };
 }
 
@@ -149,4 +154,17 @@ function addCommentNotification($user, $post, DatabaseHelper $dbh)
 function addLikeNotification($user, $post, DatabaseHelper $dbh)
 {
     $dbh->addNotification(getPost($post, $dbh)["username"], NotificationType::LIKE, array("user" => $user, "post" => $post));
+}
+
+/**
+ * Adds a notification for a new follower of an animal
+ * @param $follower the follower
+ * @param $animal the animal
+ * @param $dbh the database helper
+ * @return void
+ */
+function addFollowAnimalNotification($follower, $animal, DatabaseHelper $dbh){
+    foreach ($dbh->getOwners($animal) as $owner) {
+        $dbh->addNotification($owner["username"], NotificationType::FOLLOW_ANIMAL, array("follower" => $follower, "animal" => $animal));
+    }
 }
