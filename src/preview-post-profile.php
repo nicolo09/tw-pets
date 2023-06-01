@@ -26,5 +26,6 @@ $templateParams["immagineprofilo"]=getUserProfilePic(getUserName($dbh), $dbh);
 $templateParams["title"]="Preview del post";
 $templateParams["page"] = "preview-post-single.php";
 $templateParams["id"]=-1;
+$templateParams["immagine"]="#";
 require_once("template/base.php");
 ?>
