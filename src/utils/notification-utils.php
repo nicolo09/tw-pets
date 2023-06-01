@@ -1,5 +1,7 @@
 <?php
 
+require_once("settings-utils.php");
+
 /**
  * Parameters for the notification types are:
  * FOLLOW: follower
@@ -10,14 +12,14 @@
  * POST: user, post
  * MESSAGE: user
  */
- enum NotificationType {
+enum NotificationType
+{
     case FOLLOW; //Sent to the followed user when someone starts following him
     case FOLLOW_ANIMAL; //Sent to the animal's owner when someone starts following one of his animals
     case LIKE; //Sent to the post owner when someone likes his post
     case COMMENT; //Sent to the post owner when someone comments his post
     case REPLY_COMMENT; //Sent to the commenter when someone replies to his comment
     case POST; //Sent to the followers of a user when he posts something
-    case MESSAGE; //Sent to the recipient when someone sends him a message
 }
 
 /**
@@ -99,7 +101,6 @@ function getNotificationType($notification)
         "LIKE" => NotificationType::LIKE,
         "COMMENT" => NotificationType::COMMENT,
         "POST" => NotificationType::POST,
-        "MESSAGE" => NotificationType::MESSAGE,
         "FOLLOW_ANIMAL" => NotificationType::FOLLOW_ANIMAL,
         "REPLY_COMMENT" => NotificationType::REPLY_COMMENT,
     };
@@ -136,7 +137,9 @@ function isNotificationForUser($notificationId, $user, $dbh)
  */
 function addFollowNotification($follower, $followed, DatabaseHelper $dbh)
 {
-    $dbh->addNotification($followed, NotificationType::FOLLOW, array("follower" => $follower));
+    if (isNotificationFollowEnabled($followed, $dbh)) {
+        $dbh->addNotification($followed, NotificationType::FOLLOW, array("follower" => $follower));
+    }
 }
 
 /**
@@ -148,7 +151,9 @@ function addFollowNotification($follower, $followed, DatabaseHelper $dbh)
  */
 function addCommentNotification($user, $post, DatabaseHelper $dbh)
 {
-    $dbh->addNotification(getPost($post, $dbh)["username"], NotificationType::COMMENT, array("user" => $user, "post" => $post));
+    if (isNotificationCommentEnabled(getPost($post, $dbh)["username"], $dbh)) {
+        $dbh->addNotification(getPost($post, $dbh)["username"], NotificationType::COMMENT, array("user" => $user, "post" => $post));
+    }
 }
 
 /**
@@ -160,7 +165,9 @@ function addCommentNotification($user, $post, DatabaseHelper $dbh)
  */
 function addLikeNotification($user, $post, DatabaseHelper $dbh)
 {
-    $dbh->addNotification(getPost($post, $dbh)["username"], NotificationType::LIKE, array("user" => $user, "post" => $post));
+    if (isNotificationLikeEnabled(getPost($post, $dbh)["username"], $dbh)) {
+        $dbh->addNotification(getPost($post, $dbh)["username"], NotificationType::LIKE, array("user" => $user, "post" => $post));
+    }
 }
 
 /**
@@ -170,9 +177,12 @@ function addLikeNotification($user, $post, DatabaseHelper $dbh)
  * @param $dbh the database helper
  * @return void
  */
-function addFollowAnimalNotification($follower, $animal, DatabaseHelper $dbh){
+function addFollowAnimalNotification($follower, $animal, DatabaseHelper $dbh)
+{
     foreach ($dbh->getOwners($animal) as $owner) {
-        $dbh->addNotification($owner["username"], NotificationType::FOLLOW_ANIMAL, array("follower" => $follower, "animal" => $animal));
+        if (isNotificationFollowAnimalEnabled($owner["username"], $dbh)) {
+            $dbh->addNotification($owner["username"], NotificationType::FOLLOW_ANIMAL, array("follower" => $follower, "animal" => $animal));
+        }
     }
 }
 
@@ -183,12 +193,14 @@ function addFollowAnimalNotification($follower, $animal, DatabaseHelper $dbh){
  * @param $dbh the database helper
  * @return void
  */
-function addReplyCommentNotification($replier, $comment, DatabaseHelper $dbh){
+function addReplyCommentNotification($replier, $comment, DatabaseHelper $dbh)
+{
     $recipient = $dbh->getComment($comment)[0]["id_padre"];
-    if (isset($recipient)){
-        $dbh->addNotification($recipient, NotificationType::REPLY_COMMENT, array("replier" => $replier, "comment" => $comment, "post" => $dbh->getComment($comment)[0]["id_post"]));
-    }
-    else {
+    if (isset($recipient)) {
+        if (isNotificationReplyEnabled($recipient, $dbh)){
+            $dbh->addNotification($recipient, NotificationType::REPLY_COMMENT, array("replier" => $replier, "comment" => $comment, "post" => $dbh->getComment($comment)[0]["id_post"]));
+        }
+    } else {
         throw new Exception("Il commento non risponde a nessun altro commento");
     }
 }
