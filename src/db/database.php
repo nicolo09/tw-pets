@@ -22,7 +22,12 @@ class DatabaseHelper
         }
     }
 
-    public function getMutualFollowers($username)
+    /**
+     * Gets all the users who are following and are being followed by a given user.
+     * @param string $username the user' username.
+     * @return array an array of associative arrays.
+     */
+    public function getMutualFollowers(string $username)
     {
         $query = "SELECT p.username, p.immagine
         FROM PERSONA p
@@ -40,7 +45,15 @@ class DatabaseHelper
         }
     }
 
-    public function getPersonsLike($username, $offset)
+    /**
+     * Gets some users whose username is similar to the given one, 
+     * ordered by their popularity and then alphabetically.
+     * @param string $username the username to use as reference.
+     * @param int $offset how many results should be ignored starting from the top.
+     * @param int $limit how many results the function should return.
+     * @return array an array of associative arrays.
+     */
+    public function getPersonsLike(string $username, int $offset, int $limit)
     {
         $value = "%" . $username . "%";
 
@@ -50,10 +63,10 @@ class DatabaseHelper
         WHERE p.username LIKE ?
         GROUP BY p.username
         ORDER BY COUNT(sp.follower) DESC, p.username 
-        LIMIT $offset, 10";
+        LIMIT ?, ?";
 
         if ($stmt = $this->db->prepare($query)) {
-            $stmt->bind_param('s', $value);
+            $stmt->bind_param('sii', $value, $offset, $limit);
             $stmt->execute();
             $result = $stmt->get_result();
             return $result->fetch_all(MYSQLI_ASSOC);
@@ -62,7 +75,15 @@ class DatabaseHelper
         }
     }
 
-    public function getAnimalsLike($username, $offset)
+    /**
+     * Gets some animals whose username is similar to the given one, 
+     * ordered by their popularity and then alphabetically.
+     * @param string $username the username to use as reference.
+     * @param int $offset how many results should be ignored starting from the top.
+     * @param int $limit how many results the function should return.
+     * @return array an array of associative arrays.
+     */
+    public function getAnimalsLike(string $username, int $offset, int $limit)
     {
         $value = "%" . $username . "%";
 
@@ -72,10 +93,10 @@ class DatabaseHelper
         WHERE a.username LIKE ?
         GROUP BY a.username
         ORDER BY COUNT(sa.follower) DESC, a.username
-        LIMIT $offset, 10";
+        LIMIT ?, ?";
 
         if ($stmt = $this->db->prepare($query)) {
-            $stmt->bind_param('s', $value);
+            $stmt->bind_param('sii', $value, $offset, $limit);
             $stmt->execute();
             $result = $stmt->get_result();
             return $result->fetch_all(MYSQLI_ASSOC);
@@ -84,7 +105,14 @@ class DatabaseHelper
         }
     }
 
-    public function getPersonFollowers($username, $offset)
+    /**
+     * Gets some followers of an user ordered by their popularity.
+     * @param string $username the user's username.
+     * @param int $offset how many results should be ignored starting from the top.
+     * @param int $limit how many results the function should return.
+     * @return array an array of associative arrays.
+     */
+    public function getPersonFollowers(string $username, int $offset, int $limit)
     {
 
         $query = "SELECT P.username, P.immagine
@@ -98,10 +126,10 @@ class DatabaseHelper
         ) AS subquery ON P.username = subquery.username
         GROUP BY P.username
         ORDER BY COUNT(SP.follower) DESC, P.username
-        LIMIT $offset, 30";
+        LIMIT ?, ?";
 
         if ($stmt = $this->db->prepare($query)) {
-            $stmt->bind_param('s', $username);
+            $stmt->bind_param('sii', $username, $offset, $limit);
             $stmt->execute();
             $result = $stmt->get_result();
             return $result->fetch_all(MYSQLI_ASSOC);
@@ -110,7 +138,14 @@ class DatabaseHelper
         }
     }
 
-    public function getAnimalFollowers($username, $offset)
+    /**
+     * Gets some followers of an animal ordered by their popularity.
+     * @param string $username the animal's username.
+     * @param int $offset how many results should be ignored starting from the top.
+     * @param int $limit how many results the function should return.
+     * @return array an array of associative arrays.
+     */
+    public function getAnimalFollowers(string $username, int $offset, int $limit)
     {
 
         $query = "SELECT P.username, P.immagine
@@ -125,10 +160,10 @@ class DatabaseHelper
         ) AS subquery ON P.username = subquery.username
         GROUP BY P.username
         ORDER BY COUNT(SP.follower) DESC, P.username
-        LIMIT $offset, 30";
+        LIMIT ?, ?";
 
         if ($stmt = $this->db->prepare($query)) {
-            $stmt->bind_param('ss', $username, $username);
+            $stmt->bind_param('ssii', $username, $username, $offset, $limit);
             $stmt->execute();
             $result = $stmt->get_result();
             return $result->fetch_all(MYSQLI_ASSOC);
@@ -137,7 +172,15 @@ class DatabaseHelper
         }
     }
 
-    public function addAnimal($username, $type, $img, $description)
+    /**
+     * Registers a new animal.
+     * @param string $username the animal's username.
+     * @param string $type what type of animal it is.
+     * @param string $img the animal's profile picture image name.
+     * @param string $description the animal profile's description.
+     * @return bool true if the profile was created successfully, false otherwise.
+     */
+    public function addAnimal(string $username, string $type, string $img, string $description)
     {
         if ($stmt = $this->db->prepare("INSERT INTO animale (username, tipo, immagine, descrizione) VALUES (?, ?, ?, ?)")) {
             $stmt->bind_param('ssss', $username, $type, $img, $description);
@@ -147,7 +190,15 @@ class DatabaseHelper
         }
     }
 
-    public function updateAnimal($username, $type, $img, $description)
+    /**
+     * Updates the animal's profile.
+     * @param string $username the animal's username.
+     * @param string $type what type of animal it is.
+     * @param string $img the animal's profile picture image name.
+     * @param string $description the animal profile's description.
+     * @return bool true if the profile was updated successfully, false otherwise.
+     */
+    public function updateAnimal(string $username, string $type, string $img, string $description)
     {
         if ($stmt = $this->db->prepare("UPDATE animale SET tipo = ?, immagine = ?, descrizione = ? WHERE username = ?")) {
             $stmt->bind_param("ssss", $type, $img, $description, $username);
@@ -157,7 +208,15 @@ class DatabaseHelper
         }
     }
 
-    public function updateUserProfile($username, $employment, $img, $description)
+    /**
+     * Updates the user's profile.
+     * @param string $username the user's username.
+     * @param string $employment what the user's does.
+     * @param string $img the user's profile picture image name.
+     * @param string $description the user profile's description.
+     * @return bool true if the profile has been updated successfully, false otherwise.
+     */
+    public function updateUserProfile(string $username, string $employment, string $img, string $description)
     {
         if ($stmt = $this->db->prepare("UPDATE persona SET impiego = ?, immagine = ?, descrizione = ? WHERE username = ?")) {
             $stmt->bind_param("ssss", $employment, $img, $description, $username);
@@ -167,7 +226,12 @@ class DatabaseHelper
         }
     }
 
-    public function getAnimals($animal)
+    /**
+     * Gets the animal from its username.
+     * @param string $animal the animal username.
+     * @return array an associative array.
+     */
+    public function getAnimalFromName(string $animal)
     {
         if ($stmt = $this->db->prepare("SELECT * FROM animale WHERE username = ?")) {
             $stmt->bind_param('s', $animal);
@@ -177,7 +241,13 @@ class DatabaseHelper
         }
     }
 
-    public function registerOwnership($owner, $animal)
+    /**
+     * Registers an ownership relation between a user and an animal.
+     * @param string $owner the user.
+     * @param string $animal the animal.
+     * @return bool true if the ownership was successfully registered, false otherwise or if the user doesn't exist.
+     */
+    public function registerOwnership(string $owner, string $animal)
     {
         if (count($this->getUserFromName($owner)) == 1) {
             if ($stmt = $this->db->prepare("INSERT INTO possiede (persona, animale) VALUES (?, ?)")) {
@@ -191,7 +261,13 @@ class DatabaseHelper
         }
     }
 
-    public function deleteOwnership($owner, $animal)
+    /**
+     * Removes the ownership of an animal from a user.
+     * @param string $owner the user.
+     * @param string $animal the animal.
+     * @return bool true if the ownership was successfully removed, false otherwise.
+     */
+    public function deleteOwnership(string $owner, string $animal)
     {
         if ($stmt = $this->db->prepare("DELETE FROM possiede WHERE persona = ? AND animale = ?")) {
             $stmt->bind_param('ss', $owner, $animal);
@@ -201,7 +277,12 @@ class DatabaseHelper
         }
     }
 
-    public function getOwners($animal)
+    /**
+     * Gets all the owners of an animal ordered by their popularity.
+     * @param string $animal the animal.
+     * @return array an array of associative arrays of the owners of the specified animal.
+     */
+    public function getOwners(string $animal)
     {
 
         $query = "SELECT P.username, P.immagine
@@ -226,8 +307,13 @@ class DatabaseHelper
         }
     }
 
-    /* Returns true if the user owns the given animal */
-    public function checkOwnership($owner, $animal)
+    /**
+     * Checks if a user owns the specified animal.
+     * @param string $owner the possible owner.
+     * @param string $animal the animal to check.
+     * @return bool true if the user owns the animal, false otherwise.
+     */
+    public function checkOwnership(string $owner, string $animal)
     {
         if ($stmt = $this->db->prepare("SELECT * FROM possiede WHERE persona = ? AND animale = ?")) {
             $stmt->bind_param('ss', $owner, $animal);
@@ -1103,12 +1189,12 @@ class DatabaseHelper
 
     /**
      * @param string $username the user for whomst load the post.
-     * @param int $n number of posts to get.
+     * @param int $limit number of posts to get.
      * @param int $offset posts offset.
      * @param string $startTime a string that represents a timestamp.
      * @return array an array of $n or less posts of people/animals that the user follows.
      */
-    public function getPostsForUser(string $username, int $n, int $offset, $startTime)
+    public function getPostsForUser(string $username, int $limit, int $offset, string $startTime)
     {
         $query = "SELECT DISTINCT p.*
         FROM POST p
@@ -1121,8 +1207,8 @@ class DatabaseHelper
         ORDER BY p.timestamp DESC
         LIMIT ?, ?";
 
-        if ($stmt = $this->db->prepare($query)) {
-            $stmt->bind_param('ssssii', $username, $username, $username, $startTime, $offset, $n);
+        if($stmt = $this->db->prepare($query)) {
+            $stmt->bind_param('ssssii', $username, $username, $username, $startTime, $offset, $limit);
             $stmt->execute();
             $result = $stmt->get_result();
             return $result->fetch_all(MYSQLI_ASSOC);
@@ -1133,12 +1219,12 @@ class DatabaseHelper
 
     /**
      * @param string $username the user for whomst load the post.
-     * @param int $n number of posts to get.
+     * @param int $limit number of posts to get.
      * @param int $offset posts offset.
      * @param string $startTime a string that represents a timestamp.
      * @return array an array of $n or less posts of people/animals that the user does not follow. 
      */
-    public function getRecentPostsForUser(string $username, int $n, int $offset, $startTime)
+    public function getRecentPostsForUser(string $username, int $limit, int $offset, string $startTime) 
     {
         $query = "SELECT p.*
         FROM POST p
@@ -1153,8 +1239,8 @@ class DatabaseHelper
         ORDER BY COUNT(l.id_post) DESC, p.timestamp DESC
         LIMIT ?, ?";
 
-        if ($stmt = $this->db->prepare($query)) {
-            $stmt->bind_param('ssssii', $username, $username, $username, $startTime, $offset, $n);
+        if($stmt = $this->db->prepare($query)) {
+            $stmt->bind_param('ssssii', $username, $username, $username, $startTime, $offset, $limit);
             $stmt->execute();
             $result = $stmt->get_result();
             return $result->fetch_all(MYSQLI_ASSOC);
@@ -1165,16 +1251,16 @@ class DatabaseHelper
 
     /**
      * @param string $username the user for whomst load the post.
-     * @param int $n number of posts to get.
+     * @param int $limit number of posts to get.
      * @param int $offset posts offset.
      * @param int $seed used to set the sql RAND seed
      * @param string $startTime a string that represents a timestamp.
      * @return array an array of $n or less random posts of people/animals.
      */
-    public function getOlderRandomPosts(string $username, int $n, int $offset, int $seed, $startTime)
+    public function getOlderRandomPosts(string $username, int $limit, int $offset, int $seed, string $startTime) 
     {
-        if ($stmt = $this->db->prepare("SELECT * FROM POST WHERE timestamp < ? - INTERVAL 2 DAY AND username != ? ORDER BY RAND(?) LIMIT ?, ?")) {
-            $stmt->bind_param('ssiii', $startTime, $username, $seed, $offset, $n);
+        if($stmt = $this->db->prepare("SELECT * FROM POST WHERE timestamp < ? - INTERVAL 2 DAY AND username != ? ORDER BY RAND(?) LIMIT ?, ?")) {
+            $stmt->bind_param('ssiii', $startTime, $username, $seed, $offset, $limit);
             $stmt->execute();
             $result = $stmt->get_result();
             return $result->fetch_all(MYSQLI_ASSOC);
