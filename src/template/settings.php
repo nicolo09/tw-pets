@@ -88,6 +88,28 @@
                             </div>
                         </div>
                     </div>
+                    <div class="list-group-item">
+                        <div class="row align-items-center">
+                            <div class="col">
+                                <label class="mb-0 fw-bolder" for="alert-follow">Followers</label>
+                                <p class="text-muted mb-0">Notificami quando qualcuno inizia a seguirmi.</p>
+                            </div>
+                            <div class="col-auto">
+                                <input type="checkbox" class="custom-control-input settings-item" id="alert-follow" checked="false" disabled />
+                            </div>
+                        </div>
+                    </div>
+                    <div class="list-group-item">
+                        <div class="row align-items-center">
+                            <div class="col">
+                                <label class="mb-0 fw-bolder" for="alert-follow-animal">Followers animali</label>
+                                <p class="text-muted mb-0">Notificami quando qualcuno inizia a seguire un mio animale.</p>
+                            </div>
+                            <div class="col-auto">
+                                <input type="checkbox" class="custom-control-input settings-item" id="alert-follow-animal" checked="false" disabled />
+                            </div>
+                        </div>
+                    </div>
                 </div>
             </div>
             <div class="setting-section">
@@ -113,6 +135,17 @@
                             </div>
                             <div class="col-auto">
                                 <input type="checkbox" class="custom-control-input settings-item" id="alert-new-post-animal" checked="false" disabled />
+                            </div>
+                        </div>
+                    </div>
+                    <div class="list-group-item">
+                        <div class="row align-items-center">
+                            <div class="col">
+                                <label class="mb-0 fw-bolder" for="alert-comment-reply">Risposte ai miei commenti</label>
+                                <p class="text-muted mb-0">Notificami quando qualcuno risponde a un mio commento.</p>
+                            </div>
+                            <div class="col-auto">
+                                <input type="checkbox" class="custom-control-input settings-item" id="alert-comment-reply" checked="false" disabled />
                             </div>
                         </div>
                     </div>

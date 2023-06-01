@@ -37,6 +37,9 @@ create table IMPOSTAZIONE (
      `alert-comments` boolean not null default true,
      `alert-new-post-person` boolean not null default false,
      `alert-new-post-animal` boolean not null default false,
+     `alert-follow` boolean not null default false,
+     `alert-follow-animal` boolean not null default false,
+     `alert-comment-reply` boolean not null default false,
      constraint FKIMPOSTA_ID primary key (username));
 
 create table LIKES (

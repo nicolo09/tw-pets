@@ -5,7 +5,8 @@
  * @param $dbh the database helper
  * @return bool true if the user wants to receive notifications for new followers
  */
-function isNotificationFollowEnabled($username, DatabaseHelper $dbh){
+function isNotificationFollowEnabled($username, DatabaseHelper $dbh)
+{
     return $dbh->getSettings($username)[0]["alert-follow"];
 }
 
@@ -15,7 +16,8 @@ function isNotificationFollowEnabled($username, DatabaseHelper $dbh){
  * @param $dbh the database helper
  * @return bool true if the user wants to receive notifications for new followers of his animals
  */
-function isNotificationFollowAnimalEnabled($username, DatabaseHelper $dbh){
+function isNotificationFollowAnimalEnabled($username, DatabaseHelper $dbh)
+{
     return $dbh->getSettings($username)[0]["alert-follow-animal"];
 }
 
@@ -25,7 +27,8 @@ function isNotificationFollowAnimalEnabled($username, DatabaseHelper $dbh){
  * @param $dbh the database helper
  * @return bool true if the user wants to receive notifications for new likes
  */
-function isNotificationLikeEnabled($username, DatabaseHelper $dbh){
+function isNotificationLikeEnabled($username, DatabaseHelper $dbh)
+{
     return $dbh->getSettings($username)[0]["alert-likes"];
 }
 
@@ -35,7 +38,8 @@ function isNotificationLikeEnabled($username, DatabaseHelper $dbh){
  * @param $dbh the database helper
  * @return bool true if the user wants to receive notifications for new comments
  */
-function isNotificationCommentEnabled($username, DatabaseHelper $dbh){
+function isNotificationCommentEnabled($username, DatabaseHelper $dbh)
+{
     return $dbh->getSettings($username)[0]["alert-comments"];
 }
 
@@ -45,7 +49,8 @@ function isNotificationCommentEnabled($username, DatabaseHelper $dbh){
  * @param $dbh the database helper
  * @return bool true if the user wants to receive notifications for replies to his comments
  */
-function isNotificationReplyEnabled($username, DatabaseHelper $dbh){
+function isNotificationReplyEnabled($username, DatabaseHelper $dbh)
+{
     return $dbh->getSettings($username)[0]["alert-comment-reply"];
 }
 
@@ -55,7 +60,8 @@ function isNotificationReplyEnabled($username, DatabaseHelper $dbh){
  * @param $dbh the database helper
  * @return bool true if the user wants to receive notifications for new posts of people he follows
  */
-function isNotificationNewPostPersonEnabled($username, DatabaseHelper $dbh){
+function isNotificationNewPostPersonEnabled($username, DatabaseHelper $dbh)
+{
     return $dbh->getSettings($username)[0]["alert-new-post-person"];
 }
 
@@ -65,6 +71,7 @@ function isNotificationNewPostPersonEnabled($username, DatabaseHelper $dbh){
  * @param $dbh the database helper
  * @return bool true if the user wants to receive notifications for new posts of animals he follows
  */
-function isNotificationNewPostAnimalEnabled($username, DatabaseHelper $dbh){
+function isNotificationNewPostAnimalEnabled($username, DatabaseHelper $dbh)
+{
     return $dbh->getSettings($username)[0]["alert-new-post-animal"];
 }
