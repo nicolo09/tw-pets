@@ -27,15 +27,6 @@
             }
             ?></title>
 
-    <?php
-    /*
-    $files = glob($dir . '/*.*');
-    $file = array_rand($files);
-    $icon = $files[$file];
-    */
-    ?>
-    
-    <link rel="icon" href="<?php echo $icon ?>" type="image/x-icon" />
 </head>
 
 <body>
