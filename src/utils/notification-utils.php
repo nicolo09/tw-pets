@@ -11,6 +11,8 @@ require_once("settings-utils.php");
  * REPLY_COMMENT: replier, comment, post
  * POST: user, post
  * MESSAGE: user
+ * POST_PERSON: user, post
+ * POST_ANIMAL: user, post, animal
  */
 enum NotificationType
 {
@@ -19,7 +21,8 @@ enum NotificationType
     case LIKE; //Sent to the post owner when someone likes his post
     case COMMENT; //Sent to the post owner when someone comments his post
     case REPLY_COMMENT; //Sent to the commenter when someone replies to his comment
-    case POST; //Sent to the followers of a user when he posts something
+    case POST_PERSON; //Sent to the followers of a user when he posts something
+    case POST_ANIMAL; //Sent to the followers of an animal when the owner posts something tagging the animal
 }
 
 /**
@@ -36,6 +39,8 @@ function getNotificationThumbnail($notification, DatabaseHelper $dbh)
         NotificationType::COMMENT => array("src" => getUserProfilePic(getNotificationParameter($notification, "user"), $dbh), "alt" => "Foto profilo di " . getNotificationParameter($notification, "user")),
         NotificationType::FOLLOW_ANIMAL => array("src" => getUserProfilePic(getNotificationParameter($notification, "follower"), $dbh), "alt" => "Foto profilo di " . getNotificationParameter($notification, "follower")),
         NotificationType::REPLY_COMMENT => array("src" => getUserProfilePic(getNotificationParameter($notification, "replier"), $dbh), "alt" => "Foto profilo di " . getNotificationParameter($notification, "replier")),
+        NotificationType::POST_PERSON => array("src" => getUserProfilePic(getNotificationParameter($notification, "user"), $dbh), "alt" => "Foto profilo di " . getNotificationParameter($notification, "user")),
+        NotificationType::POST_ANIMAL => array("src" => getAnimalProfilePic(getNotificationParameter($notification, "animal"), $dbh), "alt" => "Foto profilo di " . getNotificationParameter($notification, "animal")),
         default => array("src" => "", "alt" => "")
     };
 }
@@ -53,6 +58,8 @@ function getNotificationMessage($notification)
         NotificationType::COMMENT => getNotificationParameter($notification, "user") . " ha commentato il tuo post",
         NotificationType::FOLLOW_ANIMAL => getNotificationParameter($notification, "follower") . " ha iniziato a seguire " . getNotificationParameter($notification, "animal"),
         NotificationType::REPLY_COMMENT => getNotificationParameter($notification, "replier") . " ha risposto al tuo commento",
+        NotificationType::POST_PERSON => getNotificationParameter($notification, "user") . " ha pubblicato un nuovo post",
+        NotificationType::POST_ANIMAL => getNotificationParameter($notification, "user") . " ha pubblicato un nuovo post taggando " . getNotificationParameter($notification, "animal"),
         default => ""
     };
 }
@@ -70,6 +77,8 @@ function getNotificationRef($notification)
         NotificationType::COMMENT => getPostHref(getNotificationParameter($notification, "post")),
         NotificationType::FOLLOW_ANIMAL => getAnimalProfileHref(getNotificationParameter($notification, "animal")),
         NotificationType::REPLY_COMMENT => getPostHref(getNotificationParameter($notification, "post")),
+        NotificationType::POST_PERSON => getPostHref(getNotificationParameter($notification, "post")),
+        NotificationType::POST_ANIMAL => getPostHref(getNotificationParameter($notification, "post")),
         default => "#"
     };
 }
@@ -100,9 +109,10 @@ function getNotificationType($notification)
         "FOLLOW" => NotificationType::FOLLOW,
         "LIKE" => NotificationType::LIKE,
         "COMMENT" => NotificationType::COMMENT,
-        "POST" => NotificationType::POST,
+        "POST_PERSON" => NotificationType::POST_PERSON,
         "FOLLOW_ANIMAL" => NotificationType::FOLLOW_ANIMAL,
         "REPLY_COMMENT" => NotificationType::REPLY_COMMENT,
+        "POST_ANIMAL" => NotificationType::POST_ANIMAL,
     };
 }
 
@@ -202,5 +212,37 @@ function addReplyCommentNotification($replier, $comment, DatabaseHelper $dbh)
         }
     } else {
         throw new Exception("Il commento non risponde a nessun altro commento");
+    }
+}
+
+/**
+ * Adds a notification for a new post of a person
+ * @param $user the username 
+ * @param $post the post id
+ * @param $dbh the database helper
+ * @return void
+ */
+function addPersonPostNotification($user, $post, DatabaseHelper $dbh)
+{
+    foreach ($dbh->getAllFollowers($user) as $follower) {
+        if (isNotificationNewPostPersonEnabled($follower["username"], $dbh)){
+            $dbh->addNotification($follower["username"], NotificationType::POST_PERSON, array("user" => $user, "post" => $post));
+        }
+    }
+}
+
+/**
+ * Adds a notification for a new post of an animal
+ * @param $animal the animal id
+ * @param $post the post id
+ * @param $dbh the database helper
+ * @return void
+ */
+function addAnimalPostNotification($animal, $post, DatabaseHelper $dbh)
+{
+    foreach ($dbh->getAllAnimalFollowers($animal) as $follower) {
+        if (isNotificationNewPostPersonEnabled($follower, $dbh)){
+            $dbh->addNotification($follower, NotificationType::POST_ANIMAL, array("user" => $dbh->getPostInfo($post)[0]["username"], "post" => $post, "animal" => $animal));
+        }
     }
 }

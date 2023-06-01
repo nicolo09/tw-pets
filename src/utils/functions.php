@@ -229,7 +229,7 @@ function editOwnerships($owners, $animal, $dbh)
     $errors = array();
     $oldOwners = array_column($dbh->getOwners($animal), "username");
     foreach (array_diff($owners, $oldOwners) as $newOwner) {
-        if(!doIFollowAnimal($newOwner, $animal, $dbh)) {
+        if (!doIFollowAnimal($newOwner, $animal, $dbh)) {
             if (!$dbh->addFollowAnimal($animal, $newOwner)) {
                 $errors[] = "Non è stato possibile rendere " . $newOwner . " follower di " . $animal;
             }
@@ -368,19 +368,20 @@ function register(string $user, string $email, string $password, string $confirm
     return array($result, $errors);
 }
 
-function editUserProfile(string $user, string $employment, array $file, string $description, DatabaseHelper $dbh){
+function editUserProfile(string $user, string $employment, array $file, string $description, DatabaseHelper $dbh)
+{
     $errors = array();
     $result = 0;
     $oldImage = $dbh->getUserFromName($user)[0]["immagine"];
 
-    if(!doesPersonUsernameExist($user, $dbh)) {
+    if (!doesPersonUsernameExist($user, $dbh)) {
         $errors[] = "Non è possibile modificare un account inesistente";
     }
-    if(!empty($employment) && strlen($employment) < 3) {
+    if (!empty($employment) && strlen($employment) < 3) {
         $errors[] = "L'impiego deve essere lungo almeno 3 caratteri";
     }
 
-    if(count($errors) == 0) {
+    if (count($errors) == 0) {
         if (!empty($file["imgprofile"]["name"])) {
             list($imgresult, $msg) = uploadImage(IMG_DIR, $_FILES["imgprofile"]);
             if ($imgresult != 0) {
@@ -392,9 +393,9 @@ function editUserProfile(string $user, string $employment, array $file, string $
             $img = $oldImage;
         }
 
-        if(count($errors) == 0) {
-            if($dbh->updateUserProfile($user, $employment, $img, $description)) {
-                if($img != $oldImage && $oldImage != DEFAULT_USER_IMG) {
+        if (count($errors) == 0) {
+            if ($dbh->updateUserProfile($user, $employment, $img, $description)) {
+                if ($img != $oldImage && $oldImage != DEFAULT_USER_IMG) {
                     unlink(IMG_DIR . $oldImage);
                 }
                 $result = 1;
@@ -431,14 +432,14 @@ function getUserName(DatabaseHelper $dbh)
  * @param DatabaseHelper $dbh the database where the info is saved
  * @return array where result is 1 if creation worked and error is error messages
  */
-function newPost(string $user,array $img, string $alt, string $txt, array $pets, DatabaseHelper $dbh)
+function newPost(string $user, array $img, string $alt, string $txt, array $pets, DatabaseHelper $dbh)
 {
     $errors = [];
     $uploadErrors = uploadImage(IMG_DIR, $img);
     //Se mette errori stampa, non continuare con query
     if ($uploadErrors[0] == 1) {
         //Non ci sono stati errori di upload, continua con query
-        $imgUp=$uploadErrors[1]; //Se il file è stato rinominato, devo caricare il file corretto con nome rinominato
+        $imgUp = $uploadErrors[1]; //Se il file è stato rinominato, devo caricare il file corretto con nome rinominato
         $result = -1; //Not yet set
         if (strlen($alt) <= 50 && strlen($txt) <= 200) {
             $index = $dbh->addPost($imgUp, $alt, $txt, $user);
@@ -725,12 +726,13 @@ function changePassword(string $oldPassword, string $newPassword, string $confir
  * @param DatabaseHelper $dbh the database where the info is saved
  * @return array of post info
  */
-function getPost(int $id, DatabaseHelper $dbh){
-    $result=$dbh->getPostInfo($id);
-    if(empty($result)==false){
+function getPost(int $id, DatabaseHelper $dbh)
+{
+    $result = $dbh->getPostInfo($id);
+    if (empty($result) == false) {
         //Visto che l'id è univoco per post, è inutile avere un array di un array di un singolo risultato
         return $result[0];
-    }else{
+    } else {
         return $result;
     }
 }
@@ -741,11 +743,12 @@ function getPost(int $id, DatabaseHelper $dbh){
  * @param DatabaseHelper $dbh the database where the info is saved
  * @return int number of likes
  */
-function getLikes(int $id, DatabaseHelper $dbh){
-    $result=$dbh->getPostLikes($id);
-    if(empty($result)){
+function getLikes(int $id, DatabaseHelper $dbh)
+{
+    $result = $dbh->getPostLikes($id);
+    if (empty($result)) {
         return 0;
-    }else{
+    } else {
         return $result[0]["COUNT(*)"];
     }
 }
@@ -757,12 +760,13 @@ function getLikes(int $id, DatabaseHelper $dbh){
  * @param DatabaseHelper $dbh the database where the info is saved
  * @return bool true if user has liked the post
  */
-function isPostLikedBy(int $id, string $username, DatabaseHelper $dbh){
-    $result=$dbh->doesUserLikePost($id, $username);
-    if(empty($result)){
+function isPostLikedBy(int $id, string $username, DatabaseHelper $dbh)
+{
+    $result = $dbh->doesUserLikePost($id, $username);
+    if (empty($result)) {
         return false;
-    }else{
-        return $result[0]["COUNT(*)"]==1;
+    } else {
+        return $result[0]["COUNT(*)"] == 1;
     }
 }
 
@@ -773,12 +777,13 @@ function isPostLikedBy(int $id, string $username, DatabaseHelper $dbh){
  * @param DatabaseHelper $dbh the database where the info is saved
  * @return bool true if user has saved the post
  */
-function isPostSavedBy(int $id, string $username, DatabaseHelper $dbh){
-    $result=$dbh->hasUserSavedPost($id, $username);
-    if(empty($result)){
+function isPostSavedBy(int $id, string $username, DatabaseHelper $dbh)
+{
+    $result = $dbh->hasUserSavedPost($id, $username);
+    if (empty($result)) {
         return false;
-    }else{
-        return $result[0]["COUNT(*)"]==1;
+    } else {
+        return $result[0]["COUNT(*)"] == 1;
     }
 }
 
@@ -788,12 +793,13 @@ function isPostSavedBy(int $id, string $username, DatabaseHelper $dbh){
  * @param DatabaseHelper $dbh the database where the info is saved
  * @return bool true if post exist
  */
-function isIdPostValid(int $id, DatabaseHelper $dbh){
-    $result=$dbh->isIdPostCorrect($id);
-    if(empty($result)){
+function isIdPostValid(int $id, DatabaseHelper $dbh)
+{
+    $result = $dbh->isIdPostCorrect($id);
+    if (empty($result)) {
         return false;
-    }else{
-        return $result[0]["COUNT(id_post)"]==1;
+    } else {
+        return $result[0]["COUNT(id_post)"] == 1;
     }
 }
 
@@ -804,7 +810,8 @@ function isIdPostValid(int $id, DatabaseHelper $dbh){
  * @param DatabaseHelper $dbh the database where the info is saved
  * @return bool false if something went wrong
  */
-function likePost(int $id, string $username, DatabaseHelper $dbh){
+function likePost(int $id, string $username, DatabaseHelper $dbh)
+{
     return $dbh->addLikePost($id, $username);
 }
 
@@ -815,7 +822,8 @@ function likePost(int $id, string $username, DatabaseHelper $dbh){
  * @param DatabaseHelper $dbh the database where the info is saved
  * @return bool false if something went wrong
  */
-function unLikePost(int $id, string $username, DatabaseHelper $dbh){
+function unLikePost(int $id, string $username, DatabaseHelper $dbh)
+{
     return $dbh->removeLikePost($id, $username);
 }
 
@@ -826,7 +834,8 @@ function unLikePost(int $id, string $username, DatabaseHelper $dbh){
  * @param DatabaseHelper $dbh the database where the info is saved
  * @return bool false if something went wrong
  */
-function savePost(int $id, string $username, DatabaseHelper $dbh){
+function savePost(int $id, string $username, DatabaseHelper $dbh)
+{
     return $dbh->addSavePost($id, $username);
 }
 
@@ -837,7 +846,8 @@ function savePost(int $id, string $username, DatabaseHelper $dbh){
  * @param DatabaseHelper $dbh the database where the info is saved
  * @return bool false if something went wrong
  */
-function unSavePost(int $id, string $username, DatabaseHelper $dbh){
+function unSavePost(int $id, string $username, DatabaseHelper $dbh)
+{
     return $dbh->removeSavePost($id, $username);
 }
 
@@ -847,11 +857,12 @@ function unSavePost(int $id, string $username, DatabaseHelper $dbh){
  * @param DatabaseHelper $dbh the database where the info is saved
  * @return array of animals
  */
-function getAnimalsInPost(int $id, DatabaseHelper $dbh){
-    $final=array();
-    $result=$dbh->getTaggedAnimals($id);
-    foreach($result as $animal){
-        $final[]=$animal["animale"];
+function getAnimalsInPost(int $id, DatabaseHelper $dbh)
+{
+    $final = array();
+    $result = $dbh->getTaggedAnimals($id);
+    foreach ($result as $animal) {
+        $final[] = $animal["animale"];
     }
     return $final;
 }
@@ -918,9 +929,9 @@ function getUserProfilePic(string $user, DatabaseHelper $dbh)
  * @param DatabaseHelper $dbh il database in cui sono salvati i commenti
  * @return array vettore di commenti
  */
-function loadMostRecentComments(int $id_post,int $n, DatabaseHelper $dbh){
+function loadMostRecentComments(int $id_post, int $n, DatabaseHelper $dbh)
+{
     return $dbh->getMostRecentComments($id_post, $n);
-
 }
 
 /**
@@ -929,7 +940,8 @@ function loadMostRecentComments(int $id_post,int $n, DatabaseHelper $dbh){
  * @param DatabaseHelper $dbh il database in cui sono salvati i commenti
  * @return array vettore di commenti
  */
-function allLoadMostRecentComments(int $id_post, DatabaseHelper $dbh){
+function allLoadMostRecentComments(int $id_post, DatabaseHelper $dbh)
+{
     return $dbh->getAllMostRecentComments($id_post);
 }
 
@@ -939,14 +951,14 @@ function allLoadMostRecentComments(int $id_post, DatabaseHelper $dbh){
  * @param DatabaseHelper $dbh il database in cui sono salvati i commenti
  * @return true se il commento ha "commenti figli"
  */
-function doesCommentHaveComments(int $id_comment, DatabaseHelper $dbh){
-    $result=$dbh->doesCommentHaveAnswers($id_comment);
-    if(empty($result)){
+function doesCommentHaveComments(int $id_comment, DatabaseHelper $dbh)
+{
+    $result = $dbh->doesCommentHaveAnswers($id_comment);
+    if (empty($result)) {
         return false;
-    }else{
-        return $result[0]["COUNT(*)"]>0;
+    } else {
+        return $result[0]["COUNT(*)"] > 0;
     }
-
 }
 
 
@@ -956,14 +968,14 @@ function doesCommentHaveComments(int $id_comment, DatabaseHelper $dbh){
  * @param DatabaseHelper $dbh il database in cui sono salvati i commenti
  * @return array di dati del commento preso in input
  */
-function getCommentInfo(int $id, DatabaseHelper $dbh){
-    $result=$dbh->getComment($id);
-    if(empty($result)){
+function getCommentInfo(int $id, DatabaseHelper $dbh)
+{
+    $result = $dbh->getComment($id);
+    if (empty($result)) {
         return array();
-    }else{
+    } else {
         return $result[0];
     }
-
 }
 
 /**
@@ -974,7 +986,8 @@ function getCommentInfo(int $id, DatabaseHelper $dbh){
  * @param DatabaseHelper $dbh il database in cui sono salvati i commenti
  * @return bool true se l'inserimento è andato a buon fine
  */
-function newComment(string $username, string $text, int $id_post, DatabaseHelper $dbh){
+function newComment(string $username, string $text, int $id_post, DatabaseHelper $dbh)
+{
     return $dbh->addNewComment($username, $text, $id_post);
 }
 
@@ -987,7 +1000,8 @@ function newComment(string $username, string $text, int $id_post, DatabaseHelper
  * @param DatabaseHelper $dbh il database in cui sono salvati i commenti
  * @return bool true se l'inserimento è andato a buon fine
  */
-function newCommentAnswer(string $username, int $id_padre, string $text, int $id_post, DatabaseHelper $dbh){
+function newCommentAnswer(string $username, int $id_padre, string $text, int $id_post, DatabaseHelper $dbh)
+{
     return $dbh->addNewCommentToComment($username, $id_padre, $text, $id_post);
 }
 
@@ -1000,7 +1014,8 @@ function newCommentAnswer(string $username, int $id_padre, string $text, int $id
  * @param DatabaseHelper $dbh il database in cui sono salvati i commenti
  * @return array i commenti
  */
-function getRecentComments(int $id, int $n, int $offset,string $timestamp, DatabaseHelper $dbh){
+function getRecentComments(int $id, int $n, int $offset, string $timestamp, DatabaseHelper $dbh)
+{
     return $dbh->getCommentOffset($id, $n, $offset, $timestamp);
 }
 
@@ -1011,7 +1026,8 @@ function getRecentComments(int $id, int $n, int $offset,string $timestamp, Datab
  * @param DatabaseHelper $dbh il database in cui sono salvati i commenti
  * @return array vettore di commenti
  */
-function allLoadMostRecentCommentsAfter(int $id_post, string $timestamp, DatabaseHelper $dbh){
+function allLoadMostRecentCommentsAfter(int $id_post, string $timestamp, DatabaseHelper $dbh)
+{
     return $dbh->getAllMostRecentCommentsAfter($id_post, $timestamp);
 }
 
@@ -1025,7 +1041,22 @@ function allLoadMostRecentCommentsAfter(int $id_post, string $timestamp, Databas
  * @param DatabaseHelper $dbh il database in cui sono salvati i commenti
  * @return array i commenti
  */
-function getRecentCommentsAnswers(int $id,int $id_comment, int $n, int $offset,string $timestamp, DatabaseHelper $dbh){
+function getRecentCommentsAnswers(int $id, int $id_comment, int $n, int $offset, string $timestamp, DatabaseHelper $dbh)
+{
     return $dbh->getCommentAnswerOffset($id, $id_comment, $n, $offset, $timestamp);
 }
 
+/**
+ * Returns the profile picture of an animal
+ * @param string $animal the animal's username
+ * @param DatabaseHelper $dbh the database helper
+ */
+function getAnimalProfilePic(string $animal, DatabaseHelper $dbh)
+{
+    $result = $dbh->getAnimalInfo($animal);
+    if (empty($result)) {
+        return "img/default.jpg";
+    } else {
+        return "img/" . $result[0]["immagine"];
+    }
+}

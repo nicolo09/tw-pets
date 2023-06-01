@@ -1121,7 +1121,7 @@ class DatabaseHelper
         ORDER BY p.timestamp DESC
         LIMIT ?, ?";
 
-        if($stmt = $this->db->prepare($query)) {
+        if ($stmt = $this->db->prepare($query)) {
             $stmt->bind_param('ssssii', $username, $username, $username, $startTime, $offset, $n);
             $stmt->execute();
             $result = $stmt->get_result();
@@ -1138,7 +1138,7 @@ class DatabaseHelper
      * @param string $startTime a string that represents a timestamp.
      * @return array an array of $n or less posts of people/animals that the user does not follow. 
      */
-    public function getRecentPostsForUser(string $username, int $n, int $offset, $startTime) 
+    public function getRecentPostsForUser(string $username, int $n, int $offset, $startTime)
     {
         $query = "SELECT p.*
         FROM POST p
@@ -1153,7 +1153,7 @@ class DatabaseHelper
         ORDER BY COUNT(l.id_post) DESC, p.timestamp DESC
         LIMIT ?, ?";
 
-        if($stmt = $this->db->prepare($query)) {
+        if ($stmt = $this->db->prepare($query)) {
             $stmt->bind_param('ssssii', $username, $username, $username, $startTime, $offset, $n);
             $stmt->execute();
             $result = $stmt->get_result();
@@ -1171,9 +1171,9 @@ class DatabaseHelper
      * @param string $startTime a string that represents a timestamp.
      * @return array an array of $n or less random posts of people/animals.
      */
-    public function getOlderRandomPosts(string $username, int $n, int $offset, int $seed, $startTime) 
+    public function getOlderRandomPosts(string $username, int $n, int $offset, int $seed, $startTime)
     {
-        if($stmt = $this->db->prepare("SELECT * FROM POST WHERE timestamp < ? - INTERVAL 2 DAY AND username != ? ORDER BY RAND(?) LIMIT ?, ?")) {
+        if ($stmt = $this->db->prepare("SELECT * FROM POST WHERE timestamp < ? - INTERVAL 2 DAY AND username != ? ORDER BY RAND(?) LIMIT ?, ?")) {
             $stmt->bind_param('ssiii', $startTime, $username, $seed, $offset, $n);
             $stmt->execute();
             $result = $stmt->get_result();
@@ -1183,4 +1183,20 @@ class DatabaseHelper
         }
     }
 
+    /**
+     * Return all the animals followed by a user
+     * @param string $username the username of the user
+     * @return array of animals names
+     */
+    public function getAllAnimalFollowers(string $animal)
+    {
+        if ($stmt = $this->db->prepare("SELECT follower FROM segue_animale WHERE followed=?")) {
+            $stmt->bind_param('s', $animal);
+            $stmt->execute();
+            $result = $stmt->get_result();
+            return $result->fetch_all(MYSQLI_NUM);
+        } else {
+            throw new Exception("Error Processing Request", 1);
+        }
+    }
 }
