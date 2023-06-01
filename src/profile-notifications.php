@@ -25,6 +25,7 @@ else {
     $notifications = $dbh->getNotifications(getUserName($dbh), 10, 0);
 }
 
+$templateParams["title"] = "Notifiche";
 $templateParams["page"] = "notifications-list.php";
 require_once("template/base.php");
 
