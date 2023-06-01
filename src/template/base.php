@@ -5,9 +5,9 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <link rel="stylesheet" type="text/css" href="../css/style.css" />
     <?php
-    $max = countNFiles("favicon/", "png");
+    $max = countNFiles("favicon/", "ico");
     $n = rand(0, $max - 1); //I file hanno indice 0.... max-1, per un totale di max files
-    echo '<link rel="icon" type="image/png" sizes="16x16" href="favicon/favicon-16x16-' . $n . '.png">';
+    echo '<link rel="icon" type="image/x-icon" href="favicon/favicon-' . $n . '.ico">';
     ?>
 
     <!-- Bootstrap CSS -->
