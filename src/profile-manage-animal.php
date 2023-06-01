@@ -30,7 +30,7 @@ if(isset($_POST["username"], $_POST["type"])){
     }
 } elseif(isset($_GET["animal"], $_POST["type"])) {
 
-    $animal = $dbh->getAnimals($_GET["animal"]);
+    $animal = $dbh->getAnimalFromName($_GET["animal"]);
 
     $type = htmlspecialchars($_POST["type"]);
     $description = htmlspecialchars($_POST["description"]);
@@ -52,7 +52,7 @@ if(isset($_POST["username"], $_POST["type"])){
 
 if(isset($_GET["animal"])){
     
-    $animal = $dbh->getAnimals($_GET["animal"]);
+    $animal = $dbh->getAnimalFromName($_GET["animal"]);
     if(count($animal) != 1) {
         $msg = "Animale " . $_GET["animal"] . " non trovato";
     } elseif (!$dbh->checkOwnership(getUserName($dbh), $animal[0]["username"])) { 

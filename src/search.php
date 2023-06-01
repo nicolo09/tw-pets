@@ -6,14 +6,16 @@ if (!isUserLoggedIn($dbh)) {
     exit;
 }
 
+$n_results = 10;
+
 if(!empty($_SESSION["error"])) {
     $templateParams["errors"] = array($_SESSION["error"]);
     unset($_SESSION["error"]);
 }
 
 if(isset($_GET["username"]) && !empty($_GET["username"])) {
-    $templateParams["persons"] = $dbh->getPersonsLike($_GET["username"], 0);
-    $templateParams["animals"] = $dbh->getAnimalsLike($_GET["username"], 0);
+    $templateParams["persons"] = $dbh->getPersonsLike($_GET["username"], 0, $n_results);
+    $templateParams["animals"] = $dbh->getAnimalsLike($_GET["username"], 0, $n_results);
     $templateParams["search"] = $_GET["username"];
 }
 

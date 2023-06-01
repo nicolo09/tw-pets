@@ -6,10 +6,12 @@ if (!isUserLoggedIn($dbh)) {
     exit;
 }
 
+$n_results = 30;
+
 if(isset($_GET["animal"]) && !empty($_GET["animal"])) {
 
     if(doesAnimalUsernameExist($_GET["animal"], $dbh)) {
-        $templateParams["results"] = $dbh->getAnimalFollowers($_GET["animal"], 0);
+        $templateParams["results"] = $dbh->getAnimalFollowers($_GET["animal"], 0, $n_results);
         $templateParams["type"] = "animal";
         $templateParams["user"] = $_GET["animal"];
         $templateParams["owners"] = $dbh->getOwners($_GET["animal"]);
@@ -22,7 +24,7 @@ if(isset($_GET["animal"]) && !empty($_GET["animal"])) {
 } elseif (isset($_GET["person"]) && !empty($_GET["person"])) {
     
     if(doesPersonUsernameExist($_GET["person"], $dbh)) {
-        $templateParams["results"] = $dbh->getPersonFollowers($_GET["person"], 0);
+        $templateParams["results"] = $dbh->getPersonFollowers($_GET["person"], 0, $n_results);
         $templateParams["type"] = "person";
         $templateParams["user"] = $_GET["person"];
     } else {
