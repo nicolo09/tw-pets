@@ -12,8 +12,12 @@
     <!-- CSS -->
     <link rel="stylesheet" href="../css/style.css"> <!-- TODO define better path -->
 
-    <!-- TODO add favicon -->
     <!-- TODO add title templateParams["title"] -->
+    <?php
+    $max = countNFiles("favicon/", "png");
+    $n = rand(0, $max - 1); //I file hanno indice 0.... max-1, per un totale di max files
+    echo '<link rel="icon" type="image/png" sizes="16x16" href="favicon/favicon-16x16-' . $n . '.png">';
+    ?>
     <title>Pets - Login</title>
 </head>
 

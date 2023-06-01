@@ -1060,3 +1060,22 @@ function getAnimalProfilePic(string $animal, DatabaseHelper $dbh)
         return "img/" . $result[0]["immagine"];
     }
 }
+
+/**
+ * Ritorna il numero di commenti presenti nella directory con estensione 
+ * @param string $directory la directory
+ * @param string $l'estensione ammessa da contare
+ * @return int numero file
+ */
+function countNFiles(string $directory, string  $extension)
+{
+    $directory = new DirectoryIterator($directory);
+    $i = 0;
+    foreach ($directory as $file) {
+        if ($file->isFile()) {
+            if ($file->getExtension() == $extension)
+                $i++;
+        }
+    }
+    return $i;
+}
