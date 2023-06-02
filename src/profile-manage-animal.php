@@ -38,10 +38,10 @@ if(isset($_POST["username"], $_POST["type"])){
     $owners = isset($_POST["owners"]) ? $_POST["owners"] : array(); 
     $owners[] = getUserName($dbh);
     /* An animal was set, so it must be updated */
-    list($result, $error) = editAnimal($animal[0], $type, $_FILES, $description, $owners, $dbh);
+    list($result, $error) = editAnimal($animal, $type, $_FILES, $description, $owners, $dbh);
     if($result == 1){
         // Animal profile edited
-        $_SESSION["message"] = "Modificato " . $animal[0]["username"] . " con successo";
+        $_SESSION["message"] = "Modificato " . $animal["username"] . " con successo";
         header("Location: profile-animals.php");
         exit;
     } else {
@@ -53,10 +53,10 @@ if(isset($_POST["username"], $_POST["type"])){
 if(isset($_GET["animal"])){
     
     $animal = $dbh->getAnimalFromName($_GET["animal"]);
-    if(count($animal) != 1) {
+    if(empty($animal)) {
         $msg = "Animale " . $_GET["animal"] . " non trovato";
-    } elseif (!$dbh->checkOwnership(getUserName($dbh), $animal[0]["username"])) { 
-        $msg = "Non puoi modificare l'account di " . $animal[0]["username"] . " non essendone proprietario";
+    } elseif (!$dbh->checkOwnership(getUserName($dbh), $animal["username"])) { 
+        $msg = "Non puoi modificare l'account di " . $animal["username"] . " non essendone proprietario";
     }
 
     if(!empty($msg)){
@@ -65,13 +65,13 @@ if(isset($_GET["animal"])){
         exit;
     }
 
-    $templateParams["animal"] = $animal[0]["username"];
-    $templateParams["type"] = $animal[0]["tipo"];
-    $templateParams["img"] = IMG_DIR . $animal[0]["immagine"];
-    $templateParams["description"] = $animal[0]["descrizione"];
-    $templateParams["title"] = "Modifica - " . $animal[0]["username"];
+    $templateParams["animal"] = $animal["username"];
+    $templateParams["type"] = $animal["tipo"];
+    $templateParams["img"] = IMG_DIR . $animal["immagine"];
+    $templateParams["description"] = $animal["descrizione"];
+    $templateParams["title"] = "Modifica - " . $animal["username"];
     $templateParams["subtitle"] = $templateParams["title"];
-    $templateParams["owners"] = array_column($dbh->getOwners($animal[0]["username"]), "username");
+    $templateParams["owners"] = array_column($dbh->getOwners($animal["username"]), "username");
 
 } else {
     $templateParams["img"] = "img/default_pet_image.png";

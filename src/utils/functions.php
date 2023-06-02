@@ -156,7 +156,7 @@ function registerAnimal($animal, $type, $file, $description, $owners, $dbh)
         $errors[] = "Il tipo deve essere lungo almeno 3 caratteri.";
     }
 
-    if (count($dbh->getAnimalFromName($animal)) > 0) {
+    if (!empty($dbh->getAnimalFromName($animal))) {
         $errors[] = "Lo username " . $animal . " è già in uso.";
     }
 
