@@ -16,17 +16,12 @@
                     <h3 class="results-title">P E R S O N E</h3>
                     <?php if(!empty($templateParams["persons"])): ?>
                         <div class="results-container">
-                            <?php for($x = 0; $x < 3 && $x < count($templateParams["persons"]); $x++): ?> 
-                                <a href="<?php echo getUserProfileHref($templateParams["persons"][$x]["username"])?>">
-                                    <div class="card result-bar"> 
-                                        <div class="card-body p-2">
-                                            <div class="result-element"> <!-- img and label on same line to avoid empty space -->
-                                                <img class="miniature" src="<?php echo IMG_DIR.$templateParams["persons"][$x]["immagine"] ?>" alt="Immagine profilo di <?php echo $templateParams["persons"][$x]["username"] ?>"/><span class="fs-4 miniature-text"><?php echo $templateParams["persons"][$x]["username"] ?></span>
-                                            </div>
-                                        </div>
-                                    </div>
-                                </a>
-                            <?php endfor; ?>
+                            <?php for($x = 0; $x < 3 && $x < count($templateParams["persons"]); $x++){
+                                $username = $templateParams["persons"][$x]["username"];
+                                $img = $templateParams["persons"][$x]["immagine"];
+                                $href = getUserProfileHref($username);
+                                require("result-bar.php");
+                            } ?> 
                         </div>
                         <?php if(count($templateParams["persons"]) > 3): ?>
                             <div class="d-flex justify-content-center"><a href="search-results.php?persons=<?php echo $templateParams["search"] ?>">Mostra tutti</a></div>
@@ -39,17 +34,12 @@
                     <h3 class="results-title">A N I M A L I</h3>
                     <?php if(!empty($templateParams["animals"])): ?>
                         <div class="results-container">
-                            <?php for($x = 0; $x < 3 && $x < count($templateParams["animals"]); $x++): ?> 
-                                <a href="<?php echo getAnimalProfileHref($templateParams["animals"][$x]["username"]) ?>">
-                                    <div class="card result-bar"> 
-                                        <div class="card-body p-2">
-                                            <div class="result-element"> <!-- img and label on same line to avoid empty space -->
-                                                <img class="miniature" src="<?php echo IMG_DIR.$templateParams["animals"][$x]["immagine"] ?>" alt="Immagine profilo di <?php echo $templateParams["animals"][$x]["username"] ?>"/><span class="fs-4 miniature-text"><?php echo $templateParams["animals"][$x]["username"] ?></span>
-                                            </div>
-                                        </div>
-                                    </div>
-                                </a>
-                            <?php endfor; ?>
+                            <?php for($x = 0; $x < 3 && $x < count($templateParams["animals"]); $x++){
+                                $username = $templateParams["animals"][$x]["username"];
+                                $img = $templateParams["animals"][$x]["immagine"];
+                                $href = getAnimalProfileHref($username);
+                                require("result-bar.php");
+                            } ?> 
                         </div>
                         <?php if(count($templateParams["animals"]) > 3): ?>
                             <div class="d-flex justify-content-center"><a href="search-results.php?animals=<?php echo $templateParams["search"] ?>">Mostra tutti</a></div>

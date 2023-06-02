@@ -12,9 +12,18 @@ if(isset($_GET["search"]) && isset($_GET["type"]) && isset($_GET["offset"])){
     }  
 }
 
-$response = json_encode(['results' => $results]);
+$html = "";
 
-header('Content-Type: application/json');
-echo $response;
+foreach($results as $user) {
+    $username = $user["username"];
+    $img = $user["immagine"];
+    $href = getProfileHref($username, $_GET["type"]);
+    ob_start();
+    require("../template/result-bar.php");
+    $html .= ob_get_clean();
+}
+
+echo json_encode($html);
+exit;
 
 ?>
