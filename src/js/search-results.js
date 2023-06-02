@@ -9,7 +9,7 @@ const search = urlParams.has('animals') ? urlParams.get('animals') : (urlParams.
 const intersectionObserver = new IntersectionObserver(entries => {
     if(entries[0].intersectionRatio != 0 && type != null && search != null) {
         $.ajax({
-            url: 'utils/getResults.php',
+            url: 'search-results.php',
             type: 'get',
             data: {
                 'type': type,
