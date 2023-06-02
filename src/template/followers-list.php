@@ -4,37 +4,36 @@
             <div class="card-body text-center">
                 <h2 class="fw-bold">Followers di <?php echo $templateParams["user"] ?></h2>
             </div>
-            <?php if($templateParams["type"] == "animal"): ?>
+            <?php if ($templateParams["type"] == "animal") : ?>
                 <div class="results-container">
                     <h3 class="results-title">P A D R O N I</h3>
-                    <?php foreach($owners as $user){
+                    <?php foreach ($owners as $user) {
                         $username = $user["username"];
                         $img = $user["immagine"];
                         $href = getUserProfileHref($username);
                         require("result-bar.php");
-                    } ?> 
+                    } ?>
                 </div>
             <?php endif; ?>
             <div class="results-container" id="container">
-                <?php if($templateParams["type"] == "animal"): ?>
+                <?php if ($templateParams["type"] == "animal") : ?>
                     <h3 class="results-title">U T E N T I</h3>
                 <?php endif; ?>
-                <?php if(count($results)): ?>
-                    <?php foreach($results as $user){
+                <?php if (count($results)) : ?>
+                    <?php foreach ($results as $user) {
                         $username = $user["username"];
                         $img = $user["immagine"];
                         $href = getUserProfileHref($username);
                         require("result-bar.php");
-                    } ?> 
-                    <div class="d-flex justify-content-center align-items-center mt-4" id="spinner">
-                        <div class="spinner-border text-primary spinner-border-sm"
-                            role="status">
-                            <span class="visually-hidden">Loading...</span>
-                        </div>
-                    </div>
-                <?php else: ?>
+                    } ?>
+                <?php else : ?>
                     <label class="w-100 text-center text-muted text-decoration-underline my-3">Questo account non ha follower al momento</label>
                 <?php endif; ?>
+            </div>
+            <div class="d-flex justify-content-center align-items-center mt-4" id="spinner">
+                <div class="spinner-border text-primary spinner-border-sm" role="status">
+                    <span class="visually-hidden">Loading...</span>
+                </div>
             </div>
         </div>
     </div>
