@@ -1,6 +1,6 @@
 <div class="container">
     <div class="d-grid gap-3" id="buttons-div">
-        <button class="btn btn-primary" id="modify-account-button" title="Modifica il tuo profilo"><img src="<?php echo getUserProfilePic($templateParams["user"], $dbh)?>" class="miniature"><span class="ms-3 short-text"><?php echo $templateParams["user"]; ?></span></button>
+        <button class="btn btn-primary" id="modify-account-button" title="Modifica il tuo profilo"><img src="<?php echo getUserProfilePic($templateParams["user"], $dbh)?>" class="miniature"><span class="ms-1 short-text"><?php echo $templateParams["user"]; ?></span></button>
         <div class="row profile-row">
             <div class="col text-center"><button class="btn btn-secondary user-button" id="view-profile-button"><img src="img/person.svg" class="w-100">Visualizza profilo</button></div>
             <div class="col text-center"><button class="btn btn-secondary user-button" id="notifications-button"><img src="img/notifications.svg" class="w-100">Notifiche</button></div>
