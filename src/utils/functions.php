@@ -128,6 +128,17 @@ function checkBrute($username, $dbh)
     }
 }
 
+/**
+ * Registers a new animal on the database.
+ * @param string $animal the animal's username.
+ * @param string $type the animal's type.
+ * @param array $file an array containing the animal's image.
+ * @param string $description the animal's description.
+ * @param array $owners a list of the current animal's owners.
+ * @param DatabaseHelper $dbh object to communicate with the database.
+ * @return int 0 if there were errors, 1 otherwise.
+ * @return array a string array of all the errors that occurred, it is empty if there were none.
+ */
 function registerAnimal($animal, $type, $file, $description, $owners, $dbh)
 {
     $result = 0;
@@ -184,6 +195,17 @@ function registerAnimal($animal, $type, $file, $description, $owners, $dbh)
     return array($result, $errors);
 }
 
+/**
+ * Edits an existing animal on the database.
+ * @param string $animal the animal's username.
+ * @param string $type the animal's type.
+ * @param array $file an array containing the animal's image.
+ * @param string $description the animal's description.
+ * @param array $owners a list of the current animal's owners.
+ * @param DatabaseHelper $dbh object to communicate with the database.
+ * @return int 0 if there were errors, 1 otherwise.
+ * @return array a string array of all the errors that occurred, it is empty if there were none.
+ */
 function editAnimal($animal, $type, $file, $description, $owners, $dbh)
 {
 
@@ -224,6 +246,14 @@ function editAnimal($animal, $type, $file, $description, $owners, $dbh)
     return array($result, $errors);
 }
 
+/**
+ * Updates the owners list of an animal.
+ * @param array $owners the updated list of owners.
+ * @param string $animal the animal username.
+ * @param DatabaseHelper $dbh object to communicate with the database.
+ * @return int 0 if there were errors, 1 otherwise.
+ * @return array a string array of all the errors that occurred, it is empty if there were none.
+ */
 function editOwnerships($owners, $animal, $dbh)
 {
     $errors = array();
@@ -247,6 +277,13 @@ function editOwnerships($owners, $animal, $dbh)
     return array($result, $errors);
 }
 
+/**
+ * Uploads an image in a given directory.
+ * @param string $path where the image will be uploaded to.
+ * @param array $image an associative array containing a file.
+ * @return int 0 if there were errors, 1 otherwise.
+ * @return string a string containing all the errors that occurred, if there were none it contains the image's name.
+ */
 function uploadImage($path, $image)
 {
     $imageName = basename($image["name"]);
@@ -368,6 +405,16 @@ function register(string $user, string $email, string $password, string $confirm
     return array($result, $errors);
 }
 
+/**
+ * Edits an existing user on the database.
+ * @param string $user the person's username.
+ * @param string $employment the user's employment.
+ * @param array $file an array containing the user's image.
+ * @param string $description the user's description.
+ * @param DatabaseHelper $dbh object to communicate with the database.
+ * @return int 0 if there were errors, 1 otherwise.
+ * @return array a string array of all the errors that occurred, it is empty if there were none.
+ */
 function editUserProfile(string $user, string $employment, array $file, string $description, DatabaseHelper $dbh)
 {
     $errors = array();
