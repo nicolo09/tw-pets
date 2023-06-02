@@ -1,6 +1,7 @@
 <?php
 require_once("../bootstrap.php");
-$n_results = 30;
+
+$n_results = 10;
 $results = array();
 
 if(isset($_GET["user"]) && isset($_GET["type"]) && isset($_GET["offset"])){
@@ -11,9 +12,18 @@ if(isset($_GET["user"]) && isset($_GET["type"]) && isset($_GET["offset"])){
     }  
 }
 
-$response = json_encode(['results' => $results]);
+$html = "";
 
-header('Content-Type: application/json');
-echo $response;
+foreach($results as $user) {
+    $username = $user["username"];
+    $img = $user["immagine"];
+    $href = getProfileHref($username, $_GET["type"]);
+    ob_start();
+    require("../template/result-bar.php");
+    $html .= ob_get_clean();
+}
+
+echo json_encode($html);
+exit;
 
 ?>

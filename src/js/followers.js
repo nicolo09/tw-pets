@@ -14,27 +14,16 @@ const intersectionObserver = new IntersectionObserver(entries => {
             data: {
                 'type': type,
                 'user': user,
-                'offset': (offset * 30)
+                'offset': (offset * 10)
             },
             dataType: 'json',
-            success: function (response) {
+            success: function (data) {
                 if($("#error").length > 0) {
                     $("#error").remove()
                 }
                 $("#spinner").removeClass("d-none")
-                if(response["results"].length > 0){
-                    response["results"].forEach(key => {
-                        let container = $("<a></a>").attr('href',"view-user-profile.php?username=" + key["username"] + "&type=" + type).append( 
-                        $("<div></div>").addClass("card result-bar").append(
-                            $("<div></div>").addClass("card-body p-2").append(
-                                $("<div></div>").addClass("result-element").append(
-                                    $("<img></img>").addClass("miniature").attr('src', IMG_DIR + key["immagine"]).attr('alt', "Immagine profilo di " + key["username"])
-                                ).append(
-                                    $("<span></span>").addClass("fs-4 miniature-text").text(key["username"])
-                                ))))
-            
-                        $("#container").append(container)
-                    })
+                if(data != "") {
+                    $("#container").append(data)
                     offset++
                 } else {
                     $("#spinner").addClass("d-none")
