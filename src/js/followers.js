@@ -4,12 +4,12 @@ const queryString = window.location.search
 const urlParams = new URLSearchParams(queryString)
 
 const type = urlParams.has('animal') ? "animal" : "person"
-const user = urlParams.has('animal') ? urlParams.get('animal') : urlParams.has('person')
+const user = urlParams.has('animal') ? urlParams.get('animal') : urlParams.get('person')
 
 const intersectionObserver = new IntersectionObserver(entries => {
     if(entries[0].intersectionRatio != 0 && type != null && user != null) {
         $.ajax({
-            url: 'utils/getFollowers.php',
+            url: 'profile-followers.php',
             type: 'get',
             data: {
                 'type': type,
