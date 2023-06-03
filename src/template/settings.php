@@ -151,6 +151,19 @@
                     </div>
                 </div>
             </div>
+            <div class="setting-section">
+                <h4 class="mb-0">Privacy</h4>
+                <p>Azioni sul tuo account.</p>
+                <div class="list-group mb-5 shadow">
+                    <div class="list-group-item">
+                        <div class="row align-items-center">
+                            <div class="col">
+                                <p>Leggi l'informativa dei cookie: <a href="cookie-profile.php">Informativa dei cookie</a></p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
         </div>
     </div>
 </div>
