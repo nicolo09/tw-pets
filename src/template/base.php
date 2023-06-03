@@ -43,7 +43,7 @@
     </nav>
     <?php
     if (!isset($_COOKIE["cookie-law-accepted"]) || !$_COOKIE["cookie-law-accepted"]==true) {
-        echo "<div class=\"justify-content-center d-flex\"><div class=\"alert alert-primary alert-dismissible fade show m-1\" role=\"alert\"> " . COOKIE_MESSAGE . " <a href=cookie.php>Scopri di più</a> <button type=\"button\" class=\"btn-close\" data-bs-dismiss=\"alert\" aria-label=\"Close\" id=\"cookie-dismiss-btn\"></button></div></div>";
+        echo "<div class=\"justify-content-center d-flex\"><div class=\"alert alert-primary alert-dismissible fade show m-1\" role=\"alert\"> " . COOKIE_MESSAGE . " <a href=cookie-profile.php>Scopri di più</a> <button type=\"button\" class=\"btn-close\" data-bs-dismiss=\"alert\" aria-label=\"Close\" id=\"cookie-dismiss-btn\"></button></div></div>";
     }
     if (isset($templateParams["messages"])) {
         foreach ($templateParams["messages"] as $message) {
