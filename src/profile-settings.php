@@ -22,6 +22,7 @@ if (isset($_POST["setting"]) && isset($_POST["value"])) {
 }
 
 $templateParams["page"] = "settings.php";
+$templateParams["title"]="Impostazioni";
 require_once("template/base.php");
 
 ?>
