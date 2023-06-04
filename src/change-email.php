@@ -23,5 +23,6 @@ if (isset($_POST["old-email"]) && isset($_POST["new-email"]) && isset($_POST["ne
     }  
 }
 
+$templateParams["title"]="Cambia email";
 $templateParams["page"] = "settings-change-email.php";
 require_once("template/base.php");

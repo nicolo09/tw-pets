@@ -21,6 +21,7 @@ if (isset($_POST["old-password"], $_POST["new-password"], $_POST["new-password-r
     }
 }
 
+$templateParams["title"]="Cambia password";
 $templateParams["page"] = "settings-change-password.php";
 require_once("template/base.php");
 ?>
