@@ -4,7 +4,7 @@
             <h2 class="h3 mb-4 page-title text-center">Impostazioni</h2>
             <h3 class="mb-0 mt-5">Cambia password</h3>
             <p>Riempi i campi e premi conferma per cambiare la password del tuo account.</p>
-            <form action="change-password.php" method="POST">
+            <form action="change-password-profile.php" method="POST">
                 <div class="setting-section">
                     <div class="list-group mb-5 shadow">
                         <div class="list-group-item">

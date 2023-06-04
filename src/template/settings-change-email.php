@@ -4,7 +4,7 @@
             <h2 class="h3 mb-4 page-title text-center">Impostazioni</h2>
             <h3 class="mb-0 mt-5">Cambia email</h3>
             <p>Riempi i campi e premi conferma per cambiare l'email associata al tuo account.</p>
-            <form action="change-email.php" method="POST">
+            <form action="change-email-profile.php" method="POST">
                 <div class="setting-section">
                     <div class="list-group mb-5 shadow">
                         <div class="list-group-item">

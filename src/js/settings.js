@@ -32,10 +32,10 @@ $.ajax({
 
 $("#change-email").on('click', function () {
     //Redirect to change email page
-    window.location.href = "change-email.php";
+    window.location.href = "change-email-profile.php";
 });
 
 $("#change-password").on('click', function () {
     //Redirect to change password page
-    window.location.href = "change-password.php";
+    window.location.href = "change-password-profile.php";
 });
