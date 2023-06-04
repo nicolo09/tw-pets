@@ -2,76 +2,67 @@
 require_once("bootstrap.php");
 require_once("utils/notification-utils.php");
 
-//Possibili costanti del parametro type
+//Possible type parameter values
 define("PERSON", "person");
 define("ANIMAL", "animal");
 
 $username = "";
-$type = PERSON;
+$type = "";
 $success=1;
 
-if (isset($_GET["username"])) {
+if (isset($_GET["username"]) && isset($_GET["type"])) {
     $username = $_GET["username"];
-    if (isset($_GET["type"])) {
-        $type = $_GET["type"];
-    } else {
-        //Se il tipo non è settato è una persona
-        $type = PERSON;
-    }
+    $type = $_GET["type"];
     if ($type == PERSON) {
-        //Controlla se utente esiste e se non è se stesso
+        //Checking if user exists and if it isn't the current user
         if (doesPersonUsernameExist($username, $dbh) && $username != getUserName($dbh)) {
-            //Posso seguirlo
+            //The user can be followed
             if (doesUserFollowMe($username, getUserName($dbh), $dbh)) {
-                //Lo seguo, faccio unfollow
+                //If the user is already being followed it gets unfollowed
                 $out = unfollowPerson($username, getUserName($dbh), $dbh);
                 if($out==false){
                     $success=0;
                 }
             } else {
-                //Non lo seguo, faccio follow
                 $out = followPerson($username, getUserName($dbh), $dbh);
                 if($out==false){
                     $success=0;
                 }else{
-                    //Follow andato a buon fine
+                    //Follow was successfull
                     addFollowNotification(getUserName($dbh), $username, $dbh);
                 }
             }
-            //E' un account che esiste e non è il mio
             header("Location: view-user-profile.php?username=" . $username . "&type=" . $type."&success=".$success);
         } else {
-            //Non esiste account
+            //The account doesn't exist
             header("Location: view-user-profile.php");
         }
     } else if ($type == ANIMAL) {
-        //Controlla se animale esiste e se non è il mio
+        //Checking if the animal exist and if the current user owns it
         if (doesAnimalUsernameExist($username, $dbh) && $dbh->checkOwnership(getUserName($dbh), $username) == false) {
-            //Posso seguirlo
+            //The animal can be followed
             if (doIFollowAnimal(getUserName($dbh), $username, $dbh)) {
-                //Lo seguo, faccio unfollow
+                //If the animal is already being followed it gets unfollowed
                 $out = unfollowAnimal($username, getUserName($dbh), $dbh);
                 if($out==false){
                     $success=0;
                 }
             } else {
-                //Non lo seguo, faccio follow
                 $out = followAnimal($username, getUserName($dbh), $dbh);
                 if($out==false){
                     $success=0;
                 }else{
-                    //Follow andato a buon fine
-                    addFollowNotification(getUserName($dbh), $username, $dbh);
+                    //Follow was successfull
+                    addFollowAnimalNotification(getUserName($dbh), $username, $dbh); 
                 }
             }
-            //E' un account che esiste
             header("Location: view-user-profile.php?username=" . $username . "&type=" . $type."&success=".$success);
         } else {
             if ($dbh->checkOwnership(getUserName($dbh), $username)) {
-                //Account che gestisco io, non posso smettere di seguire
+                //The user owns the animal, so it can't be unfollowed
                 header("Location: view-user-profile.php?username=" . $username . "&type=" . $type."&success=".$success);
             } else {
-                //Account che non esiste
+                //The animal doesn't exist
                 header("Location: view-user-profile.php");
             }
         }
