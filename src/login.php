@@ -26,6 +26,7 @@ if (isset($_GET["password_changed"]) && $_GET["password_changed"] == true) {
     $templateParams["messages"][] = "Password cambiata con successo. Effettua nuovamente il login";
 }
 
+$templateParams["title"] = "PETS - Accedi";
 $templateParams["page"] = "login-form.php";
 require_once("template/base-outside.php");
 

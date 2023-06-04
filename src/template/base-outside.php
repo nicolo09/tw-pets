@@ -12,13 +12,12 @@
     <!-- CSS -->
     <link rel="stylesheet" href="../css/style.css"> <!-- TODO define better path -->
 
-    <!-- TODO add title templateParams["title"] -->
     <?php
     $max = countNFiles("favicon/", "ico");
     $n = rand(0, $max - 1); //I file hanno indice 0.... max-1, per un totale di max files
     echo '<link rel="icon" type="image/x-icon" href="favicon/favicon-' . $n . '.ico">';
     ?>
-    <title>Pets - Login</title>
+    <title><?php echo $templateParams["title"]?></title>
 </head>
 
 <body>

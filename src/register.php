@@ -17,5 +17,6 @@ if (isset($_POST["username"]) && isset($_POST["email"]) && isset($_POST["passwor
     }
 }
 
+$templateParams["title"] = "PETS - Iscriviti";
 $templateParams["page"] = "register-form.php";
 require_once("template/base-outside.php");
