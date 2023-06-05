@@ -13,16 +13,8 @@
                         </div>
 
                         <!-- Submit button -->
-                        <h2>Ti manderemo una mail per resettare la password legata all'account scelto</h2>
+                        <label>Ti manderemo una mail per resettare la password legata all'account scelto</label>
                         <button type="submit" class="btn btn-primary btn-block mb-4">Invia mail di reset password</button>
-
-                        <?php
-                        if (isset($templateParams["errors"])) {
-                            foreach ($templateParams["errors"] as $error) {
-                                echo "<p class='text-danger'>" . $error . "</p>";
-                            }
-                        }
-                        ?>
 
                         <!-- Go to register form -->
                         <div>
