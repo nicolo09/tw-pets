@@ -7,27 +7,29 @@ if (login_check($dbh)) {
     exit;
 }
 
-# Se è stato inviato il form di reset-password
-/*
-TODO
-if (isset($_POST['username'], $_POST['password'])) {
-    $username = $_POST['username'];
-    $password = $_POST['password'];
-    $result = loginUser($username, $password, $dbh);
-    if ($result[0] == true) {
-        // Login eseguito con successo
-        header("Location: home.php");
-        exit;
+if (isset($_POST['username'])) {
+    $username = "";
+    $result = doesPersonUsernameExist($_POST['username'], $dbh);
+    if ($result == false) {
+        //L'username inserito non esiste, provo a controllare se è una mail
+        $resultMail = $dbh->getUser($_POST['username']);
+        if (empty($resultMail) == false) {
+            //Ho recuperato lo username dalla mail
+            $username = $resultMail[0]['username'];
+        }
     } else {
-        // Login fallito
-        $templateParams["errors"] = $result[1];
+        $username = $_POST['username'];
     }
+
+    if ($username != "") {
+        //TODO:Invio una mail
+    }
+
+    $_SESSION["message"] = "Ti è stato inviata una mail per cambiare la password. Controlla la tua casella di posta elettronica";
+    header("Location: login.php" );
+    exit;
 }
-
-if (isset($_GET["password_changed"]) && $_GET["password_changed"] == true) {
-    $templateParams["messages"][] = "Password cambiata con successo. Effettua nuovamente il login";
-}*/
-
+# Se accedi direttamente alla pagina
 $templateParams["title"] = "PETS - Hai dimenticato la password";
 $templateParams["page"] = "reset-password-template.php";
 require_once("template/base-outside.php");
