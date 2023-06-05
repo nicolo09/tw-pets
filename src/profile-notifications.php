@@ -7,10 +7,6 @@ if (!isUserLoggedIn($dbh)) {
     exit;
 }
 
-//TODO: remove this
-//Add a notification
-//$dbh->addNotification(getUserName($dbh), NotificationType::FOLLOW, array("follower" => "pippo"));
-
 if (isset($_GET["number"])) {
     header("Content-Type: application/json");
     if ($dbh->hasMoreThanXNotifications(getUserName($dbh), MAX_NOTIFICATIONS)) {
