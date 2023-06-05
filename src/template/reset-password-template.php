@@ -9,7 +9,7 @@
                         <!-- Username input -->
                         <div class="form-outline">
                             <label class="form-label" for="usernameTextBox">Inserisci nome Utente o Email</label>
-                            <input type="text" placeholder="Username / Email" class="form-control" id="usernameTextBox" name="username" autocomplete="username" />
+                            <input type="text" placeholder="Username / Email" class="form-control" id="usernameTextBox" name="username" autocomplete="username" required/>
                         </div>
 
                         <!-- Submit button -->
