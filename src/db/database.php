@@ -1285,4 +1285,20 @@ class DatabaseHelper
             throw new Exception("Error Processing Request", 1);
         }
     }
+
+    /**
+     * Crea una stringa che identifica il reset della password
+     * @param string $email l'account la cui password è da resettare
+     * @param string $code il codice di reset
+     * @return string codice di reset
+     */
+    function newResetCode(string $email, string $code)
+    {
+        if ($stmt = $this->db->prepare("INSERT INTO password_reset (email, generated_key) VALUES (?, ?)")) {
+            $stmt->bind_param('ss', $email, $code);
+            return $stmt->execute();
+        } else {
+            return false;
+        }
+    }
 }

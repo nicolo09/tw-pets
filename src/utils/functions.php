@@ -1126,3 +1126,15 @@ function countNFiles(string $directory, string  $extension)
     }
     return $i;
 }
+
+/**
+ * Crea una stringa che identifica il reset della password
+ * @param string $email l'account la cui password è da resettare
+ * @param DatabaseHelper $dbh the database helper
+ * @return string codice di reset
+ */
+function createResetCode(string $email, DatabaseHelper $dbh){
+    $code=random_bytes(50);
+    $dbh->newResetCode($email, $code);
+    return $code;
+}
