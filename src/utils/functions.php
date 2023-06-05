@@ -1138,3 +1138,21 @@ function createResetCode(string $email, DatabaseHelper $dbh){
     $dbh->newResetCode($email, $code);
     return $code;
 }
+
+/**
+ * Invia la mail per il reset della password
+ * @param string $email l'account la cui password è da resettare
+ * @param string $code il codice di recupero password
+ * @return bool se l'invio è andato a buon fine
+ */
+function sendResetEmail(string $email,string $code){
+
+    // Il messaggio
+    $message = "Hai chiesto il reset della tua password su TWPETS?\nSe sei stato tu, clicca sul link in fondo a questa mail o copialo per intero su un browser per procedere con il reset della tua password\nSe non sei stato tu a , ignora questa email\n";
+    $message = $message."Premi qui per resettare la password: <a href =\"http://localhost/tw-pets/password-reset.php?id=".$code."\">http://localhost/tw-pets/password-reset.php?id=".$code."</a>\n";
+    $message= $message. "Il link è valido per 24h, se è passato più tempo, torna su <a href =\"http://localhost/tw-pets/reset-password.php\">http://localhost/tw-pets/reset-password.php</a> a richiedere l'invio di un nuovo codice.\n";
+
+    $headers = 'From: noreply@twpets.com' . "\r\n";
+    // Invio la mail
+    return mail($email, "TWPETS - Richiesta di reset password", $message, $headers);
+}
