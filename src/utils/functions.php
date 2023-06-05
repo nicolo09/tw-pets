@@ -298,10 +298,13 @@ function uploadImage($path, $image)
     if ($imageSize === false) {
         $msg .= "File caricato non è un'immagine! ";
     }
+    
+    /*
     //Controllo dimensione dell'immagine < 500KB
     if ($image["size"] > $maxKB * 1024) {
         $msg .= "File caricato pesa troppo! Dimensione massima è $maxKB KB. ";
     }
+    */
 
     //Controllo estensione del file
     $imageFileType = strtolower(pathinfo($fullPath, PATHINFO_EXTENSION));
@@ -319,9 +322,9 @@ function uploadImage($path, $image)
         $fullPath = $path . $imageName;
     }
 
-    //Se non ci sono errori, sposto il file dalla posizione temporanea alla cartella di destinazione
+    //Se non ci sono errori, comprimo il file spostandolo dalla posizione temporanea alla cartella di destinazione
     if (strlen($msg) == 0) {
-        if (!move_uploaded_file($image["tmp_name"], $fullPath)) {
+        if (!compressImage($image["tmp_name"], $fullPath)) {
             $msg .= "Errore nel caricamento dell'immagine.";
         } else {
             $result = 1;
@@ -329,6 +332,18 @@ function uploadImage($path, $image)
         }
     }
     return array($result, $msg);
+}
+
+function compressImage($src, $dst){
+    //TODO: Test if it works with all image types (not only jpg)
+    $img = new Imagick();
+    $img->readImage($src);
+    $img->setImageCompression(Imagick::COMPRESSION_JPEG);
+    $img->setImageCompressionQuality(65);
+    $img->stripImage();
+    $img->writeImage($dst); 
+    $img->clear();
+    return true;
 }
 
 function isPasswordStrong($password)

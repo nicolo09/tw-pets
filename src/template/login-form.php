@@ -1,5 +1,5 @@
 <section class="text-center text-lg-start">
-    <div class="container">
+    <div class="container login-margin-lg">
         <div class="row align-items-center">
             <div class="col-lg-6">
                 <div class="card-body text-center">
@@ -18,22 +18,8 @@
                             <a href="reset-password.php">Password dimenticata?</a>
                         </div>
 
-                        <!-- Remember me checkbox
-                        <div class="form-outline">
-                            <input type="checkbox" class="form-check-input" id="rememberCheckBox" name="rememberMe">
-                            <label class="form-check-label" for="rememberCheckBox">Ricordami</label>
-                        </div>  -->
-
                         <!-- Submit button -->
                         <button type="submit" class="btn btn-primary btn-block mb-4">Login</button>
-
-                        <?php
-                        if (isset($templateParams["errors"])) {
-                            foreach ($templateParams["errors"] as $error) {
-                                echo "<p class='text-danger'>" . $error . "</p>";
-                            }
-                        }
-                        ?>
 
                         <!-- Go to register form -->
                         <div>
@@ -44,7 +30,7 @@
                 </div>
             </div>
             <div class="col-lg-6">
-                <h1 class="text-center">Placeholder immagine</h1>
+                <img class="desktop-view w-100" src="../img/site-image.jpg" alt="Image of pets"/>
             </div>
         </div>
     </div>

@@ -158,7 +158,7 @@
                     <div class="list-group-item">
                         <div class="row align-items-center">
                             <div class="col">
-                                <p>Leggi l'informativa dei cookie: <a href="cookie-profile.php">Informativa dei cookie</a></p>
+                                <p class="mb-0 py-2">Leggi l'informativa dei cookie: <a href="cookie-profile.php">Informativa dei cookie</a></p>
                             </div>
                         </div>
                     </div>
