@@ -9,6 +9,7 @@ if (login_check($dbh)) {
 
 if (isset($_POST['username'])) {
     $username = "";
+    $email= "";
     $result = doesPersonUsernameExist($_POST['username'], $dbh);
     if ($result == false) {
         //L'username inserito non esiste, provo a controllare se è una mail
@@ -16,14 +17,21 @@ if (isset($_POST['username'])) {
         if (empty($resultMail) == false) {
             //Ho recuperato lo username dalla mail
             $username = $resultMail[0]['username'];
+            $email=$_POST['username'];
         }
     } else {
         $username = $_POST['username'];
+        $email=getUserData($username, $dbh)['email'];
     }
 
-    if ($username != "") {
-        //TODO:Invio una mail
-    }
+    if ($username != ""&&$email!="") {
+        $code=createResetCode($email, $dbh);
+        $outcome=sendResetEmail($email, $code);
+        if($outcome==false){
+            //C'è stato un errore nell'invio della mail
+            $_SESSION["error"] = "C'è stato un errore nell'invio della mail";
+        }
+        }
 
     $_SESSION["message"] = "Ti è stato inviata una mail per cambiare la password. Controlla la tua casella di posta elettronica";
     header("Location: login.php" );
