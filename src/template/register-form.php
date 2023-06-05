@@ -1,5 +1,5 @@
 <section class="text-center text-lg-start">
-    <div class="container">
+    <div class="container login-margin-lg">
         <div class="row align-items-center">
             <div class="col-lg-6">
                 <div class="card-body text-center">
@@ -41,7 +41,7 @@
                 </div>
             </div>
             <div class="col-lg-6">
-                <h1 class="text-center">Placeholder immagine</h1>
+                <img class="desktop-view w-100" src="../img/site-image.jpg"/>
             </div>
         </div>
     </div>

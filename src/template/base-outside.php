@@ -20,9 +20,9 @@
     <title><?php echo $templateParams["title"]?></title>
 </head>
 
-<body>
+<body class="pt-3">
     <header>
-        <h1 class="text-center">🐶PETS🐱</h1>
+        <h1 class="text-center mb-3">🐶PETS🐱</h1>
     </header>
     <?php
     if (isset($templateParams["messages"])) {
