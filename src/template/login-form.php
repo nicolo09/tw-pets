@@ -30,7 +30,7 @@
                 </div>
             </div>
             <div class="col-lg-6">
-                <img class="desktop-view w-100" src="../img/site-image.jpg"/>
+                <img class="desktop-view w-100" src="../img/site-image.jpg" alt="Image of pets"/>
             </div>
         </div>
     </div>
