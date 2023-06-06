@@ -37,6 +37,16 @@ if (isset($_POST['username'])) {
     header("Location: login.php" );
     exit;
 }
+
+if(!empty($_SESSION["error"])) {
+    $templateParams["errors"] = array($_SESSION["error"]);
+    unset($_SESSION["error"]);
+}
+
+if(!empty($_SESSION["message"])) {
+    $templateParams["messages"] = array($_SESSION["message"]);
+    unset($_SESSION["message"]);
+}
 # Se accedi direttamente alla pagina
 $templateParams["title"] = "PETS - Hai dimenticato la password";
 $templateParams["page"] = "reset-password-template.php";
