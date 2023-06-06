@@ -13,7 +13,7 @@
                                 <p class="text-muted mb-0">Inserisci la nuova password.</p>
                             </div>
                             <div class="col-auto">
-                                <input type="password" id="new-password" name="new-password" autocomplete="new-password" />
+                                <input type="password" id="new-password" name="new-password" autocomplete="new-password" required/>
                             </div>
                         </div>
                         <div class="row align-items-center">
@@ -22,7 +22,7 @@
                                 <p class="text-muted mb-0">Inserisci di nuovo la nuova password.</p>
                             </div>
                             <div class="col-auto">
-                                <input type="password" id="new-password-repeat" name="new-password-repeat" autocomplete="new-password" />
+                                <input type="password" id="new-password-repeat" name="new-password-repeat" autocomplete="new-password" required/>
                             </div>
                         </div>
 
