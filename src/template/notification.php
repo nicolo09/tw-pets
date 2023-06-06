@@ -10,7 +10,7 @@
             </div>
         </div>
     </a>
-    <!-- TODO: Add label for this button -->
+    <label for="<?php echo "btn-delete-" . $notification["id"] ?>" class="visually-hidden">Cancella notifica</label>
     <button type="button" class="btn btn-danger btn-delete-notification ms-auto col-xs-2 col-md-1 col-2" id=<?php echo "btn-delete-" . $notification["id"] ?>>
         <img src='<?php echo IMG_DIR . "trash-bin.svg" ?>' alt=""/>
     </button>
