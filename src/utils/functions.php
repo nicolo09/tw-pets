@@ -121,7 +121,7 @@ function checkBrute($username, $dbh)
     $now = time();
     $valid_attempts = $now - (2 * 60 * 60); // Intervallo di tempo equivalente a 2 ore da adesso
     $num_attempts = $dbh->getLoginAttempts($username, $valid_attempts);
-    if (count($num_attempts) > 5) { //TODO definire un valore massimo di tentativi
+    if (count($num_attempts) > MAX_LOGIN_ATTEMPTS) {
         return true;
     } else {
         return false;
