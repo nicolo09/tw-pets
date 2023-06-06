@@ -1,4 +1,4 @@
-document.querySelector('#settings-button').addEventListener('click', () => {
+$('#settings-button').on("click", function () {
     window.location.href = 'profile-settings.php';
 });
 
@@ -40,4 +40,8 @@ document.querySelector('#logout-button').addEventListener('click', () => {
     $('#no-button').on("click", function () {
         window.location.href = 'tab-profile.php';
     });
+});
+
+$("#view-followed-button").on("click", function () {
+    window.location.href = 'view-followed-profile.php';
 });
