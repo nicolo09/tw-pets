@@ -47,14 +47,12 @@
     }
     if (isset($templateParams["messages"])) {
         foreach ($templateParams["messages"] as $message) {
-            echo "<div class=\"desktop-view\"><div class=\"justify-content-center d-flex\"><div class=\"alert alert-success alert-dismissible fade show col-6\" role=\"alert\"> <label class=\"top-page-popup\">" . $message . "</label> <button type=\"button\" class=\"btn-close\" data-bs-dismiss=\"alert\" aria-label=\"Close\"></button></div></div></div>";
-            echo "<div class=\"mobile-view\"><div class=\" justify-content-center d-flex\"><div class=\"alert alert-success alert-dismissible fade show col-12\" role=\"alert\"> <label class=\"top-page-popup\">" . $message . "</label> <button type=\"button\" class=\"btn-close\" data-bs-dismiss=\"alert\" aria-label=\"Close\"></button></div></div></div>";
+            echo "<div class=\"justify-content-center d-flex\"><div class=\"alert alert-success alert-dismissible fade show col-lg-6 col-12\" role=\"alert\"> <label class=\"top-page-popup\">" . $message . "</label> <button type=\"button\" class=\"btn-close\" data-bs-dismiss=\"alert\" aria-label=\"Close\"></button></div></div>";
         }
     }
     if (isset($templateParams["errors"])) {
         foreach ($templateParams["errors"] as $error) {
-            echo "<div class=\"desktop-view\"><div class=\"justify-content-center d-flex\"><div class=\"alert alert-danger alert-dismissible fade show col-6\" role=\"alert\"> <label class=\"top-page-popup\">" . $error . "</label> <button type=\"button\" class=\"btn-close\" data-bs-dismiss=\"alert\" aria-label=\"Close\"></button></div></div></div>";
-            echo "<div class=\"mobile-view\"><div class=\" justify-content-center d-flex\"><div class=\"alert alert-danger alert-dismissible fade show col-12\" role=\"alert\"> <label class=\"top-page-popup\">" . $error . "</label> <button type=\"button\" class=\"btn-close\" data-bs-dismiss=\"alert\" aria-label=\"Close\"></button></div></div></div>";
+            echo "<div class=\"justify-content-center d-flex\"><div class=\"alert alert-danger alert-dismissible fade show col-lg-6 col-12\" role=\"alert\"> <label class=\"top-page-popup\">" . $error . "</label> <button type=\"button\" class=\"btn-close\" data-bs-dismiss=\"alert\" aria-label=\"Close\"></button></div></div>";
         }
     }
     if (isset($templateParams["page"])) {
