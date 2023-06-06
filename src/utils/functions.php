@@ -337,7 +337,6 @@ function uploadImage($path, $image)
 }
 
 function compressImage($path){
-    //TODO: Test if it works with all image types (not only jpg)
     $img = new Imagick();
     $img->readImage($path);
     $img->setImageCompression(Imagick::COMPRESSION_JPEG);
