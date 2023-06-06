@@ -2,13 +2,18 @@
     <div class="card-header row border-bottom border-black post-header p-1">
         <!--Utente che ha postato-->
         <div class="col p-0">
-            <a class="align-items-center" href= <?php echo getUserProfileHref($templateParams["username"]);?>>
+            <a class="align-items-center" href=<?php echo getUserProfileHref($templateParams["username"]);?> id="<?php echo $templateParams["id"];?>-creator">
                 <img class="post-pic text-center img-fluid me-2" src=<?php echo $templateParams["immagineprofilo"];?> alt="<?php echo "Foto profilo di " . $templateParams["username"];?>"><?php echo $templateParams["username"]; ?>
             </a>
         </div>
+        <?php if($templateParams["username"] == getUserName($dbh) && !isset($templateParams["list"])):?>
+            <div class="col d-flex justify-content-end p-0">
+                <button class="btn btn-outline-danger py-0 m-1" id="delete-post-card-<?php echo $templateParams["id"];?>">Elimina</button>
+            </div>
+        <?php endif ?>
     </div>
     <!--Immagine-->
-    <img class="w-100 <?php if (isset($templateParams["home"])) echo "home-post"?>" src=<?php echo $templateParams["immagine"];?> alt="<?php echo $templateParams["alt"];?>" id="post-img-<?php echo $templateParams["id"];?>">
+    <img class="w-100 <?php if (isset($templateParams["list"])) echo "home-post"?>" src=<?php echo $templateParams["immagine"];?> alt="<?php echo $templateParams["alt"];?>" id="post-img-<?php echo $templateParams["id"];?>">
     <div class="card-footer w-100 p-0 m-0">
         <div class="w-100 m-0 d-flex justify-content-center row">
             <!--Tasti-->

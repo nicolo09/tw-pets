@@ -11,7 +11,7 @@ foreach ($posts as $result) {
     $templateParams["title"] = "Post di " . $templateParams["username"];
     $templateParams["animals"] = getAnimalsInPost($result["id_post"], $dbh);
     $templateParams["more-comments"] = true;
-    $templateParams["home"] = true;
+    $templateParams["list"] = true;
 
     echo '<div class="mb-3">';
     require("single-post.php");
