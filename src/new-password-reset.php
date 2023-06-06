@@ -24,7 +24,7 @@ if (isset($_GET["id"])) {
                 // Password cambiata con successo
                 // Rimuovo tutti i codici generati per cambiare la password
                 removeAllPasswordChangeRequests($email, $dbh);
-                //TODO: send mail
+                sendEmailAboutPasswordChange($username, $dbh);
                 header("Location: login.php?password_changed=true");
                 exit;
             } else {
