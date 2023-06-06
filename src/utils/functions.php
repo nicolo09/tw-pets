@@ -324,9 +324,15 @@ function uploadImage($path, $image)
 
     //Se non ci sono errori, comprimo il file spostandolo dalla posizione temporanea alla cartella di destinazione
     if (strlen($msg) == 0) {
-        if (!compressImage($image["tmp_name"], $fullPath)) {
-            $msg .= "Errore nel caricamento dell'immagine.";
-        } else {
+        if (!move_uploaded_file($image["tmp_name"], $fullPath)) {
+            if (!compressImage($fullPath)) {
+                $msg .= "Errore nel caricamento dell'immagine.";
+            } else {
+                $result = 1;
+                $msg = $imageName;
+            }
+        }
+        else{
             $result = 1;
             $msg = $imageName;
         }
@@ -334,14 +340,14 @@ function uploadImage($path, $image)
     return array($result, $msg);
 }
 
-function compressImage($src, $dst){
+function compressImage($path){
     //TODO: Test if it works with all image types (not only jpg)
     $img = new Imagick();
-    $img->readImage($src);
+    $img->readImage($path);
     $img->setImageCompression(Imagick::COMPRESSION_JPEG);
     $img->setImageCompressionQuality(65);
     $img->stripImage();
-    $img->writeImage($dst); 
+    $img->writeImage();
     $img->clear();
     return true;
 }
