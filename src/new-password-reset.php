@@ -25,7 +25,7 @@ if(isset($_GET["id"])){
 }
 
 # Se accedi direttamente alla pagina
-$templateParams["title"] = "PETS - Hai dimenticato la password";
+$templateParams["title"] = "PETS - Cambia la password";
 $templateParams["page"] = "reset-page.php";
 require_once("template/base-outside.php");
 
