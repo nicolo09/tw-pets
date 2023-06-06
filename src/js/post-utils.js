@@ -116,6 +116,15 @@ function popUp(text, commentID) {
     $(commentID).prepend($('<div class="alert alert-danger alert-dismissible fade show" role="alert"> <label class="top-page-popup">' + text + '</label> <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button></div>'));
 }
 
+function getTopPageAlertPopUp(text) {
+    return '<div class="justify-content-center d-flex">' +
+                '<div class="alert alert-danger alert-dismissible fade show col-lg-6 col-12" role="alert">' +
+                    '<label class="top-page-popup">' + text + '</label>' + 
+                    '<button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>' + 
+                '</div>' + 
+            '</div>'
+}
+
 function successPopUp(text, commentID) {
     $(commentID).prepend($('<div class="alert alert-success alert-dismissible fade show" role="alert"> <label class="top-page-popup">' + text + '</label> <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button></div>'));
 }
