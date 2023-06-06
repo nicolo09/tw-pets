@@ -4,7 +4,7 @@
             <div class="col-lg-6">
                 <div class="card-body text-center">
                     <h2 class="fw-bold">Inserisci la nuova password per l'account di <?php if (isset($templateParams["username"])) echo $templateParams["username"]; ?></h2>
-                    <form action="reset-password.php" method="post">
+                    <form action="#" method="post">
 
                         <!-- Password input -->
                         <div class="row align-items-center">
