@@ -324,17 +324,13 @@ function uploadImage($path, $image)
 
     //Se non ci sono errori, comprimo il file spostandolo dalla posizione temporanea alla cartella di destinazione
     if (strlen($msg) == 0) {
-        if (!move_uploaded_file($image["tmp_name"], $fullPath)) {
-            if (!compressImage($fullPath)) {
-                $msg .= "Errore nel caricamento dell'immagine.";
-            } else {
+        if (move_uploaded_file($image["tmp_name"], $fullPath)) {
+            if (compressImage($fullPath)) {
                 $result = 1;
                 $msg = $imageName;
+            } else {
+                $msg .= "Errore nel caricamento dell'immagine.";
             }
-        }
-        else{
-            $result = 1;
-            $msg = $imageName;
         }
     }
     return array($result, $msg);
@@ -345,11 +341,11 @@ function compressImage($path){
     $img = new Imagick();
     $img->readImage($path);
     $img->setImageCompression(Imagick::COMPRESSION_JPEG);
-    $img->setImageCompressionQuality(65);
+    $img->setImageCompressionQuality(75);
     $img->stripImage();
-    $img->writeImage();
+    $result = $img->writeImage();
     $img->clear();
-    return true;
+    return $result;
 }
 
 function isPasswordStrong($password)
