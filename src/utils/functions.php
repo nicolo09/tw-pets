@@ -1228,3 +1228,13 @@ function changePasswordReset(string $username, string $newPassword, string $conf
     }
     return array($result, $errors);
 }
+
+/**
+ * Rimuove tutti i codici di reset associati ad una email
+ * @param string $email la mail che ha richiesto il reset del codice
+ * @param DatabaseHelper $dbh the database helper
+ * @return bool vero se è andato a buon fine
+ */
+function removeAllPasswordChangeRequests(string $email,DatabaseHelper $dbh){
+    return $dbh->removeAllPasswordCodes($email);
+}

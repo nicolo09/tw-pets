@@ -1338,4 +1338,19 @@ class DatabaseHelper
             return array();
         }
     }
+
+    /**
+     * Rimuove tutti i codici di reset associati ad una email
+     * @param string $email la mail che ha richiesto il reset del codice
+     * @return bool vero se è andato a buon fine
+     */
+    function removeAllPasswordCodes(string $email)
+    {
+        if ($stmt = $this->db->prepare("DELETE FROM PASSWORD_RESET WHERE email = ?")) {
+            $stmt->bind_param('s', $email);
+            return $stmt->execute();
+        } else {
+            return false;
+        }
+    }
 }
