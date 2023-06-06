@@ -1239,3 +1239,19 @@ function changePasswordReset(string $username, string $newPassword, string $conf
 function removeAllPasswordChangeRequests(string $email,DatabaseHelper $dbh){
     return $dbh->removeAllPasswordCodes($email);
 }
+
+/**
+ * Manda una mail all'utente per avvisarlo che la sua password è cambiata
+ * @param string $username l'utente che ha cambiato la password
+ * @param DatabaseHelper $dbh the database helper
+ * @return bool vero se è andato a buon fine l'invio di mail
+ */
+function sendEmailAboutPasswordChange(string $username, DatabaseHelper $dbh){
+    $email=getUserData($username, $dbh)["email"];
+    // Il messaggio
+    $message = "La tua password su TWPETS è stata cambiata\nSe sei stato tu, ignora questa email.\nSe non sei stato tu, il tuo account è compromesso ed è necessario che esegui la procedura di reset della password al più presto";
+    $headers = 'From: noreply@twpets.com' . "\r\n";
+    // Invio la mail
+    return mail($email, "TWPETS - Password cambiata", $message, $headers);
+
+}

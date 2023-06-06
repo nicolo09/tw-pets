@@ -13,6 +13,7 @@ if (isset($_POST["old-password"], $_POST["new-password"], $_POST["new-password-r
     $result = changePassword($old_password, $new_password, $confirm_password, $dbh);
     if ($result[0] == true) {
         // Password cambiata con successo
+        sendEmailAboutPasswordChange(getUserName($dbh), $dbh);
         header("Location: login.php?password_changed=true");
         exit;
     } else {
