@@ -1201,5 +1201,30 @@ function isPasswordResetCodeValid(string $code, DatabaseHelper $dbh){
         }
     }
     return false;
+}
 
+/**
+ * Cambia la password dell'utente che ha chiesto il reset della password
+ * @param string $username l'utente 
+ * @param string $newPassword la nuova password
+ * @param string $confirmPassword la conferma della nuova password
+ * @param DatabaseHelper $dbh the database helper
+ * @return array di risultati e errori
+ */
+function changePasswordReset(string $username, string $newPassword, string $confirmPassword, DatabaseHelper $dbh)
+{
+    $errors = [];
+    $result = false;
+    if ($newPassword != $confirmPassword) {
+        $errors[] = "Le password non coincidono.";
+    } else {
+        $passwordStrength = isPasswordStrong($newPassword);
+        if (!$passwordStrength[0]) {
+            $errors = array_merge($errors, $passwordStrength[1]);
+        }
+    }
+    if (count($errors) == 0) {
+        $result = $dbh->changePassword($username, $newPassword);
+    }
+    return array($result, $errors);
 }
