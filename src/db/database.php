@@ -1354,4 +1354,22 @@ class DatabaseHelper
             return false;
         }
     }
+
+    /**
+     * Returns the profile a user follows (both animals and people)
+     * @param string $username the username of the user
+     * @param int $offset the offset of the query
+     * @param int $number the number of profiles to get
+     * @return array of profiles
+     */
+    function getFollowedProfiles($username, $offset, $number){
+        if($stmt = $this->db->prepare("SELECT * FROM segue_persona WHERE follower=? UNION SELECT * FROM segue_animale WHERE follower=? ORDER BY followed LIMIT ?, ?")) {
+            $stmt->bind_param('ssii', $username, $username, $offset, $number);
+            $stmt->execute();
+            $result = $stmt->get_result();
+            return $result->fetch_all(MYSQLI_ASSOC);
+        } else {
+            return array();
+        }
+    }
 }
