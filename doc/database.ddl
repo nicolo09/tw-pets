@@ -117,11 +117,13 @@ create table PASSWORD_RESET (
 
 alter table COMMENTO add constraint FKSOTTO
      foreign key (id_post)
-     references POST (id_post);
+     references POST (id_post)
+     ON DELETE CASCADE;
 
 alter table COMMENTO add constraint FKRISPONDE
      foreign key (id_padre)
-     references COMMENTO (id_commento);
+     references COMMENTO (id_commento)
+     ON DELETE CASCADE;
 
 alter table COMMENTO add constraint FKPOSTA
      foreign key (username)
@@ -142,7 +144,8 @@ alter table LIKES add constraint FKPERSONALIKES
 
 alter table LIKES add constraint FKPOSTLIKES
      foreign key (id_post)
-     references POST (id_post);
+     references POST (id_post)
+     ON DELETE CASCADE;
 
 alter table NOTIFICA add constraint FKPER
      foreign key (destinatario)
@@ -167,7 +170,8 @@ alter table POST add constraint FKPUBBLICA
 
 alter table RIGUARDA add constraint FKPOST
      foreign key (id_post)
-     references POST (id_post);
+     references POST (id_post)
+     ON DELETE CASCADE;
 
 alter table RIGUARDA add constraint FKANIMALERIGUARDA
      foreign key (animale)
@@ -179,7 +183,8 @@ alter table SALVATI add constraint FKPERSONASALVATI
 
 alter table SALVATI add constraint FKPOSTSALVATI
      foreign key (id_post)
-     references POST (id_post);
+     references POST (id_post)
+     ON DELETE CASCADE;
 
 alter table SEGUE_ANIMALE add constraint FKFOLLOWEDANIMALE
      foreign key (followed)
