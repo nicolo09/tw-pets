@@ -9,16 +9,24 @@ $.ajax({
     dataType: 'json',
     success: function (response) {
         for (var key in response) {
-            item = document.getElementById(key);
+            let item = document.getElementById(key);
             if (response.hasOwnProperty(key) && item != null) {
                 item.checked = response[key];
                 item.addEventListener('change', event => {
+                    //Set toggle switch to a spinner
+                    item.hidden = true;
+                    $('<div class="spinner-border text-primary" role="status"><span class="visually-hidden">Loading...</span></div>').prependTo(item.parentElement);
                     $.ajax({
                         url: 'profile-settings.php',
                         type: 'post',
                         data: { 'setting': event.target.id, 'value': event.target.checked },
                         success: function (response) {
-                            //TODO: Add success message and handle error
+                            item.hidden = false;
+                            item.parentElement.removeChild(item.parentElement.firstChild);
+                        },
+                        error: function(){
+                            console.error('Error while saving settings');
+                            alert('Errore durante il salvataggio delle impostazioni');
                         }
                     });
                 });
@@ -27,7 +35,6 @@ $.ajax({
             }
         }
     }
-    //TODO: Handle error
 });
 
 $("#change-email").on('click', function () {
