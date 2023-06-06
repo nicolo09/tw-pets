@@ -1165,10 +1165,41 @@ function sendResetEmail(string $email,string $code){
 
     // Il messaggio
     $message = "Hai chiesto il reset della tua password su TWPETS?\nSe sei stato tu, clicca sul link in fondo a questa mail o copialo per intero su un browser per procedere con il reset della tua password\nSe non sei stato tu a , ignora questa email\n";
-    $message = $message."Premi qui per resettare la password: <a href =\"http://localhost/tw-pets/password-reset.php?id=".$code."\">http://localhost/tw-pets/password-reset.php?id=".$code."</a>\n";
+    $message = $message."Premi qui per resettare la password: <a href =\"http://localhost/tw-pets/new-password-reset.php?id=".$code."\">http://localhost/tw-pets/new-password-reset.php?id=".$code."</a>\n";
     $message= $message. "Il link è valido per 24h, se è passato più tempo, torna su <a href =\"http://localhost/tw-pets/reset-password.php\">http://localhost/tw-pets/reset-password.php</a> a richiedere l'invio di un nuovo codice.\n";
 
     $headers = 'From: noreply@twpets.com' . "\r\n";
     // Invio la mail
     return mail($email, "TWPETS - Richiesta di reset password", $message, $headers);
+}
+
+/**
+ * Controlla se il codice di reset della password è valido
+ * @param string $code il codice di reset
+ * @param DatabaseHelper $dbh the database helper
+ * @return bool vero se il codice è valido
+ */
+function isPasswordResetCodeValid(string $code, DatabaseHelper $dbh){
+    $result=$dbh->getResetCodeInfo($code);
+    if(empty($result)==false){
+        $time=$result["generated_on"];
+        $email=$result["email"];
+        $now=date('Y-m-d H:i:s', time());
+        $interval=date_diff(date_create($time),date_create($now));
+        $validityH=24; //Il codice vale 24h
+        if((($interval->days*24)+$interval->h)>$validityH){
+            return false;
+        }else{
+            //E' meno di 24 ore fa
+            $allCodes=$dbh->getAllResetCodesForEmail($email);
+            if(count($allCodes)>=1&&$allCodes[0]["generated_key"]==$code){
+                //Visto che all codes è ordinato con ultimo elemento generato per primo,
+                //se la chiave in questione è l'ultimo elemento generato->è valida
+                return true;
+            }
+            return false;
+        }
+    }
+    return false;
+
 }
