@@ -1372,4 +1372,18 @@ class DatabaseHelper
             return array();
         }
     }
+
+    /**
+     * Deletes the specified post.
+     * @param int $id the post's id.
+     * @return bool true if the post was successfully deleted, false otherwise. 
+     */
+    function deletePost(int $id){
+        if($stmt = $this->db->prepare("DELETE FROM POST WHERE id_post = ?")){
+            $stmt->bind_param('i', $id);
+            return $stmt->execute();
+        } else {
+            return false;
+        }
+    }
 }
