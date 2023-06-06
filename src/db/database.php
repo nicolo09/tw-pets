@@ -1329,7 +1329,7 @@ class DatabaseHelper
      * @return array elementi del codice
      */
     function getAllResetCodesForEmail(string $email){
-        if($stmt = $this->db->prepare("SELECT * FROM PASSWORD_RESET WHERE email=?")) {
+        if($stmt = $this->db->prepare("SELECT * FROM PASSWORD_RESET WHERE email=? ORDER BY generated_on DESC")) {
             $stmt->bind_param('s', $email);
             $stmt->execute();
             $result = $stmt->get_result();
