@@ -1301,4 +1301,41 @@ class DatabaseHelper
             return false;
         }
     }
+
+    /**
+     * Ritorna le informazioni del codice di reset della password
+     * @param string $code il codice di reset
+     * @return array elementi del codice
+     */
+    function getResetCodeInfo(string $code){
+        if($stmt = $this->db->prepare("SELECT * FROM PASSWORD_RESET WHERE generated_key=?")) {
+            $stmt->bind_param('s', $code);
+            $stmt->execute();
+            $result = $stmt->get_result();
+            $tmp=$result->fetch_all(MYSQLI_ASSOC);
+            if(empty($tmp)==false){
+                return $tmp[0];
+            }else{
+                return array();
+            }
+        } else {
+            return array();
+        }
+    }
+
+    /**
+     * Ritorna tutti i codici di reset di una email
+     * @param string $email l'email dei codici di reset
+     * @return array elementi del codice
+     */
+    function getAllResetCodesForEmail(string $email){
+        if($stmt = $this->db->prepare("SELECT * FROM PASSWORD_RESET WHERE email=?")) {
+            $stmt->bind_param('s', $email);
+            $stmt->execute();
+            $result = $stmt->get_result();
+            return $result->fetch_all(MYSQLI_ASSOC);
+        } else {
+            return array();
+        }
+    }
 }
