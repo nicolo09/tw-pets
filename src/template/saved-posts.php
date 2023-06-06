@@ -12,4 +12,4 @@ require("template\post-list.php");
     </div>
 </div>
 <script src="js/favorite-posts.js"></script>
-<script src="js/post.js"></script> <!-- TODO: Cambiare con post-utils -->
+<script src="js/post-utils.js"></script>
