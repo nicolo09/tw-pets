@@ -1149,7 +1149,8 @@ function countNFiles(string $directory, string  $extension)
  * @return string codice di reset
  */
 function createResetCode(string $email, DatabaseHelper $dbh){
-    $code=random_bytes(50);
+    $length=50; //Ogni byte è 2 caratteri, la stringa è lunga 100 char in db
+    $code=bin2hex(random_bytes($length));
     $dbh->newResetCode($email, $code);
     return $code;
 }
