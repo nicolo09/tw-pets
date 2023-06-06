@@ -1285,4 +1285,72 @@ class DatabaseHelper
             throw new Exception("Error Processing Request", 1);
         }
     }
+
+    /**
+     * Crea una stringa che identifica il reset della password
+     * @param string $email l'account la cui password è da resettare
+     * @param string $code il codice di reset
+     * @return string codice di reset
+     */
+    function newResetCode(string $email, string $code)
+    {
+        if ($stmt = $this->db->prepare("INSERT INTO password_reset (email, generated_key) VALUES (?, ?)")) {
+            $stmt->bind_param('ss', $email, $code);
+            return $stmt->execute();
+        } else {
+            return false;
+        }
+    }
+
+    /**
+     * Ritorna le informazioni del codice di reset della password
+     * @param string $code il codice di reset
+     * @return array elementi del codice
+     */
+    function getResetCodeInfo(string $code){
+        if($stmt = $this->db->prepare("SELECT * FROM PASSWORD_RESET WHERE generated_key=?")) {
+            $stmt->bind_param('s', $code);
+            $stmt->execute();
+            $result = $stmt->get_result();
+            $tmp=$result->fetch_all(MYSQLI_ASSOC);
+            if(empty($tmp)==false){
+                return $tmp[0];
+            }else{
+                return array();
+            }
+        } else {
+            return array();
+        }
+    }
+
+    /**
+     * Ritorna tutti i codici di reset di una email
+     * @param string $email l'email dei codici di reset
+     * @return array elementi del codice
+     */
+    function getAllResetCodesForEmail(string $email){
+        if($stmt = $this->db->prepare("SELECT * FROM PASSWORD_RESET WHERE email=? ORDER BY generated_on DESC")) {
+            $stmt->bind_param('s', $email);
+            $stmt->execute();
+            $result = $stmt->get_result();
+            return $result->fetch_all(MYSQLI_ASSOC);
+        } else {
+            return array();
+        }
+    }
+
+    /**
+     * Rimuove tutti i codici di reset associati ad una email
+     * @param string $email la mail che ha richiesto il reset del codice
+     * @return bool vero se è andato a buon fine
+     */
+    function removeAllPasswordCodes(string $email)
+    {
+        if ($stmt = $this->db->prepare("DELETE FROM PASSWORD_RESET WHERE email = ?")) {
+            $stmt->bind_param('s', $email);
+            return $stmt->execute();
+        } else {
+            return false;
+        }
+    }
 }

@@ -98,6 +98,13 @@ create table SEGUE_PERSONA (
      followed varchar(25) not null,
      follower varchar(25) not null,
      constraint IDSEGUE_PER primary key (followed, follower));
+	 
+create table PASSWORD_RESET (
+     email varchar(30) not null,
+	 generated_key varchar(100) not null,
+	 generated_on timestamp not null,
+	 constraint IDPASSWORD_RESET_ID primary key (email, generated_on));
+
 
 
 -- Constraints Section
