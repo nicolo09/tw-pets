@@ -44,7 +44,7 @@ if (isset($_GET["id"])) {
 
 // The user opened the page
 $templateParams["title"] = "PETS - Cambia la password";
-$templateParams["page"] = "reset-page.php";
+$templateParams["page"] = "template/reset-page.php";
 require_once("template/base-outside.php");
 
 ?>
