@@ -1,4 +1,4 @@
-//Possibili costanti del parametro type
+//Possible values for type variable
 const ANIMAL = "animal";
 const PERSON = "person";
 
@@ -9,8 +9,8 @@ let type = urlParams.has('type') ? urlParams.get('type') : PERSON;
 let username = urlParams.has('username') ? urlParams.get('username') : null;
 
 if (type == PERSON) {
-    //Attacco bottone animale
-    //Redirect a pagina con get nome utente della persona che li gestisce, username
+    //Attaching eventListener to animal button
+    //Opens the animal list of the user
     if(username == null){
         document.getElementById("animals").addEventListener('click', ()=>{
             window.location.href = 'profile-animals.php';
@@ -24,9 +24,9 @@ if (type == PERSON) {
 }
 
 if(username != null){
-    //Puoi seguire un utente solo se non è il tuo account
-    //Se non segui->inizi a seguire
-    //Se lo segui->smetti di seguire
+    //Own account can't be followed
+    //If the account is not being followed the user can follow it
+    //If the account is already being followed the user can unfollow it
     let followButton = document.getElementById("follow");
     if(followButton != null){
         followButton.addEventListener('click', ()=>{

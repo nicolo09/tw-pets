@@ -25,27 +25,27 @@ preview.addEventListener('click', () => {
     const img = document.getElementById("imgpostinput").files[0];
     const reader = new FileReader();
     if (img != null) {
-        //L'immagine esiste e la carico
+        //The image exists, so it gets loaded
         reader.readAsDataURL(img);
         reader.addEventListener("load", () => {
-            //Ho caricato l'immagine in session storage
+            // The image is stored in the session storage
             sessionStorage.setItem("img-loaded", reader.result);
             const alt = document.getElementById("imgalt").value;
             const animalsList = $('#selectAnimals').select2('data');
             const txt = document.getElementById("txtpost").value;
-            //Formatto gli animali
+            //Formatting the animals
             const animals = [];
             animalsList.forEach(element => {
                 animals.push(element.id);
             });
 
             if (alt != "" & txt != "") {
-                //Posso mandarti alla preview
+                //The preview can be shown
                 if (animals.length == 0) {
-                    //Senza animali
+                    //There are no animals in the post
                     window.open('preview-post-profile.php?txt=' + txt + "&alt=" + alt, '_blank');
                 } else {
-                    //Con animali
+                    //There are animals in the post
                     window.open('preview-post-profile.php?txt=' + txt + "&alt=" + alt + "&anim=" + JSON.stringify(animals), '_blank');
                 }
             }
@@ -100,7 +100,7 @@ function createAnimalDisplay(selectedAnimals) {
                 </div>`;
             counter++;
             if (counter + 1 <= selectedAnimals.length) {
-                //Ci stanno almeno due elementi
+                //There are at least two elements
                 const index = getAnimalIndex(selectedAnimals[counter], finalAnimals);
                 const anim = finalAnimals[index];
                 html += `<div class="text-center col">

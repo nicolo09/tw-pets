@@ -1,8 +1,8 @@
-//Prendo id
+//Gets all present cards
 const cards = document.querySelectorAll('[id^="post-card-"]');
-//ID ha tutti gli id dei post presenti
+//Gets the post id
 const id = cards[0].id.split("-")[2];
-//Se un post ha il like o no
+//Styling buttons
 getPostLiked(id);
 getPostSaved(id);
 const timestamp = generateDate();
@@ -12,7 +12,7 @@ const answerButtonToAttach = [];
 const loadAnswersToAttach = [];
 const offsetAnswers = {};
 loadComment(id);
-
+//Attaching eventlisteners to post buttons
 attachLike(id);
 attachSave(id);
 attachDelete(id);
@@ -20,7 +20,7 @@ attachNewComment(id);
 
 const intersectionObserver = new IntersectionObserver(entries => {
     if (entries[0].intersectionRatio != 0) {
-        //Per evitare multipli trigger
+        //Avoids multiple triggers
         $("#spinner-post-" + id).addClass("d-none");
         loadComment(id);
     }
@@ -29,7 +29,7 @@ const intersectionObserver = new IntersectionObserver(entries => {
 //This observes the spinner
 intersectionObserver.observe(document.getElementById("spinner-post-" + id));
 
-//Attacca gli event listener a tutti i bottoni "rispondi" in answerButtonToAttach del post_id dato
+//Attaches eventListeners to all "answer" buttons of the post with the given id
 function attachAnswerButton(id) {
     answerButtonToAttach.forEach(element => {
         document.getElementById(id + "-comment-" + element).addEventListener('click', () => {
@@ -38,16 +38,15 @@ function attachAnswerButton(id) {
         });
 
     });
-    //Così facendo, quando carico nuovi commenti attacco l'event listener solo a loro
-    //e non attacco allo stesso pulsante molti event listener per lo stesso evento
+    //By doing this, when new comments get loaded, the eventlistener gets attached only to the new ones
     answerButtonToAttach.length = 0;
 }
 
-//Attacca gli event listener a tutti i bottoni "rispondi" in answerButtonToAttach del post_id dato
+//Attaches eventListeners to all "load more answers" buttons of the post with the given id
 function attachLoadAnswersButton(id_post) {
     loadAnswersToAttach.forEach(element => {
         document.getElementById(id_post + "-son-comment-" + element).addEventListener('click', () => {
-            //Carico n commenti, con offset
+            //Loading n comments with an offset
             const localOffset = offsetAnswers[element];
             const comments = fetch("tell-js-answer-comments.php?id_post=" + id_post + "&n=" + n + "&offset=" + localOffset + "&timestamp=" + timestamp + "&id_comment=" + element).then((response) => {
                 if (!response.ok) {
@@ -55,28 +54,27 @@ function attachLoadAnswersButton(id_post) {
                 }
                 return response.json();
             }).then((data) => {
-                //data è composta da vettore dei commenti
+                //data contains the comments array
                 data.forEach((comment, index) => {
                     addAnswerComment(comment);
                 });
 
-                //La prossima volta inizio a leggere i commenti da offset incrementato
+                //Next time comments will be read with an increased offset
                 offsetAnswers[element] = offsetAnswers[element] + data.length;
-                //Ho caricato n elementi? Se si->potrebbero esserci altri commenti
+                //If n comments were loaded there might be more
                 if (data.length != n) {
-                    //Ho caricato meno elementi, cavo il bottone
+                    //Less than n comments were loaded, there aren't any more comments to be loaded
                     $("#" + id_post + "-son-comment-" + element).addClass("d-none");
                 }
             });
         });
 
     });
-    //Così facendo, quando carico nuovi commenti attacco l'event listener solo a loro
-    //e non attacco allo stesso pulsante molti event listener per lo stesso evento
+    //By doing this, when new comments get loaded, the eventlistener gets attached only to the new ones
     loadAnswersToAttach.length = 0;
 }
 
-//Cambia la label id-label 
+//Changes the content of a id-label 
 function changeLabel(post_id, comment_id) {
     const label = document.getElementById(post_id + "-label");
     const singleLike = fetch("tell-js-user-id-comment.php?id=" + comment_id).then((response) => {
@@ -102,18 +100,18 @@ function changeLabel(post_id, comment_id) {
 }
 
 function loadComment(id_post) {
-    //Query al php per chiedere i commenti
+    //Loading comments from php
     const comments = fetch("tell-js-comments.php?id_post=" + id_post + "&n=" + n + "&offset=" + offset + "&timestamp=" + timestamp).then((response) => {
         if (!response.ok) {
             throw new Error("Something went wrong!");
         }
         return response.json();
     }).then((data) => {
-        //data è composta da vettore commenti e vettore haRisposte
+        //data contains comments array and "hasAnswers" array
         comm = data[0];
         hasAnswers = data[1];
         comm.forEach((element, index) => {
-            //aggiungo il commento alla pagina
+            //adding comment to the page
             addComment(element, hasAnswers[index][element["id_commento"]]);
             answerButtonToAttach.push(element["id_commento"]);
             if (hasAnswers[index][element["id_commento"]] == true) {
@@ -123,14 +121,14 @@ function loadComment(id_post) {
         });
         attachAnswerButton(id);
         attachLoadAnswersButton(id);
-        //La prossima volta inizio a leggere i commenti da offset incrementato
+        //Next time comments will be read with an increased offset
         offset = offset + comm.length;
-        //Ho caricato n elementi? Se si->potrebbero esserci altri commenti
+        //If n comments were loaded there might be more
         if (n == comm.length) {
-            //Ci potrebbero essere altri commenti da mostrare
+            //There might be more comments to be shown
             $("#spinner-post-" + id).removeClass("d-none");
         } else {
-            //Ho caricato gli ultimi commenti
+            //All the comments were loaded
             $("#spinner-post-" + id).addClass("d-none");
 
         }
@@ -138,6 +136,7 @@ function loadComment(id_post) {
 
 }
 
+//Attaches delete eventListener to the delete button, if it's present
 function attachDelete(id) {
     if($("#delete-post-card-" + id).length) {
         $("#delete-post-card-" + id).on("click", function () {
@@ -180,7 +179,7 @@ function addComment(comment, hasAnswers) {
     $(".comment-container").append(text);
 }
 
-/*Prende in input una Date e la formatta nel formato corretto per metterlo in html*/
+// Takes a Date and formats it so that it can be shown in the page
 function convertDateToHTML(date) {
     const h = date.getHours() < 10 ? '0' + date.getHours() : date.getHours();
     const m = date.getMinutes() < 10 ? '0' + date.getMinutes() : date.getMinutes();

@@ -5,10 +5,10 @@ function styleButtonLike(id, isLiked, n) {
     const buttonL = document.getElementById("like-post-card-" + id);
     if (buttonL != null) {
         if (isLiked) {
-            //Post ha like
+            //Post has already been liked by the user
             buttonL.innerHTML = '<img src="' + IMGDIR + 'thumb_up_filled.svg" alt="" />' + n + ' Mi Piace ';
         } else {
-            //Post non ha like
+            //The user hasn't liked the post yet
             buttonL.innerHTML = '<img src="' + IMGDIR + 'thumb_up.svg" alt="" />' + n + ' Mi Piace ';
         }
     }
@@ -18,10 +18,10 @@ function styleButtonSave(id, isSaved) {
     const buttonS = document.getElementById("save-post-card-" + id);
     if (buttonS != null) {
         if (isSaved) {
-            //Post è stato salvato
+            //Post has already been saved vy the user
             buttonS.innerHTML = '<img src="' + IMGDIR + 'star_filled.svg" alt="" />Salvato ';
         } else {
-            //Post non è stato salvato
+            //The user hasn't saved the post yet
             buttonS.innerHTML = '<img src="' + IMGDIR + 'star.svg" alt="" />Salva ';
         }
     }
@@ -34,7 +34,7 @@ function getPostLiked(id) {
         }
         return response.json();
     }).then((data) => {
-        //I dati vengono inviati come {bool, num}
+        //Data get sent as {bool, num}
         styleButtonLike(id, data[0], data[1]);
     });
 }
