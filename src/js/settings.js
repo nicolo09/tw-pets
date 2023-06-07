@@ -1,5 +1,17 @@
 //Retrieve settings as json object
 
+function isChecked(element){
+    return element.checked;
+}
+
+function setChecked(element, value){
+    if (value == true){
+        element.setAttribute('checked', '');
+    } else {
+        element.removeAttribute('checked');
+    }
+}
+
 $.ajax({
     url: 'profile-settings.php',
     type: 'get',
@@ -11,7 +23,7 @@ $.ajax({
         for (var key in response) {
             let item = document.getElementById(key);
             if (response.hasOwnProperty(key) && item != null) {
-                item.checked = response[key];
+                setChecked(item, response[key]);
                 item.addEventListener('change', event => {
                     //Set toggle switch to a spinner
                     item.hidden = true;
@@ -19,7 +31,7 @@ $.ajax({
                     $.ajax({
                         url: 'profile-settings.php',
                         type: 'post',
-                        data: { 'setting': event.target.id, 'value': event.target.checked },
+                        data: { 'setting': event.target.id, 'value': isChecked(event.target) },
                         success: function (response) {
                             item.hidden = false;
                             item.parentElement.removeChild(item.parentElement.firstChild);

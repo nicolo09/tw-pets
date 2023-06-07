@@ -73,4 +73,4 @@
     ?>
 </div>
 </div>
-<script src="js/user-profile.js" type="text/javascript"></script>
+<script src="js/user-profile.js"></script>

@@ -1425,4 +1425,32 @@ class DatabaseHelper
             return false;
         }
     }
+
+    /**
+     * Disables the given account
+     * @param string $user the account to disable
+     * @return bool true if the account was was successfully disabled 
+     */
+    function disableAccount(string $user){
+        if ($stmt = $this->db->prepare("UPDATE persona SET disabilitato = true WHERE username = ?")) {
+            $stmt->bind_param("s", $user);
+            return $stmt->execute();
+        } else {
+            return false;
+        }
+    }
+
+    /**
+     * Enables the given account
+     * @param string $user the account to disable
+     * @return bool true if the account was was successfully disabled 
+     */
+    function enableAccount(string $user){
+        if ($stmt = $this->db->prepare("UPDATE persona SET disabilitato = false WHERE username = ?")) {
+            $stmt->bind_param("s", $user);
+            return $stmt->execute();
+        } else {
+            return false;
+        }
+    }
 }

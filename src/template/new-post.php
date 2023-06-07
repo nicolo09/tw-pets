@@ -52,4 +52,4 @@
         </div>
     </form>
 </div>
-<script src="js/new-post.js" type="text/javascript"></script>
+<script src="js/new-post.js"></script>
