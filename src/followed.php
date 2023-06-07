@@ -13,7 +13,7 @@ if (isset($_GET["offset"]) && isset($_GET["number"])){
     foreach($results as $user) {
         $username = $user["username"];
         $img = $user["immagine"];
-        $type = isset($user["email"])?"person":"animal";
+        $type = $user["type"];
         $href = getProfileHref($username, $type);
         require("template/result-bar.php");
     }
