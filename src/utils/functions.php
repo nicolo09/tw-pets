@@ -1,16 +1,19 @@
 <?php
 
+/**
+ * Starts a secure session.
+ */
 function sec_session_start()
 {
-    $session_name = 'sec_session_id'; // Imposta un nome di sessione
-    $secure = false; // Imposta il parametro a true se vuoi usare il protocollo 'https'.
-    $httponly = true; // Questo impedirà ad un javascript di essere in grado di accedere all'id di sessione.
-    ini_set('session.use_only_cookies', 1); // Forza la sessione ad utilizzare solo i cookie.
-    $cookieParams = session_get_cookie_params(); // Legge i parametri correnti relativi ai cookie.
+    $session_name = 'sec_session_id'; // Choose a session name
+    $secure = false; // Set true if you want to use https
+    $httponly = true; // Preventing javascript to access session's id.
+    ini_set('session.use_only_cookies', 1); // Force the session to use only cookies.
+    $cookieParams = session_get_cookie_params(); // Reads current cookies' parameters.
     session_set_cookie_params($cookieParams["lifetime"], $cookieParams["path"], $cookieParams["domain"], $secure, $httponly);
-    session_name($session_name); // Imposta il nome di sessione con quello prescelto all'inizio della funzione.
-    session_start(); // Avvia la sessione php.
-    session_regenerate_id(); // Rigenera la sessione e cancella quella creata in precedenza.
+    session_name($session_name); // Sets the session name as the one chosen at the start.
+    session_start(); // Starts the php session.
+    session_regenerate_id(); // Regenerates the session and cancels the previous one.
 }
 
 function isActive($pagename)
@@ -21,44 +24,54 @@ function isActive($pagename)
     }
 }
 
+/**
+ * Checks if the current user is logged in. TODO is really needed?
+ * @param DatabaseHelper $dbh object that can communicate with the database.
+ * @return bool true if the user is logged in, false otherwise.
+ */
 function isUserLoggedIn($dbh)
 {
     return login_check($dbh);
 }
 
-// Login a user by email and password saving the session's cookie
-function loginUser($email, $input_password, DatabaseHelper $dbh)
+/**
+ * Login a user by email and password saving the session's cookie.
+ * @param string $email the email or username inserted by the user.
+ * @param string $input_password the password inserted by the user.
+ * @param DatabaseHelper $dbh object that can communicate with the database.
+ */
+function loginUser(string $email, string $input_password, DatabaseHelper $dbh)
 {
     $result = array(false, array());
-    //Se l'email è un email
+    //Checks if $email is an email
     if (filter_var($email, FILTER_VALIDATE_EMAIL)) {
         $user = $dbh->getUser($email);
     }
-    //Se l'email è un username
+    //If it's not it must be the username
     else {
         $user = $dbh->getUserFromName($email);
     }
-    if (count($user) == 1) { // se l'utente esiste
-        // Verifichiamo che non sia disabilitato in seguito all'esecuzione di troppi tentativi di accesso errati.
+    if (count($user) == 1) { // Checks if the user exist
+        // Checking if the user's account is disabled because of too many failed access attempts.
         if (checkBrute($user[0]["username"], $dbh) == true) {
-            // Account disabilitato
+            // The account is disabled
             // TODO: Invia un e-mail all'utente avvisandolo che il suo account è stato disabilitato.
             // TODO: come gestire la disabilitazione? attributo in persona? 
             $result[1][] = "Il tuo account è stato momentaneamente disabilitato per troppi tentativi di accesso errati. Riprova più tardi.";
             return $result;
         } else {
-            if (password_verify($input_password, $user[0]["password"])) { // Verifica che la password memorizzata nel database corrisponda alla password fornita dall'utente.
-                // Password corretta!
-                $user_browser = $_SERVER['HTTP_USER_AGENT']; // Recupero il parametro 'user-agent' relativo all'utente corrente.
-                $username = preg_replace("/[^a-zA-Z0-9_\-]+/", "", $user[0]["username"]); // ci proteggiamo da un attacco XSS
+            if (password_verify($input_password, $user[0]["password"])) { // Checking if the password in the database and the one inserted by the user are equal
+                // The password is correct
+                $user_browser = $_SERVER['HTTP_USER_AGENT']; // Retrieving 'user-agent' parameter relative to the current user.
+                $username = preg_replace("/[^a-zA-Z0-9_\-]+/", "", $user[0]["username"]); // Protecting from XSS attacks
                 $_SESSION['username'] = $username;
                 $_SESSION['login_string'] = hash('sha512', $user[0]["password"] . $user_browser);
-                // Login eseguito con successo.
+                // Login successful
                 $result[0] = true;
                 return $result;
             } else {
-                // Password incorretta.
-                // Registriamo il tentativo fallito nel database.
+                // Wrong password 
+                // The failed attempt gets registered in the database
                 $now = time();
                 $dbh->addLoginAttempt($user[0]["username"]);
                 $result[1][] = "Password errata, se effettui troppi tentativi di accesso il tuo account potrebbe essere bloccato.";
@@ -66,13 +79,17 @@ function loginUser($email, $input_password, DatabaseHelper $dbh)
             }
         }
     } else {
-        // L'utente inserito non esiste.
+        // The user doesn't exist
         $result[1][] = "Utente o email errati.";
         return $result;
     }
 }
 
-function logoutUser($dbh)
+/**
+ * Logs out the user from the site.
+ * @param DatabaseHelper $dbh object that can communicate with the database. TODO is needed?
+ */
+function logoutUser(DatabaseHelper $dbh)
 {
     // Unset all session values 
     $_SESSION = array();
@@ -86,40 +103,49 @@ function logoutUser($dbh)
     header('Location: login.php');
 }
 
-// Check if the user is logged in
-function login_check($dbh)
+/**
+ * Check if the user is logged in.
+ * @param DatabaseHelper $dbh object that can communicate with the database.
+ * @return bool true if the user is logged in, false otherwise.
+ */
+function login_check(DatabaseHelper $dbh)
 {
-    // Verifica che tutte le variabili di sessione siano impostate correttamente
+    // Checking if all session's variables are correctly set
     if (isset($_SESSION['username'], $_SESSION['login_string'])) {
         $login_string = $_SESSION['login_string'];
         $username = $_SESSION['username'];
-        $user_browser = $_SERVER['HTTP_USER_AGENT']; // reperisce la stringa 'user-agent' dell'utente.
+        $user_browser = $_SERVER['HTTP_USER_AGENT']; // gets user's 'user-agent' string.
         $password = $dbh->getPassword($username);
 
-        if (count($password) == 1) { // se l'utente esiste
-            $password = $password[0]["password"]; // recupero la password
+        if (count($password) == 1) { // the user exist
+            $password = $password[0]["password"]; // retrieves the passwors
             $login_check = hash('sha512', $password . $user_browser);
             if ($login_check == $login_string) {
-                // Login eseguito
+                // Login successful
                 return true;
             } else {
-                // Cookie login_check non corrisponde, login non eseguito
+                // Cookie login_check doesn't match
                 return false;
             }
         } else {
-            // L'utente non esiste (o ne esiste più di uno), login non eseguito
+            // The user doesn't exist or there are more than one
             return false;
         }
     } else {
-        // Session cookie non settato, login non eseguito
+        // Session cookie not set
         return false;
     }
 }
 
-function checkBrute($username, $dbh)
+/**
+ * Checks if an account is being brute-forced.
+ * @param string $username the account to be checked.
+ * @param DatabaseHelper $dbh object that can communicate with the database.
+ */
+function checkBrute(string $username, DatabaseHelper $dbh)
 {
     $now = time();
-    $valid_attempts = $now - (2 * 60 * 60); // Intervallo di tempo equivalente a 2 ore da adesso
+    $valid_attempts = $now - (2 * 60 * 60); // Since 2 hours ago
     $num_attempts = $dbh->getLoginAttempts($username, $valid_attempts);
     if (count($num_attempts) > MAX_LOGIN_ATTEMPTS) {
         return true;
@@ -139,7 +165,7 @@ function checkBrute($username, $dbh)
  * @return int 0 if there were errors, 1 otherwise.
  * @return array a string array of all the errors that occurred, it is empty if there were none.
  */
-function registerAnimal($animal, $type, $file, $description, $owners, $dbh)
+function registerAnimal(string $animal, string $type, array $file, string $description, array $owners, DatabaseHelper $dbh)
 {
     $result = 0;
     $errors = array();
@@ -206,7 +232,7 @@ function registerAnimal($animal, $type, $file, $description, $owners, $dbh)
  * @return int 0 if there were errors, 1 otherwise.
  * @return array a string array of all the errors that occurred, it is empty if there were none.
  */
-function editAnimal($animal, $type, $file, $description, $owners, $dbh)
+function editAnimal(string $animal, string $type, array $file, string $description, array $owners, DatabaseHelper $dbh)
 {
 
     $result = 0;
@@ -254,7 +280,7 @@ function editAnimal($animal, $type, $file, $description, $owners, $dbh)
  * @return int 0 if there were errors, 1 otherwise.
  * @return array a string array of all the errors that occurred, it is empty if there were none.
  */
-function editOwnerships($owners, $animal, $dbh)
+function editOwnerships(array $owners, string $animal, DatabaseHelper $dbh)
 {
     $errors = array();
     $oldOwners = array_column($dbh->getOwners($animal), "username");
@@ -284,7 +310,7 @@ function editOwnerships($owners, $animal, $dbh)
  * @return int 0 if there were errors, 1 otherwise.
  * @return string a string containing all the errors that occurred, if there were none it contains the image's name.
  */
-function uploadImage($path, $image)
+function uploadImage(string $path, array $image)
 {
     $imageName = basename($image["name"]);
     $fullPath = $path . $imageName;
@@ -293,26 +319,18 @@ function uploadImage($path, $image)
     $acceptedExtensions = array("jpg", "jpeg", "png", "gif");
     $result = 0;
     $msg = "";
-    //Controllo se immagine è veramente un'immagine
+    //Checking if $image is actually an image
     $imageSize = getimagesize($image["tmp_name"]);
     if ($imageSize === false) {
         $msg .= "File caricato non è un'immagine! ";
     }
-    
-    /*
-    //Controllo dimensione dell'immagine < 500KB
-    if ($image["size"] > $maxKB * 1024) {
-        $msg .= "File caricato pesa troppo! Dimensione massima è $maxKB KB. ";
-    }
-    */
-
-    //Controllo estensione del file
+    //Checking image extension
     $imageFileType = strtolower(pathinfo($fullPath, PATHINFO_EXTENSION));
     if (!in_array($imageFileType, $acceptedExtensions)) {
         $msg .= "Accettate solo le seguenti estensioni: " . implode(",", $acceptedExtensions);
     }
 
-    //Controllo se esiste file con stesso nome ed eventualmente lo rinomino
+    //If a file with the same name already exist the current one gets renamed
     if (file_exists($fullPath)) {
         $i = 1;
         do {
@@ -322,10 +340,10 @@ function uploadImage($path, $image)
         $fullPath = $path . $imageName;
     }
 
-    //Se non ci sono errori, comprimo il file spostandolo dalla posizione temporanea alla cartella di destinazione
+    //If there are no errors the file gets compressed and moved to the destination folder 
     if (strlen($msg) == 0) {
         if (move_uploaded_file($image["tmp_name"], $fullPath)) {
-            if (compressImage($fullPath)) {
+            if (compressImage(BASE_FOLDER . $fullPath)) {
                 $result = 1;
                 $msg = $imageName;
             } else {
@@ -336,7 +354,12 @@ function uploadImage($path, $image)
     return array($result, $msg);
 }
 
-function compressImage($path){
+/**
+ * Compresses an image.
+ * @param string $path full name of the image to be compressed.
+ * @param bool true if the image was compressed successfully, false otherwise.
+ */
+function compressImage(string $path){
     $img = new Imagick();
     $img->readImage($path);
     $img->setImageCompression(Imagick::COMPRESSION_JPEG);
@@ -347,11 +370,17 @@ function compressImage($path){
     return $result;
 }
 
-function isPasswordStrong($password)
+/**
+ * Checks if a password is strong enough.
+ * @param string $password the password to be checked.
+ * @return bool true if the password is strong enough, false otherwise.
+ * @return array a string array of all the password's problems.
+ */
+function isPasswordStrong(string $password)
 {
     $result = true;
     $errors = array();
-    # Check sulla password solo se uguale a conferma password
+
     if (strlen($password) < 6) {
         $errors[] = "La password deve essere lunga almeno 6 caratteri.";
         $result = false;
@@ -375,7 +404,12 @@ function isPasswordStrong($password)
     return array($result, $errors);
 }
 
-function isUserID($username)
+/**
+ * Checks the characters of a username.
+ * @param string $username the username to be checked.
+ * @return bool true if the username is acceptable, false otherwise.
+ */
+function isUserID(string $username)
 {
     if (preg_match('/^[a-z\d_]{2,20}$/i', $username)) {
         return true;
@@ -384,6 +418,16 @@ function isUserID($username)
     }
 }
 
+/**
+ * Registers a new user into the database.
+ * @param string $user the username.
+ * @param string $email the user's email.
+ * @param string $password the account's password.
+ * @param string $confirm_password the password to check if it has been written correctly.
+ * @param DatabaseHelper $dbh object to communicate with the database.
+ * @return int 0 if there were errors, 1 otherwise.
+ * @return array a string array of all the errors that occurred, it is empty if there were none.
+ */
 function register(string $user, string $email, string $password, string $confirm_password, DatabaseHelper $dbh)
 {
     $errors = array();
@@ -499,30 +543,30 @@ function newPost(string $user, array $img, string $alt, string $txt, array $pets
 {
     $errors = [];
     $uploadErrors = uploadImage(IMG_DIR, $img);
-    //Se mette errori stampa, non continuare con query
+    //If errors occured the query stops
     if ($uploadErrors[0] == 1) {
-        //Non ci sono stati errori di upload, continua con query
-        $imgUp = $uploadErrors[1]; //Se il file è stato rinominato, devo caricare il file corretto con nome rinominato
+        //There were no errors
+        $imgUp = $uploadErrors[1]; //Gets the image full name, which may have changed
         $result = -1; //Not yet set
         if (strlen($alt) <= 50 && strlen($txt) <= 200) {
             $index = $dbh->addPost($imgUp, $alt, $txt, $user);
             if ($index != -1) {
-                //Aggiunta andata a buon fine
+                //Post has been added successfully
                 if (!empty($pets)) {
                     foreach ($pets as $single) {
                         $tmp = $dbh->addAnimalToPost($index, $single);
                         if ($tmp == false) {
                             $result = 0;
-                            //C'è stato un errore in un inserimento
+                            //Couldn't add animal to post
                             $errors = "C'è stato un errore nell'esecuzione della query sul database";
                         }
                     }
                     if ($result == -1) {
-                        //No errori
+                        //No errors
                         $result = 1;
                     }
                 } else {
-                    //Non ci sono animali
+                    //There are no animals to be added
                     $result = 1;
                 }
             } else {
@@ -534,7 +578,7 @@ function newPost(string $user, array $img, string $alt, string $txt, array $pets
             $errors = "La descrizione dell'immagine deve essere di meno di 50 caratteri e il testo meno di 200 caratteri";
         }
     } else {
-        //C'è stato un qualche errore con l'upload
+        //An error during the upload has occured
         $result = 0;
         $errors = $uploadErrors[1];
     }
@@ -564,7 +608,7 @@ function getUserData(string $user, DatabaseHelper $dbh)
     if (empty($tmp)) {
         return array();
     } else {
-        #Dato che l'username è univoco, rendo l'array con i dati direttamente accessibile
+        // Returning directly the first associative array because there can be only one user associated to a specific username 
         return $tmp[0];
     }
 }
@@ -679,7 +723,7 @@ function getAnimalData(string $user, DatabaseHelper $dbh)
     if (empty($tmp)) {
         return array();
     } else {
-        #Dato che l'username è univoco, rendo l'array con i dati direttamente accessibile
+        // Returning directly the first associative array because there can be only one animal associated to a specific username 
         return $tmp[0];
     }
 }
@@ -760,6 +804,15 @@ function unfollowAnimal(string $animal, string $follower, DatabaseHelper $dbh)
     return $dbh->removeFollowAnimal($animal, $follower);
 }
 
+/**
+ * Changes the password of a user.
+ * @param string $oldPassword the password that is currently used for this account.
+ * @param string $newPassword the new password to be used.
+ * @param string $confirmPassword password to check if the new password has been written correctly.
+ * @param DatabaseHelper $dbh object to communicate with the database.
+ * @return bool true if the password was changed successfully, false otherwise.
+ * @return array a string array ofthe errors that occured, empty if none occured.
+ */
 function changePassword(string $oldPassword, string $newPassword, string $confirmPassword, DatabaseHelper $dbh)
 {
     $errors = [];
@@ -793,7 +846,7 @@ function getPost(int $id, DatabaseHelper $dbh)
 {
     $result = $dbh->getPostInfo($id);
     if (empty($result) == false) {
-        //Visto che l'id è univoco per post, è inutile avere un array di un array di un singolo risultato
+        // Returning directly the first associative array because there can be only one post associated to a specific id 
         return $result[0];
     } else {
         return $result;
@@ -931,9 +984,9 @@ function getAnimalsInPost(int $id, DatabaseHelper $dbh)
 }
 
 /**
- * Ritorna l'href per la pagina di un profilo utente di una persona
- * @param string $username username della persona
- * @return string href
+ * Creates the href for a person profile page
+ * @param string $username the person's username
+ * @return string the href
  */
 function getUserProfileHref(string $username)
 {
@@ -941,9 +994,9 @@ function getUserProfileHref(string $username)
 }
 
 /**
- * Ritorna l'href per la pagina di un profilo utente di un animale
- * @param string $username username della persona
- * @return string href
+ * Creates the href for an animal profile page
+ * @param string $username the animal's username
+ * @return string the href
  */
 function getAnimalProfileHref(string $username)
 {
@@ -954,7 +1007,7 @@ function getAnimalProfileHref(string $username)
  * Returns user profile href reference 
  * @param string $username the user's username
  * @param string $type defines if the user is an animal or a person
- * @return string href
+ * @return string the href
  */
 function getProfileHref(string $username, string $type)
 {
@@ -962,18 +1015,18 @@ function getProfileHref(string $username, string $type)
 }
 
 /**
- * Ritorna l'href per la pagina di visualizzazione di un post
- * @param int $id id del post
- * @return string href
+ * Creates the href for a post page
+ * @param int $id the post's id
+ * @return string the href
  */
 function getPostHref(int $id)
 {
     return "view-post-profile.php?id=" . $id;
 }
 /**
- * Ritorna l'src dell'immagine di profilo di un utente
- * @param string $user username dell'utente
- * @return string src
+ * Returns the relative path for the user's profile image
+ * @param string $user user's username
+ * @return string the relative path
  */
 function getUserProfilePic(string $user, DatabaseHelper $dbh)
 {
@@ -986,11 +1039,11 @@ function getUserProfilePic(string $user, DatabaseHelper $dbh)
 }
 
 /**
- * Ritorna i n commenti più recenti lasciati sul post
- * @param int $id_post post di cui si vogliono caricare i commenti
- * @param int $n numero commenti da caricare
- * @param DatabaseHelper $dbh il database in cui sono salvati i commenti
- * @return array vettore di commenti
+ * Returns the n more recent post's comments
+ * @param int $id_post the post's id
+ * @param int $n number of comments to be loaded
+ * @param DatabaseHelper $dbh object to communicate with the database.
+ * @return array the array containing all the comments
  */
 function loadMostRecentComments(int $id_post, int $n, DatabaseHelper $dbh)
 {
@@ -998,21 +1051,10 @@ function loadMostRecentComments(int $id_post, int $n, DatabaseHelper $dbh)
 }
 
 /**
- * Ritorna tutti commenti in ordine dai più recenti lasciati sul post
- * @param int $id_post post di cui si vogliono caricare i commenti
- * @param DatabaseHelper $dbh il database in cui sono salvati i commenti
- * @return array vettore di commenti
- */
-function allLoadMostRecentComments(int $id_post, DatabaseHelper $dbh)
-{
-    return $dbh->getAllMostRecentComments($id_post);
-}
-
-/**
- * Ritorna se il commento ha "commenti figli"
- * @param int $id_comment l'identificatore del commento padre
- * @param DatabaseHelper $dbh il database in cui sono salvati i commenti
- * @return true se il commento ha "commenti figli"
+ * Checks if a comments has been answered.
+ * @param int $id_comment the id of the comment to be checked.
+ * @param DatabaseHelper $dbh object to communicate with the database.
+ * @return true if the comment has been answered, false otherwise.
  */
 function doesCommentHaveComments(int $id_comment, DatabaseHelper $dbh)
 {
@@ -1026,10 +1068,10 @@ function doesCommentHaveComments(int $id_comment, DatabaseHelper $dbh)
 
 
 /**
- * Ritorna i dati del commento
- * @param int $id l'identificatore del commento
- * @param DatabaseHelper $dbh il database in cui sono salvati i commenti
- * @return array di dati del commento preso in input
+ * Gets the comments info.
+ * @param int $id the comment's id.
+ * @param DatabaseHelper $dbh object to communicate with the database.
+ * @return array an associative array containing the infos of the comment.
  */
 function getCommentInfo(int $id, DatabaseHelper $dbh)
 {
@@ -1042,12 +1084,12 @@ function getCommentInfo(int $id, DatabaseHelper $dbh)
 }
 
 /**
- * Inserisce un commento
- * @param string $username l'utente che crea il commento
- * @param string $text il testo del commento
- * @param int $id_post il post a cui fa il commento
- * @param DatabaseHelper $dbh il database in cui sono salvati i commenti
- * @return bool true se l'inserimento è andato a buon fine
+ * Inserts a new comment.
+ * @param string $username the username of the user that made the comment.
+ * @param string $text the comment's text.
+ * @param int $id_post the post where the comment was made.
+ * @param DatabaseHelper $dbh object to communicate with the database.
+ * @return bool true if the comment was added successfully, false otherwise.
  */
 function newComment(string $username, string $text, int $id_post, DatabaseHelper $dbh)
 {
@@ -1055,13 +1097,13 @@ function newComment(string $username, string $text, int $id_post, DatabaseHelper
 }
 
 /**
- * Inserisce un commento
- * @param string $username l'utente che crea il commento
- * @param string $text il testo del commento
- * @param int $id_post il post a cui fa il commento
- * @param int $id_padre il commento a cui risponde
- * @param DatabaseHelper $dbh il database in cui sono salvati i commenti
- * @return bool true se l'inserimento è andato a buon fine
+ * Inserts an answer to a comment.
+ * @param string $username the username of the user that made the comment.
+ * @param string $text the comment's text.
+ * @param int $id_post the post where the comment was made.
+ * @param int $id_padre the id of the answered comment.
+ * @param DatabaseHelper $dbh object to communicate with the database.
+ * @return bool true if the answer was added successfully, false otherwise.
  */
 function newCommentAnswer(string $username, int $id_padre, string $text, int $id_post, DatabaseHelper $dbh)
 {
@@ -1069,13 +1111,13 @@ function newCommentAnswer(string $username, int $id_padre, string $text, int $id
 }
 
 /**
- * Ritorna n commenti del post con offset più vecchi del timestamp fornito
- * @param int $id del post
- * @param int $n numero commenti da caricare
- * @param int $offset l'offset dei commenti
- * @param string $timestamp del commento più recente
- * @param DatabaseHelper $dbh il database in cui sono salvati i commenti
- * @return array i commenti
+ * Returns n post's comments which are older than the specified timestamp. 
+ * @param int $id the post's id.
+ * @param int $n number of comments to be loaded.
+ * @param int $offset the offset.
+ * @param string $timestamp time limit.
+ * @param DatabaseHelper $dbh object to communicate with the database.
+ * @return array an array containing the loaded comments.
  */
 function getRecentComments(int $id, int $n, int $offset, string $timestamp, DatabaseHelper $dbh)
 {
@@ -1083,26 +1125,14 @@ function getRecentComments(int $id, int $n, int $offset, string $timestamp, Data
 }
 
 /**
- * Ritorna tutti commenti in ordine dai più recenti lasciati sul post
- * @param int $id_post post di cui si vogliono caricare i commenti
- * @param string $timestamp del commento più recente
- * @param DatabaseHelper $dbh il database in cui sono salvati i commenti
- * @return array vettore di commenti
- */
-function allLoadMostRecentCommentsAfter(int $id_post, string $timestamp, DatabaseHelper $dbh)
-{
-    return $dbh->getAllMostRecentCommentsAfter($id_post, $timestamp);
-}
-
-/**
- * Ritorna n commenti in risposta al post con offset più vecchi del timestamp fornito
- * @param int $id del post
- * @param int $id_comment del commento
- * @param int $n numero commenti da caricare
- * @param int $offset l'offset dei commenti
- * @param string $timestamp del commento più recente
- * @param DatabaseHelper $dbh il database in cui sono salvati i commenti
- * @return array i commenti
+ * Returns n comment's answers which are older than the specified timestamp. 
+ * @param int $id the post's id.
+ * @param int $id_comment the comment's id.
+ * @param int $n number of answers to be loaded.
+ * @param int $offset the offset.
+ * @param string $timestamp time limit.
+ * @param DatabaseHelper $dbh object to communicate with the database.
+ * @return array an array containing the loaded answers.
  */
 function getRecentCommentsAnswers(int $id, int $id_comment, int $n, int $offset, string $timestamp, DatabaseHelper $dbh)
 {
@@ -1125,10 +1155,10 @@ function getAnimalProfilePic(string $animal, DatabaseHelper $dbh)
 }
 
 /**
- * Ritorna il numero di commenti presenti nella directory con estensione 
- * @param string $directory la directory
- * @param string $l'estensione ammessa da contare
- * @return int numero file
+ * Counts how many files with the specified extension are in a directory.
+ * @param string $directory the directory.
+ * @param string $extension the specified extension.
+ * @return int number of accepted files.
  */
 function countNFiles(string $directory, string  $extension)
 {
@@ -1144,10 +1174,10 @@ function countNFiles(string $directory, string  $extension)
 }
 
 /**
- * Crea una stringa che identifica il reset della password
- * @param string $email l'account la cui password è da resettare
- * @param DatabaseHelper $dbh the database helper
- * @return string codice di reset
+ * Creates a string which identifies the password reset.
+ * @param string $email the email of the account.
+ * @param DatabaseHelper $dbh object to communicate with the database.
+ * @return string reset code.
  */
 function createResetCode(string $email, DatabaseHelper $dbh){
     $length=50; //Ogni byte è 2 caratteri, la stringa è lunga 100 char in db
@@ -1157,28 +1187,28 @@ function createResetCode(string $email, DatabaseHelper $dbh){
 }
 
 /**
- * Invia la mail per il reset della password
- * @param string $email l'account la cui password è da resettare
- * @param string $code il codice di recupero password
- * @return bool se l'invio è andato a buon fine
+ * Sends an email to reset the password
+ * @param string $email email address where the email must be sent.
+ * @param string $code the password reset code.
+ * @return bool true if the email was sent successfully, false otherwise.
  */
 function sendResetEmail(string $email,string $code){
 
-    // Il messaggio
+    // The message
     $message = "Hai chiesto il reset della tua password su TWPETS?\nSe sei stato tu, clicca sul link in fondo a questa mail o copialo per intero su un browser per procedere con il reset della tua password\nSe non sei stato tu a , ignora questa email\n";
     $message = $message."Premi qui per resettare la password: <a href =\"http://localhost/tw-pets/new-password-reset.php?id=".$code."\">http://localhost/tw-pets/new-password-reset.php?id=".$code."</a>\n";
     $message= $message. "Il link è valido per 24h, se è passato più tempo, torna su <a href =\"http://localhost/tw-pets/reset-password.php\">http://localhost/tw-pets/reset-password.php</a> a richiedere l'invio di un nuovo codice.\n";
 
     $headers = 'From: noreply@twpets.com' . "\r\n";
-    // Invio la mail
+    // Sending the email
     return mail($email, "TWPETS - Richiesta di reset password", $message, $headers);
 }
 
 /**
- * Controlla se il codice di reset della password è valido
- * @param string $code il codice di reset
- * @param DatabaseHelper $dbh the database helper
- * @return bool vero se il codice è valido
+ * Checks if a reset code is valid.
+ * @param string $code the password reset code.
+ * @param DatabaseHelper $dbh object to communicate with the database.
+ * @return bool true if the reset code is valid, false otherwise.
  */
 function isPasswordResetCodeValid(string $code, DatabaseHelper $dbh){
     $result=$dbh->getResetCodeInfo($code);
@@ -1187,15 +1217,14 @@ function isPasswordResetCodeValid(string $code, DatabaseHelper $dbh){
         $email=$result["email"];
         $now=date('Y-m-d H:i:s', time());
         $interval=date_diff(date_create($time),date_create($now));
-        $validityH=24; //Il codice vale 24h
+        $validityH=24; //The reset code is valid only for 24 hours
         if((($interval->days*24)+$interval->h)>$validityH){
             return false;
         }else{
-            //E' meno di 24 ore fa
+            //The reset code has been generated less than 24 hours ago
             $allCodes=$dbh->getAllResetCodesForEmail($email);
             if(count($allCodes)>=1&&$allCodes[0]["generated_key"]==$code){
-                //Visto che all codes è ordinato con ultimo elemento generato per primo,
-                //se la chiave in questione è l'ultimo elemento generato->è valida
+                // $allCodes is ordered from the most recent, so only the latest is checked
                 return true;
             }
             return false;
@@ -1205,12 +1234,13 @@ function isPasswordResetCodeValid(string $code, DatabaseHelper $dbh){
 }
 
 /**
- * Cambia la password dell'utente che ha chiesto il reset della password
- * @param string $username l'utente 
- * @param string $newPassword la nuova password
- * @param string $confirmPassword la conferma della nuova password
- * @param DatabaseHelper $dbh the database helper
- * @return array di risultati e errori
+ * Changes the password of the user who asked for a password reset.
+ * @param string $username the user's username.
+ * @param string $newPassword the new password.
+ * @param string $confirmPassword the password to check if it has been written correctly.
+ * @param DatabaseHelper $dbh object to communicate with the database.
+ * @return bool true if the password was changed successfully, false otherwise.
+ * @return array a string array containing all of the errors that occurred.
  */
 function changePasswordReset(string $username, string $newPassword, string $confirmPassword, DatabaseHelper $dbh)
 {
@@ -1231,27 +1261,26 @@ function changePasswordReset(string $username, string $newPassword, string $conf
 }
 
 /**
- * Rimuove tutti i codici di reset associati ad una email
- * @param string $email la mail che ha richiesto il reset del codice
- * @param DatabaseHelper $dbh the database helper
- * @return bool vero se è andato a buon fine
+ * Removes all the password reset codes from an account
+ * @param string $email the account's email
+ * @param DatabaseHelper $dbh object to communicate with the database.
+ * @return bool true if all the codes were deleted successfully, false otherwise.
  */
 function removeAllPasswordChangeRequests(string $email,DatabaseHelper $dbh){
     return $dbh->removeAllPasswordCodes($email);
 }
 
 /**
- * Manda una mail all'utente per avvisarlo che la sua password è cambiata
- * @param string $username l'utente che ha cambiato la password
- * @param DatabaseHelper $dbh the database helper
- * @return bool vero se è andato a buon fine l'invio di mail
+ * Sends an email to the user's email address to notify a password change.
+ * @param string $username the user's username
+ * @param DatabaseHelper $dbh object to communicate with the database.
+ * @return bool true if the mail was sent successfully, false otherwise.
  */
 function sendEmailAboutPasswordChange(string $username, DatabaseHelper $dbh){
     $email=getUserData($username, $dbh)["email"];
-    // Il messaggio
+    // The message
     $message = "La tua password su TWPETS è stata cambiata\nSe sei stato tu, ignora questa email.\nSe non sei stato tu, il tuo account è compromesso ed è necessario che esegui la procedura di reset della password al più presto";
     $headers = 'From: noreply@twpets.com' . "\r\n";
-    // Invio la mail
+    // Sending the email
     return mail($email, "TWPETS - Password cambiata", $message, $headers);
-
 }
