@@ -1,9 +1,17 @@
 <?php
 class DatabaseHelper
 {
-    private $db;
+    private mysqli $db;
 
-    public function __construct($servername, $username, $password, $dbname, $port)
+    /**
+     * Createas a DatabaseHelper object.
+     * @param string $servername the name of the server.
+     * @param string $username the username to access the database.
+     * @param string $password the password to access the database.
+     * @param string $dbaname the name of the database.
+     * @param int $port the port used to connect to the server.
+     */
+    public function __construct(string $servername, string $username, string $password, string $dbname, int $port)
     {
         $this->db = new mysqli($servername, $username, $password, $dbname, $port);
         if ($this->db->connect_error) {
@@ -11,9 +19,14 @@ class DatabaseHelper
         }
     }
 
-    public function getUser($email)
+    /**
+     * Returns a user knowing its email.
+     * @param string $email the email address of the account.
+     * @return array an array of associative arrays containing the user.
+     */
+    public function getUser(string $email)
     {
-        // Usando statement sql 'prepared' non sarà possibile attuare un attacco di tipo SQL injection.
+        // Preventing SQL injection attacks by using sql prepared statement.
         if ($stmt = $this->db->prepare("SELECT username, password FROM persona WHERE email = ? LIMIT 1")) {
             $stmt->bind_param('s', $email);
             $stmt->execute();
@@ -25,7 +38,7 @@ class DatabaseHelper
     /**
      * Gets all the users who are following and are being followed by a given user.
      * @param string $username the user' username.
-     * @return array an array of associative arrays.
+     * @return array an array of associative arrays containing all the mutual followers.
      */
     public function getMutualFollowers(string $username)
     {
@@ -326,9 +339,13 @@ class DatabaseHelper
         }
     }
 
-    public function getPassword($username)
+    /**
+     * Returns the password of a user.
+     * @param string $username the user's username.
+     * @return array an array containing an associative array where the password can be found.
+     */
+    public function getPassword(string $username)
     {
-        // Usando statement sql 'prepared' non sarà possibile attuare un attacco di tipo SQL injection.
         if ($stmt = $this->db->prepare("SELECT password FROM persona WHERE username = ? LIMIT 1")) {
             $stmt->bind_param('s', $username);
             $stmt->execute();
@@ -337,7 +354,11 @@ class DatabaseHelper
         }
     }
 
-    public function addLoginAttempt($username)
+    /**
+     * Registers a failed login attempt.
+     * @param string $username the user's username.
+     */
+    public function addLoginAttempt(string $username)
     {
         if ($stmt = $this->db->prepare("INSERT INTO tentativo_login (timestamp, username) VALUES (NOW(), ?)")) {
             $stmt->bind_param('s', $username);
@@ -345,7 +366,13 @@ class DatabaseHelper
         }
     }
 
-    public function getLoginAttempts($username, $from)
+    /**
+     * Gets all the login attempts more recent than a specified time.
+     * @param string $username the user's username.
+     * @param string $from timestamp.
+     * @return array an array of associative arrays containing the login attempts.
+     */
+    public function getLoginAttempts(string $username, string $from)
     {
         $stmt = $this->db->prepare("DELETE FROM tentativo_login WHERE username = ? AND timestamp < FROM_UNIXTIME($from)");
         $stmt->bind_param('s', $username);
@@ -358,6 +385,11 @@ class DatabaseHelper
         }
     }
 
+    /**
+     * Gets all of the parameters of an account from the username.
+     * @param string $username the user's username.
+     * @return array an array of associative arrays containg the account parameters.
+     */
     public function getUserFromName($username)
     {
         if ($stmt = $this->db->prepare("SELECT * FROM persona WHERE username = ? LIMIT 1")) {
@@ -368,7 +400,14 @@ class DatabaseHelper
         }
     }
 
-    public function addUser($user, $password, $email)
+    /**
+     * Adds a new user to the database.
+     * @param string $user the user's username.
+     * @param string $password the user's password.
+     * @param string $email the user's email address.
+     * @return bool true if the user was added successfully, false otherwise.
+     */
+    public function addUser(string $user, string $password, string $email)
     {
         if ($stmt = $this->db->prepare("INSERT INTO persona (username, password, email) VALUES (?, ?, ?)")) {
             $password = password_hash($password, PASSWORD_DEFAULT);
@@ -385,7 +424,14 @@ class DatabaseHelper
         }
     }
 
-    public function updateSetting($username, $setting, $value)
+    /**
+     * Updates an user's settings.
+     * @param string $username the user's username.
+     * @param string $setting the setting that must be modified.
+     * @param string $value defines if the setting must be enabled or disabled.
+     * @return bool true if the setting was updated successfully, false otherwise.
+     */
+    public function updateSetting(string $username, string $setting, string $value)
     {
         if ($stmt = $this->db->prepare("UPDATE impostazione SET `$setting` = ? WHERE username = ?")) {
             $value = $value == "true" ? 1 : 0;
@@ -397,7 +443,12 @@ class DatabaseHelper
         }
     }
 
-    public function getSettings($username)
+    /**
+     * Gets the settings' current status of a user.
+     * @param string $username the user's username.
+     * @param array an array of associative arrays containing the settings status.
+     */
+    public function getSettings(string $username)
     {
         if ($stmt = $this->db->prepare("SELECT * FROM impostazione WHERE username = ? LIMIT 1")) {
             $stmt->bind_param('s', $username);
@@ -407,7 +458,13 @@ class DatabaseHelper
         }
     }
 
-    public function changeEmail($oldEmail, $newEmail)
+    /**
+     * Changhes the email associated to an account.
+     * @param string $oldEmail the previous email address.
+     * @param string $newEmail the new email address.
+     * @return bool true if the email was changed successfully, false otherwise.
+     */
+    public function changeEmail(string $oldEmail, string $newEmail)
     {
         if ($stmt = $this->db->prepare("UPDATE persona SET email = ? WHERE email = ?")) {
             $stmt->bind_param('ss', $newEmail, $oldEmail);
@@ -690,7 +747,14 @@ class DatabaseHelper
             return false;
         }
     }
-    public function changePassword($username, $newPassword)
+
+    /**
+     * Changes a user's account password.
+     * @param string $username the user's username.
+     * @param string $newPassword the new password to be set.
+     * @return bool true if the password was changed successfully, false otherwise.
+     */
+    public function changePassword(string $username, string $newPassword)
     {
         if ($stmt = $this->db->prepare("UPDATE persona SET password = ? WHERE username = ?")) {
             $newPassword = password_hash($newPassword, PASSWORD_DEFAULT);
@@ -870,12 +934,12 @@ class DatabaseHelper
     }
 
     /**
-     * Recupera i post preferiti dell'utente
-     * @param string $username username dell'utente di cui si vuole ottenere i post preferiti
-     * @param int $from timestamp di inizio del periodo di cui si vuole ottenere i post preferiti
-     * @param int $offset offset dei post preferiti
-     * @param int $n numero di post preferiti da ottenere
-     * @return array array associativo contenente i post preferiti dell'utente
+     * Gets a user's saved posts.
+     * @param string $username the user's username.
+     * @param int $from the posts must be more recent than the $from timestamp.
+     * @param int $offset the offset.
+     * @param int $n number of saved posts to get.
+     * @return array an associative array containing the user's saved post.
      */
     public function getFavoritePosts(string $username, int $from, int $offset, int $n)
     {
@@ -891,10 +955,10 @@ class DatabaseHelper
 
 
     /**
-     * Ritorna i n commenti più recenti lasciati sul post
-     * @param int $id_post post di cui si vogliono caricare i commenti
-     * @param int $n numero commenti da caricare
-     * @return array vettore di commenti
+     * Returns the n most recent comments of a post.
+     * @param int $id_post the post's id.
+     * @param int $n number of comments to load.
+     * @return array array of associative arrays containing the comments.
      */
     public function getMostRecentComments(int $id_post, int $n)
     {
@@ -909,26 +973,9 @@ class DatabaseHelper
     }
 
     /**
-     * Ritorna tutti commenti in ordine dai più recenti lasciati sul post
-     * @param int $id_post post di cui si vogliono caricare i commenti
-     * @return array vettore di commenti
-     */
-    public function getAllMostRecentComments(int $id_post)
-    {
-        if ($stmt = $this->db->prepare("SELECT * FROM `commento` WHERE id_padre IS NULL AND id_post=? ORDER BY timestamp DESC")) {
-            $stmt->bind_param('i', $id_post);
-            $stmt->execute();
-            $result = $stmt->get_result();
-            return $result->fetch_all(MYSQLI_ASSOC);
-        } else {
-            return array();
-        }
-    }
-
-    /**
-     * Ritorna se il commento ha "commenti figli"
-     * @param int $id_comment l'identificatore del commento padre
-     * @return array vuoto se il commento non ha "commenti figli"
+     * Checks if a comments has been answered.
+     * @param int $id_comment the comment's id.
+     * @return array an array of associative arrays containing how many answers a comment has.
      */
     public function doesCommentHaveAnswers(int $id_comment)
     {
@@ -942,10 +989,11 @@ class DatabaseHelper
         }
     }
     /**
-     * Returns true if the user has more than X notifications
-     * @param string $username
-     * @param int $x
-     * @return bool
+     * Checks if a user has more than x notifications.
+     * @param string $username the user's username.
+     * @param int $x the quantity of notifications to check.
+     * @return bool true if the user has more than x notifications, false otherwise.
+     * @throws Excepetion if couldn't process the request.
      */
     public function hasMoreThanXNotifications(string $username, int $x)
     {
@@ -964,9 +1012,10 @@ class DatabaseHelper
     }
 
     /**
-     * Returns the number of notifications of the user
-     * @param string $username
-     * @return int
+     * Returns the number of notifications of the user.
+     * @param string $username the user's uusername.
+     * @return int number of notifications.
+     * @throws Exception if couldn't process the request.
      */
     public function getNumberOfNotifications(string $username): int
     {
@@ -981,11 +1030,12 @@ class DatabaseHelper
     }
 
     /**
-     * Returns the first n notifications of the user ordered by timestamp with offset o
-     * @param string $username
-     * @param int $n how many notifications to return
-     * @param int $o offset
-     * @return array
+     * Returns the first n notifications of the user ordered by timestamp with offset o.
+     * @param string $username the user's username.
+     * @param int $n how many notifications to return.
+     * @param int $o offset.
+     * @return array an array of associative arrays containing the notifications.
+     * @throws Exception if couldn't process the request.
      */
     public function getNotifications(string $username, int $n, int $o): array
     {
@@ -999,26 +1049,28 @@ class DatabaseHelper
     }
 
     /**
-     * Adds a notification to the database
-     * @param string $destinatario
-     * @param NotificationType $tipo
-     * @param string $origine notification parameters
+     * Adds a notification to the database.
+     * @param string $addressee the username of the user who received a notification.
+     * @param NotificationType $ntype the notification type.
+     * @param array $origin notification parameters.
+     * @throws Exception if couldn't process the request.
      */
-    public function addNotification(string $destinatario, NotificationType $tipo, array $origine)
+    public function addNotification(string $addressee, NotificationType $ntype, array $origin)
     {
         if ($stmt = $this->db->prepare("INSERT INTO notifica (destinatario, tipo, origine) VALUES (?,?,?)")) {
-            $parameters = json_encode($origine);
-            $type = $tipo->name;
-            $stmt->bind_param('sss', $destinatario, $type, $parameters);
+            $parameters = json_encode($origin);
+            $type = $ntype->name;
+            $stmt->bind_param('sss', $addressee, $type, $parameters);
             return $stmt->execute();
         }
         throw new Exception("Error Processing Request", 1);
     }
 
     /**
-     * Deletes a notification from the database
-     * @param int $id
-     * @return bool
+     * Deletes a notification from the database.
+     * @param int $id the notification's id.
+     * @return bool true if the notification was deleted successfully, false otherwise.
+     * @throws Exception if couldn't process the request.
      */
     public function deleteNotification(int $id)
     {
@@ -1030,9 +1082,10 @@ class DatabaseHelper
     }
 
     /**
-     * Deletes all notifications of a user
-     * @param string $username
-     * @return bool
+     * Deletes all notifications of a user.
+     * @param string $username the user's username.
+     * @return bool true if all the notification were deleted successfully, false otherwise.
+     * @throws Exception if couldn't process the request.
      */
     public function deleteAllNotifications(string $username)
     {
@@ -1044,9 +1097,10 @@ class DatabaseHelper
     }
 
     /**
-     * Returns the notification specified by id
-     * @param int $id
-     * @return array
+     * Returns the notification specified by id.
+     * @param int $id the notification's id.
+     * @return array an array of associative arrays containing the notification.
+     * @throws Exception if couldn't process the request.
      */
     public function getNotification(int $id): array
     {
@@ -1077,11 +1131,11 @@ class DatabaseHelper
     }
 
     /**
-     * Inserisce un commento
-     * @param string $username l'utente che crea il commento
-     * @param string $text il testo del commento
-     * @param int $id_post il post a cui fa il commento
-     * @return bool true se l'inserimento è andato a buon fine
+     * Adds a new comment to a post.
+     * @param string $username the user who made the comment.
+     * @param string $text the comment's text.
+     * @param int $id_post the post's id.
+     * @return bool true if the comment was added successfully, false otherwise.
      */
     public function addNewComment(string $username, string $text, int $id_post)
     {
@@ -1095,12 +1149,12 @@ class DatabaseHelper
 
 
     /**
-     * Inserisce un commento
-     * @param string $username l'utente che crea il commento
-     * @param string $text il testo del commento
-     * @param int $id_post il post a cui fa il commento
-     * @param int $id_padre il commento a cui risponde
-     * @return bool true se l'inserimento è andato a buon fine
+     * Adds a new answer to a comment.
+     * @param string $username the user who made the answer.
+     * @param string $text the answer's text.
+     * @param int $id_post the post's id.
+     * @param int $id_padre the id of the answered comment.
+     * @return bool true if the answer was added successfully.
      */
     public function addNewCommentToComment(string $username, int $id_padre, string $text, int $id_post)
     {
@@ -1113,12 +1167,12 @@ class DatabaseHelper
     }
 
     /**
-     * Ritorna n commenti del post con offset più vecchi del timestamp fornito
-     * @param int $id del post
-     * @param int $n numero commenti da caricare
-     * @param int $offset l'offset dei commenti
-     * @param string $timestamp del commento più recente
-     * @return array dei commenti
+     * Gets n post's comment older than a given timestamp.
+     * @param int $id the post's id
+     * @param int $n number of comments to load.
+     * @param int $offset the comments offset.
+     * @param string $timestamp time limit.
+     * @return array an array of associative arrays containing the comments.
      */
     public function getCommentOffset(int $id, int $n, int $offset, string $timestamp)
     {
@@ -1133,30 +1187,13 @@ class DatabaseHelper
     }
 
     /**
-     * Returns the comment of the given id
-     * @param int $id of the comment
-     * @return array of results
-     */
-    public function getAllMostRecentCommentsAfter(int $id, string $timestamp)
-    {
-        if ($stmt = $this->db->prepare("SELECT * FROM `commento` WHERE id_padre IS NULL AND id_post=? AND timestamp <? ORDER BY timestamp DESC")) {
-            $stmt->bind_param('is', $id, $timestamp);
-            $stmt->execute();
-            $result = $stmt->get_result();
-            return $result->fetch_all(MYSQLI_ASSOC);
-        } else {
-            return array();
-        }
-    }
-
-    /**
-     * Ritorna n commenti in risposta al post con offset più vecchi del timestamp fornito
-     * @param int $id del post
-     * @param int $id_comment del commento
-     * @param int $n numero commenti da caricare
-     * @param int $offset l'offset dei commenti
-     * @param string $timestamp del commento più recente
-     *@return array dei commenti
+     * Gets n comment's answers older than a given timestamp.
+     * @param int $id the post's id.
+     * @param int $id_comment the comment's id.
+     * @param int $n number of answers to load.
+     * @param int $offset the answers offset.
+     * @param string $timestamp time limit.
+     *@return array an array of associative arrays containing the answers.
      */
     public function getCommentAnswerOffset(int $id, int $id_comment, int $n, int $offset, string $timestamp)
     {
@@ -1171,11 +1208,12 @@ class DatabaseHelper
     }
 
     /**
-     * Ritorna n post salvati dall'utente con offset 
-     * @param string $username dell'utente
-     * @param int $n numero post da caricare
-     * @param int $offset l'offset dei post
-     * @return array dei post
+     * Gets n user's saved posts with an offset.
+     * @param string $username the user's username.
+     * @param int $n number of saved post to load.
+     * @param int $offset the posts offset.
+     * @return array an array of associative arrays containing the user's saved posts.
+     * @throws Exception if couldn't process the request.
      */
     public function getSavedPosts(string $username, int $n, int $offset)
     {
@@ -1271,9 +1309,10 @@ class DatabaseHelper
     }
 
     /**
-     * Return all the animals followed by a user
-     * @param string $username the username of the user
-     * @return array of animals names
+     * Gets all the followers of an animal.
+     * @param string $animal the animal's username.
+     * @return array an array of associative arrays containing the followers' username.
+     * @throws Exception if couldn't process the request.
      */
     public function getAllAnimalFollowers(string $animal)
     {
@@ -1288,10 +1327,10 @@ class DatabaseHelper
     }
 
     /**
-     * Crea una stringa che identifica il reset della password
-     * @param string $email l'account la cui password è da resettare
-     * @param string $code il codice di reset
-     * @return string codice di reset
+     * Inserts a new entry in password reset table.
+     * @param string $email the email address of the account that requested a password reset.
+     * @param string $code the reset code.
+     * @return bool true if the code was successfully added, false otherwise.
      */
     function newResetCode(string $email, string $code)
     {
@@ -1304,9 +1343,9 @@ class DatabaseHelper
     }
 
     /**
-     * Ritorna le informazioni del codice di reset della password
-     * @param string $code il codice di reset
-     * @return array elementi del codice
+     * Returns a password reset entry's parameters.
+     * @param string $code the reset code.
+     * @return array an array of associative arrays containing the password reset's parameters.
      */
     function getResetCodeInfo(string $code){
         if($stmt = $this->db->prepare("SELECT * FROM PASSWORD_RESET WHERE generated_key=?")) {
@@ -1325,9 +1364,9 @@ class DatabaseHelper
     }
 
     /**
-     * Ritorna tutti i codici di reset di una email
-     * @param string $email l'email dei codici di reset
-     * @return array elementi del codice
+     * Returns all the reset codes associated to an email.
+     * @param string $email the email address.
+     * @return array an array of associative arrays containing the password reset entries.
      */
     function getAllResetCodesForEmail(string $email){
         if($stmt = $this->db->prepare("SELECT * FROM PASSWORD_RESET WHERE email=? ORDER BY generated_on DESC")) {
@@ -1341,9 +1380,9 @@ class DatabaseHelper
     }
 
     /**
-     * Rimuove tutti i codici di reset associati ad una email
-     * @param string $email la mail che ha richiesto il reset del codice
-     * @return bool vero se è andato a buon fine
+     * Deletes all the reset codes associated to an email address.
+     * @param string $email the email address.
+     * @return bool true if the reset codes were deleted successfully, false otherwise.
      */
     function removeAllPasswordCodes(string $email)
     {
