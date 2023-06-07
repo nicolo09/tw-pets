@@ -58,7 +58,7 @@ preview.addEventListener('click', () => {
  * an img tag with id=#imgPreview */
 function imagePreviewShow(input) {
     if (input.files && input.files[0] && input.files[0].name.match(/\.(jpg|jpeg|png|gif)$/i)) {
-        var reader = new FileReader();
+        const reader = new FileReader();
         reader.onload = function (e) {
             $('#imgPreview')
                 .attr('src', e.target.result)
