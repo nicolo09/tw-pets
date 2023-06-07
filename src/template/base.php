@@ -7,11 +7,11 @@
     <?php
     $max = countNFiles("favicon/", "ico");
     $n = rand(0, $max - 1); //I file hanno indice 0.... max-1, per un totale di max files
-    echo '<link rel="icon" type="image/x-icon" href="favicon/favicon-' . $n . '.ico">';
+    echo '<link rel="icon" type="image/x-icon" href="favicon/favicon-' . $n . '.ico"/>';
     ?>
 
     <!-- Bootstrap CSS -->
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha3/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-KK94CHFLLe+nY2dmCWGMq91rCGa5gtU4mk92HdvYe+M/SXH301p5ILy+dN9+nJOZ" crossorigin="anonymous">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha3/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-KK94CHFLLe+nY2dmCWGMq91rCGa5gtU4mk92HdvYe+M/SXH301p5ILy+dN9+nJOZ" crossorigin="anonymous" />
 
     <!-- jQuery script -->
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.4/jquery.min.js"></script>
@@ -42,7 +42,7 @@
         </div>
     </nav>
     <?php
-    if (!isset($_COOKIE["cookie-law-accepted"]) || !$_COOKIE["cookie-law-accepted"]==true) {
+    if (!isset($_COOKIE["cookie-law-accepted"]) || !$_COOKIE["cookie-law-accepted"] == true) {
         echo "<div class=\"justify-content-center d-flex\"><div class=\"alert alert-primary alert-dismissible fade show m-1\" role=\"alert\"> " . COOKIE_MESSAGE . " <a href=cookie-profile.php>Scopri di più</a> <button type=\"button\" class=\"btn-close\" data-bs-dismiss=\"alert\" aria-label=\"Close\" id=\"cookie-dismiss-btn\"></button></div></div>";
     }
     if (isset($templateParams["messages"])) {
