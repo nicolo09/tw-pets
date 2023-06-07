@@ -1,12 +1,11 @@
 <?php
 require_once("bootstrap.php");
 
-# Se l'utente non è già loggato, viene reindirizzato alla home
-
 if (login_check($dbh) == false) {
     header("Location: login.php");
     exit;
 }
+
 if(isset($_GET["anim"])){
     $templateParams["animals"]=json_decode($_GET["anim"]);
 }

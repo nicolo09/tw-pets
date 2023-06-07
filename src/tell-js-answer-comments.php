@@ -21,7 +21,7 @@ if(isset($_GET["timestamp"])){
     $timestamp=$_GET["timestamp"];
 }
 if($timestamp==-1){
-    //timestamp non settato
+    //timestamp not set
     $timestamp=date('Y-m-d H:i:s', time());
 }
 

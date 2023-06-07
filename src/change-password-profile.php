@@ -12,12 +12,12 @@ if (isset($_POST["old-password"], $_POST["new-password"], $_POST["new-password-r
     $confirm_password = $_POST["new-password-repeat"];
     $result = changePassword($old_password, $new_password, $confirm_password, $dbh);
     if ($result[0] == true) {
-        // Password cambiata con successo
+        // Password changed successfully
         sendEmailAboutPasswordChange(getUserName($dbh), $dbh);
         header("Location: login.php?password_changed=true");
         exit;
     } else {
-        // Cambio password fallito
+        // Password couldn't be changed
         $templateParams["errors"] = $result[1];
     }
 }

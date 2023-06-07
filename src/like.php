@@ -7,40 +7,40 @@ if (login_check($dbh) == false) {
     exit;
 }
 
-//Se l'utente è loggato
+// The user is logged in
 $id = -1;
 $success = 1;
 if (isset($_GET["id"])) {
     $id = $_GET["id"];
 }
 
-//Se l'id è valido
+//Checking if the post's id valid
 if (isIdPostValid($id, $dbh)) {
-    //Post valido
+    //The id is valid
     if (isPostLikedBy($id, getUserName($dbh), $dbh)==false) {
-        //All'utente piace il post
+        // The user liked the post
         $out = likePost($id, getUserName($dbh), $dbh);
         if ($out == false) {
             $success = 0;
         }else{
-            //Mando una notifica
+            //Sending a notification to the post's maker
             $post=getPost($id, $dbh);
             if(empty($post)==false){
                 addLikeNotification(getUserName($dbh),$id, $dbh);
             }
         }
     } else {
-        //All'utente non piace il post
+        // The user removed the like from the post
         $out = unLikePost($id, getUserName($dbh), $dbh);
         if ($out == false) {
             $success = 0;
         }
     }
 } else {
-    //Redirect a pagina precedente, success=0
+    //Redirect to previous page with success value 0
     $success = 0;
 }
 
-//Ritorna a pagina post, success=0/1
+//Reloads post page, success=0/1
 header("Location: view-post-profile.php?id=".$id."&successL=".$success);
 ?>

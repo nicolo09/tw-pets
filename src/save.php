@@ -6,34 +6,34 @@ if (login_check($dbh) == false) {
     exit;
 }
 
-//Se l'utente è loggato
+// The user is logged in
 $id = -1;
 $success = 1;
 if (isset($_GET["id"])) {
     $id = $_GET["id"];
 }
 
-//Se l'id è valido
+//Checks if the post's id is valid
 if (isIdPostValid($id, $dbh)) {
-    //Post valido
+    //The id is valid
     if (isPostSavedBy($id, getUserName($dbh), $dbh)==false) {
-        //L'utente salva il post
+        //The user is saving the post
         $out = savePost($id, getUserName($dbh), $dbh);
         if ($out == false) {
             $success = 0;
         }
     } else {
-        //L'utente non salva il post
+        //The user is removing the post from their saved posts
         $out = unSavePost($id, getUserName($dbh), $dbh);
         if ($out == false) {
             $success = 0;
         }
     }
 } else {
-    //Redirect a pagina precedente, success=0
+    //Redirect to previous page with success value 0
     $success = 0;
 }
 
-//Ritorna a pagina post, success=0/1
+//Reloads post page, success=0/1
 header("Location: view-post-profile.php?id=".$id."&successS=".$success);
 ?>

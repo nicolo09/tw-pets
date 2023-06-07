@@ -7,7 +7,7 @@ if (login_check($dbh) == false) {
     exit;
 }
 
-//Se l'utente è loggato
+//User must be logged in
 $id_post = -1;
 $id_padre = -1;
 $text="";
@@ -22,30 +22,30 @@ if (isset($_GET["text"])) {
     $text = $_GET["text"];
 }
 
-//Se l'id è valido
+//Checking if the post id is valid
 if (isIdPostValid($id_post, $dbh)&&$text!="") {
-    //Se esiste il commento padre ed è dello stesso post che vuoi fare tu il commento
-    //Post valido
+    //The post's id is valid
     $text=htmlspecialchars($text);
+    //Checking if this comments is answering another comment and if the outer comment'id is valid
     $padre_comment=getCommentInfo($id_padre, $dbh);
     if(empty($padre_comment)){
-        //Commento al post 
+        //This comment isn't an answer
         $result=newComment(getUserName($dbh), $text, $id_post, $dbh);
         if($result){
-            //Mando notifica per nuovo commento
+            //Sending notification to post's maker
             addCommentNotification(getUserName($dbh), $id_post, $dbh);
         }
     }else{
-        //Commento al commento padre
+        //This comment is an answer
         if($padre_comment["id_post"]==$id_post){
-            //Faccio il commento
+            //Adding the answer
             newCommentAnswer(getUserName($dbh), $id_padre, $text, $id_post, $dbh);
         }
     }
 } else {
-    //Redirect a pagina precedente, success=0
+    //Redirects to previous page with success value 0
     $success = 0;
 }
 
-//Ritorna a pagina post, success=0/1
+//Reloads post page, success=0/1
 header("Location: view-post-profile.php?id=" . $id . "&successL=" . $success);

@@ -1,7 +1,6 @@
 <?php
 require_once("bootstrap.php");
 
-# Se l'utente è già loggato, viene reindirizzato alla home
 if (login_check($dbh)) {
     header("Location: home.php");
     exit;
@@ -12,10 +11,10 @@ if (isset($_POST['username'])) {
     $email= "";
     $result = doesPersonUsernameExist($_POST['username'], $dbh);
     if ($result == false) {
-        //L'username inserito non esiste, provo a controllare se è una mail
+        // The user doesn't exist, it may be an email address
         $resultMail = $dbh->getUser($_POST['username']);
         if (empty($resultMail) == false) {
-            //Ho recuperato lo username dalla mail
+            //Retrieved the username from the email
             $username = $resultMail[0]['username'];
             $email=$_POST['username'];
         }
@@ -28,7 +27,7 @@ if (isset($_POST['username'])) {
         $code=createResetCode($email, $dbh);
         $outcome=sendResetEmail($email, $code);
         if($outcome==false){
-            //C'è stato un errore nell'invio della mail
+            //There was an error while sending the email
             $_SESSION["error"] = "C'è stato un errore nell'invio della mail";
         }
         }
@@ -47,7 +46,7 @@ if(!empty($_SESSION["message"])) {
     $templateParams["messages"] = array($_SESSION["message"]);
     unset($_SESSION["message"]);
 }
-# Se accedi direttamente alla pagina
+// User opened the page
 $templateParams["title"] = "PETS - Hai dimenticato la password";
 $templateParams["page"] = "reset-password-template.php";
 require_once("template/base-outside.php");

@@ -15,7 +15,7 @@ if(isset($_GET["id"])){
 
 $result=getPost($id, $dbh);
 if(empty($result)==false){
-    //Non è vuoto
+    //It's not empty
     $templateParams["id"]=$id;
     $templateParams["immagine"]=IMG_DIR.$result["immagine"];
     $templateParams["alt"]=$result["alt"];
@@ -25,9 +25,9 @@ if(empty($result)==false){
     $templateParams["immagineprofilo"]=IMG_DIR.$result["immagineprofilo"];
     $templateParams["title"]="Post di ".$templateParams["username"];
     $templateParams["animals"]=getAnimalsInPost($id, $dbh);
-    //I commenti vengono caricati da Javascript
+    //Comments are loaded by javascript
 }else{
-    //Post non esiste, redirect
+    //Post doesn't exist
     header("Location: tab-profile.php");
     exit;
 }

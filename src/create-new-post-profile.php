@@ -1,16 +1,15 @@
 <?php
 require_once("bootstrap.php");
 
-# Se l'utente è già loggato, viene reindirizzato alla home
-
 if (login_check($dbh)==false) {
     header("Location: login.php");
     exit;
 }
-#Altrimenti può creare un nuovo post
+
+// The user is logged in, so they can make a post
 
 if (empty($_POST)) {
-    //Non è stato inviato nulla per post, probabilmente viene fatto accesso alla pagina direttamente
+    // $_POST variable is empty, the user opened the page
 } else {
     $animals=array();
     if(isset($_POST["selectAnimals"])){
@@ -23,7 +22,7 @@ if (empty($_POST)) {
         $text = htmlspecialchars($_POST["txtpost"]);
         $postErrors=newPost(getUserName($dbh), $img, $alt, $text, $animals, $dbh);
         if($postErrors[0]!=1){
-            //Ci sono stati errori
+            //Some error occurred
             $templateParams["errors"][]=$postErrors[1];
         }
     } else {
@@ -39,7 +38,7 @@ foreach($animalList as $singleAnimal){
 }
 
 if(empty($_POST)==false&&isset($templateParams["errors"])==false){
-    //Andato a buon fine l'inserimento di un post
+    // Post was created successfully
     $_SESSION["message"] = "Hai creato un post!";
     header("Location: ".getUserProfileHref(getUserName($dbh)));
     exit;
