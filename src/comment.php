@@ -30,8 +30,8 @@ if (isIdPostValid($id_post, $dbh)&&$text!="") {
     $padre_comment=getCommentInfo($id_padre, $dbh);
     if(empty($padre_comment)){
         //This comment isn't an answer
-        $result=newComment(getUserName($dbh), $text, $id_post, $dbh);
-        if($result){
+        $id_comment=newComment(getUserName($dbh), $text, $id_post, $dbh);
+        if($id_comment!=-1){
             //Sending notification to post's maker
             addCommentNotification(getUserName($dbh), $id_post, $dbh);
         }
@@ -39,7 +39,11 @@ if (isIdPostValid($id_post, $dbh)&&$text!="") {
         //This comment is an answer
         if($padre_comment["id_post"]==$id_post){
             //Adding the answer
-            newCommentAnswer(getUserName($dbh), $id_padre, $text, $id_post, $dbh);
+            $id_comment=newCommentAnswer(getUserName($dbh), $id_padre, $text, $id_post, $dbh);
+            if($id_comment!=-1){
+                //Sending notification to comment-father
+                addReplyCommentNotification($id_padre, $id_comment, $dbh);
+            }
         }
     }
 } else {
