@@ -1078,7 +1078,7 @@ function getCommentInfo(int $id, DatabaseHelper $dbh)
  * @param string $text the comment's text.
  * @param int $id_post the post where the comment was made.
  * @param DatabaseHelper $dbh object to communicate with the database.
- * @return bool true if the comment was added successfully, false otherwise.
+ * @return int the comment id or -1 if insertion went wrong
  */
 function newComment(string $username, string $text, int $id_post, DatabaseHelper $dbh)
 {
@@ -1092,7 +1092,7 @@ function newComment(string $username, string $text, int $id_post, DatabaseHelper
  * @param int $id_post the post where the comment was made.
  * @param int $id_padre the id of the answered comment.
  * @param DatabaseHelper $dbh object to communicate with the database.
- * @return bool true if the answer was added successfully, false otherwise.
+ * @return int the comment id or -1 if insertion went wrong
  */
 function newCommentAnswer(string $username, int $id_padre, string $text, int $id_post, DatabaseHelper $dbh)
 {

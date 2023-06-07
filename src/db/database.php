@@ -1135,15 +1135,18 @@ class DatabaseHelper
      * @param string $username the user who made the comment.
      * @param string $text the comment's text.
      * @param int $id_post the post's id.
-     * @return bool true if the comment was added successfully, false otherwise.
+     * @return int the comment id or -1 if insertion went wrong
      */
     public function addNewComment(string $username, string $text, int $id_post)
     {
         if ($stmt = $this->db->prepare("INSERT INTO COMMENTO (testo, id_post, username) VALUES (?, ?, ?)")) {
             $stmt->bind_param('sis', $text, $id_post, $username);
-            return $stmt->execute();
+            if ($stmt->execute() == true) {
+                return $this->db->insert_id;
+            }
+            return -1;
         } else {
-            return false;
+            return -1;
         }
     }
 
@@ -1154,15 +1157,18 @@ class DatabaseHelper
      * @param string $text the answer's text.
      * @param int $id_post the post's id.
      * @param int $id_padre the id of the answered comment.
-     * @return bool true if the answer was added successfully.
+     * @return int the comment id or -1 if insertion went wrong
      */
     public function addNewCommentToComment(string $username, int $id_padre, string $text, int $id_post)
     {
         if ($stmt = $this->db->prepare("INSERT INTO COMMENTO (testo, id_padre, id_post, username) VALUES (?, ?, ?, ?)")) {
             $stmt->bind_param('siis', $text, $id_padre, $id_post, $username);
-            return $stmt->execute();
+            if ($stmt->execute() == true) {
+                return $this->db->insert_id;
+            }
+            return -1;
         } else {
-            return false;
+            return -1;
         }
     }
 
