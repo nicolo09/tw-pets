@@ -772,7 +772,7 @@ class DatabaseHelper
      */
     public function getPostInfo(int $id)
     {
-        if ($stmt = $this->db->prepare("SELECT POST.id_post, POST.immagine, POST.alt, POST.testo, POST.timestamp, persona.username, persona.immagine as immagineprofilo FROM POST JOIN PERSONA ON POST.username=PERSONA.username WHERE POST.id_post=?")) {
+        if ($stmt = $this->db->prepare("SELECT POST.id_post, POST.immagine, POST.alt, POST.testo, POST.timestamp, PERSONA.username, PERSONA.immagine as immagineprofilo FROM POST JOIN PERSONA ON POST.username=PERSONA.username WHERE POST.id_post=?")) {
             $stmt->bind_param('i', $id);
             $stmt->execute();
             $result = $stmt->get_result();
