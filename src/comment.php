@@ -42,7 +42,7 @@ if (isIdPostValid($id_post, $dbh)&&$text!="") {
             $id_comment=newCommentAnswer(getUserName($dbh), $id_padre, $text, $id_post, $dbh);
             if($id_comment!=-1){
                 //Sending notification to comment-father
-                addReplyCommentNotification($id_padre, $id_comment, $dbh);
+                addReplyCommentNotification(getUserName($dbh), $id_comment, $dbh);
             }
         }
     }
