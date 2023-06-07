@@ -2,7 +2,7 @@ const numberToFetch = 10;
 
 function addEventListeners() {
     $(".btn-delete-notification").on("click", function () {
-        var id = $(this).attr("id");
+        let id = $(this).attr("id");
         id = id.replace("btn-delete-", "");
         $.ajax({
             url: "delete-notification.php",
@@ -24,7 +24,7 @@ function addEventListeners() {
 }
 
 function updateTitleAndButton() {
-    var count = $(".notification").length;
+    let count = $(".notification").length;
     if (count == 0) {
         $("#title").text("Non ci sono notifiche");
         $("#btn-delete-all-notifications").prop("disabled", true);
