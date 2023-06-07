@@ -1402,7 +1402,12 @@ class DatabaseHelper
      * @return array of profiles
      */
     public function getFollowedProfiles($username, $offset, $number){
-        if($stmt = $this->db->prepare("SELECT * FROM SEGUE_PERSONA WHERE follower=? UNION SELECT * FROM SEGUE_ANIMALE WHERE follower=? ORDER BY followed LIMIT ?, ?")) {
+        if($stmt = $this->db->prepare("SELECT * FROM SEGUE_PERSONA 
+                                        JOIN PERSONA ON SEGUE_PERSONA.followed=PERSONA.username
+                                        WHERE follower=? UNION 
+                                        SELECT * FROM SEGUE_ANIMALE 
+                                        JOIN ANIMALE ON SEGUE_ANIMALE.followed=ANIMALE.username
+                                        WHERE follower=? ORDER BY followed LIMIT ?, ?")) {
             $stmt->bind_param('ssii', $username, $username, $offset, $number);
             $stmt->execute();
             $result = $stmt->get_result();
