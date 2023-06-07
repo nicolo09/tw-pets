@@ -1332,7 +1332,7 @@ class DatabaseHelper
      * @param string $code the reset code.
      * @return bool true if the code was successfully added, false otherwise.
      */
-    function newResetCode(string $email, string $code)
+    public function newResetCode(string $email, string $code)
     {
         if ($stmt = $this->db->prepare("INSERT INTO password_reset (email, generated_key) VALUES (?, ?)")) {
             $stmt->bind_param('ss', $email, $code);
@@ -1347,7 +1347,7 @@ class DatabaseHelper
      * @param string $code the reset code.
      * @return array an array of associative arrays containing the password reset's parameters.
      */
-    function getResetCodeInfo(string $code){
+    public function getResetCodeInfo(string $code){
         if($stmt = $this->db->prepare("SELECT * FROM PASSWORD_RESET WHERE generated_key=?")) {
             $stmt->bind_param('s', $code);
             $stmt->execute();
@@ -1368,7 +1368,7 @@ class DatabaseHelper
      * @param string $email the email address.
      * @return array an array of associative arrays containing the password reset entries.
      */
-    function getAllResetCodesForEmail(string $email){
+    public function getAllResetCodesForEmail(string $email){
         if($stmt = $this->db->prepare("SELECT * FROM PASSWORD_RESET WHERE email=? ORDER BY generated_on DESC")) {
             $stmt->bind_param('s', $email);
             $stmt->execute();
@@ -1384,7 +1384,7 @@ class DatabaseHelper
      * @param string $email the email address.
      * @return bool true if the reset codes were deleted successfully, false otherwise.
      */
-    function removeAllPasswordCodes(string $email)
+    public function removeAllPasswordCodes(string $email)
     {
         if ($stmt = $this->db->prepare("DELETE FROM PASSWORD_RESET WHERE email = ?")) {
             $stmt->bind_param('s', $email);
@@ -1401,7 +1401,7 @@ class DatabaseHelper
      * @param int $number the number of profiles to get
      * @return array of profiles
      */
-    function getFollowedProfiles($username, $offset, $number){
+    public function getFollowedProfiles($username, $offset, $number){
         if($stmt = $this->db->prepare("SELECT * FROM segue_persona WHERE follower=? UNION SELECT * FROM segue_animale WHERE follower=? ORDER BY followed LIMIT ?, ?")) {
             $stmt->bind_param('ssii', $username, $username, $offset, $number);
             $stmt->execute();
@@ -1417,7 +1417,7 @@ class DatabaseHelper
      * @param int $id the post's id.
      * @return bool true if the post was successfully deleted, false otherwise. 
      */
-    function deletePost(int $id){
+    public function deletePost(int $id){
         if($stmt = $this->db->prepare("DELETE FROM POST WHERE id_post = ?")){
             $stmt->bind_param('i', $id);
             return $stmt->execute();
@@ -1431,7 +1431,7 @@ class DatabaseHelper
      * @param string $user the account to disable
      * @return bool true if the account was was successfully disabled 
      */
-    function disableAccount(string $user){
+    public function disableAccount(string $user){
         if ($stmt = $this->db->prepare("UPDATE persona SET disabilitato = true WHERE username = ?")) {
             $stmt->bind_param("s", $user);
             return $stmt->execute();
@@ -1445,10 +1445,46 @@ class DatabaseHelper
      * @param string $user the account to disable
      * @return bool true if the account was was successfully disabled 
      */
-    function enableAccount(string $user){
+    public function enableAccount(string $user){
         if ($stmt = $this->db->prepare("UPDATE persona SET disabilitato = false WHERE username = ?")) {
             $stmt->bind_param("s", $user);
             return $stmt->execute();
+        } else {
+            return false;
+        }
+    }
+
+    /**
+     * Returns if an account is disabled
+     * @param string $user the account 
+     * @return bool true if the account is disabled
+     */
+    public function isAccountDisabled(string $user){
+        if($stmt = $this->db->prepare("SELECT disabilitato FROM persona WHERE username=?")) {
+            $stmt->bind_param('s', $user);
+            $stmt->execute();
+            $result = $stmt->get_result();
+            $tmp=$result->fetch_all(MYSQLI_ASSOC);
+            if(empty($tmp)){
+                return false;
+            }else{
+                return $tmp[0]["disabilitato"];
+            }
+        } else {
+            return false;
+        }
+    }
+
+    /**
+     * Deletes all previous login attempts of a user
+     * @param string $username the account 
+     * @return bool false if something went wrong
+     */
+    public function deleteAllLoginAttempts(string $username)
+    {
+        if($stmt = $this->db->prepare("DELETE FROM tentativo_login WHERE username = ? ")){
+        $stmt->bind_param('s', $username);
+        return $stmt->execute();
         } else {
             return false;
         }
