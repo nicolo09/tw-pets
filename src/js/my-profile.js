@@ -2,15 +2,15 @@ $('#settings-button').on("click", function () {
     window.location.href = 'profile-settings.php';
 });
 
-document.querySelector('#animals-button').addEventListener('click', () =>{
+$("#animals-button").on("click", function () {
     window.location.href = 'profile-animals.php';
 });
 
-document.querySelector('#add-post-button').addEventListener('click', () => {
+$("#add-post-button").on("click", function () {
     window.location.href = 'create-new-post-profile.php';
 });
 
-document.querySelector('#view-profile-button').addEventListener('click', () => {
+$("#view-profile-button").on("click", function () {
     window.location.href = 'view-user-profile.php';
 });
 
@@ -18,8 +18,8 @@ $("#notifications-button").on("click", function () {
     window.location.href = 'profile-notifications.php';
 });
 
-$("#modify-account-button").on('click', function() {
-    window.location.href = 'edit-profile.php';
+$("#view-followed-button").on("click", function () {
+    window.location.href = 'view-followed-profile.php';
 });
 
 $("#saved-posts-button").on('click', function() {
@@ -40,8 +40,4 @@ document.querySelector('#logout-button').addEventListener('click', () => {
     $('#no-button').on("click", function () {
         window.location.href = 'tab-profile.php';
     });
-});
-
-$("#view-followed-button").on("click", function () {
-    window.location.href = 'view-followed-profile.php';
 });
