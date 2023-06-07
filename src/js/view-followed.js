@@ -17,7 +17,6 @@ const intersectionObserver = new IntersectionObserver(entries => {
                         $("#profile-list").append($("<h2>").addClass("text-center").text("Nessun profilo seguito"));
                     }
                 }
-
             }
         });
     }

@@ -205,7 +205,7 @@ function addFollowAnimalNotification($follower, $animal, DatabaseHelper $dbh)
  */
 function addReplyCommentNotification($replier, $comment, DatabaseHelper $dbh)
 {
-    $recipient = $dbh->getComment($comment)[0]["id_padre"];
+    $recipient = $dbh->getComment($dbh->getComment($comment)[0]["id_padre"])[0]["username"];
     if (isset($recipient)) {
         if (isNotificationReplyEnabled($recipient, $dbh)){
             $dbh->addNotification($recipient, NotificationType::REPLY_COMMENT, array("replier" => $replier, "comment" => $comment, "post" => $dbh->getComment($comment)[0]["id_post"]));
