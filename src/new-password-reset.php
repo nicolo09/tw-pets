@@ -25,6 +25,8 @@ if (isset($_GET["id"])) {
                 // Rimuovo tutti i codici generati per cambiare la password
                 removeAllPasswordChangeRequests($email, $dbh);
                 sendEmailAboutPasswordChange($username, $dbh);
+                //Ri-abilito l'account
+                $dbh->enableAccount($username);
                 header("Location: login.php?password_changed=true");
                 exit;
             } else {
