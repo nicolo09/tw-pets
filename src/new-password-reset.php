@@ -26,6 +26,7 @@ if (isset($_GET["id"])) {
                 removeAllPasswordChangeRequests($email, $dbh);
                 sendEmailAboutPasswordChange($username, $dbh);
                 //Ri-abilito l'account
+                $dbh->deleteAllLoginAttempts($username);
                 $dbh->enableAccount($username);
                 header("Location: login.php?password_changed=true");
                 exit;

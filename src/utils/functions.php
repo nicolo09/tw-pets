@@ -53,7 +53,7 @@ function loginUser(string $email, string $input_password, DatabaseHelper $dbh)
     }
     if (count($user) == 1) { // Checks if the user exist
         // Checking if the user's account is disabled because of too many failed access attempts.
-        if (checkBrute($user[0]["username"], $dbh) == true) {
+        if (checkBrute($user[0]["username"], $dbh) == true||$dbh->isAccountDisabled($user[0]["username"])) {
             // The account is disabled
             // TODO: Invia un e-mail all'utente avvisandolo che il suo account è stato disabilitato.
             $dbh->disableAccount($user[0]["username"]);
