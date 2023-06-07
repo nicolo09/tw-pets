@@ -45,7 +45,7 @@ function loginUser(string $email, string $input_password, DatabaseHelper $dbh)
         // Checking if the user's account is disabled because of too many failed access attempts.
         if (checkBrute($user[0]["username"], $dbh) == true||$dbh->isAccountDisabled($user[0]["username"])) {
             // The account is disabled
-            // TODO: Invia un e-mail all'utente avvisandolo che il suo account è stato disabilitato.
+            sendEmailAboutDisabledAccount($user[0]["email"]);
             $dbh->disableAccount($user[0]["username"]);
             $result[1][] = "Il tuo account è stato disabilitato per troppi tentativi di accesso errati. Chiedi il reset della password.";
             return $result;
@@ -1273,4 +1273,18 @@ function sendEmailAboutPasswordChange(string $username, DatabaseHelper $dbh){
     $headers = 'From: noreply@twpets.com' . "\r\n";
     // Sending the email
     return mail($email, "TWPETS - Password cambiata", $message, $headers);
+}
+
+/**
+ * Sends an email to the user's email address to notify that the account has been disabled
+ * @param string $email the user's email
+ * @return bool true if the mail was sent successfully, false otherwise.
+ */
+function sendEmailAboutDisabledAccount(string $email){
+    // The message
+    $message = "Il tuo account su TWPETS è stato disabilitato\nQuesto accade quando ci sono troppi tentativi di login con password errata in breve tempo.\nPer riabilitare il tuo account, esegui la procedura di reset della password al più presto";
+    $headers = 'From: noreply@twpets.com' . "\r\n";
+    // Sending the email
+    return mail($email, "TWPETS - Account disabilitato", $message, $headers);
+    
 }

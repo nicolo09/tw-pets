@@ -311,7 +311,7 @@ li.select2-results__option {
     border-top: 0;
     box-sizing: border-box;
     overflow: hidden;
-    aspect-ratio: 1/1; /* TODO relatively low compatibility */
+    aspect-ratio: 1/1; /* relatively new */
 }
 
 .post-preview {
