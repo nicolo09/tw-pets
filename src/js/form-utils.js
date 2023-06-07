@@ -14,7 +14,7 @@ filePicker.addEventListener('change', function(){
  * an img tag with id=#imgPreview */
 function imagePreview(input) {
     if (input.files && input.files[0] && input.files[0].name.match(/\.(jpg|jpeg|png|gif)$/i)) {
-        var reader = new FileReader();
+        const reader = new FileReader();
         reader.onload = function (e) {
             $('#imgPreview')
                 .attr('src', e.target.result)
@@ -33,9 +33,9 @@ $(function() {
             if (!data.element) {
                 return data.text;
             }
-            var $result = $('<span class="select2-results__option">');
-            var $img = $('<img class="miniature">').attr('src', data.element.getAttribute("data-img"));
-            var $text = $('<span class="ms-1 miniature-text">').text(data.text);
+            let $result = $('<span class="select2-results__option">');
+            let $img = $('<img class="miniature">').attr('src', data.element.getAttribute("data-img"));
+            let $text = $('<span class="ms-1 miniature-text">').text(data.text);
 
             $result.append($img).append($text);
             return $result;
