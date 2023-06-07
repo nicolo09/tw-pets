@@ -1,6 +1,6 @@
 <div class="card mx-auto col-12 col-sm-8 col-md-6 col-lg-5 col-xl-4 border-black align-items-center justify-content-center post" id="post-card-<?php echo $templateParams["id"];?>">
     <div class="card-header row border-bottom border-black post-header p-1">
-        <!--Utente che ha postato-->
+        <!-- Post's maker -->
         <div class="col p-0">
             <a class="align-items-center" href="<?php echo getUserProfileHref($templateParams["username"]);?>" id="<?php echo $templateParams["id"];?>-creator">
                 <img class="post-pic text-center img-fluid me-2" src="<?php echo $templateParams["immagineprofilo"];?>" alt="<?php echo "Foto profilo di " . $templateParams["username"];?>"><?php echo $templateParams["username"]; ?>
@@ -12,11 +12,11 @@
             </div>
         <?php endif ?>
     </div>
-    <!--Immagine-->
+    <!-- Image -->
     <img class="w-100 <?php if (isset($templateParams["list"])) echo "home-post"?>" src=<?php echo $templateParams["immagine"];?> alt="<?php echo $templateParams["alt"];?>" id="post-img-<?php echo $templateParams["id"];?>">
     <div class="card-footer w-100 p-0 m-0">
         <div class="w-100 m-0 d-flex justify-content-center row">
-            <!--Tasti-->
+            <!-- Buttons -->
             <div class="col div-button-post">
                 <button class="btn btn-outline btn-outline-primary button-post align-middle" id="like-post-card-<?php echo $templateParams["id"];?>">
                 </button>
@@ -30,7 +30,7 @@
         </div>
         <div class="comments text-left m-1" id="comments-<?php echo $templateParams["id"] ?>">
             <?php
-            //Descrizione
+            //Description
             echo '<p><a href="' . getUserProfileHref($templateParams["username"]) . '">' . $templateParams["username"] . '</a>' . ': ' . $templateParams["descrizione"] . '</p>';
             if (isset($templateParams["animals"]) && count($templateParams["animals"]) > 0) {
                 $row = '<p>';
@@ -43,10 +43,10 @@
                     $single = $templateParams["animals"][$i];
                     $row = $row . '<a href="' . getAnimalProfileHref($single) . '">' . $single . '</a>';
                     if ($i + 1 == count($templateParams["animals"])) {
-                        //Non è l'ultimo elemento
+                        //It's the last animal
                         $row = $row . '.';
                     } else {
-                        //Ultimo elemento
+                        //It's not the last animal
                         $row = $row . ', ';
                     }
                 }
@@ -65,7 +65,7 @@
                             echo '<p class="text-muted">' . date("d/m/Y H:i", strtotime($comment["timestamp"])) . '</p>';
                             echo '<button id="' . $id . '-comment-' . $comment["id_commento"] . '" class="comment-answer rounded btn btn-outline-primary">Rispondi</button>';
                             if (isset($templateParams["son-comments-" . $comment["id_commento"]]) && $templateParams["son-comments-" . $comment["id_commento"]] == true) {
-                                //Ci sono commenti di risposta
+                                //The comment has answers
                                 echo '<button id="' . $id . '-son-comment-' . $comment["id_commento"] . '" class="rounded btn btn-outline-primary">Leggi le risposte</button>';
                             }
                         }

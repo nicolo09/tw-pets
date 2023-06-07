@@ -7,7 +7,7 @@
             <h2 class="flex-fill fs-5"><?php echo $templateParams["role"];?></h2>
             <p class="flex-fill"><?php echo $templateParams["description"];?></p>
         </div>
-        <!--Bottoni-->
+        <!-- Buttons -->
         <div class="text-center row g-0">
             <?php if($templateParams["modifyEnabled"] == true): ?>
                 <button class="btn btn-outline-primary col profile-button" id="modify">
@@ -16,7 +16,7 @@
             <?php else: ?>
                 <button class="btn btn-outline-primary col profile-button" id="follow">
                 <?php if($templateParams["userFollows"] == true){
-                //Utente segue
+                //The user follows this account
                     echo '<img src="img/remove-user.svg" alt="" class="w-25" />Smetti di seguire';
                 } else {
                     echo '<img src="img/add-user.svg" alt="" class="w-25" />Segui';
@@ -25,9 +25,9 @@
                 </button>
             <?php endif; ?>
             <?php if(isset($templateParams["animalAccount"]) && $templateParams["animalAccount"] == true) :?>
-            <!--E' un animale, niente bottone animale-->
+            <!-- It's an animal account, there is no need for an animals button -->
             <?php else : ?>
-            <!--Non è un animale-->
+            <!-- It's a person account -->
             <button class="btn btn-outline-primary col profile-button" id="animals" <?php if($templateParams["animalsDisabled"] == true){
                 echo "disabled";
             }  
@@ -46,13 +46,13 @@
 
 </div>
 
-<!--Galleria immagini-->
+<!-- User posts -->
 <div class="container-fluid g-0 border-top border-black mt-3">
     <?php
     if(isset($templateParams["postimg"])&&isset($templateParams["alt"])&&isset($templateParams["id"])){
         if(count($templateParams["postimg"])==count($templateParams["alt"])&&count($templateParams["postimg"])>0&&count($templateParams["id"])==count($templateParams["postimg"])){
-            //Ogni immagine deve avere un alt
-            $n=count($templateParams["postimg"]);//Hai n elementi, tra 0 e n-1
+            //Every image must have an alt
+            $n=count($templateParams["postimg"]);//There are n posts
             for($i = 0; $i < $n; $i += 3){
                 echo '<div class="row g-0">';
                 for($j = 0; $j < 3 && $j + $i < $n; $j++){
@@ -62,11 +62,11 @@
                 echo '</div>';
             }
         }else{
-            //Se hai un numero immagini diverso dal numero di alt-> non mostro nessuna immagine
+            //If the number of posts is different from the number of alt nothing is shown
             echo '<h3 class="text-center">Nessun post</h3>';
         }
     }else{
-        //Se non hai settato le immagini
+        //There are no posts
         echo '<h3 class="text-center">Nessun post</h3>';
     }
     

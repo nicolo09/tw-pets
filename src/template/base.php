@@ -6,7 +6,7 @@
     <link rel="stylesheet" type="text/css" href="../css/style.css" />
     <?php
     $max = countNFiles("favicon/", "ico");
-    $n = rand(0, $max - 1); //I file hanno indice 0.... max-1, per un totale di max files
+    $n = rand(0, $max - 1); //Files can have an index from 0 to max-1
     echo '<link rel="icon" type="image/x-icon" href="favicon/favicon-' . $n . '.ico"/>';
     ?>
 
