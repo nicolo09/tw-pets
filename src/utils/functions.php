@@ -56,8 +56,8 @@ function loginUser(string $email, string $input_password, DatabaseHelper $dbh)
         if (checkBrute($user[0]["username"], $dbh) == true) {
             // The account is disabled
             // TODO: Invia un e-mail all'utente avvisandolo che il suo account è stato disabilitato.
-            // TODO: come gestire la disabilitazione? attributo in persona? 
-            $result[1][] = "Il tuo account è stato momentaneamente disabilitato per troppi tentativi di accesso errati. Riprova più tardi.";
+            $dbh->disableAccount($user[0]["username"]);
+            $result[1][] = "Il tuo account è stato disabilitato per troppi tentativi di accesso errati. Chiedi il reset della password.";
             return $result;
         } else {
             if (password_verify($input_password, $user[0]["password"])) { // Checking if the password in the database and the one inserted by the user are equal

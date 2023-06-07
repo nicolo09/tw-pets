@@ -63,6 +63,7 @@ create table PERSONA (
      email varchar(30) not null,
      password char(255) not null,
      impiego varchar(50),
+	 disabilitato boolean not null default false,
      constraint IDPERSONA_ID primary key (username));
 
 create table POSSIEDE (
