@@ -212,7 +212,7 @@ function registerAnimal(string $animal, string $type, array $file, string $descr
 
 /**
  * Edits an existing animal on the database.
- * @param string $animal the animal's username.
+ * @param array $animal an associative array containing animal's info.
  * @param string $type the animal's type.
  * @param array $file an array containing the animal's image.
  * @param string $description the animal's description.
@@ -221,7 +221,7 @@ function registerAnimal(string $animal, string $type, array $file, string $descr
  * @return int 0 if there were errors, 1 otherwise.
  * @return array a string array of all the errors that occurred, it is empty if there were none.
  */
-function editAnimal(string $animal, string $type, array $file, string $description, array $owners, DatabaseHelper $dbh)
+function editAnimal(array $animal, string $type, array $file, string $description, array $owners, DatabaseHelper $dbh)
 {
 
     $result = 0;
