@@ -108,8 +108,8 @@ function loadComment(id_post) {
         return response.json();
     }).then((data) => {
         //data contains comments array and "hasAnswers" array
-        comm = data[0];
-        hasAnswers = data[1];
+        const comm = data[0];
+        const hasAnswers = data[1];
         comm.forEach((element, index) => {
             //adding comment to the page
             addComment(element, hasAnswers[index][element["id_commento"]]);
@@ -151,12 +151,12 @@ function attachDelete(id) {
                     if(data["result"] == 1){
                         window.location.href = $("#" + id + "-creator").attr('href')
                     } else {
-                        html = getTopPageAlertPopUp("Si è verificato un errore, impossibile rimuovere il post")
+                        const html = getTopPageAlertPopUp("Si è verificato un errore, impossibile rimuovere il post")
                         $(html).insertBefore("#post-card-" + id)
                     }
                 },
                 error: function () {
-                    html = getTopPageAlertPopUp("Si è verificato un errore, impossibile rimuovere il post")
+                    const html = getTopPageAlertPopUp("Si è verificato un errore, impossibile rimuovere il post")
                     $(html).insertBefore("#post-card-" + id)    
                 }
             })
@@ -170,7 +170,7 @@ function getUserProfileHref(username) {
 
 function addComment(comment, hasAnswers) {
     const correctDate = convertDateToHTML(new Date(comment["timestamp"]));
-    text = '<p><a href="' + getUserProfileHref(comment["username"]) + '">' + comment["username"] + '</a>' + ': ' + comment["testo"] + '</p>';
+    let text = '<p><a href="' + getUserProfileHref(comment["username"]) + '">' + comment["username"] + '</a>' + ': ' + comment["testo"] + '</p>';
     text += '<p class="text-muted">' + correctDate + '</p>';
     text += '<button id="' + id + '-comment-' + comment["id_commento"] + '" class="comment-answer rounded btn btn-outline-primary">Rispondi</button>';
     if (hasAnswers == true) {
@@ -193,7 +193,7 @@ function addAnswerComment(comment) {
     const id_padre = comment["id_padre"];
     const id_post = comment["id_post"];
     const correctDate = convertDateToHTML(new Date(comment["timestamp"]));
-    text = '<p class="a-indent"><a href="' + getUserProfileHref(comment["username"]) + '">' + comment["username"] + '</a>' + ': ' + comment["testo"] + '</p>';
+    let text = '<p class="a-indent"><a href="' + getUserProfileHref(comment["username"]) + '">' + comment["username"] + '</a>' + ': ' + comment["testo"] + '</p>';
     text += '<p class="a-indent text-muted">' + correctDate + '</p>';
 
     $(text).insertBefore("#" + id_post + "-son-comment-" + id_padre);
