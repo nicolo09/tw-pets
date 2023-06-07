@@ -19,7 +19,7 @@
             </div>
         </div>
     </div>
-    <div class="col-12 col-lg-9 col-xl-7 p-0 fixed-bottom mx-auto">
+    <div class="col-12 col-lg-9 col-xl-7 p-0 fixed-bottom mx-auto mb-1 px-1">
         <button type="button" class="btn btn-danger btn-delete-all-notifications w-100" id="btn-delete-all-notifications" <?php echo count($notifications) == 0 ? "disabled" : "" ?>>
             Cancella tutte
         </button>
