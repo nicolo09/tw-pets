@@ -2,7 +2,7 @@
 require_once("bootstrap.php");
 
 if (login_check($dbh)) {
-    logoutUser($dbh);
+    logoutUser();
     header("Location: login.php");
     exit;
 }

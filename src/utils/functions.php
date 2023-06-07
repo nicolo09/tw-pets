@@ -77,9 +77,8 @@ function loginUser(string $email, string $input_password, DatabaseHelper $dbh)
 
 /**
  * Logs out the user from the site.
- * @param DatabaseHelper $dbh object that can communicate with the database. TODO is needed?
  */
-function logoutUser(DatabaseHelper $dbh)
+function logoutUser()
 {
     // Unset all session values 
     $_SESSION = array();
