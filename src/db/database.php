@@ -27,7 +27,7 @@ class DatabaseHelper
     public function getUser(string $email)
     {
         // Preventing SQL injection attacks by using sql prepared statement.
-        if ($stmt = $this->db->prepare("SELECT username, password FROM persona WHERE email = ? LIMIT 1")) {
+        if ($stmt = $this->db->prepare("SELECT username, password FROM PERSONA WHERE email = ? LIMIT 1")) {
             $stmt->bind_param('s', $email);
             $stmt->execute();
             $result = $stmt->get_result();
@@ -195,7 +195,7 @@ class DatabaseHelper
      */
     public function addAnimal(string $username, string $type, string $img, string $description)
     {
-        if ($stmt = $this->db->prepare("INSERT INTO animale (username, tipo, immagine, descrizione) VALUES (?, ?, ?, ?)")) {
+        if ($stmt = $this->db->prepare("INSERT INTO ANIMALE (username, tipo, immagine, descrizione) VALUES (?, ?, ?, ?)")) {
             $stmt->bind_param('ssss', $username, $type, $img, $description);
             return $stmt->execute();
         } else {
@@ -213,7 +213,7 @@ class DatabaseHelper
      */
     public function updateAnimal(string $username, string $type, string $img, string $description)
     {
-        if ($stmt = $this->db->prepare("UPDATE animale SET tipo = ?, immagine = ?, descrizione = ? WHERE username = ?")) {
+        if ($stmt = $this->db->prepare("UPDATE ANIMALE SET tipo = ?, immagine = ?, descrizione = ? WHERE username = ?")) {
             $stmt->bind_param("ssss", $type, $img, $description, $username);
             return $stmt->execute();
         } else {
@@ -231,7 +231,7 @@ class DatabaseHelper
      */
     public function updateUserProfile(string $username, string $employment, string $img, string $description)
     {
-        if ($stmt = $this->db->prepare("UPDATE persona SET impiego = ?, immagine = ?, descrizione = ? WHERE username = ?")) {
+        if ($stmt = $this->db->prepare("UPDATE PERSONA SET impiego = ?, immagine = ?, descrizione = ? WHERE username = ?")) {
             $stmt->bind_param("ssss", $employment, $img, $description, $username);
             return $stmt->execute();
         } else {
@@ -246,7 +246,7 @@ class DatabaseHelper
      */
     public function getAnimalFromName(string $animal)
     {
-        if ($stmt = $this->db->prepare("SELECT * FROM animale WHERE username = ?")) {
+        if ($stmt = $this->db->prepare("SELECT * FROM ANIMALE WHERE username = ?")) {
             $stmt->bind_param('s', $animal);
             $stmt->execute();
             $result = $stmt->get_result();
@@ -264,7 +264,7 @@ class DatabaseHelper
     public function registerOwnership(string $owner, string $animal)
     {
         if (count($this->getUserFromName($owner)) == 1) {
-            if ($stmt = $this->db->prepare("INSERT INTO possiede (persona, animale) VALUES (?, ?)")) {
+            if ($stmt = $this->db->prepare("INSERT INTO POSSIEDE (persona, animale) VALUES (?, ?)")) {
                 $stmt->bind_param('ss', $owner, $animal);
                 return $stmt->execute();
             } else {
@@ -283,7 +283,7 @@ class DatabaseHelper
      */
     public function deleteOwnership(string $owner, string $animal)
     {
-        if ($stmt = $this->db->prepare("DELETE FROM possiede WHERE persona = ? AND animale = ?")) {
+        if ($stmt = $this->db->prepare("DELETE FROM POSSIEDE WHERE persona = ? AND animale = ?")) {
             $stmt->bind_param('ss', $owner, $animal);
             return $stmt->execute();
         } else {
@@ -304,8 +304,8 @@ class DatabaseHelper
         LEFT JOIN SEGUE_PERSONA SP ON P.username = SP.followed
         JOIN (
             SELECT p.username
-            FROM persona p
-            JOIN possiede po ON p.username = po.persona
+            FROM PERSONA p
+            JOIN POSSIEDE po ON p.username = po.persona
             WHERE po.animale = ?
         ) AS subquery ON P.username = subquery.username
         GROUP BY P.username
@@ -329,7 +329,7 @@ class DatabaseHelper
      */
     public function checkOwnership(string $owner, string $animal)
     {
-        if ($stmt = $this->db->prepare("SELECT * FROM possiede WHERE persona = ? AND animale = ?")) {
+        if ($stmt = $this->db->prepare("SELECT * FROM POSSIEDE WHERE persona = ? AND animale = ?")) {
             $stmt->bind_param('ss', $owner, $animal);
             $stmt->execute();
             $result = $stmt->get_result();
@@ -346,7 +346,7 @@ class DatabaseHelper
      */
     public function getPassword(string $username)
     {
-        if ($stmt = $this->db->prepare("SELECT password FROM persona WHERE username = ? LIMIT 1")) {
+        if ($stmt = $this->db->prepare("SELECT password FROM PERSONA WHERE username = ? LIMIT 1")) {
             $stmt->bind_param('s', $username);
             $stmt->execute();
             $result = $stmt->get_result();
@@ -360,7 +360,7 @@ class DatabaseHelper
      */
     public function addLoginAttempt(string $username)
     {
-        if ($stmt = $this->db->prepare("INSERT INTO tentativo_login (timestamp, username) VALUES (NOW(), ?)")) {
+        if ($stmt = $this->db->prepare("INSERT INTO TENTATIVO_LOGIN (timestamp, username) VALUES (NOW(), ?)")) {
             $stmt->bind_param('s', $username);
             $stmt->execute();
         }
@@ -374,10 +374,10 @@ class DatabaseHelper
      */
     public function getLoginAttempts(string $username, string $from)
     {
-        $stmt = $this->db->prepare("DELETE FROM tentativo_login WHERE username = ? AND timestamp < FROM_UNIXTIME($from)");
+        $stmt = $this->db->prepare("DELETE FROM TENTATIVO_LOGIN WHERE username = ? AND timestamp < FROM_UNIXTIME($from)");
         $stmt->bind_param('s', $username);
         $stmt->execute();
-        if ($stmt = $this->db->prepare("SELECT timestamp FROM tentativo_login WHERE username = ? AND timestamp > FROM_UNIXTIME($from)")) {
+        if ($stmt = $this->db->prepare("SELECT timestamp FROM TENTATIVO_LOGIN WHERE username = ? AND timestamp > FROM_UNIXTIME($from)")) {
             $stmt->bind_param('s', $username);
             $stmt->execute();
             $result = $stmt->get_result();
@@ -392,7 +392,7 @@ class DatabaseHelper
      */
     public function getUserFromName($username)
     {
-        if ($stmt = $this->db->prepare("SELECT * FROM persona WHERE username = ? LIMIT 1")) {
+        if ($stmt = $this->db->prepare("SELECT * FROM PERSONA WHERE username = ? LIMIT 1")) {
             $stmt->bind_param('s', $username);
             $stmt->execute();
             $result = $stmt->get_result();
@@ -409,11 +409,11 @@ class DatabaseHelper
      */
     public function addUser(string $user, string $password, string $email)
     {
-        if ($stmt = $this->db->prepare("INSERT INTO persona (username, password, email) VALUES (?, ?, ?)")) {
+        if ($stmt = $this->db->prepare("INSERT INTO PERSONA (username, password, email) VALUES (?, ?, ?)")) {
             $password = password_hash($password, PASSWORD_DEFAULT);
             $stmt->bind_param('sss', $user, $password, $email);
             if ($stmt->execute()) {
-                $stmt = $this->db->prepare("INSERT INTO impostazione(username) VALUES (?)");
+                $stmt = $this->db->prepare("INSERT INTO IMPOSTAZIONE(username) VALUES (?)");
                 $stmt->bind_param('s', $user);
                 return $stmt->execute();
             } else {
@@ -433,7 +433,7 @@ class DatabaseHelper
      */
     public function updateSetting(string $username, string $setting, string $value)
     {
-        if ($stmt = $this->db->prepare("UPDATE impostazione SET `$setting` = ? WHERE username = ?")) {
+        if ($stmt = $this->db->prepare("UPDATE IMPOSTAZIONE SET `$setting` = ? WHERE username = ?")) {
             $value = $value == "true" ? 1 : 0;
             $stmt->bind_param('is', $value, $username);
 
@@ -450,7 +450,7 @@ class DatabaseHelper
      */
     public function getSettings(string $username)
     {
-        if ($stmt = $this->db->prepare("SELECT * FROM impostazione WHERE username = ? LIMIT 1")) {
+        if ($stmt = $this->db->prepare("SELECT * FROM IMPOSTAZIONE WHERE username = ? LIMIT 1")) {
             $stmt->bind_param('s', $username);
             $stmt->execute();
             $result = $stmt->get_result();
@@ -466,7 +466,7 @@ class DatabaseHelper
      */
     public function changeEmail(string $oldEmail, string $newEmail)
     {
-        if ($stmt = $this->db->prepare("UPDATE persona SET email = ? WHERE email = ?")) {
+        if ($stmt = $this->db->prepare("UPDATE PERSONA SET email = ? WHERE email = ?")) {
             $stmt->bind_param('ss', $newEmail, $oldEmail);
             return $stmt->execute();
         } else {
@@ -485,7 +485,7 @@ class DatabaseHelper
     /*This function returns the id of the created post or -1 if something went wrong*/
     public function addPost(string $img, string $alt, string $txt, string $user)
     {
-        if ($stmt = $this->db->prepare("INSERT INTO post (immagine, alt, username, testo) VALUES (?, ?, ?, ?)")) {
+        if ($stmt = $this->db->prepare("INSERT INTO POST (immagine, alt, username, testo) VALUES (?, ?, ?, ?)")) {
             $stmt->bind_param('ssss', $img, $alt, $user, $txt);
             if ($stmt->execute() == true) {
                 return $this->db->insert_id;
@@ -501,7 +501,7 @@ class DatabaseHelper
      */
     public function getOwnedAnimals(string $user)
     {
-        if ($stmt = $this->db->prepare("SELECT * FROM possiede JOIN animale ON animale.username=possiede.animale WHERE persona = ?")) {
+        if ($stmt = $this->db->prepare("SELECT * FROM POSSIEDE JOIN ANIMALE ON ANIMALE.username=POSSIEDE.animale WHERE persona = ?")) {
             $stmt->bind_param('s', $user);
             $stmt->execute();
             $result = $stmt->get_result();
@@ -519,7 +519,7 @@ class DatabaseHelper
      */
     public function addAnimalToPost(int $idPost, string $username)
     {
-        if ($stmt = $this->db->prepare("INSERT INTO riguarda (id_post, animale) VALUES (?,?)")) {
+        if ($stmt = $this->db->prepare("INSERT INTO RIGUARDA (id_post, animale) VALUES (?,?)")) {
             $stmt->bind_param('is', $idPost, $username);
             return $stmt->execute();
         } else {
@@ -534,7 +534,7 @@ class DatabaseHelper
      */
     public function getUserInfo(string $username)
     {
-        if ($stmt = $this->db->prepare("SELECT username, descrizione, immagine, impiego FROM persona WHERE username = ?")) {
+        if ($stmt = $this->db->prepare("SELECT username, descrizione, immagine, impiego FROM PERSONA WHERE username = ?")) {
             $stmt->bind_param('s', $username);
             $stmt->execute();
             $result = $stmt->get_result();
@@ -551,7 +551,7 @@ class DatabaseHelper
      */
     public function getUserPosts(string $username)
     {
-        if ($stmt = $this->db->prepare("SELECT * FROM post WHERE username = ? ORDER BY post.timestamp DESC")) {
+        if ($stmt = $this->db->prepare("SELECT * FROM POST WHERE username = ? ORDER BY POST.timestamp DESC")) {
             $stmt->bind_param('s', $username);
             $stmt->execute();
             $result = $stmt->get_result();
@@ -568,7 +568,7 @@ class DatabaseHelper
      */
     public function doesUserExist(string $username)
     {
-        if ($stmt = $this->db->prepare("SELECT COUNT(username) FROM persona WHERE username=?")) {
+        if ($stmt = $this->db->prepare("SELECT COUNT(username) FROM PERSONA WHERE username=?")) {
             $stmt->bind_param('s', $username);
             $stmt->execute();
             $result = $stmt->get_result();
@@ -585,7 +585,7 @@ class DatabaseHelper
      */
     public function getAllFollowers(string $username)
     {
-        if ($stmt = $this->db->prepare("SELECT followers FROM segue_persona WHERE followed=?")) {
+        if ($stmt = $this->db->prepare("SELECT followers FROM SEGUE_PERSONA WHERE followed=?")) {
             $stmt->bind_param('s', $username);
             $stmt->execute();
             $result = $stmt->get_result();
@@ -603,7 +603,7 @@ class DatabaseHelper
      */
     public function doesUserFollowMyAccount(string $followedUsername, string $followerUsername)
     {
-        if ($stmt = $this->db->prepare("SELECT * FROM segue_persona WHERE followed=? AND follower=?")) {
+        if ($stmt = $this->db->prepare("SELECT * FROM SEGUE_PERSONA WHERE followed=? AND follower=?")) {
             $stmt->bind_param('ss', $followedUsername, $followerUsername);
             $stmt->execute();
             $result = $stmt->get_result();
@@ -623,7 +623,7 @@ class DatabaseHelper
      */
     public function doesAnimalExist(string $username)
     {
-        if ($stmt = $this->db->prepare("SELECT COUNT(username) FROM animale WHERE username=?")) {
+        if ($stmt = $this->db->prepare("SELECT COUNT(username) FROM ANIMALE WHERE username=?")) {
             $stmt->bind_param('s', $username);
             $stmt->execute();
             $result = $stmt->get_result();
@@ -640,7 +640,7 @@ class DatabaseHelper
      */
     public function getAnimalInfo(string $username)
     {
-        if ($stmt = $this->db->prepare("SELECT username, descrizione, immagine, tipo FROM animale WHERE username = ?")) {
+        if ($stmt = $this->db->prepare("SELECT username, descrizione, immagine, tipo FROM ANIMALE WHERE username = ?")) {
             $stmt->bind_param('s', $username);
             $stmt->execute();
             $result = $stmt->get_result();
@@ -657,7 +657,7 @@ class DatabaseHelper
      */
     public function getAnimalPosts(string $username)
     {
-        if ($stmt = $this->db->prepare("SELECT * FROM riguarda JOIN post ON riguarda.id_post=post.id_post WHERE riguarda.animale=?")) {
+        if ($stmt = $this->db->prepare("SELECT * FROM RIGUARDA JOIN POST ON RIGUARDA.id_post=POST.id_post WHERE RIGUARDA.animale=?")) {
             $stmt->bind_param('s', $username);
             $stmt->execute();
             $result = $stmt->get_result();
@@ -675,7 +675,7 @@ class DatabaseHelper
      */
     public function doesUserFollowAnimal(string $username, string $animal)
     {
-        if ($stmt = $this->db->prepare("SELECT * FROM segue_animale WHERE follower=? AND followed=?")) {
+        if ($stmt = $this->db->prepare("SELECT * FROM SEGUE_ANIMALE WHERE follower=? AND followed=?")) {
             $stmt->bind_param('ss', $username, $animal);
             $stmt->execute();
             $result = $stmt->get_result();
@@ -693,7 +693,7 @@ class DatabaseHelper
      */
     public function addFollowPerson(string $followed, string $follower)
     {
-        if ($stmt = $this->db->prepare("INSERT INTO segue_persona (followed, follower) VALUES (?,?)")) {
+        if ($stmt = $this->db->prepare("INSERT INTO SEGUE_PERSONA (followed, follower) VALUES (?,?)")) {
             $stmt->bind_param('ss', $followed, $follower);
             return $stmt->execute();
         } else {
@@ -709,7 +709,7 @@ class DatabaseHelper
      */
     public function removeFollowPerson(string $followed, string $follower)
     {
-        if ($stmt = $this->db->prepare("DELETE FROM segue_persona WHERE followed=? AND follower=?")) {
+        if ($stmt = $this->db->prepare("DELETE FROM SEGUE_PERSONA WHERE followed=? AND follower=?")) {
             $stmt->bind_param('ss', $followed, $follower);
             return $stmt->execute();
         } else {
@@ -725,7 +725,7 @@ class DatabaseHelper
      */
     public function addFollowAnimal(string $animal, string $follower)
     {
-        if ($stmt = $this->db->prepare("INSERT INTO segue_animale (followed, follower) VALUES (?,?)")) {
+        if ($stmt = $this->db->prepare("INSERT INTO SEGUE_ANIMALE (followed, follower) VALUES (?,?)")) {
             $stmt->bind_param('ss', $animal, $follower);
             return $stmt->execute();
         } else {
@@ -740,7 +740,7 @@ class DatabaseHelper
      */
     public function removeFollowAnimal(string $animal, string $follower)
     {
-        if ($stmt = $this->db->prepare("DELETE FROM segue_animale WHERE followed=? AND follower=?")) {
+        if ($stmt = $this->db->prepare("DELETE FROM SEGUE_ANIMALE WHERE followed=? AND follower=?")) {
             $stmt->bind_param('ss', $animal, $follower);
             return $stmt->execute();
         } else {
@@ -756,7 +756,7 @@ class DatabaseHelper
      */
     public function changePassword(string $username, string $newPassword)
     {
-        if ($stmt = $this->db->prepare("UPDATE persona SET password = ? WHERE username = ?")) {
+        if ($stmt = $this->db->prepare("UPDATE PERSONA SET password = ? WHERE username = ?")) {
             $newPassword = password_hash($newPassword, PASSWORD_DEFAULT);
             $stmt->bind_param('ss', $newPassword, $username);
             return $stmt->execute();
@@ -772,7 +772,7 @@ class DatabaseHelper
      */
     public function getPostInfo(int $id)
     {
-        if ($stmt = $this->db->prepare("SELECT post.id_post, post.immagine, post.alt, post.testo, post.timestamp, persona.username, persona.immagine as immagineprofilo FROM post JOIN persona ON post.username=persona.username WHERE post.id_post=?")) {
+        if ($stmt = $this->db->prepare("SELECT POST.id_post, POST.immagine, POST.alt, POST.testo, POST.timestamp, persona.username, persona.immagine as immagineprofilo FROM POST JOIN PERSONA ON POST.username=PERSONA.username WHERE POST.id_post=?")) {
             $stmt->bind_param('i', $id);
             $stmt->execute();
             $result = $stmt->get_result();
@@ -789,7 +789,7 @@ class DatabaseHelper
      */
     public function getPostLikes($id)
     {
-        if ($stmt = $this->db->prepare("SELECT COUNT(*) FROM likes WHERE id_post=?")) {
+        if ($stmt = $this->db->prepare("SELECT COUNT(*) FROM LIKES WHERE id_post=?")) {
             $stmt->bind_param('i', $id);
             $stmt->execute();
             $result = $stmt->get_result();
@@ -807,7 +807,7 @@ class DatabaseHelper
      */
     public function doesUserLikePost(int $id, string $username)
     {
-        if ($stmt = $this->db->prepare("SELECT COUNT(*) FROM `likes` WHERE username=? AND id_post=?")) {
+        if ($stmt = $this->db->prepare("SELECT COUNT(*) FROM `LIKES` WHERE username=? AND id_post=?")) {
             $stmt->bind_param('si', $username, $id);
             $stmt->execute();
             $result = $stmt->get_result();
@@ -825,7 +825,7 @@ class DatabaseHelper
      */
     public function hasUserSavedPost(int $id, string $username)
     {
-        if ($stmt = $this->db->prepare("SELECT COUNT(*) FROM salvati WHERE username=? AND id_post=?")) {
+        if ($stmt = $this->db->prepare("SELECT COUNT(*) FROM SALVATI WHERE username=? AND id_post=?")) {
             $stmt->bind_param('si', $username, $id);
             $stmt->execute();
             $result = $stmt->get_result();
@@ -842,7 +842,7 @@ class DatabaseHelper
      */
     public function isIdPostCorrect(int $id)
     {
-        if ($stmt = $this->db->prepare("SELECT COUNT(id_post) FROM post WHERE id_post=?")) {
+        if ($stmt = $this->db->prepare("SELECT COUNT(id_post) FROM POST WHERE id_post=?")) {
             $stmt->bind_param('i', $id);
             $stmt->execute();
             $result = $stmt->get_result();
@@ -860,7 +860,7 @@ class DatabaseHelper
      */
     public function addLikePost(int $id, string $username)
     {
-        if ($stmt = $this->db->prepare("INSERT INTO likes (id_post, username) VALUES (?,?)")) {
+        if ($stmt = $this->db->prepare("INSERT INTO LIKES (id_post, username) VALUES (?,?)")) {
             $stmt->bind_param('is', $id, $username);
             return $stmt->execute();
         } else {
@@ -876,7 +876,7 @@ class DatabaseHelper
      */
     public function removeLikePost(int $id, string $username)
     {
-        if ($stmt = $this->db->prepare("DELETE FROM likes WHERE id_post=? AND username=?")) {
+        if ($stmt = $this->db->prepare("DELETE FROM LIKES WHERE id_post=? AND username=?")) {
             $stmt->bind_param('is', $id, $username);
             return $stmt->execute();
         } else {
@@ -891,7 +891,7 @@ class DatabaseHelper
      */
     public function addSavePost(int $id, string $username)
     {
-        if ($stmt = $this->db->prepare("INSERT INTO salvati (id_post, username) VALUES (?,?)")) {
+        if ($stmt = $this->db->prepare("INSERT INTO SALVATI (id_post, username) VALUES (?,?)")) {
             $stmt->bind_param('is', $id, $username);
             return $stmt->execute();
         } else {
@@ -907,7 +907,7 @@ class DatabaseHelper
      */
     public function removeSavePost(int $id, string $username)
     {
-        if ($stmt = $this->db->prepare("DELETE FROM salvati WHERE id_post=? AND username=?")) {
+        if ($stmt = $this->db->prepare("DELETE FROM SALVATI WHERE id_post=? AND username=?")) {
             $stmt->bind_param('is', $id, $username);
             return $stmt->execute();
         } else {
@@ -922,7 +922,7 @@ class DatabaseHelper
      */
     public function getTaggedAnimals(int $post)
     {
-        if ($stmt = $this->db->prepare("SELECT animale FROM riguarda WHERE id_post=?")) {
+        if ($stmt = $this->db->prepare("SELECT animale FROM RIGUARDA WHERE id_post=?")) {
             $stmt->bind_param('i', $post);
 
             $stmt->execute();
@@ -943,7 +943,7 @@ class DatabaseHelper
      */
     public function getFavoritePosts(string $username, int $from, int $offset, int $n)
     {
-        if ($stmt = $this->db->prepare("SELECT * FROM salvati JOIN post ON salvati.id_post=post.id_post WHERE salvati.username=? AND post.timestamp>? ORDER BY timestamp DESC LIMIT ?,?")) {
+        if ($stmt = $this->db->prepare("SELECT * FROM SALVATI JOIN POST ON SALVATI.id_post=POST.id_post WHERE SALVATI.username=? AND POST.timestamp>? ORDER BY timestamp DESC LIMIT ?,?")) {
             $stmt->bind_param('siii', $username, $from, $offset, $n);
             $stmt->execute();
             $result = $stmt->get_result();
@@ -962,7 +962,7 @@ class DatabaseHelper
      */
     public function getMostRecentComments(int $id_post, int $n)
     {
-        if ($stmt = $this->db->prepare("SELECT * FROM `commento` WHERE id_padre IS NULL AND id_post=? ORDER BY timestamp DESC LIMIT ?")) {
+        if ($stmt = $this->db->prepare("SELECT * FROM `COMMENTO` WHERE id_padre IS NULL AND id_post=? ORDER BY timestamp DESC LIMIT ?")) {
             $stmt->bind_param('ii', $id_post, $n);
             $stmt->execute();
             $result = $stmt->get_result();
@@ -979,7 +979,7 @@ class DatabaseHelper
      */
     public function doesCommentHaveAnswers(int $id_comment)
     {
-        if ($stmt = $this->db->prepare("SELECT COUNT(*) FROM `commento` WHERE id_padre=? ORDER BY timestamp DESC")) {
+        if ($stmt = $this->db->prepare("SELECT COUNT(*) FROM `COMMENTO` WHERE id_padre=? ORDER BY timestamp DESC")) {
             $stmt->bind_param('i', $id_comment);
             $stmt->execute();
             $result = $stmt->get_result();
@@ -997,7 +997,7 @@ class DatabaseHelper
      */
     public function hasMoreThanXNotifications(string $username, int $x)
     {
-        if ($stmt = $this->db->prepare("SELECT COUNT(*)>? FROM notifica WHERE destinatario = ?")) {
+        if ($stmt = $this->db->prepare("SELECT COUNT(*)>? FROM NOTIFICA WHERE destinatario = ?")) {
             $stmt->bind_param('is', $x, $username);
             $stmt->execute();
             $result = $stmt->get_result();
@@ -1019,7 +1019,7 @@ class DatabaseHelper
      */
     public function getNumberOfNotifications(string $username): int
     {
-        if ($stmt = $this->db->prepare("SELECT COUNT(*) FROM notifica WHERE destinatario = ?")) {
+        if ($stmt = $this->db->prepare("SELECT COUNT(*) FROM NOTIFICA WHERE destinatario = ?")) {
             $stmt->bind_param('s', $username);
             $stmt->execute();
             $result = $stmt->get_result();
@@ -1039,7 +1039,7 @@ class DatabaseHelper
      */
     public function getNotifications(string $username, int $n, int $o): array
     {
-        if ($stmt = $this->db->prepare("SELECT * FROM notifica WHERE destinatario = ? ORDER BY timestamp DESC LIMIT $o, $n")) {
+        if ($stmt = $this->db->prepare("SELECT * FROM NOTIFICA WHERE destinatario = ? ORDER BY timestamp DESC LIMIT $o, $n")) {
             $stmt->bind_param('s', $username);
             $stmt->execute();
             $result = $stmt->get_result();
@@ -1057,7 +1057,7 @@ class DatabaseHelper
      */
     public function addNotification(string $addressee, NotificationType $ntype, array $origin)
     {
-        if ($stmt = $this->db->prepare("INSERT INTO notifica (destinatario, tipo, origine) VALUES (?,?,?)")) {
+        if ($stmt = $this->db->prepare("INSERT INTO NOTIFICA (destinatario, tipo, origine) VALUES (?,?,?)")) {
             $parameters = json_encode($origin);
             $type = $ntype->name;
             $stmt->bind_param('sss', $addressee, $type, $parameters);
@@ -1074,7 +1074,7 @@ class DatabaseHelper
      */
     public function deleteNotification(int $id)
     {
-        if ($stmt = $this->db->prepare("DELETE FROM notifica WHERE id = ?")) {
+        if ($stmt = $this->db->prepare("DELETE FROM NOTIFICA WHERE id = ?")) {
             $stmt->bind_param('i', $id);
             return $stmt->execute();
         }
@@ -1089,7 +1089,7 @@ class DatabaseHelper
      */
     public function deleteAllNotifications(string $username)
     {
-        if ($stmt = $this->db->prepare("DELETE FROM notifica WHERE destinatario = ?")) {
+        if ($stmt = $this->db->prepare("DELETE FROM NOTIFICA WHERE destinatario = ?")) {
             $stmt->bind_param('s', $username);
             return $stmt->execute();
         }
@@ -1104,7 +1104,7 @@ class DatabaseHelper
      */
     public function getNotification(int $id): array
     {
-        if ($stmt = $this->db->prepare("SELECT * FROM notifica WHERE id = ?")) {
+        if ($stmt = $this->db->prepare("SELECT * FROM NOTIFICA WHERE id = ?")) {
             $stmt->bind_param('i', $id);
             $stmt->execute();
             $result = $stmt->get_result();
@@ -1120,7 +1120,7 @@ class DatabaseHelper
      */
     public function getComment($id)
     {
-        if ($stmt = $this->db->prepare("SELECT * FROM `commento` WHERE id_commento=?")) {
+        if ($stmt = $this->db->prepare("SELECT * FROM `COMMENTO` WHERE id_commento=?")) {
             $stmt->bind_param('i', $id);
             $stmt->execute();
             $result = $stmt->get_result();
@@ -1139,7 +1139,7 @@ class DatabaseHelper
      */
     public function addNewComment(string $username, string $text, int $id_post)
     {
-        if ($stmt = $this->db->prepare("INSERT INTO commento (testo, id_post, username) VALUES (?, ?, ?)")) {
+        if ($stmt = $this->db->prepare("INSERT INTO COMMENTO (testo, id_post, username) VALUES (?, ?, ?)")) {
             $stmt->bind_param('sis', $text, $id_post, $username);
             return $stmt->execute();
         } else {
@@ -1158,7 +1158,7 @@ class DatabaseHelper
      */
     public function addNewCommentToComment(string $username, int $id_padre, string $text, int $id_post)
     {
-        if ($stmt = $this->db->prepare("INSERT INTO commento (testo, id_padre, id_post, username) VALUES (?, ?, ?, ?)")) {
+        if ($stmt = $this->db->prepare("INSERT INTO COMMENTO (testo, id_padre, id_post, username) VALUES (?, ?, ?, ?)")) {
             $stmt->bind_param('siis', $text, $id_padre, $id_post, $username);
             return $stmt->execute();
         } else {
@@ -1176,7 +1176,7 @@ class DatabaseHelper
      */
     public function getCommentOffset(int $id, int $n, int $offset, string $timestamp)
     {
-        if ($stmt = $this->db->prepare("SELECT * FROM `commento` WHERE id_post=? AND id_padre IS NULL AND timestamp <? ORDER BY timestamp DESC LIMIT ? OFFSET ?")) {
+        if ($stmt = $this->db->prepare("SELECT * FROM `COMMENTO` WHERE id_post=? AND id_padre IS NULL AND timestamp <? ORDER BY timestamp DESC LIMIT ? OFFSET ?")) {
             $stmt->bind_param('isii', $id, $timestamp, $n, $offset);
             $stmt->execute();
             $result = $stmt->get_result();
@@ -1197,7 +1197,7 @@ class DatabaseHelper
      */
     public function getCommentAnswerOffset(int $id, int $id_comment, int $n, int $offset, string $timestamp)
     {
-        if ($stmt = $this->db->prepare("SELECT * FROM `commento` WHERE id_post=? AND id_padre=? AND timestamp <? ORDER BY timestamp DESC LIMIT ? OFFSET ?")) {
+        if ($stmt = $this->db->prepare("SELECT * FROM `COMMENTO` WHERE id_post=? AND id_padre=? AND timestamp <? ORDER BY timestamp DESC LIMIT ? OFFSET ?")) {
             $stmt->bind_param('iisii', $id, $id_comment, $timestamp, $n, $offset);
             $stmt->execute();
             $result = $stmt->get_result();
@@ -1217,7 +1217,7 @@ class DatabaseHelper
      */
     public function getSavedPosts(string $username, int $n, int $offset)
     {
-        if ($stmt = $this->db->prepare("SELECT * FROM post JOIN salvati ON post.id_post=salvati.id_post WHERE salvati.username=? ORDER BY post.timestamp DESC LIMIT ? OFFSET ?")) {
+        if ($stmt = $this->db->prepare("SELECT * FROM POST JOIN SALVATI ON POST.id_post=SALVATI.id_post WHERE SALVATI.username=? ORDER BY POST.timestamp DESC LIMIT ? OFFSET ?")) {
             $stmt->bind_param('sii', $username, $n, $offset);
             $stmt->execute();
             $result = $stmt->get_result();
@@ -1316,7 +1316,7 @@ class DatabaseHelper
      */
     public function getAllAnimalFollowers(string $animal)
     {
-        if ($stmt = $this->db->prepare("SELECT follower FROM segue_animale WHERE followed=?")) {
+        if ($stmt = $this->db->prepare("SELECT follower FROM SEGUE_ANIMALE WHERE followed=?")) {
             $stmt->bind_param('s', $animal);
             $stmt->execute();
             $result = $stmt->get_result();
@@ -1334,7 +1334,7 @@ class DatabaseHelper
      */
     public function newResetCode(string $email, string $code)
     {
-        if ($stmt = $this->db->prepare("INSERT INTO password_reset (email, generated_key) VALUES (?, ?)")) {
+        if ($stmt = $this->db->prepare("INSERT INTO PASSWORD_RESET (email, generated_key) VALUES (?, ?)")) {
             $stmt->bind_param('ss', $email, $code);
             return $stmt->execute();
         } else {
@@ -1402,7 +1402,7 @@ class DatabaseHelper
      * @return array of profiles
      */
     public function getFollowedProfiles($username, $offset, $number){
-        if($stmt = $this->db->prepare("SELECT * FROM segue_persona WHERE follower=? UNION SELECT * FROM segue_animale WHERE follower=? ORDER BY followed LIMIT ?, ?")) {
+        if($stmt = $this->db->prepare("SELECT * FROM SEGUE_PERSONA WHERE follower=? UNION SELECT * FROM SEGUE_ANIMALE WHERE follower=? ORDER BY followed LIMIT ?, ?")) {
             $stmt->bind_param('ssii', $username, $username, $offset, $number);
             $stmt->execute();
             $result = $stmt->get_result();
@@ -1432,7 +1432,7 @@ class DatabaseHelper
      * @return bool true if the account was was successfully disabled 
      */
     public function disableAccount(string $user){
-        if ($stmt = $this->db->prepare("UPDATE persona SET disabilitato = true WHERE username = ?")) {
+        if ($stmt = $this->db->prepare("UPDATE PERSONA SET disabilitato = true WHERE username = ?")) {
             $stmt->bind_param("s", $user);
             return $stmt->execute();
         } else {
@@ -1446,7 +1446,7 @@ class DatabaseHelper
      * @return bool true if the account was was successfully disabled 
      */
     public function enableAccount(string $user){
-        if ($stmt = $this->db->prepare("UPDATE persona SET disabilitato = false WHERE username = ?")) {
+        if ($stmt = $this->db->prepare("UPDATE PERSONA SET disabilitato = false WHERE username = ?")) {
             $stmt->bind_param("s", $user);
             return $stmt->execute();
         } else {
@@ -1460,7 +1460,7 @@ class DatabaseHelper
      * @return bool true if the account is disabled
      */
     public function isAccountDisabled(string $user){
-        if($stmt = $this->db->prepare("SELECT disabilitato FROM persona WHERE username=?")) {
+        if($stmt = $this->db->prepare("SELECT disabilitato FROM PERSONA WHERE username=?")) {
             $stmt->bind_param('s', $user);
             $stmt->execute();
             $result = $stmt->get_result();
@@ -1482,7 +1482,7 @@ class DatabaseHelper
      */
     public function deleteAllLoginAttempts(string $username)
     {
-        if($stmt = $this->db->prepare("DELETE FROM tentativo_login WHERE username = ? ")){
+        if($stmt = $this->db->prepare("DELETE FROM TENTATIVO_LOGIN WHERE username = ? ")){
         $stmt->bind_param('s', $username);
         return $stmt->execute();
         } else {
