@@ -2,7 +2,7 @@
 require_once("bootstrap.php");
 require_once("utils/notification-utils.php");
 
-if (!isUserLoggedIn($dbh)) {
+if (!login_check($dbh)) {
     header("Location: login.php");
     exit;
 }

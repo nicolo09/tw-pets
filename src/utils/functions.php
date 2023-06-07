@@ -25,16 +25,6 @@ function isActive($pagename)
 }
 
 /**
- * Checks if the current user is logged in. TODO is really needed?
- * @param DatabaseHelper $dbh object that can communicate with the database.
- * @return bool true if the user is logged in, false otherwise.
- */
-function isUserLoggedIn($dbh)
-{
-    return login_check($dbh);
-}
-
-/**
  * Login a user by email and password saving the session's cookie.
  * @param string $email the email or username inserted by the user.
  * @param string $input_password the password inserted by the user.
@@ -522,7 +512,7 @@ function editUserProfile(string $user, string $employment, array $file, string $
  */
 function getUserName(DatabaseHelper $dbh)
 {
-    if (isUserLoggedIn($dbh)) {
+    if (login_check($dbh)) {
         return $_SESSION['username'];
     } else {
         return "";
