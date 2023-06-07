@@ -45,7 +45,7 @@
                                 <p class="text-muted mb-0">Notifiche su nuovi accessi effettuati al tuo account.</p>
                             </div>
                             <div class="col-auto form-check form-switch">
-                                <input type="checkbox" role="switch" class="custom-control-input settings-item form-check-input" id="alert-new-access" checked="false" disabled />
+                                <input type="checkbox" role="switch" class="custom-control-input settings-item form-check-input" id="alert-new-access" disabled />
                             </div>
                         </div>
                     </div>
@@ -56,7 +56,7 @@
                                 <p class="text-muted mb-0">Notifiche quando viene cambiata la password o l'email associate all'account.</p>
                             </div>
                             <div class="col-auto form-check form-switch">
-                                <input type="checkbox" role="switch" class="custom-control-input settings-item form-check-input" id="alert-change-password" checked="false" disabled />
+                                <input type="checkbox" role="switch" class="custom-control-input settings-item form-check-input" id="alert-change-password" disabled />
                             </div>
                         </div>
                     </div>
@@ -73,7 +73,7 @@
                                 <p class="text-muted mb-0">Notificami quando qualcuno mette mi piace a un mio post.</p>
                             </div>
                             <div class="col-auto form-check form-switch">
-                                <input type="checkbox" role="switch" class="custom-control-input settings-item form-check-input" id="alert-likes" checked="false" disabled />
+                                <input type="checkbox" role="switch" class="custom-control-input settings-item form-check-input" id="alert-likes" disabled />
                             </div>
                         </div>
                     </div>
@@ -84,7 +84,7 @@
                                 <p class="text-muted mb-0">Notificami quando qualcuno commenta un mio post.</p>
                             </div>
                             <div class="col-auto form-check form-switch">
-                                <input type="checkbox" role="switch" class="custom-control-input settings-item form-check-input" id="alert-comments" checked="false" disabled />
+                                <input type="checkbox" role="switch" class="custom-control-input settings-item form-check-input" id="alert-comments" disabled />
                             </div>
                         </div>
                     </div>
@@ -95,7 +95,7 @@
                                 <p class="text-muted mb-0">Notificami quando qualcuno inizia a seguirmi.</p>
                             </div>
                             <div class="col-auto form-check form-switch">
-                                <input type="checkbox" role="switch" class="custom-control-input settings-item form-check-input" id="alert-follow" checked="false" disabled />
+                                <input type="checkbox" role="switch" class="custom-control-input settings-item form-check-input" id="alert-follow" disabled />
                             </div>
                         </div>
                     </div>
@@ -106,7 +106,7 @@
                                 <p class="text-muted mb-0">Notificami quando qualcuno inizia a seguire un mio animale.</p>
                             </div>
                             <div class="col-auto form-check form-switch">
-                                <input type="checkbox" role="switch" class="custom-control-input settings-item form-check-input" id="alert-follow-animal" checked="false" disabled />
+                                <input type="checkbox" role="switch" class="custom-control-input settings-item form-check-input" id="alert-follow-animal" disabled />
                             </div>
                         </div>
                     </div>
@@ -123,7 +123,7 @@
                                 <p class="text-muted mb-0">Notificami quando una persona che seguo pubblica un nuovo post.</p>
                             </div>
                             <div class="col-auto form-check form-switch">
-                                <input type="checkbox" role="switch" class="custom-control-input settings-item form-check-input" id="alert-new-post-person" checked="false" disabled />
+                                <input type="checkbox" role="switch" class="custom-control-input settings-item form-check-input" id="alert-new-post-person" disabled />
                             </div>
                         </div>
                     </div>
@@ -134,7 +134,7 @@
                                 <p class="text-muted mb-0">Notificami quando un animale che seguo pubblica un nuovo post.</p>
                             </div>
                             <div class="col-auto form-check form-switch">
-                                <input type="checkbox" role="switch" class="custom-control-input settings-item form-check-input" id="alert-new-post-animal" checked="false" disabled />
+                                <input type="checkbox" role="switch" class="custom-control-input settings-item form-check-input" id="alert-new-post-animal" disabled />
                             </div>
                         </div>
                     </div>
@@ -145,7 +145,7 @@
                                 <p class="text-muted mb-0">Notificami quando qualcuno risponde a un mio commento.</p>
                             </div>
                             <div class="col-auto form-check form-switch">
-                                <input type="checkbox" role="switch" class="custom-control-input settings-item form-check-input" id="alert-comment-reply" checked="false" disabled />
+                                <input type="checkbox" role="switch" class="custom-control-input settings-item form-check-input" id="alert-comment-reply" disabled />
                             </div>
                         </div>
                     </div>
