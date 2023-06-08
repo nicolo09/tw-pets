@@ -52,4 +52,4 @@ if (isIdPostValid($id_post, $dbh)&&$text!="") {
 }
 
 //Reloads post page, success=0/1
-header("Location: view-post-profile.php?id=" . $id . "&successL=" . $success);
+//header("Location: view-post-profile.php?id=" . $id . "&successL=" . $success);
