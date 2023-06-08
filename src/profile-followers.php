@@ -6,11 +6,10 @@ if (!login_check($dbh)) {
     exit;
 }
 
-$n_results = 10;
-
 //AJAX request
-if(isset($_GET["user"]) && isset($_GET["type"]) && isset($_GET["offset"])){
+if(isset($_GET["user"]) && isset($_GET["type"]) && isset($_GET["offset"]) && isset($_GET["quantity"])){
 
+    $n_results = $_GET["quantity"];
     $html = "";
 
     if($_GET["type"] == "animal"){
@@ -33,6 +32,9 @@ if(isset($_GET["user"]) && isset($_GET["type"]) && isset($_GET["offset"])){
 }
 
 //User request
+
+$n_results = 10;
+
 if(isset($_GET["animal"]) && !empty($_GET["animal"])) {
 
     if(doesAnimalUsernameExist($_GET["animal"], $dbh)) {
