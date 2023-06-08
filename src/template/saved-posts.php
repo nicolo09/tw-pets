@@ -3,7 +3,7 @@
 <?php
 $posts = $dbh->getSavedPosts($_SESSION["username"], 10, 0);
 
-require("template\post-list.php");
+require("post-list.php");
 ?>
 </div>
 <div class="d-flex justify-content-center align-items-center mt-4">
