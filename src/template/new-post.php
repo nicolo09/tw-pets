@@ -8,7 +8,7 @@
         <!--Image picker-->
         <div class="row mt-2 g-0 d-flex justify-content-center">
             <label for="imgpostinput" class="form-label">Scegli l'immagine del post</label>
-            <input required type="file" name="imgpost" id="imgpostinput" accept="image/jpg, image/jpeg, image/png, image/gif" class="form-control w-50 g-0 d-flex justify-content-center" />
+            <input required type="file" name="imgpost" id="imgpostinput" accept="image/jpg, image/jpeg, image/png, image/gif" class="form-control g-0 d-flex justify-content-center" />
         </div>
         <!--Image's alt-->
         <div class="row mt-2 g-0">
