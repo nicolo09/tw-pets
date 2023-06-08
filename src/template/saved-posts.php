@@ -11,5 +11,5 @@ require("post-list.php");
         <span class="visually-hidden">Loading...</span>
     </div>
 </div>
-<script src="js/favorite-posts.js"></script>
 <script src="js/post-utils.js"></script>
+<script src="js/favorite-posts.js"></script>
