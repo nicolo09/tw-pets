@@ -250,7 +250,12 @@ class DatabaseHelper
             $stmt->bind_param('s', $animal);
             $stmt->execute();
             $result = $stmt->get_result();
-            return $result->fetch_all(MYSQLI_ASSOC)[0];
+            $tmp = $result->fetch_all(MYSQLI_ASSOC);
+            if (empty($tmp) == false) {
+                return $tmp[0];
+            } else {
+                return array();
+            }
         }
         return array();
     }
