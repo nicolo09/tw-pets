@@ -1,4 +1,5 @@
-var offset = 0;
+let offset = 0;
+const numberToFetch = 10;
 
 const queryString = window.location.search
 const urlParams = new URLSearchParams(queryString)
@@ -14,23 +15,19 @@ const intersectionObserver = new IntersectionObserver(entries => {
             data: {
                 'type': type,
                 'search': search,
-                'offset': (offset * 10)
+                'offset': (offset * numberToFetch),
+                'quantity': numberToFetch
             },
             dataType: 'json',
             success: function (data) {
-                if($("#error").length > 0) {
-                    $("#error").remove()
-                }
-                $("#spinner").removeClass("d-none")
-                if(data != "") {
-                    $("#container").append(data)
-                    offset++
-                } else {
-                    $("#spinner").addClass("d-none")
+                $("#container").append(data)
+                offset++
+                if(data == "" || $('<div></div>').html(data).children().length < numberToFetch) {
+                    $("#spinner").remove()
                 }
             },
             error: function() {
-                $("#spinner").addClass("d-none")
+                $("#spinner").remove()
                 let error = $("<p></p>").addClass("text-danger text-center text-decoration-underline").attr('id', "error").text("Impossibile caricare altri risultati, riprovare pù tardi")
                 $("#container").append(error)
             }

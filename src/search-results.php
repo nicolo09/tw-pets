@@ -7,9 +7,9 @@ if (!login_check($dbh)) {
 }
 
 //AJAX request
-if(isset($_GET["search"]) && isset($_GET["type"]) && isset($_GET["offset"])){
+if(isset($_GET["search"]) && isset($_GET["type"]) && isset($_GET["offset"]) && isset($_GET["quantity"])){
 
-    $n_results = 10;
+    $n_results = $_GET["quantity"];
     $html = "";
 
     if($_GET["type"] == "animal") {
