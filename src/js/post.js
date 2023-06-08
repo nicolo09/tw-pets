@@ -193,8 +193,8 @@ function addAnswerComment(comment) {
     const id_padre = comment["id_padre"];
     const id_post = comment["id_post"];
     const correctDate = convertDateToHTML(new Date(comment["timestamp"]));
-    let text = '<p class="a-indent"><a href="' + getUserProfileHref(comment["username"]) + '">' + comment["username"] + '</a>' + ': ' + comment["testo"] + '</p>';
-    text += '<p class="a-indent text-muted">' + correctDate + '</p>';
+    let text = '<p class="ms-5"><a href="' + getUserProfileHref(comment["username"]) + '">' + comment["username"] + '</a>' + ': ' + comment["testo"] + '</p>';
+    text += '<p class="ms-5 text-muted">' + correctDate + '</p>';
 
     $(text).insertBefore("#" + id_post + "-son-comment-" + id_padre);
 }
