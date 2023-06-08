@@ -5,7 +5,7 @@ let finished = 0
 let seed = Math.random()
 
 const intersectionObserver = new IntersectionObserver(entries => {
-    if(entries[0].intersectionRatio != 0) {
+    if (entries[0].intersectionRatio != 0) {
         $.ajax({
             url: 'home.php',
             type: 'get',
@@ -16,15 +16,15 @@ const intersectionObserver = new IntersectionObserver(entries => {
                 'seed': seed
             },
             dataType: 'json',
-            success: function(data) {
-                if($("#error").length > 0) {
+            success: function (data) {
+                if ($("#error").length > 0) {
                     $("#error").remove()
                 }
-                if(data["html"] != "") {
+                if (data["html"] != "") {
                     $('#post-list').append(data["html"])
                     data["postIDs"].forEach(id => attachStyleAndEventListeners(id))
                     offset++
-                    if(finished != data["finished"]) {
+                    if (finished != data["finished"]) {
                         finished = data["finished"]
                         offset = 1
                     }
@@ -41,6 +41,8 @@ const intersectionObserver = new IntersectionObserver(entries => {
             }
         })
     }
+}, {
+    threshold: 0.6
 })
 
 intersectionObserver.observe(document.getElementById("spinner"))
