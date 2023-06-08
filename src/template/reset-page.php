@@ -7,6 +7,7 @@
                     <form action="#" method="post">
 
                         <!-- Password input -->
+                        <p class="row align-items-center">Scegli una password sicura: deve essere lunga almeno 6 caratteri, contenere una maiuscola, minuscola, un numero e un carattere speciale.</p>
                         <div class="row align-items-center">
                             <div class="col">
                                 <label class="mb-0 fw-bolder" for="new-password">Nuova password</label>

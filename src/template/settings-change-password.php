@@ -18,6 +18,7 @@
                                 </div>
                             </div>
                         </div>
+                        <p class="list-group-item">Scegli una password sicura: deve essere lunga almeno 6 caratteri, contenere una maiuscola, minuscola, un numero e un carattere speciale.</p>
                         <div class="list-group-item">
                             <div class="row align-items-center">
                                 <div class="col">

@@ -17,6 +17,8 @@
                             <input type="email" placeholder="esempio@dominio.com" class="form-control" name="email" autocomplete="username" />
                         </div>
 
+                        <p>Scegli una password sicura: deve essere lunga almeno 6 caratteri, contenere una maiuscola, minuscola, un numero e un carattere speciale.</p>
+
                         <!-- Password input -->
                         <div class="form-outline">
                             <label class="form-label">Password</label>
