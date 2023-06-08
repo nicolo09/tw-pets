@@ -134,8 +134,8 @@ class DatabaseHelper
         JOIN (
             SELECT P.username
             FROM PERSONA P
-            JOIN SEGUE_PERSONA SP ON p.username = SP.follower
-            WHERE sp.followed = ?
+            JOIN SEGUE_PERSONA SP ON P.username = SP.follower
+            WHERE SP.followed = ?
         ) AS subquery ON P.username = subquery.username
         GROUP BY P.username
         ORDER BY COUNT(SP.follower) DESC, P.username
@@ -167,7 +167,7 @@ class DatabaseHelper
         JOIN (
             SELECT P.username
             FROM PERSONA P
-            JOIN SEGUE_ANIMALE SA ON p.username = SA.follower
+            JOIN SEGUE_ANIMALE SA ON P.username = SA.follower
             LEFT JOIN POSSIEDE PO ON PO.persona = SA.follower AND PO.animale = ?
             WHERE SA.followed = ? AND PO.animale IS NULL
         ) AS subquery ON P.username = subquery.username
