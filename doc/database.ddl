@@ -48,7 +48,6 @@ create table LIKES (
      constraint IDLIKES primary key (username, id_post));
 
 create table NOTIFICA (
-     letta boolean not null,
      timestamp timestamp not null,
      id int not null auto_increment,
      destinatario varchar(25) not null,
