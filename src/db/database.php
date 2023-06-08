@@ -1228,7 +1228,7 @@ class DatabaseHelper
      */
     public function getSavedPosts(string $username, int $n, int $offset)
     {
-        if ($stmt = $this->db->prepare("SELECT * FROM POST JOIN SALVATI ON POST.id_post=SALVATI.id_post WHERE SALVATI.username=? ORDER BY POST.timestamp DESC LIMIT ? OFFSET ?")) {
+        if ($stmt = $this->db->prepare("SELECT POST.* FROM POST JOIN SALVATI ON POST.id_post=SALVATI.id_post WHERE SALVATI.username=? ORDER BY POST.timestamp DESC LIMIT ? OFFSET ?")) {
             $stmt->bind_param('sii', $username, $n, $offset);
             $stmt->execute();
             $result = $stmt->get_result();
