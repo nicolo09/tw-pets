@@ -12,4 +12,4 @@ define("MAX_LOGIN_ATTEMPTS", 5);
 require_once("utils/functions.php");
 sec_session_start();
 require_once("db/database.php");
-$dbh = new DatabaseHelper("localhost", "root", "", "twpets", 3306);
+$dbh = new DatabaseHelper("localhost", "root", "", "TWPETS", 3306);
