@@ -8,7 +8,7 @@ if(isset($_GET["id_post"])) {
     if($post["username"] == getUserName($dbh)){
         if($dbh->deletePost($_GET["id_post"])) {
             $result = 1;
-            unlink($post["immagine"]);
+            unlink(IMG_DIR . $post["immagine"]);
             $_SESSION["message"] = "Post eliminato con successo!";
         }
     }
