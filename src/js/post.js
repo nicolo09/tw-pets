@@ -140,26 +140,29 @@ function loadComment(id_post) {
 function attachDelete(id) {
     if($("#delete-post-card-" + id).length) {
         $("#delete-post-card-" + id).on("click", function () {
-            $.ajax({
-                method: "GET",
-                url: "delete.php",
-                data: {
-                    "id_post" : id
-                },
-                dataType: 'json', 
-                success: function (data) {
-                    if(data["result"] == 1){
-                        window.location.href = $("#" + id + "-creator").attr('href')
-                    } else {
+            let alert = "Stai per eliminare questo post, procedere?"
+            if(confirm(alert)) {
+                $.ajax({
+                    method: "GET",
+                    url: "delete.php",
+                    data: {
+                        "id_post" : id
+                    },
+                    dataType: 'json', 
+                    success: function (data) {
+                        if(data["result"] == 1){
+                            window.location.href = $("#" + id + "-creator").attr('href')
+                        } else {
+                            const html = getTopPageAlertPopUp("Si è verificato un errore, impossibile rimuovere il post")
+                            $(html).insertBefore("#post-card-" + id)
+                        }
+                    },
+                    error: function () {
                         const html = getTopPageAlertPopUp("Si è verificato un errore, impossibile rimuovere il post")
-                        $(html).insertBefore("#post-card-" + id)
+                        $(html).insertBefore("#post-card-" + id)    
                     }
-                },
-                error: function () {
-                    const html = getTopPageAlertPopUp("Si è verificato un errore, impossibile rimuovere il post")
-                    $(html).insertBefore("#post-card-" + id)    
-                }
-            })
+                })
+            }
         })
     }
 }
