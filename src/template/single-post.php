@@ -6,7 +6,7 @@
                 <img class="post-pic text-center img-fluid me-2" src="<?php echo $templateParams["immagineprofilo"];?>" alt="<?php echo "Foto profilo di " . $templateParams["username"];?>"><?php echo $templateParams["username"]; ?>
             </a>
         </div>
-        <?php if($templateParams["username"] == getUserName($dbh) && !isset($templateParams["list"])):?>
+        <?php if($templateParams["username"] == getUserName($dbh) && !isset($templateParams["list"]) && $templateParams["id"] != -1):?>
             <div class="col d-flex justify-content-end p-0">
                 <button class="btn btn-outline-danger py-0 m-1" id="delete-post-card-<?php echo $templateParams["id"];?>">Elimina</button>
             </div>
