@@ -1,5 +1,5 @@
 <section class="text-center text-lg-start">
-    <div class="container login-margin-lg">
+    <div class="container">
         <div class="row align-items-center">
             <div class="col-lg-6">
                 <div class="card-body text-center">

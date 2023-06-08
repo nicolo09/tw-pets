@@ -7,8 +7,8 @@ textarea {
 }
 
 @media (min-width: 992px){
-    .login-margin-lg {
-        margin-top: 10vh;
+    .outer-margin-lg {
+        margin-bottom: 10vh;
     }
 }
 
