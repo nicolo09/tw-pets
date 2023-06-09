@@ -14,7 +14,7 @@
                                     <p class="text-muted mb-0">Inserisci la mail attualmente associata all'account.</p>
                                 </div>
                                 <div class="col-auto">
-                                    <input type="email" id="old-email" name="old-email" autocomplete="current-email" />
+                                    <input type="email" id="old-email" name="old-email" autocomplete="email" />
                                 </div>
                             </div>
                         </div>
@@ -25,7 +25,7 @@
                                     <p class="text-muted mb-0">Inserisci la nuova mail.</p>
                                 </div>
                                 <div class="col-auto">
-                                    <input type="email" id="new-email" name="new-email" autocomplete="new-email" />
+                                    <input type="email" id="new-email" name="new-email" />
                                 </div>
                             </div>
                         </div>
@@ -36,7 +36,7 @@
                                     <p class="text-muted mb-0">Inserisci di nuovo la nuova mail.</p>
                                 </div>
                                 <div class="col-auto">
-                                    <input type="email" id="new-email-repeat" name="new-email-repeat" autocomplete="new-email" />
+                                    <input type="email" id="new-email-repeat" name="new-email-repeat" />
                                 </div>
                             </div>
                         </div>
