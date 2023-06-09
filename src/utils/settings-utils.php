@@ -86,3 +86,14 @@ function isNotificationPasswordChangeEnabled($username, DatabaseHelper $dbh)
 {
     return $dbh->getSettings($username)[0]["alert-change-password"];
 }
+
+/**
+ * Returns true if the user wants to receive notifications on a new login
+ * @param $username the username
+ * @param $dbh the database helper
+ * @return bool true if the user wants to receive notifications on a new login
+ */
+function isNotificationNewLoginEnabled($username, DatabaseHelper $dbh)
+{
+    return $dbh->getSettings($username)[0]["alert-change-password"];
+}
