@@ -1,5 +1,5 @@
 <?php
-
+require_once("settings-utils.php");
 /**
  * Starts a secure session.
  */
