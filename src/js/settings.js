@@ -20,7 +20,7 @@ $.ajax({
     },
     dataType: 'json',
     success: function (response) {
-        for (var key in response) {
+        for (let key in response) {
             let item = document.getElementById(key);
             if (response.hasOwnProperty(key) && item != null) {
                 setChecked(item, response[key]);

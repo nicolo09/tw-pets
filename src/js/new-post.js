@@ -140,9 +140,9 @@ jQuery(function () {
             if (!data.element) {
                 return data.text;
             }
-            var $result = $('<span class="select2-results__option">');
-            var $img = $('<img class="miniature">').attr('src', data.element.getAttribute("data-img"));
-            var $text = $('<span>').text(data.text);
+            let $result = $('<span class="select2-results__option">');
+            let $img = $('<img class="miniature">').attr('src', data.element.getAttribute("data-img"));
+            let $text = $('<span>').text(data.text);
 
             $result.append($img).append($text);
             return $result;
