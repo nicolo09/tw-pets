@@ -14,7 +14,7 @@
 
                         <!-- Submit button -->
                         <label>Ti manderemo una mail per resettare la password legata all'account scelto</label>
-                        <button type="submit" class="btn btn-primary btn-block mb-4">Invia mail di reset password</button>
+                        <button type="submit" class="btn btn-primary btn-block my-4">Invia mail di reset password</button>
 
                         <!-- Go to register form -->
                         <div>

@@ -40,9 +40,12 @@ if (isset($_GET["id"])) {
         header("Location: reset-password.php");
         exit;
     }
+} else {
+    $_SESSION["error"] = "Codice di reset mancante.";
+    header("Location: reset-password.php");
+    exit;
 }
 
-// The user opened the page
 $templateParams["title"] = "PETS - Cambia la password";
 $templateParams["page"] = "template/reset-page.php";
 require_once("template/base-outside.php");

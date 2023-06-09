@@ -1188,8 +1188,8 @@ function sendResetEmail(string $email,string $code){
 
     // The message
     $message = "Hai chiesto il reset della tua password su TWPETS?\nSe sei stato tu, clicca sul link in fondo a questa mail o copialo per intero su un browser per procedere con il reset della tua password\nSe non sei stato tu a , ignora questa email\n";
-    $message = $message."Premi qui per resettare la password: <a href =\"http://localhost/tw-pets/new-password-reset.php?id=".$code."\">http://localhost/tw-pets/new-password-reset.php?id=".$code."</a>\n";
-    $message= $message. "Il link è valido per 24h, se è passato più tempo, torna su <a href =\"http://localhost/tw-pets/reset-password.php\">http://localhost/tw-pets/reset-password.php</a> a richiedere l'invio di un nuovo codice.\n";
+    $message = $message."Premi qui per resettare la password: http://localhost/tw-pets/new-password-reset.php?id=".$code."\n";
+    $message= $message. "Il link è valido per 24h, se è passato più tempo, torna su http://localhost/tw-pets/reset-password.php a richiedere l'invio di un nuovo codice.\n";
 
     $headers = 'From: noreply@twpets.com' . "\r\n";
     // Sending the email

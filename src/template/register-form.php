@@ -1,5 +1,5 @@
 <section class="text-center text-lg-start">
-    <div class="container login-margin-lg">
+    <div class="container">
         <div class="row align-items-center">
             <div class="col-lg-6">
                 <div class="card-body text-center">
@@ -16,6 +16,8 @@
                             <label class="form-label">Indirizzo Email</label>
                             <input type="email" placeholder="esempio@dominio.com" class="form-control" name="email" autocomplete="username" />
                         </div>
+
+                        <p>Scegli una password sicura: deve essere lunga almeno 6 caratteri, contenere una maiuscola, minuscola, un numero e un carattere speciale.</p>
 
                         <!-- Password input -->
                         <div class="form-outline">

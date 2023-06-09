@@ -21,7 +21,7 @@
 </head>
 
 <body class="pt-3">
-    <header>
+    <header class="outer-margin-lg">
         <h1 class="text-center mb-3">🐶PETS🐱</h1>
     </header>
     <?php

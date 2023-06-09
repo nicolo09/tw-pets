@@ -7,27 +7,19 @@
                     <form action="#" method="post">
 
                         <!-- Password input -->
-                        <div class="row align-items-center">
-                            <div class="col">
-                                <label class="mb-0 fw-bolder" for="new-password">Nuova password</label>
-                                <p class="text-muted mb-0">Inserisci la nuova password.</p>
-                            </div>
-                            <div class="col-auto">
-                                <input type="password" id="new-password" name="new-password" autocomplete="new-password" required/>
-                            </div>
+                        <p class="row align-items-center">Scegli una password sicura: deve essere lunga almeno 6 caratteri, contenere una maiuscola, minuscola, un numero e un carattere speciale.</p>
+                        <div class="form-outline">
+                            <label class="mb-0 fw-bolder" for="new-password">Nuova password</label>
+                            <p class="text-muted mb-0">Inserisci la nuova password.</p>
+                            <input class="w-100" type="password" id="new-password" name="new-password" autocomplete="new-password" required/>
                         </div>
-                        <div class="row align-items-center">
-                            <div class="col">
-                                <label class="mb-0 fw-bolder" for="new-password-repeat">Ripeti nuova password</label>
-                                <p class="text-muted mb-0">Inserisci di nuovo la nuova password.</p>
-                            </div>
-                            <div class="col-auto">
-                                <input type="password" id="new-password-repeat" name="new-password-repeat" autocomplete="new-password" required/>
-                            </div>
+                        <div class="form-outline">
+                            <label class="mb-0 fw-bolder" for="new-password-repeat">Conferma nuova password</label>
+                            <p class="text-muted mb-0">Inserisci di nuovo la nuova password.</p>
+                            <input class="w-100" type="password" id="new-password-repeat" name="new-password-repeat" autocomplete="new-password" required/>
                         </div>
-
                         <!-- Submit button -->
-                        <button type="submit" class="btn btn-primary btn-block mb-4">Cambia password</button>
+                        <button type="submit" class="btn btn-primary btn-block mt-2">Cambia password</button>
                     </form>
                 </div>
             </div>

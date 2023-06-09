@@ -7,8 +7,8 @@ textarea {
 }
 
 @media (min-width: 992px){
-    .login-margin-lg {
-        margin-top: 10vh;
+    .outer-margin-lg {
+        margin-bottom: 10vh;
     }
 }
 
@@ -383,8 +383,4 @@ li.select2-results__option {
 .comment-slider{
     overflow-y: scroll;
     max-height: 200px;
-}
-
-.a-indent{
-    text-indent: 10%;
 }
