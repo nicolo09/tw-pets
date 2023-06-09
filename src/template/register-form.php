@@ -7,28 +7,28 @@
                     <form action="register.php" method="post">
                         <!-- Username input -->
                         <div class="form-outline">
-                            <label class="form-label">Nome Utente</label>
-                            <input type="text" placeholder="username" class="form-control" name="username" autocomplete="username" maxlength="25"/>
+                            <label class="form-label" for="usernameID">Nome Utente</label>
+                            <input type="text" placeholder="username" class="form-control" name="username" autocomplete="username" maxlength="25" id="usernameID"/>
                         </div>
 
                         <!-- Email input -->
                         <div class="form-outline">
-                            <label class="form-label">Indirizzo Email</label>
-                            <input type="email" placeholder="esempio@dominio.com" class="form-control" name="email" autocomplete="username" />
+                            <label class="form-label" for="emailID">Indirizzo Email</label>
+                            <input type="email" placeholder="esempio@dominio.com" class="form-control" name="email" autocomplete="username" id="emailID" />
                         </div>
 
                         <p>Scegli una password sicura: deve essere lunga almeno 6 caratteri, contenere una maiuscola, minuscola, un numero e un carattere speciale.</p>
 
                         <!-- Password input -->
                         <div class="form-outline">
-                            <label class="form-label">Password</label>
-                            <input type="password" placeholder="Inserire la password" class="form-control" name="password" autocomplete="new-password" />
+                            <label class="form-label" for="passwordID">Password</label>
+                            <input type="password" placeholder="Inserire la password" class="form-control" name="password" autocomplete="new-password" id="passwordID" />
                         </div>
 
                         <!-- Password confirm -->
                         <div class="form-outline">
-                            <label class="form-label">Conferma Password</label>
-                            <input type="password" placeholder="Ripetere la password" class="form-control" name="confirm_password" autocomplete="new-password" />
+                            <label class="form-label" for="passwordRepeatID">Conferma Password</label>
+                            <input type="password" placeholder="Ripetere la password" class="form-control" name="confirm_password" autocomplete="new-password" id="passwordRepeatID" />
                         </div>
 
                         <!-- Submit button -->
