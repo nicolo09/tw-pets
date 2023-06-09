@@ -57,6 +57,14 @@ function loginUser(string $email, string $input_password, DatabaseHelper $dbh)
                 $_SESSION['login_string'] = hash('sha512', $user[0]["password"] . $user_browser);
                 // Login successful
                 $result[0] = true;
+                //Notify user on mail 
+                if (isNotificationNewLoginEnabled($username, $dbh)) {
+                    // The message
+                    $message = "È stato eseguito un nuovo accesso al tuo account twpets.\nSe non lo hai effettuato tu richiedi un reset della password dal sito.\n\nTWPETS";
+                    $headers = 'From: noreply@twpets.com' . "\r\n";
+                    // Sending the email
+                    mail(getUserData($username, $dbh)["email"], "TWPETS - Nuovo accesso", $message, $headers);
+                }
                 return $result;
             } else {
                 // Wrong password 
