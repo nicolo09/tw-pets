@@ -3,7 +3,7 @@
     <form action="#" method="POST" class="" enctype="multipart/form-data">
         <!--Image is displayed here-->
         <div>
-            <img id="imgPreview" src="#" alt="Immagine inserita da utente" class=" w-100">
+            <img id="imgPreview" src="#" alt="Immagine inserita da utente" class=" w-75">
         </div>
         <!--Image picker-->
         <div class="row mt-2 g-0 d-flex justify-content-center">
@@ -20,9 +20,9 @@
             <label for="txtpost" class="p-0 form-label">Testo Post:</label>
             <textarea required id="txtpost" name="txtpost" maxlength=200 placeholder="Scrivi una descrizione per il tuo post di meno di 200 caratteri" class="p-0 m-0"></textarea>
         </div>
-        <div class="w-100">
+        <div class="w-100 mt-2">
             <!-- Post's animals -->
-            <label for="selectAnimals">Seleziona gli animali presenti in questo post</label>
+            <label class="mb-2" for="selectAnimals">Seleziona gli animali presenti in questo post</label>
             <select name="selectAnimals[]" id="selectAnimals" multiple="multiple" class="form-select selectAnimals w-100 p-0" size=6>
                 <?php
                 if (
@@ -44,7 +44,7 @@
         <button class="btn btn-outline-primary col w-40 mt-4" id="preview" type="button"><img src="img/preview.svg" alt="">Guarda post in anteprima</button>
 
         <!-- Submit -->
-        <div class="col text-center w-80 mt-5 p-10">
+        <div class="col text-center w-80 my-5 p-10">
             <button type="submit" formmethod="POST" class="btn btn-outline-primary">
                 <img src="img/publish.svg" alt="" /> Pubblica il nuovo post
             </button>
