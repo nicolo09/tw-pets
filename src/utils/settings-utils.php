@@ -75,3 +75,14 @@ function isNotificationNewPostAnimalEnabled($username, DatabaseHelper $dbh)
 {
     return $dbh->getSettings($username)[0]["alert-new-post-animal"];
 }
+
+/**
+ * Returns true if the user wants to receive notifications on his password changes
+ * @param $username the username
+ * @param $dbh the database helper
+ * @return bool true if the user wants to receive notifications on his password changes
+ */
+function isNotificationPasswordChangeEnabled($username, DatabaseHelper $dbh)
+{
+    return $dbh->getSettings($username)[0]["alert-change-password"];
+}
