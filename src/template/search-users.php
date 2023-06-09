@@ -24,7 +24,7 @@
                             } ?> 
                         </div>
                         <?php if(count($templateParams["persons"]) > 3): ?>
-                            <div class="d-flex justify-content-center"><a href="search-results.php?persons=<?php echo $templateParams["search"] ?>">Mostra tutti</a></div>
+                            <div class="d-flex mb-2 justify-content-center fs-5"><a href="search-results.php?persons=<?php echo $templateParams["search"] ?>">Mostra tutti</a></div>
                         <?php endif; ?>
                     <?php else: ?>
                         <label class="w-100 text-center text-muted text-decoration-underline my-3">Non ci sono utenti che corrispondo alla ricerca</label>
@@ -42,7 +42,7 @@
                             } ?> 
                         </div>
                         <?php if(count($templateParams["animals"]) > 3): ?>
-                            <div class="d-flex justify-content-center"><a href="search-results.php?animals=<?php echo $templateParams["search"] ?>">Mostra tutti</a></div>
+                            <div class="d-flex justify-content-center mb-4 fs-5"><a href="search-results.php?animals=<?php echo $templateParams["search"] ?>">Mostra tutti</a></div>
                         <?php endif; ?>
                     <?php else: ?>
                         <label class="w-100 text-center text-muted text-decoration-underline my-3">Non ci sono animali che corrispondo alla ricerca</label>
