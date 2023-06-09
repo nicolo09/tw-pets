@@ -814,9 +814,13 @@ function changePassword(string $oldPassword, string $newPassword, string $confir
         }
     }
     if (count($errors) == 0) {
-        $user = $dbh->getUserFromName($_SESSION['username']);
+        $user = $dbh->getUserFromName(getUserName($dbh));
         if (password_verify($oldPassword, $user[0]['password'])) {
-            $result = $dbh->changePassword($_SESSION['username'], $newPassword);
+            $result = $dbh->changePassword(getUserName($dbh), $newPassword);
+            //Notify user about password change
+            if (isNotificationPasswordChangeEnabled(getUserName($dbh), $dbh)) {
+                sendEmailAboutPasswordChange(getUserName($dbh), $dbh);
+            }
         } else {
             $errors[] = "La password attuale non è corretta.";
         }
@@ -1244,6 +1248,10 @@ function changePasswordReset(string $username, string $newPassword, string $conf
     }
     if (count($errors) == 0) {
         $result = $dbh->changePassword($username, $newPassword);
+        //Notify user about password change
+        if (isNotificationPasswordChangeEnabled(getUserName($dbh), $dbh)) {
+            sendEmailAboutPasswordChange(getUserName($dbh), $dbh);
+        }
     }
     return array($result, $errors);
 }
