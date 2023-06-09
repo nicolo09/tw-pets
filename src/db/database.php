@@ -539,7 +539,7 @@ class DatabaseHelper
      */
     public function getUserInfo(string $username)
     {
-        if ($stmt = $this->db->prepare("SELECT username, descrizione, immagine, impiego FROM PERSONA WHERE username = ?")) {
+        if ($stmt = $this->db->prepare("SELECT username, descrizione, immagine, impiego, email FROM PERSONA WHERE username = ?")) {
             $stmt->bind_param('s', $username);
             $stmt->execute();
             $result = $stmt->get_result();
