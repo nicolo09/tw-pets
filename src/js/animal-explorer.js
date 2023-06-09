@@ -9,12 +9,12 @@ if(addbutton) {
 let modifyButtons = document.getElementsByClassName("manage-button");
 let profileButtons = document.getElementsByClassName("pro-pic-btn");
 
-for (var i = 0; i < modifyButtons.length; i++){
+for (let i = 0; i < modifyButtons.length; i++){
     modifyButtons[i].myParam = modifyButtons[i].id.split("_")[1];
     modifyButtons[i].addEventListener('click', goToEditAnimal, false);
 };
 
-for (var i = 0; i < profileButtons.length; i++){
+for (let i = 0; i < profileButtons.length; i++){
     profileButtons[i].myParam = profileButtons[i].id.split("_")[0];
     profileButtons[i].addEventListener('click', goToAnimal, false);
 };
