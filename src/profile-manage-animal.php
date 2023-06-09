@@ -74,7 +74,7 @@ if(isset($_GET["animal"])){
     $templateParams["owners"] = array_column($dbh->getOwners($animal["username"]), "username");
 
 } else {
-    $templateParams["img"] = "img/default_pet_image.png";
+    $templateParams["img"] = IMG_DIR . "default_pet_image.png";
     $templateParams["title"] = "Nuovo animale";
     $templateParams["subtitle"] = "Aggiungi un nuovo animale!";
 }
