@@ -407,7 +407,7 @@ function isPasswordStrong(string $password)
  */
 function isUserID(string $username)
 {
-    if (preg_match('/^[a-z\d_]{2,20}$/i', $username)) {
+    if (preg_match('/^[a-z\d_]{2,25}$/i', $username)) {
         return true;
     } else {
         return false;
