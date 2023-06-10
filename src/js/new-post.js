@@ -142,7 +142,7 @@ jQuery(function () {
             }
             let $result = $('<span class="select2-results__option">');
             let $img = $('<img class="miniature">').attr('src', data.element.getAttribute("data-img"));
-            let $text = $('<span>').text(data.text);
+            let $text = $('<span class="ms-1 miniature-text">').text(data.text);
 
             $result.append($img).append($text);
             return $result;
