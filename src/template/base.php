@@ -36,7 +36,7 @@
                 <div class="navbar-nav nav-fill row-cols-3">
                     <a class="nav-link <?php isActive("home") ?>" href="home.php">Home</a>
                     <a class="nav-link <?php isActive("profile") ?>" href="tab-profile.php" id="profile-nav-element">Profilo</a>
-                    <a class="nav-link <?php isActive("search") ?>" href="search.php">Search</a>
+                    <a class="nav-link <?php isActive("search") ?>" href="search.php">Cerca</a>
                 </div>
             </div>
         </div>
