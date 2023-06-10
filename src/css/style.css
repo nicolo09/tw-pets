@@ -81,9 +81,10 @@ textarea {
 }
 
 .pro-pic-label {
-    width: 50%;
+    max-width: 50%;
     overflow: hidden;
     text-overflow: ellipsis;
+    white-space: nowrap;
 }
 
 .pro-pic-btn {
@@ -332,7 +333,6 @@ li.select2-results__option {
     min-width: 50px;
     max-height: 50px;
     min-height: 50px;
-    /*max-width: 11%;*/
     border-radius: 50%;
     padding: 0;
     background: linear-gradient(white, white) padding-box,
