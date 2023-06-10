@@ -2,7 +2,7 @@
     <div class="container">
         <div class="row justify-content-center">
             <div class="col-12 col-lg-10 col-xl-8 mx-auto">
-            <label for="inputSearch" class="text-muted ps-5 pe-5">Cerca persone e animali...</label>
+            <label for="inputSearch" class="visually-hidden">Cerca persone e animali...</label>
                 <div class="card search-bar">
                     <div class="card-body p-2">
                         <div class="input-group">
