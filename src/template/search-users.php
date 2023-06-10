@@ -2,10 +2,11 @@
     <div class="container">
         <div class="row justify-content-center">
             <div class="col-12 col-lg-10 col-xl-8 mx-auto">
+            <label for="inputSearch" class="text-muted ps-5 pe-5">Cerca persone e animali...</label>
                 <div class="card search-bar">
                     <div class="card-body p-2">
                         <div class="input-group">
-                            <input type="text" class="form-control bg-transparent" <?php if(isset($templateParams["search"])) { echo " value=".$templateParams["search"] ;} ?> placeholder="Cerca persone e animali..." name="username"/>
+                            <input type="text" class="form-control bg-transparent" <?php if(isset($templateParams["search"])) { echo " value=".$templateParams["search"] ;} ?> placeholder="Cerca persone e animali..." name="username" id="inputSearch" />
                             <div id="search-button" class="search-button">
                                 <img src="img/search.svg" alt="Search icon"/>
                             </div>
