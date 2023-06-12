@@ -164,7 +164,7 @@ button>img {
 
 .d-grid>button {
     margin: auto;
-    width: 87.6%; /* TODO is there a better way?*/
+    width: 87.6%;
 }
 
 /* Search */
